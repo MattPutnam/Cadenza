@@ -1,0 +1,519 @@
+Roland JV-1080
+XpA=SR-JV80, XpB=SR-JV80, XpC=SR-JV80, XpD=SR-JV80
+#User
+001 Symphonique
+002 Alternative
+003 VeloTekno 1
+004 West Coast
+005 Albion
+006 Jz Gtr Hall
+007 Rocker Spin
+008 101 Bass
+009 Claviduck
+010 Jet Pad 2
+011 Raggatronic 
+012 Crunch Split 
+013 Running Pad
+014 Brass Sect 
+015 Flying Waltz
+016 Pure Tibet
+017 4Hits4You
+018 Waterhodes
+019 Blade Racer
+020 JC Strat
+021 Dawn 2 Dusk
+022 Saw Mass
+023 Steel Away
+024 64 VoicePiano 
+025 Wave Bells
+026 JP-8Haunting
+027 Vanishing
+028 Harmonica
+029 Film Octaves
+030 Edye Boost
+031 AugerMentive
+032 Deep Strings
+033 Chime Wash
+034 SA Rhodes1
+035 3D Flanged
+036 Ac.Upright
+037 Poly Brass
+038 Dissimilate
+039 Dulcimer
+040 Fantasy Vox
+041 Dist Gtr 1 
+042 Sax Section
+043 Aurora
+044 St.Strings
+045 AmbienceVibe 
+046 Cascade
+047 AltoLead Sax
+048 PWM Strings
+049 Childlike
+050 Velo Tekno 2
+051 Taj Mahal
+052 D-50 Stack
+053 ChamberWoods
+054 Pulse Key
+055 Mondo Bass
+056 Velo-Wah Gtr
+057 Sitar
+058 Purple Spin
+059 Random Vowels
+060 Big BPF
+061 Dunes 
+062 Heirborne
+063 PsychoRhodes
+064 Tortured 
+065 Bass Marimba
+066 Syncrosonix
+067 Mandolin Trem
+068 Poly Saws
+069 Pulse Pad
+070 Nylon Gtr
+071 ORBit Pad
+072 Majestic Tpt
+073 Terminate
+074 SquareLead 1 
+075 House Piano
+076 Fooled Again
+077 Pick Bass 
+078 Wide Tubular
+079 Velo-Rez Clv 
+080 Airplaaane
+081 Delicate EP
+082 Rezoid
+083 E-Motion Pad 
+084 Phripphuzz 
+085 Archimede
+086 Intentions 
+087 Nylon Rhodes
+088 Huff N Stuff
+089 Finger Bass
+090 Gospel Spin 
+091 Harmonicum
+092 Impact
+093 Rotary Gtr
+094 Tp&Sax Sect
+095 Tubular Vox
+096 Sawteeth
+097 Ocean Floor
+098 E.Grand
+099 Clarinet mp 
+100 Bass in Face
+101 Britelow Bass
+102 Mellow Bars
+103 LetterFrmPat
+104 MG Solo
+105 Air Lead
+106 Raya Shaku 
+107 Greek Power
+108 Biosphere
+109 EP+Mod Pad 
+110 Chambers
+111 Nomad Perc 
+112 Horn Swell
+113 Hillbillys
+114 Night Shade
+115 Nice Piano
+116 VOX Flute
+117 Music Bells
+118 JUNO Strings
+119 Bs/Pno+Brs
+120 Dark Vox
+121 Bass Pizz
+122 Seq Mallet
+123 Variable Run
+124 Cyber Space
+125 12str Gtr 1
+126 PianoStrings
+127 Sands of Time
+128 Fantasia JV
+#PrA
+001 64voicePiano
+002 Bright Piano
+003 Classique
+004 Nice Piano 
+005 Piano Thang
+006 Power Grand
+007 House Piano 
+008 E.Grand
+009 MIDIed Grand
+010 Piano Blend
+011 West Coast
+012 PianoStrings
+013 Bs/Pno+Brs
+014 Waterhodes 
+015 S.A.E.P.
+016 SA Rhodes 1
+017 SA Rhodes 2 
+018 Stiky Rhodes
+019 Dig Rhodes
+020 Nylon EPiano
+021 Nylon Rhodes
+022 Rhodes Mix
+023 PsychoRhodes
+024 Tremo Rhodes
+025 MK-80 Rhodes
+026 MK-80 Phaser
+027 Delicate EP
+028 Octa Rhodes1
+029 Octa Rhodes2 
+030 JV Rhodes+
+031 EP+Mod Pad
+032 Mr.Mellow
+033 Comp Clav
+034 Klavinet
+035 Winger Clav
+036 Phaze Clav 1 
+037 Phaze Clav 2
+038 Phuzz Clav
+039 Chorus Clav
+040 Claviduck
+041 Velo-Rez Clv 
+042 Clavicembalo
+043 Analog Clav1
+044 Analog Clav2
+045 Metal Clav
+046 Full Stops
+047 Ballad B
+048 Mellow Bars 
+049 AugerMentive
+050 Perky B
+051 The Big Spin
+052 Gospel Spin 
+053 Roller Spin 
+054 Rocker Spin 
+055 Tone Wh.Solo
+056 Purple Spin
+057 60Õs LeadORG
+058 Assalt Organ 
+059 D-50 Organ
+060 Cathedral
+061 Church Pipes
+062 Poly Key
+063 Poly Saws
+064 Poly Pulse
+065 Dual Profs
+066 Saw Mass
+067 Poly Split 
+068 Poly Brass
+069 Stackoid
+070 Poly Rock
+071 D-50 Stack
+072 Fantasia JV
+073 Jimmee Dee
+074 Heavenals
+075 Mallet Pad
+076 Huff N Stuff
+077 Puff 1080
+078 BellVox 1080
+079 Fantasy Vox
+080 Square Keys
+081 Childlike
+082 Music Box
+083 Toy Box
+084 Wave Bells
+085 Tria Bells
+086 Beauty Bells
+087 Music Bells
+088 Pretty Bells
+089 Pulse Key
+090 Wide Tubular
+091 AmbienceVibe
+092 Warm Vibes
+093 Dyna Marimba
+094 Bass Marimba
+095 Nomad Perc
+096 Ethno Metals
+097 Islands Mlt
+098 Steelin Keys
+099 Steel Drums
+100 Voicey Pizz
+101 Sitar
+102 Drone Split 
+103 Ethnopluck 
+104 Jamisen
+105 Dulcimer
+106 East Melody
+107 MandolinTrem 
+108 Nylon Gtr
+109 Gtr Strings
+110 Steel Away
+111 Heavenly Gtr 
+112 12str Gtr 1 
+113 12str Gtr 2 
+114 Jz Gtr Hall
+115 LetterFrmPat 
+116 Jazz Scat 
+117 Lounge Gig
+118 JC Strat
+119 Twin Strats
+120 JV Strat 
+121 Syn Strat 
+122 Rotary Gtr 
+123 Muted Gtr
+124 SwitchOnMute
+125 Power Trip
+126 Crunch Split
+127 Rezodrive
+128 RockYurSocks
+#PrB
+001 Dist Gtr 1
+002 Dist Gtr 2 
+003 R&R Chunk
+004 Phripphuzz
+005 Grungeroni
+006 Black Widow
+007 Velo-Wah Gtr
+008 Mod-Wah Gtr
+009 Pick Bass
+010 Hip Bass
+011 Perc.Bass
+012 Homey Bass
+013 Finger Bass 
+014 Nylon Bass
+015 Ac.Upright
+016 Wet Fretls
+017 Fretls Dry
+018 Slap Bass 1
+019 Slap Bass 2
+020 Slap Bass 3
+021 Slap Bass 4
+022 4 Pole Bass
+023 Tick Bass
+024 House Bass
+025 Mondo Bass
+026 Clk AnalogBs
+027 Bass In Face
+028 101 Bass
+029 Noiz Bass 
+030 Super Jup Bs
+031 Occitan Bass 
+032 Hugo Bass 
+033 Multi Bass
+034 Moist Bass
+035 BritelowBass
+036 Untamed Bass
+037 Rubber Bass
+038 Stereoww Bs 
+039 Wonder Bass
+040 Deep Bass
+041 Super JX Bs
+042 W<RED>-Bass
+043 HI-Ring Bass
+044 Euro Bass
+045 SinusoidRave
+046 Alternative
+047 Acid Line
+048 Auto TB-303
+049 Hihat Tekno 
+050 Velo Tekno 1
+051 Raggatronic
+052 Blade Racer
+053 S&H Pad
+054 Syncrosonix
+055 Fooled Again
+056 Alive
+057 Velo Tekno 2
+058 Rezoid 
+059 Raverborg
+060 Blow Hit
+061 Hammer Bell
+062 Seq Mallet 
+063 Intentions 
+064 Pick It
+065 Analog Seq
+066 Impact Vox 
+067 TeknoSoloVox
+068 X-Mod Man 
+069 Paz <==> Zap
+070 4Hits4You
+071 Impact
+072 Phase Hit 
+073 Tekno Hit 1
+074 Tekno Hit 2
+075 Tekno Hit 3
+076 Reverse Hit
+077 SquareLead 1
+078 SquareLead 2
+079 You and Luck 
+080 Belly Lead
+081 WhistlinAtom
+082 Edye Boost
+083 MG Solo
+084 FXM Saw Lead
+085 Sawteeth
+086 Smoothe
+087 MG Lead 
+088 MG Interval
+089 Pulse Lead 1
+090 Pulse Lead 2
+091 Little Devil
+092 Loud SynLead 
+093 Analog Lead 
+094 5th Lead
+095 Flute 
+096 Piccolo 
+097 VOX Flute 
+098 Air Lead
+099 Pan Pipes 
+100 Airplaaane
+101 Taj Mahal
+102 Raya Shaku
+103 Oboe mf
+104 Oboe Express
+105 Clarinet mp
+106 ClariExpress 
+107 Mitzva Split
+108 ChamberWinds 
+109 ChamberWoods
+110 Film Orch
+111 Sop.Sax mf
+112 Alto Sax 
+113 AltoLead Sax
+114 Tenor Sax
+115 Baritone Sax
+116 Take A Tenor
+117 Sax Section
+118 Bigband Sax 
+119 Harmonica
+120 Harmo Blues
+121 BluesHarp
+122 Hillbillys
+123 French Bags
+124 Majestic Tpt 
+125 Voluntare 
+126 2Trumpets 
+127 Tpt Sect
+128 Mute TP mod
+#PrC
+001 Harmon Mute
+002 Tp&Sax Sect
+003 Sax+Tp+Tb
+004 Brass Sect 
+005 Trombone
+006 Hybrid Bones
+007 Noble Horns
+008 Massed Horns
+009 Horn Swell 
+010 Brass It!
+011 Brass Attack
+012 Archimede
+013 Rugby Horn 
+014 MKS-80 Brass 
+015 True ANALOG 
+016 Dark Vox
+017 RandomVowels
+018 Angels Sing
+019 Pvox Oooze
+020 Longing...
+021 Arasian Morn
+022 Beauty Vox
+023 Mary-AnneVox
+024 Belltree Vox
+025 Vox Panner
+026 Spaced Voxx
+027 Glass Voices
+028 Tubular Vox
+029 Velo Voxx
+030 Wavox
+031 Doos
+032 Synvox Comps
+033 Vocal Oohz
+034 LFO Vox
+035 St.Strings
+036 Warm Strings
+037 Somber Str
+038 Marcato 
+039 Bright Str
+040 String Ens
+041 TremoloStrng
+042 Chambers
+043 ViolinCello
+044 Symphonique
+045 Film Octaves
+046 Film Layers
+047 Bass Pizz
+048 Real Pizz
+049 Harp On It
+050 Harp
+051 JP-8 Str 1
+052 JP-8 Str 2
+053 E-Motion Pad
+054 JP-8 Str 3
+055 Vintage Orch
+056 JUNO Strings
+057 Gigantalog
+058 PWM Strings
+059 Warmth
+060 ORBit Pad
+061 Deep Strings
+062 Pulsify
+063 Pulse Pad
+064 Greek Power
+065 Harmonicum
+066 D-50 Heaven
+067 Afro Horns
+068 Pop Pad
+069 Dreamesque
+070 Square Pad
+071 JP-8 Hollow
+072 JP-8Haunting
+073 Heirborne
+074 Hush Pad
+075 Jet Pad 1
+076 Jet Pad 2
+077 Phaze Pad
+078 Phaze Str
+079 Jet Str Ens
+080 Pivotal Pad
+081 3D Flanged
+082 Fantawine
+083 Glassy Pad
+084 Moving Glass
+085 Glasswaves
+086 Shiny Pad
+087 ShiftedGlass
+088 Chime Pad
+089 Spin Pad
+090 Rotary Pad
+091 Dawn 2 Dusk
+092 Aurora
+093 Strobe Mode
+094 Albion
+095 Running Pad
+096 Stepped Pad
+097 Random Pad
+098 SoundtrkDANC
+099 Flying Waltz
+100 Vanishing
+101 5th Sweep
+102 Phazweep
+103 Big BPF
+104 MG Sweep
+105 CeremonyTimp
+106 Dyno Toms
+107 Sands ofTime
+108 Inertia
+109 Vektogram
+110 Crash Pad
+111 Feedback VOX
+112 Cascade
+113 Shattered
+114 NextFrontier
+115 Pure Tibet
+116 Chime Wash
+117 Night Shade
+118 Tortured
+119 Dissimilate
+120 Dunes
+121 Ocean Floor
+122 Cyber Space
+123 Biosphere
+124 Variable Run
+125 Ice Hall
+126 ComputerRoom
+127 Inverted
+128 Terminate
+#GM

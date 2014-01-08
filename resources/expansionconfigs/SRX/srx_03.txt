@@ -1,0 +1,129 @@
+SRX-03 Studio Expansion
+1 Y2K Plus One
+2 Pastoral
+3 Majestic
+4 Twin Strings
+5 Taxi Rhodes
+6 Peru Heights
+7 String Cloud
+8 Mysteria
+9 Mutes To Go
+10 HeavyMute/sw
+11 Wheel D-bar
+12 Kid's Glory
+13 GuitarInMist
+14 Overdrones
+15 RockAcoustic
+16 Piano Duel
+17 Chorus LA
+18 70's Blend
+19 OctopusPiano
+20 Rehoisal
+21 US Rhodes
+22 StudioRhodes
+23 All Rhodez
+24 Sens. Rhodes
+25 Harmonic Seq
+26 Still drumin
+27 B3 Mod/Aft
+28 B3 Perc
+29 DynOrgan
+30 Voxx Organ
+31 South Border
+32 Bright Nyle
+33 Rolin'Fingrs
+34 Nylon Vel
+35 Flamenco&Gtr
+36 Studio 12Str
+37 All AGuitars
+38 RichElec12st
+39 Electro-Ac.
+40 Jazzy /Slide
+41 Clean Comp
+42 Jazz Clean
+43 Jazz VelOct
+44 335 Amp+Chrs
+45 Switched On
+46 Tremolo Gtr
+47 NoThat Clean
+48 OhWow Guitar
+49 RED 5ths
+50 Touch Solo
+51 Fingr Tap'n
+52 Blues Grunge
+53 6-Str Bass
+54 Thumb&PullBs
+55 42nd Bass
+56 Mr. Jazz
+57 Picked JBass
+58 Upright Pizz
+59 Gt/BsNz MENU
+60 Lo Pizz Sect
+61 Octo Orch
+62 WindsFX MENU
+63 FluteVibrato
+64 Legato Flt 3
+65 Alto Flute
+66 Atk Flute
+67 SpaceFlute 2
+68 The Pan Pipe
+69 Breathy Pan
+70 Moceno
+71 Puffers
+72 Amazone
+73 Aztek ketzA
+74 Afro Flute
+75 SingingFlute
+76 GTR/Flt Scat
+77 Vox/Flt Scat
+78 Tape Flute
+79 Solo Trumpet
+80 Penny Tpt
+81 Mello TrBone
+82 DynamicBones
+83 Trumps&Bones
+84 Bigger Brass
+85 Brass Cooker
+86 Mod Sfz
+87 After Hours
+88 Mic'd Mute
+89 WarmBrsPad
+90 VCOs and As
+91 MG Brass
+92 Alto Sax Vel
+93 Honky Tenor
+94 Barely Bari
+95 Sax Sect mp
+96 Saxx-shun
+97 Psycho Sax
+98 HardSlidLead
+99 MonoLeads x2
+100 Tiny Love
+101 Soft Jup' LD
+102 MultiTap OB
+103 Night Blade
+104 Velo OB Str
+105 Meadow
+106 OB 5th Strng
+107 GhettoStrngz
+108 Octa Poly
+109 Pipewind
+110 Big & Gentle
+111 Ethernal
+112 3D MovingPad
+113 VintgStackSt
+114 St.ChldChoir
+115 HybrdChoirVS
+116 Swirly Mist
+117 St M+F Choir
+118 Cool Choir
+119 Mutatovox
+120 Dance Doos
+121 Dance OB
+122 Sliced Bread
+123 On&On&On
+124 Temptation
+125 Old Cartoon
+126 Swingtime
+127 Solar Winds
+128 Western

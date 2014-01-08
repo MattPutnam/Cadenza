@@ -1,0 +1,129 @@
+SRX-04 Symphonique Strings
+1 Epic Strings
+2 sfz! Crsc/sw
+3 Trem/sw Fine
+4 Fast Stac/sw
+5 Str Attack
+6 Full Pizz mp
+7 Violins ^/sw
+8 Violas ^/sw
+9 Celli ^/sw
+10 Basses ^/sw
+11 Fast Section
+12 F.Str ^/sw
+13 SymphStrings
+14 SymphStrngs2
+15 Vibrato /Aft
+16 Expressimo
+17 Spc release
+18 Hall Strings
+19 Warm Section
+20 4Section ^
+21 4Section Vib
+22 Sad Strings2
+23 Pizz&ArcSplt
+24 So Swell
+25 Full Section
+26 Vibrato /sw
+27 Octave ^
+28 Full Sect 2
+29 Attack Sect
+30 Velo Strings
+31 Full Tremolo
+32 Trem Decresc
+33 Tension Trem
+34 F.StrTrm/Mrc
+35 F.Str Trm/sw
+36 Trm /Mod&Aft
+37 F.Str/ModTrm
+38 Spc Marc /sw
+39 WarmStaccSec
+40 StackNirvana
+41 Spc Sect.8va
+42 Spc-Mrc /sw
+43 Mrc-Spc /sw
+44 Full Spc /sw
+45 Marc & Pizz
+46 PizzL+SpiccR
+47 Pizz Sect
+48 Full Pizz pp
+49 Full Pizz ff
+50 4Sect. Pz ff
+51 Double Pizz
+52 sfz! Vln /sw
+53 Violin Sect1
+54 Violin Sect2
+55 Violin Sect3
+56 Warm Vln Sec
+57 GrandVln&Vcs
+58 Vln Sect mp
+59 Slow Atk Vln
+60 Vln/Mod Pizz
+61 Vln Stc/Mrc
+62 Vn Piz/Spcff
+63 Vln Marcato
+64 Vln Pizz /sw
+65 sfz! Va /sw
+66 Viola Sect 1
+67 Viola Sect 2
+68 Va Stc/Mrc
+69 Va /Mod Pizz
+70 Va Marcato
+71 Va Pizz /sw
+72 sfz! Vc /sw
+73 Cello Sect 1
+74 Cello Sect 2
+75 Warm Vc Sect
+76 Vc Pizz /sw
+77 Vc /Mod Pizz
+78 Vc Marcato
+79 Vc Stc/Mrc
+80 Vc Piz/Spcff
+81 sfz! Cb /sw
+82 Cb /Mod Pizz
+83 Bass Sect 1
+84 Cbs Marcato
+85 Cbs Stc/Mrc
+86 Cbs Pizz /sw
+87 Symphonique2
+88 Soundtrk Str
+89 LargeStrings
+90 Slow Atk Str
+91 LushStrings2
+92 Pop Strings
+93 102 Violins
+94 MultiStakato
+95 Spicatto Arp
+96 Dim. Pizz
+97 RhythmicPizz
+98 Harp StrPad
+99 Trem-Guitar
+100 Baroque Ens2
+101 ImitatEP Pad
+102 Daybreak Ens
+103 Grand Unison
+104 Va Sect&Glkn
+105 SRX Symphony
+106 XV Orchestra
+107 Full Orch 1
+108 Orc with Str
+109 Symphnic Orc
+110 Strings&Hrns
+111 Strgs&Hrns 2
+112 Octa StrEns
+113 Antique Str
+114 SweepSectStr
+115 Stereo Tron!
+116 Horror Str.
+117 DanzSurround
+118 Ether Strngs
+119 MoveFX Str
+120 Phase /Aft
+121 PhazeStrngs2
+122 Reverse Str2
+123 Haunted
+124 Rewind Vln
+125 Synthy Sweep
+126 Ripple
+127 Mystery 2
+128 Rising STR

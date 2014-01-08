@@ -1,0 +1,51 @@
+SRX-12 Classic EPs
+1 Pure EP1
+2 Lo-Fi EP1
+3 Pure EP2
+4 Phaser EP1
+5 Soft Wurly
+6 Pure Wurly
+7 Pure Clav DB
+8 Pure Clav CB
+9 PhaseClav CB
+10 Wah Clav CB
+11 Comp Clav CB
+12 PureClavMtCB
+13 St.Trem EP1
+14 St.Trem EP2
+15 Chorus Wurly
+16 Chorus EP1
+17 Chorus EP2
+18 Dp-Cho EP1
+19 Dp-Cho EP2
+20 Soft EP1
+21 Soft EP2
+22 Phase Wurly
+23 Hard EP1
+24 Moving EP1
+25 EP1 w/FM
+26 EP1 w/VOX
+27 EP1 w/STR
+28 EP1 w/PAD
+29 Flanger EP1
+30 Flanger EP2
+31 FlangerWurly
+32 Melodic EP1
+33 Amped EP1
+34 Amped EP2
+35 Lo-Fi EP2
+36 Lo-Fi Wurly
+37 ModDly EP1
+38 ModDly EP2
+39 Dual EP1
+40 Dual Wurly
+41 Enhance Clav
+42 Peaking Clav
+43 Dual Clav DB
+44 Dual Clav DA
+45 Dual Clav CB
+46 Dual Clav CA
+47 DualClavMtDB
+48 DualClavMtCB
+49 PhaseClav DB
+50 PhaseClvMtCB

@@ -1,0 +1,129 @@
+SR-JV80-04 Vintage Synth
+1 Prologue
+2 EasternTempl
+3 Replicants
+4 Converge
+5 JX3P Polaris
+6 Big Pad Swp
+7 Big LFOSweep
+8 Animotion
+9 Mega 5ths
+10 CS-Sixty BPF
+11 Waspy Synth
+12 Polychrome
+13 Euro Sweep
+14 OBig Poly
+15 OB Synthy
+16 80s OBxa
+17 Thick Matrix
+18 Poly X-pandr
+19 Synth-X Poly
+20 Prophetic
+21 Oct MG Saw
+22 Juno 6 Power
+23 Hyperphases
+24 Synth-X Phaz
+25 MIDI Brs Pad
+26 Poly Palette
+27 Spit Brass
+28 Pro-10 Brass
+29 OB Stab Brs
+30 Pro-5 Brass
+31 MKS-7 Brass
+32 Quack Brass
+33 MemoryMG Brs
+34 FM Brass
+35 Ghost Blow
+36 Metal Drone
+37 Rotary Strng
+38 Random Pad
+39 S/H Texture
+40 Warm Shimmer
+41 Nervous Pan
+42 JX-3P Planet
+43 JX Melon Vox
+44 Horror Pad
+45 Shining Wave
+46 The Big Wave
+47 Mantrawave
+48 WavetablePan
+49 2.3 GlassSEQ
+50 VS Organbell
+51 DigitalChoir
+52 Additive
+53 Tower Silvis
+54 2.2 Rezidue
+55 Polysync
+56 Wavesync
+57 Rock Sync
+58 Kalimbasynth
+59 Stacc Heaven
+60 D50 Bellpad 1
+61 D50 Bellpad 2
+62 D50 Bellpad 3
+63 Snow Lake
+64 Time flies
+65 Fanta - Retro
+66 SimpleEP+Pad
+67 Juno-1 Bells
+68 Random Chime
+69 Asia Wave
+70 GoodniteBell
+71 2600 TRIbell
+72 Twinkle
+73 Analog Chime
+74 Space Echo
+75 Ethno Stack
+76 SH-1000 MIDI
+77 ElectraPiano
+78 Rhodes Pad
+79 Sine Piano
+80 VCO Wurly
+81 Clavipad
+82 P10 GuitClav
+83 Gum Clav
+84 JunoBiteClav
+85 Phazyn Clav
+86 JP-8 Clav
+87 Alpha Clav
+88 Hyper Clav
+89 Perky Pad
+90 Perkolator
+91 MondoDiGiTaL
+92 Poly Flange
+93 and thenMIDI
+94 JP4Sharp Pad
+95 Splatty
+96 MKS80 Sprang
+97 JP8 Stringsl
+98 JP8 Strings2
+99 JP+OB Strngs
+100 Wavestrings
+101 PWM Strings
+102 MemoryMG STR
+103 OB Thick Pad
+104 OB Soft Pad
+105 OctavaStrngs
+106 CS Saw Pad
+107 CS Strings
+108 Solina
+109 Rhapsody STR
+110 Big Strings
+111 Juno 106 Pad
+112 Majesty Pad 
+113 Peaceful Pad
+114 Flange strng
+115 JP SquarePad
+116 HollowBreath
+117 Hollow JX
+118 DarkEnsemble
+119 LonesomeHill
+120 VP-330 Choir
+121 VP-330 Tutti
+122 VP-330 Sweep
+123 RS-202 Brass
+124 Orchestrator
+125 OBJX Vox Pad
+126 Voices JX-8P
+127 D50 Heavenly
+128 Mini Lead 1

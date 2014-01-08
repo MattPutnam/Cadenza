@@ -1,0 +1,476 @@
+SRX-07 Ultimate Keys
+1 Stereo Piano
+2 Gran'Piano
+3 Easy Rocker
+4 Stage Grand
+5 SA Rocker
+6 Padded Pno
+7 Suitcase EP
+8 Real Thing
+9 Fusiontastic
+10 Inspiration
+11 TouchRhdsSRX
+12 Stage SRX
+13 Stage Rhodes
+14 BalladPanner
+15 80's Rhodes
+16 SweetStagePN
+17 PaddedRhodes
+18 Nursery Tine
+19 Sine Rhodes
+20 70s Ballad
+21 Church Mouse
+22 ClaviQRhodes
+23 FlaredTrouzr
+24 Rhodes Bs
+25 Swurly
+26 Dyno-Wurli
+27 60s Bros
+28 Pianohner
+29 Pianette 2K
+30 Cheapy Ep1
+31 Rox St
+32 80's FM
+33 Rhodes EP
+34 Heavens Tine
+35 Sparkle EPno
+36 FirstDigital
+37 Vox Harpsi
+38 Harpsiclav
+39 E.Harpsi
+40 Clav 1 SRX
+41 Clav 2 SRX
+42 VeloClav SRX
+43 Clav 3 SRX
+44 Generic Clav
+45 Clav Pluck
+46 Vintage Clav
+47 Dyno Clav
+48 PhaserClavi
+49 CompClav SRX
+50 MuteClv1 SRX
+51 MuteClv2 SRX
+52 Clav Supremo
+53 Clav By III
+54 Funk Synclav
+55 Quacky Clav
+56 GuitClav SRX
+57 Juno Clavi
+58 PhazynClvSRX
+59 Moogy Pulse
+60 JP8 Clav SRX
+61 HyperClv SRX
+62 Twinkle Bell
+63 Troika Ride
+64 Analog Bell
+65 Goodnite SRX
+66 2.2 SEQ SRX
+67 Vibraphone!
+68 SA Vibe SRX
+69 Blue B SRX
+70 FullPerc SRX
+71 NiceFeel SRX
+72 GreenB /Pdl
+73 Mello
+74 LA Blues SRX
+75 2BorNot2B3 2
+76 Gospel B SRX
+77 Bookin'B SRX
+78 Hush B3 SRX
+79 Real Organ
+80 Tenamos L100
+81 Harm.Organ
+82 Harm.Organ2
+83 Power B SRX
+84 AllStarB3SRX
+85 GoodLord/Mod
+86 CabnetSeries
+87 Absolute B3
+88 Rox-B/Mod
+89 Suitcase B3
+90 BalladB /Mod
+91 70'sKeysMix
+92 Leslied B3
+93 Dyna Hammnd
+94 SaltyDog SRX
+95 Swt&Mllw SRX
+96 Mellow 4'SRX
+97 ZomBee SRX
+98 Perky Twin B
+99 BluesPercSRX
+100 Club Organ
+101 888 +3rd SRX
+102 8888+3rd SRX
+103 Velo Perc
+104 Jazzy B
+105 Gutsy C3
+106 B3 888000004
+107 60s Brothers
+108 FirePerc SRX
+109 PercNorm3rd
+110 PercSoft3rd
+111 858808880SRX
+112 Mad Organ
+113 Touchy B Fst
+114 Souvenirs
+115 R&R B3 SRX
+116 B3Sermon SRX
+117 AllSkate!SRX
+118 BalladB3 SRX
+119 Ultimate B 4
+120 Purple SRX
+121 GimmeSomeSRX
+122 Smoked Water
+123 HardPerc3rd
+124 FuzzheadSRX
+125 Tron B
+126 ShimmerOrgan
+127 AnimalModSRX
+128 SurfMnkysSRX
+129 TelstarOrgan
+130 Continental
+131 Organfest'66
+132 PalisadesSRX
+133 New Riders
+134 The Sham SRX
+135 CrummyOrgSRX
+136 IronFarf SRX
+137 FarfComboSRX
+138 Farfisorium
+139 Farf 8' + 2'
+140 RoxOrgan SRX
+141 DittyDoo SRX
+142 Tranny Organ
+143 2.2 Organ
+144 VS Organ SRX
+145 D OrganSRX
+146 OrganbellSRX
+147 PhazedOrgSRX
+148 Das Limpet
+149 Spanish Gtr
+150 Nylon SoSoft
+151 Nylon on Pad
+152 Moody Nylon
+153 Conquest
+154 Heaven Nylon
+155 In Peace
+156 NashvilleSRX
+157 Caster Delay
+158 RickenstGT
+159 Narnia
+160 Gtr PopArps
+161 Touchy Mutes
+162 Disto-Chunky
+163 Rock Mute
+164 Telemaster
+165 Plugged!
+166 MutedDsBlief
+167 MM Bass /
+168 MMFatSlapSRX
+169 HyperFunkSRX
+170 MillerPopSRX
+171 Funk Bass
+172 Abe 4way SRX
+173 AL3way/NzSRX
+174 ALDarkSlpSRX
+175 John 4waySRX
+176 JPBritSlpSRX
+177 John w/NzSRX
+178 6strngBASS
+179 Big Bad AL
+180 Comp 6tr Bas
+181 AbeLimitrSRX
+182 JP P.Bs 1SRX
+183 JP P.Bs 2SRX
+184 Abe'sP.BsSRX
+185 AL Solid SRX
+186 AL2wayFngSRX
+187 AL SoftBs/Nz
+188 MarcusJB SRX
+189 MM JB SRX
+190 Pick UP SRX
+191 JP Rock SRX
+192 PickedJzBass
+193 BritePickSRX
+194 PhsrMute SRX
+195 DarkPick SRX
+196 Country Mute
+197 FretlessBASS
+198 SoloFls SRX
+199 JP6StrFlsSRX
+200 MM OctFlsSRX
+201 MMSmthFlsSRX
+202 ALFlsSoloSRX
+203 JPSoloFlsSRX
+204 Contrabbasso
+205 InYerFaceBas
+206 BriteUpright
+207 Uplectric
+208 JPSoftAB SRX
+209 JPHardAB SRX
+210 Dry AcB SRX
+211 WildThangSRX
+212 Dist Bs SRX
+213 StickyBs SRX
+214 FunkinWahSRX
+215 Harm A#9 SRX
+216 Harm E69 SRX
+217 SlidesNz SRX
+218 AllSlidesSRX
+219 AllNoisesSRX
+220 Ac.Bs Nz SRX
+221 WildSynth101
+222 SH Dullbass
+223 101 Bass
+224 SH101 Bass
+225 SH-2 Bs SRX
+226 Bassic101SRX
+227 Fat Butt
+228 JP-4 Bs SRX
+229 Systm700 SRX
+230 BigSubBs SRX
+231 TickerBs SRX
+232 202 Bass
+233 101ZapBs SRX
+234 Housy Bass
+235 HousineBsSRX
+236 WooferBs SRX
+237 System100SRX
+238 Low Bass SRX
+239 TB3O3 Reso
+240 MeanderingBs
+241 Acid TB Bs
+242 MonsterMGSRX
+243 Rogue Bs SRX
+244 Classic Bs
+245 Fat Bass
+246 ResoMG BsSRX
+247 MG Punchbass
+248 Spike Bs SRX
+249 WetMG Bs SRX
+250 2-way Bass
+251 Oct stinger
+252 BsPedals SRX
+253 MG PedalsSRX
+254 OB Bass SRX
+255 8VCO Mono
+256 Thick OBass
+257 The Synbass
+258 Dark~~~~BASS
+259 Valve5thBass
+260 Rezidence
+261 OrganSawBass
+262 Organ Bass
+263 SquareBs SRX
+264 SlobbryBsSRX
+265 Super Bs SRX
+266 STronSTringz
+267 TrnStrDrySRX
+268 Tron Vls SRX
+269 MelloVlnsSRX
+270 JP8 Str1 SRX
+271 JP8 Str2 SRX
+272 JP+OB StrSRX
+273 M12 Strings
+274 Wavestr SRX
+275 MemoryMG SRX
+276 Solina SRX
+277 Omni Strings
+278 Big Str SRX
+279 Solo Flute
+280 TouchFlt SRX
+281 StrawberTRON
+282 Flute School
+283 Calli SRX
+284 TpSoloistSRX
+285 Pop Fanfare
+286 Oct Brass
+287 SessnBrs SRX
+288 R&R Bras SRX
+289 SuperTnr SRX
+290 T.Sax f SRX
+291 Cool Sax
+292 Duelin' Saxs
+293 SoftSaxesSRX
+294 AmazngEchSRX
+295 FlaxOstinato
+296 2voiceLd SRX
+297 Hollo Lead
+298 Sinusolo SRX
+299 Shmoog SRX
+300 Sine
+301 SH2000VoxSRX
+302 FM Lead SRX
+303 TrickTailEnd
+304 4 Old Saws
+305 Saw Bowed
+306 VoxSaws Lead
+307 GR500 Ld SRX
+308 LimonaireSRX
+309 NakdCheseSRX
+310 PromarsLdSRX
+311 Sweeze Lead
+312 Homey Lead
+313 MG Lead SRX
+314 Dreams Saw
+315 The Real Pat
+316 H 2 O
+317 PulseLd SRX
+318 Mono FM Lead
+319 VCO OctLdSRX
+320 Saws Lead
+321 Changes
+322 P5 Lead
+323 SH-2&5 Sqr
+324 Cutting Solo
+325 Racy Lead
+326 Speedometer
+327 Rotary Lead
+328 BuzzzzzzzSRX
+329 Telstar Lead
+330 Pattern It
+331 Carbonite
+332 The Pipe 5th
+333 Buzzy Beez
+334 Look Back
+335 Razzert
+336 Raveferenz
+337 SupremeCheez
+338 Exit
+339 MousBoxesCat
+340 Riff the 5th
+341 Ice Man
+342 DncStack1SRX
+343 DncStack2SRX
+344 DncStack3SRX
+345 DncStack4SRX
+346 DncStack5SRX
+347 Euro BrsSRX
+348 ThipsBlipSRX
+349 FaveoravoSRX
+350 Cleanse
+351 Mer
+352 B-lieve
+353 Blue Light
+354 Progress
+355 Modularswirl
+356 Sparkly
+357 Undertones
+358 HappyLFOsSRX
+359 AeroInsctSRX
+360 MC8 Seq SRX
+361 Legato Rip
+362 Steam Valve
+363 Scanner7
+364 Haunted Tron
+365 Experimental
+366 Megatron
+367 Outer Spaces
+368 Martian Bell
+369 Ethereal SRX
+370 Meow 5thsSRX
+371 MantrawavSRX
+372 RSS SpinnerS
+373 Comp Net SRX
+374 SpitBrs SRX
+375 Pro-BrsSRX
+376 OBStabBrsSRX
+377 Pro-5 BrsSRX
+378 Quack BrsSRX
+379 M.MG Brs SRX
+380 FM Brs SRX
+381 DBelpd1SRX
+382 DBelpd2SRX
+383 DBelpd3SRX
+384 KlmbSynthSRX
+385 B Higher
+386 Reflections
+387 VintagLayers
+388 HandleW/Care
+389 StaccHvn SRX
+390 TimefliesSRX
+391 JP6SqKeySRX
+392 CS Squared
+393 MawnlowerMan
+394 Glidiator
+395 Spit Synthie
+396 Raver One
+397 Slop-a-ramaS
+398 Big PWM SRX
+399 WavesyncSRX
+400 T8 Sync SRX
+401 SyncRush SRX
+402 DreaminOfJMJ
+403 Arp Saws SRX
+404 QuixelateSRX
+405 SpikedChzSRX
+406 Planet-S SRX
+407 Iceburg
+408 Old,Warm OBX
+409 Poly 3osc SH
+410 PortaSyn SRX
+411 RazrVCOs SRX
+412 Medusa SRX
+413 PhazeNRG SRX
+414 Build-Up SRX
+415 WavetableSRX
+416 DigiChoirSRX
+417 Rezidue SRX
+418 Combing SRX
+419 PhzslopadSRX
+420 OBThickPdSRX
+421 OBSftPad SRX
+422 RealStrSynth
+423 Rezonant Ens
+424 PG Phaser
+425 SynthOdyssey
+426 Liquid Lunch
+427 JP SquPadSRX
+428 Chewy Pad
+429 Hollow SRX
+430 Too Heaven
+431 Slow 3D Vox
+432 JP Spirit
+433 Classic OB
+434 Aulophony
+435 Dark Shadow
+436 Drawning Pad
+437 Sawed String
+438 R.I.P.
+439 K World
+440 CanyonDreams
+441 Mysterioso
+442 S/HTexturSRX
+443 VP-330ChrSRX
+444 Mellorkestra
+445 Tron Mass
+446 PreSampleVox
+447 Gamma Girls
+448 Lo-Tek Choir
+449 Tron Vox SRX
+450 Vox JX8P SRX
+451 VP303 Arpeg
+452 DrumLP DemoS
+453 Pursuit 90
+454 Arcade 132
+455 SeventhHeavn
+456 TrollDrummin
+457 Chem Burn120
+458 Rockshow 126
+459 T-Pop 132
+460 Valentine 76
+461 Nocturne
+462 Cool At 102
+463 Circuit 112
+464 Hurt 90
+465 Orleans 90
+466 FunkyDrummer
+467 Circuit 90
+468 SweepingLP S
+469 Kick Menu
+470 Snare Menu 1
+471 Snare Menu 2
+472 Snare Menu 3
+473 Hi-Hat Menu
+474 Tom-Tom Menu
+475 Cymbals Menu

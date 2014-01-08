@@ -1,0 +1,256 @@
+001 0 Acoustic Grand Piano
+001 1 Wide Acoustic Grand
+001 2 Dark Acoustic Grand
+002 0 Bright Acoustic Piano
+002 1 Wide Bright Acoustic
+003 0 Electric Grand Piano
+003 1 Wide Electric Grand
+004 0 Honky-tonk Piano
+004 1 Wide Honky-tonk
+005 0 Rhodes Piano
+005 1 Detuned Electric Piano 1
+005 2 Electric Piano 1 Variation
+005 3 60's Electric Piano
+006 0 Chorused Electric Piano
+006 1 Detuned Electric Piano 2
+006 2 Electric Piano 2 Variation
+006 3 Electric Piano Legend
+006 4 Electric Piano Phase
+007 0 Harpsichord
+007 1 Coupled Harpsichord
+007 2 Wide Harpsichord
+007 3 Open Harpsichord
+008 0 Clavinet
+008 1 Pulse Clavinet
+009 0 Celesta
+010 0 Glockenspiel
+011 0 Music Box
+012 0 Vibraphone
+012 1 Wet Vibraphone
+013 0 Marimba
+013 1 Wide Marimba
+014 0 Xylophone
+015 0 Tubular Bell
+015 1 Church Bell
+015 2 Carillon
+016 0 Santur
+017 0 Hammond Organ
+017 1 Detuned Organ 1
+017 2 60's Organ 1
+017 3 Organ 4
+018 0 Percussive Organ
+018 1 Detuned Organ 2
+018 2 Organ 5
+019 0 Rock Organ
+020 0 Church Organ 1
+020 1 Church Organ 2
+020 2 Church Organ 3
+021 0 Reed Organ
+021 1 Puff Organ
+022 0 French Accordion
+022 1 Italian Accordion
+023 0 Harmonica
+024 0 Bandoneon
+025 0 Nylon-String Guitar
+025 1 Ukulele
+025 2 Open Nylon Guitar
+026 3 Nylon Guitar 2
+026 0 Steel-String Guitar
+026 1 12-String Guitar
+026 2 Mandolin
+026 3 Steel+Body
+027 0 Jazz Guitar
+027 1 Hawaiian Guitar
+028 0 Clean Electric Guitar
+028 1 Chorus Guitar
+028 2 Mid Tone Guitar
+029 0 Muted Electric Guitar
+029 1 Funk Guitar
+029 2 Funk Guitar 2
+029 3 Jazz Man
+030 0 Overdriven Guitar
+030 1 Guitar Pinch
+031 0 Distortion Guitar
+031 1 Feedback Guitar
+031 2 Distortion Rtm Guitar
+032 0 Guitar Harmonics
+032 1 Guitar Feedback
+033 0 Acoustic Bass
+034 0 Fingered Bass
+034 1 Finger Slap
+035 0 Picked Bass
+036 0 Fretless Bass
+037 0 Slap Bass 1
+038 0 Slap Bass 2
+039 0 Synth Bass 1
+039 1 Synth Bass 101
+039 2 Synth Bass 3
+039 3 Clavi Bass
+039 4 Hammer
+040 0 Synth Bass 2
+040 1 Synth Bass 4
+040 2 Rubber Bass
+040 3 Attack Pulse
+041 0 Violin
+041 1 Slow Violin
+042 0 Viola
+043 0 Cello
+044 0 Contrabass
+045 0 Tremolo Strings
+046 0 Pizzicato Strings
+047 0 Harp
+047 1 Yang Qin
+048 0 Timpani
+049 0 String Ensemble
+049 1 Orchestra Strings
+049 2 60's Strings
+050 0 Slow String Ensemble
+051 0 Synth Strings 1
+051 1 Synth Strings 3
+052 0 Synth Strings 2
+053 0 Choir Aahs
+053 1 Choir Aahs 2
+054 0 Voice Oohs
+054 1 Humming
+055 0 Synth Voice
+055 1 Analog Voice
+056 0 Orchestra Hit
+056 1 Bass Hit
+056 2 6th Hit
+056 3 Euro Hit
+057 0 Trumpet
+057 1 Dark Trumpet
+058 0 Trombone
+058 1 Trombone 2
+058 2 Bright Trombone
+059 0 Tuba
+060 0 Muted Trumpet
+060 1 Muted Trumpet 2
+061 0 French Horns
+061 1 French Horns 2
+062 0 Brass Section 1
+062 1 Brass Section 2
+063 0 Synth Brass 1
+063 1 Synth Brass 3
+063 2 Analog Brass 1
+063 3 Jump Brass
+064 0 Synth Brass 2
+064 1 Synth Brass 4
+064 2 Analog Brass 2
+065 0 Soprano Sax
+066 0 Alto Sax
+067 0 Tenor Sax
+068 0 Baritone Sax
+069 0 Oboe
+070 0 English Horn
+071 0 Bassoon
+072 0 Clarinet
+073 0 Piccolo
+074 0 Flute
+075 0 Recorder
+076 0 Pan Flute
+077 0 Bottle Blow
+078 0 Shakuhachi
+079 0 Whistle
+080 0 Ocarina
+081 0 Square Lead
+081 1 Square Wave
+081 2 Sine Wave
+082 0 Saw Lead
+082 1 Saw Wave
+082 2 Doctor Solo
+082 3 Natural Lead
+082 4 Sequenced Saw
+083 0 Synth Calliope
+084 0 Chiffer Lead
+085 0 Charang
+085 1 Wire Lead
+086 0 Solo Synth Vox
+087 0 5th Saw Wave
+088 0 Bass & Lead
+088 1 Delayed Lead
+089 0 Fantasia Pad
+090 0 Warm Pad
+090 1 Sine Pad
+091 0 Polysynth Pad
+092 0 Space Voice Pad
+092 1 Itopia
+093 0 Bowed Glass Pad
+094 0 Metal Pad
+095 0 Halo Pad
+096 0 Sweep Pad
+097 0 Ice Rain
+098 0 Soundtrack
+099 0 Crystal
+099 1 Synth Mallet
+100 0 Atmosphere
+101 0 Brightness
+102 0 Goblin
+103 0 Echo Drops
+103 1 Echo Bell
+103 2 Echo Pan
+104 0 Star Theme
+105 0 Sitar
+105 1 Sitar 2
+106 0 Banjo
+107 0 Shamisen
+108 0 Koto
+108 1 Taisho Koto
+109 0 Kalimba
+110 0 Bagpipe
+111 0 Fiddle
+112 0 Shanai
+113 0 Tinkle Bell
+114 0 Agogo
+115 0 Steel Drums
+116 0 Woodblock
+116 1 Castanets
+117 0 Taiko
+117 1 Concert Bass Drum
+118 0 Melodic Tom 1
+118 1 Melodic Tom 2
+119 0 Synth Drum
+119 1 808 Tom
+119 2 Electric Percussion
+120 0 Reverse Cymbal
+121 0 Guitar Fret Noise
+121 1 Guitar Cut Noise
+121 2 String Slap
+122 0 Breath Noise
+122 1 Flute Key Click
+123 0 Seashore
+123 1 Rain
+123 2 Thunder
+123 3 Wind
+123 4 Stream
+123 5 Bubble
+124 0 Bird
+124 1 Dog
+124 2 Horse-Gallop
+124 3 Bird 2
+125 0 Telephone 1
+125 1 Telephone 2
+125 2 Door Creaking
+125 3 Door Closing
+125 4 Scratch
+125 5 Wind Chimes
+126 0 Helicopter
+126 1 Car-Engine
+126 2 Car-Stop
+126 3 Car-Pass
+126 4 Car-Crash
+126 5 Siren
+126 6 Train
+126 7 Jetplane
+126 8 Starship
+126 9 Burst Noise
+127 0 Applause
+127 1 Laughing
+127 2 Screaming
+127 3 Punch
+127 4 Heart Beat
+127 5 Footstep
+128 0 Gun Shot
+128 1 Machine Gun
+128 2 Lasergun
+128 3 Explosion

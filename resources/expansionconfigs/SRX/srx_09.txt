@@ -1,0 +1,415 @@
+SRX-09 World Collection
+1 World Sounds
+2 Go2China /C2
+3 Go2India /C2
+4 The Great W
+5 Yuehchin+
+6 Sweet Nylon
+7 Tele R&F
+8 Tubby Baby
+9 HeavenGender
+10 Gamelan Ems
+11 Childwood
+12 La Musette
+13 Essence
+14 Zampona /
+15 GipsyTrumpt/
+16 We Dream }{
+17 Fun WithPerc
+18 GuZheng arp
+19 Feets
+20 World Radio
+21 ClanAdvances
+22 Eastern Tour
+23 Enough!STOP!
+24 Banjo Phrs
+25 Guitar Phrs1
+26 Guitar Phrs2
+27 PdlStl Phrs
+28 Asia UFO
+29 UBeenSoBaa
+30 Didgeri /
+31 WorldGroove
+32 LoopPhrase 1
+33 LoopPhrase 2
+34 TABLA groove
+35 JasonGoEast
+36 Flu&AcompSRX
+37 Split Floot
+38 Hot Salsa
+39 TempBassSolo
+40 CherryFlower
+41 SplitThisSRX
+42 Crane Dance
+43 LostInMists
+44 Qu DiEnsembl
+45 NasalBlossom
+46 Meditation 1
+47 Art Of Feng
+48 Orient xPres
+49 Padded Sitar
+50 No Worries
+51 IntarMel SRX
+52 Ode 2 An Oud
+53 Fugi-man
+54 China pluck
+55 Yuehchin SRX
+56 Kayakeum
+57 Asian Pizz
+58 PiPa SRX
+59 Koto SRX
+60 Shamisen SRX
+61 Sanshin SRX
+62 Yang Qin trm
+63 Yang Qin/Mod
+64 SultanPalace
+65 Marco Polo
+66 Bandolim SRX
+67 K.Bandolim
+68 Afro Harp
+69 Ethnhit!
+70 OctaHarp+
+71 St.GuZhngSRX
+72 Zheng Zither
+73 Distance
+74 Mandolin/Mod
+75 Mandolin
+76 Mando Club
+77 MdlnTrmStSRX
+78 Drone Sitar
+79 Conch&Sitar
+80 Punjab Rocks
+81 Pas2IndiaSRX
+82 Rain Drone
+83 SitarGlisSRX
+84 Tambura SRX
+85 TambDroneSRX
+86 St.SanturSRX
+87 SanturTrmSRX
+88 Santur /Mod
+89 Canton
+90 HamrDulcimer
+91 3D Dulcimer
+92 Zither
+93 Magic Pluck
+94 Biwa SRX
+95 Biwa Menu
+96 BerimbauMenu
+97 Berimbau
+98 JawHarp Menu
+99 Steel Rhythm
+100 SoloSteelGtr
+101 N'Ville Soft
+102 Spruce Top
+103 Procssd AGtr
+104 High Strung
+105 Compresd D18
+106 String
+107 Mixed 12Str1
+108 Mixed 12Str2
+109 Ac Gtr 12stg
+110 No Borders
+111 Loose 12Str
+112 Living R.Gtr
+113 Dobro Modro
+114 ResonatorGtr
+115 Ac.Gtrs SRX
+116 2 Players
+117 Solo RequGtr
+118 Loose Nylon
+119 AcousticBros
+120 So Sad Nylon
+121 Chinese Duo
+122 ChugRunTrSRX
+123 Chung Ruan
+124 ChungRuanSRX
+125 Bottom Ruan
+126 RuangGtr SRX
+127 Oud SRX
+128 BlugrsSldSRX
+129 Guitaro SRX
+130 Natural Tele
+131 Psyche Tele
+132 Coral
+133 Chorus Twang
+134 Pick Licker
+135 CleanStrtSRX
+136 Velo SRX
+137 Right Funky
+138 Comp Muted
+139 E.GtrMt SRX
+140 335VelMt SRX
+141 Wide Guitar
+142 Dob-Compress
+143 Nice Twelvey
+144 RotaryCrunch
+145 FastRotrySRX
+146 EGDynaPikSRX
+147 BackingEGSRX
+148 Room Slide
+149 Pedal Steel
+150 Phased P.Stl
+151 PureSteelSRX
+152 MutedAmbient
+153 GtrFX Menu
+154 LP Gtr SRX
+155 Tele-Funfken
+156 &Cabinet
+157 Tele Licker
+158 Short & Long
+159 NewBeginning
+160 Bouzouki
+161 Bousoukhit!
+162 3ChdStrumSRX
+163 Strum Poetic
+164 Strum Away
+165 Banjo-Mando
+166 5StringBanjo
+167 Banjo SRX 1
+168 Banjo SRX 2
+169 Banjo SRX 3
+170 Fiddle
+171 Fiddle 2002
+172 FiddleSwitch
+173 Fiddle Sect.
+174 FiddleStacto
+175 AsianOrcPizz
+176 AJapaneseInn
+177 Deep Blue
+178 Ethnic Ens
+179 ChinesOrcSRX
+180 ErHu / SRX
+181 ErHuSolo SRX
+182 ErHu Ld SRX
+183 FiddleFXmenu
+184 ViolnSoloSRX
+185 Comp BabyBss
+186 Baby Bass
+187 Comp Fingerd
+188 Jazz Fing.BS
+189 Live Bass
+190 Flango Bass
+191 Bass Oddesy
+192 6Str Bs SRX1
+193 Muted Bass
+194 6Str/Mt SRX
+195 PickBsHd SRX
+196 PickedBs SRX
+197 Tub Bass
+198 GuitarnBsSRX
+199 GtrrnOct SRX
+200 PacificDream
+201 Meditation 2
+202 HybridKemong
+203 Purify
+204 Asia Bells
+205 Rama Cym SRX
+206 Bell Orchest
+207 Sacred Bells
+208 Spokes
+209 Winter Bells
+210 Wind Bells
+211 BelAngk SRX
+212 Tcheekolyna
+213 Wood EPiano
+214 Kalimba
+215 Kalimbatch
+216 VelAfro SRX1
+217 BsKalimbaSRX
+218 LogDetunrSRX
+219 Baateri SRX
+220 Balafon SRX
+221 Asian Wood
+222 Mellow tone
+223 Glas Mlt SRX
+224 SteelDr SRX1
+225 SteelDr SRX2
+226 Gendrous SRX
+227 BonangGamSRX
+228 VelAfro SRX2
+229 TemleMetlSRX
+230 Kemong / SRX
+231 Kane / SRX
+232 JeGong / SRX
+233 Jegogn / SRX
+234 Jublag / SRX
+235 Reyong / SRX
+236 Pemade / SRX
+237 Cajun
+238 D.Accordion
+239 SquezeBoxSRX
+240 Squeeze Box
+241 St.AcdOp SRX
+242 AcdionOp SRX
+243 Acd ffOp SRX
+244 St.AcdCl SRX
+245 Bluesy
+246 HarmonicaSRX
+247 CuntryHrpSRX
+248 Sessn HrpSRX
+249 Esraj&Mizmar
+250 Before Time
+251 Gagaku Ems
+252 Mizmar solo
+253 PiriSolo SRX
+254 Shahnai SRX
+255 HichirikSRX
+256 Bagpipes SRX
+257 Sheng / SRX
+258 Suona / SRX
+259 VillageDance
+260 Indian Ens
+261 Nature Loves
+262 PanPipes SRX
+263 Sad Pipe
+264 Shell blow
+265 Desert Flute
+266 Zampona
+267 Isolation
+268 Ocarina
+269 New IndFlute
+270 Qu Di Vi
+271 Bang Di Vib
+272 New Kawala
+273 BreathyIndia
+274 New Shaku
+275 Shakuhachi
+276 DreamInColor
+277 TwinHillyLd
+278 Snake Eyes
+279 Latin Trumpt
+280 MariachiTpts
+281 Trumpets
+282 GrowlWah/Mod
+283 Muted-Grw /
+284 SoloTuba SRX
+285 LatinTubaSRX
+286 World Orch
+287 Stab&Hold
+288 Indian Radio
+289 Wide Brass
+290 Trombones
+291 Brass Snapz
+292 Brass sfzzZZ
+293 2Tp+Tbn SRX
+294 MemphisHORNS
+295 SectStactSRX
+296 LatinBrasses
+297 Hit & Fall
+298 BrsChdSRX
+299 BrsChdMi9SRX
+300 BrsChdMj9SRX
+301 Blow Pad
+302 Ceremony
+303 Glasses
+304 Ambiccordian
+305 DroneFlanger
+306 Rock Gods
+307 ScotlandLass
+308 Dry Fishes
+309 SteroidBrass
+310 Soul revived
+311 Rain Pad
+312 Rising Sun
+313 Ethnopad
+314 Ethno Strngs
+315 & Thieves
+316 TromboSynthy
+317 GrandExaltd1
+318 Sun Dog
+319 TechnoSpirit
+320 Play Softly
+321 WorkerBeetle
+322 Glass Cut
+323 GuruTronics
+324 DubJazz Trip
+325 Meditation 2
+326 Political
+327 G`day Mate
+328 Mission
+329 Jegorgan
+330 Dyno Conga 1
+331 Dyno Conga 2
+332 Congas+Bongo
+333 DynTimbale 1
+334 DynTimbale 2
+335 TimbaleCuica
+336 Dyno Surdo
+337 Rhythm Sect
+338 Rainstick
+339 Clap & Snap
+340 CowbellRandm
+341 Karachi-Man
+342 That Was Zen
+343 StreetParade
+344 BUK
+345 Gongs
+346 Chenchen /
+347 WisdomWithin
+348 Tabla+
+349 DrumsScene
+350 Doholla Fun
+351 AfricanRhtms
+352 Big Logs SRX
+353 WarDrums SRX
+354 Samba Menu
+355 Shaker Menu
+356 Caixa Menu
+357 Cowbell Menu
+358 JapanPrcMenu
+359 Kabuki Menu
+360 KwangwariSRX
+361 Tuzumi / SRX
+362 KoreaPrcMenu
+363 ChinaPrcMenu
+364 China Menu
+365 ChinaGongSRX
+366 Sanba / SRX
+367 St.ShouBoSRX
+368 AsiaCym Menu
+369 Gong Menu
+370 Gamelan Menu
+371 GamlnPrcMenu
+372 BigBazar SRX
+373 Udu Pot Menu
+374 TablaBy Menu
+375 Rek Menu
+376 Dholak Menu1
+377 Dholak Menu2
+378 Dhol Menu
+379 Egypt Tablah
+380 Madal Menu
+381 AfropercMenu
+382 CommSatelite
+383 Amazone
+384 Tasman Sea
+385 Ethnic FX 1
+386 Ethnic FX 2
+387 SpacetualBoy
+388 Crystal
+389 SpaceLuvSick
+390 HitAscension
+391 Nervous Man
+392 Silk Stream
+393 DerangedMind
+394 PolyDrone
+395 TequillaWorm
+396 GlistenToYou
+397 Dream Harp
+398 Waterfall
+399 Gender 3D
+400 Doom Drum
+401 Stalker
+402 PlasticBones
+403 PakistanVibe
+404 ThusSpokeZtr
+405 Kalissando
+406 Rain Forest
+407 AfropunchSRX
+408 Dance Tape
+409 Zaghruta SRX
+410 1,2,3,4! SRX
+411 Voices SRX
+412 Voice Menu 1
+413 Voice Menu 2
+414 Voice Menu 3

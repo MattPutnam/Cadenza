@@ -1,0 +1,451 @@
+SRX-06 Complete Orchestra
+1 WarmVlns SRX
+2 Legato Vlns
+3 NaturalVlnsS
+4 Agitato Vlns
+5 Vlns-Spc /
+6 Vl&Va Spicct
+7 Arco Vas SRX
+8 Agitato Vas
+9 Vlas-Spc /
+10 Marc Vas SRX
+11 Vc Sec mf
+12 Fast Cellos
+13 Vcs Legato
+14 3 Cellos
+15 Cellos
+16 CelloSectMrc
+17 Marcato Vcs
+18 Agitato Vcs
+19 Vcs+Cbs SRX
+20 Arco Vcs+Cbs
+21 Thick Basses
+22 Cb Sect SRX
+23 WideBasses S
+24 Agitato Cbs
+25 BIG StrgEns
+26 Big Strings2
+27 Orch p
+28 Orch p>f/Mod
+29 StrsArco SRX
+30 StrSwel/ModS
+31 StStrOrcp/fS
+32 SlowResinStr
+33 Adagio Strs
+34 LegatoStrngs
+35 Intim StrSec
+36 DramaStrsSRX
+37 St Str p/f
+38 SlowEpic Str
+39 Real Strings
+40 4Seasons SRX
+41 VlVaVcCb SRX
+42 StudioString
+43 Quartet SRX
+44 VibSwStrings
+45 Str Swell
+46 OuvertureSRX
+47 Cluster Sect
+48 Velo Str SRX
+49 Agitato to 0
+50 DynaMarc SRX
+51 VivaceStrSRX
+52 Agitato STR
+53 STR SpiccSRX
+54 StacctoSectn
+55 Spicc/releas
+56 STR Marcato
+57 Big Marcato!
+58 Spicc Sect
+59 Spc+Pz/rleas
+60 Piz-Spc /
+61 RoomPizz SRX
+62 Stage Pizz
+63 Nite Pizzico
+64 VIOLIN solo
+65 Solo Vln /
+66 Solo Violin
+67 Sad S.VlnSRX
+68 Solo Viola
+69 AgitatoVaSRX
+70 Solo Cello 1
+71 Solo Cello 2
+72 The V Cello
+73 Solo Vc /
+74 Marcato Vc
+75 Vln&Vcl
+76 Solo Cb /
+77 Tape Orc SRX
+78 Tape Str SRX
+79 Old Tale
+80 Mellow Tape
+81 Cystaline Pd
+82 SynStrings
+83 Full Orc SRX
+84 St.OrcUniSRX
+85 OrchUnif SRX
+86 GRAND OrcSRX
+87 WavinGoodbye
+88 DynOrchestr1
+89 Pathetique
+90 Oboes & Sect
+91 SlowEpicOrch
+92 Grand Tutti
+93 Ultimate Orc
+94 SuspenceOrch
+95 Tremolo /
+96 TremOrc /Mod
+97 ORC full+BD
+98 Finally Orch
+99 Orch & Choir
+100 NowWeAreFree
+101 Too Tense
+102 OrchestrlSRX
+103 DynOrchestr2
+104 GiantOrchest
+105 Strngs&Horns
+106 Full Orch 1
+107 Full Orch 2
+108 Full Orch 3
+109 End Titles
+110 HornStrs SRX
+111 SRX Full Orc
+112 Harp & Flute
+113 Celesta&Flt
+114 ProkofievSRX
+115 MassInCeeSRX
+116 PentatnicSRX
+117 DawnSynphony
+118 Bad Ending
+119 Epic Ending
+120 Catwalk
+121 OrchStaccato
+122 Staccato SRX
+123 OrchHitStack
+124 Dynam Hit
+125 MondoHit SRX
+126 OrchHit SRX
+127 OrcHitMajSRX
+128 OrcHitMinSRX
+129 OrcHitDimSRX
+130 Big Hit Maj1
+131 Big Hit Maj2
+132 Big Hit Min
+133 Big Hit Dim
+134 Sfz! Hit-Maj
+135 Sfz! Hit-Min
+136 Suspense
+137 Hit/Off-Maj
+138 Trem Hit-Maj
+139 Trem Hit-Min
+140 Trem Hit-Dim
+141 Orc/Prc 5-1^
+142 Drama Stab
+143 Maj Concern
+144 OrcGlsMajSRX
+145 OrcGlsMinSRX
+146 Harp Up Hit
+147 Harp Dn Hit
+148 BrassStabSRX
+149 Finale
+150 Tuned HIT
+151 YourMissionS
+152 Big Hit SRX
+153 HorrorHitSRX
+154 Perc Hit
+155 BrassFallSRX
+156 Tp Fall
+157 BrsStacc SRX
+158 Finale SRX /
+159 Orch Piccolo
+160 Picc Vel Tr
+161 Piccolo Trio
+162 Orch Flute
+163 Vibra Flute
+164 FluteAtm/Aft
+165 Picc/Fl 8va
+166 Double Flute
+167 Fl/EH Usn
+168 Calliope SRX
+169 DynoCelt SRX
+170 Ethnic Flute
+171 AmbiFluteSRX
+172 T.WhistleDly
+173 TinWhistle
+174 Sop Recorder
+175 Tnr Recorder
+176 Whistle SRX
+177 Solo Clari
+178 Unison Clari
+179 Orch Clar
+180 Bs Clairenet
+181 Orch Bs Clar
+182 Cl/Bs Cl 8va
+183 Fl/Cl Usn
+184 Fl/Cl 8va
+185 Orch Oboe
+186 Sweet Oboe
+187 Cor Oboe
+188 OBOE Solo
+189 2 Close Oboe
+190 Orch Eng Hrn
+191 Horn'o U.K.
+192 Orch Bassoon
+193 Bassoon III
+194 BassFoons
+195 Cl/Bsn Usn
+196 Cl/Bsn 8va
+197 Fl/Ob Usn
+198 Fl/EH 8va
+199 Fl/Bsn 8va
+200 BsCl/Bsn 8vb
+201 BsCl/Bsn Usn
+202 Cl/Hrn/Bsn 1
+203 Cl/Hrn/Bsn 2
+204 Ob/Hrns/Bsns
+205 Ob/Bsn 8va
+206 Ob/EH Usn
+207 Ob/EH 8va
+208 EH/Bsn Usn
+209 EH/Bsn 8va
+210 EH/Cl Usn
+211 EH/Bs Cl 8va
+212 Ob/Cl Usn
+213 Ob/BsCl va
+214 Hrns/Bsns
+215 Really Reeds
+216 Reed Duet
+217 Multi Reeds
+218 Medieval Rds
+219 ScottishPIPE
+220 Hill&Sheeps
+221 HilndChr SRX
+222 Solo Fr.Horn
+223 SoloF.HrnSRX
+224 HrnAccompSRX
+225 Orch Hrns Sw
+226 Hornz Stereo
+227 Orch Hrns ff
+228 FizzHorns ff
+229 Fr.Horns SRX
+230 Dynamic Hrns
+231 Horn Sect /
+232 Fr.HrnSfzSRX
+233 MuteFr.Horns
+234 F.Horn Rip
+235 Trumpet Plus
+236 Natural Tmpt
+237 Real Tp SRX
+238 El Bono SRX
+239 Coronet
+240 Flugelhorn
+241 Mute Tp SRX
+242 HrmnMute SRX
+243 WahMute /Mod
+244 Trumpeters
+245 Tp Ens SRX
+246 Trumps fff!!
+247 Softy Bones
+248 Bone Fluegal
+249 Natural Tbn
+250 Trombone SRX
+251 SoloTb SRX 1
+252 SoloTb SRX 2
+253 Bs Tb
+254 Tbn One
+255 Bone Boys
+256 Bones sectn
+257 BigBones SRX
+258 BsBoneSctSRX
+259 Noblesse
+260 Brass Choral
+261 BrassEns/Mod
+262 Small Brass
+263 Brass Orche
+264 Switch Fall
+265 4-Pc Brs Scn
+266 BiggieBrsSRX
+267 SoloTuba SRX
+268 Tuba sfz/Mod
+269 Tuba SRX
+270 Medieval Brs
+271 No Name
+272 Full Brass
+273 Brass ff
+274 Brass Sect /
+275 Multi Sax
+276 St.EuroPiano
+277 JoyoClassics
+278 Empathy
+279 Piano & Strs
+280 Pno Concerto
+281 Song Wish
+282 HpsFrntSRX 1
+283 HpsFrntSRX 2
+284 HpsFrntSRX 3
+285 HpsBackSRX 1
+286 HpsBackSRX 2
+287 HpsBackSRX 3
+288 Hps F/B SRX
+289 Hps F4/B SRX
+290 Hps F/B/B4 S
+291 HpsLuteSRX 1
+292 HpsLute 2
+293 HpsLute 3
+294 FullHarpsi 1
+295 FullHarpsi 2
+296 Continuo Pdl
+297 Celesta SRX
+298 MusicBellSRX
+299 Water Mallet
+300 Newborn
+301 Victoriana 1
+302 St.M.Box SRX
+303 Victoriana 2
+304 ChurchBellS1
+305 BlfryChm SRX
+306 ChurchBellS2
+307 Tub.Bells S1
+308 Tub.Bells S2
+309 BsMarimbSRX1
+310 BsMarimbSRX2
+311 MultiMallets
+312 Glocken
+313 Glockeneste
+314 GlocknlstSRX
+315 Clear Glock
+316 Xylorimba
+317 Xylophone S1
+318 Xylophone S2
+319 Mallet Stack
+320 OrgFlutes S1
+321 OrgFlutes S2
+322 OrgFlutes S3
+323 OrgFlute 8'S
+324 Psyche Pipes
+325 ChrchPipes S
+326 Organ&Recdr
+327 Early Harmn
+328 CathedralSRX
+329 Harmonium
+330 ChurchOrgSRX
+331 OrganChrdSRX
+332 Musaccordion
+333 Mystery Pad
+334 Psychedelic1
+335 Psychedelic2
+336 Eylsium m7^
+337 Eylsium 9th^
+338 Eylsium +7^
+339 Eylsium b9^
+340 Vln RunUp Mj
+341 Vln RunUp Mn
+342 Vln RunDn Mj
+343 Vln RunDn Mn
+344 Maj/MinHarps
+345 9th/b9 Harps
+346 Harp m7 SRX
+347 Harp 9th SRX
+348 Harp +7 SRX
+349 Harp b9 SRX
+350 Harpm7SclSRX
+351 Harp9thScrlS
+352 Harp+7SclSRX
+353 Harpb9SclSRX
+354 Cluster Gong
+355 Sus.Perc Hit
+356 Prc Ens6-Maj
+357 Prc Ens7-Min
+358 Prc Ens8-Dim
+359 Cluster SRX
+360 HorrorClustr
+361 Hell Section
+362 Legettimare
+363 Limbus SRX
+364 Backword
+365 Dreamseq SRX
+366 Midnight SRX
+367 Colombus SRX
+368 Once Upon A
+369 Desert Dream
+370 AncientTimes
+371 Tension SRX
+372 Wreck
+373 Eclipse SRX
+374 PulsingVox S
+375 SynthStr.Pad
+376 Meditate PAD
+377 Choir
+378 Angelic Pad
+379 BoysChoirSRX
+380 Sing! /Mod
+381 SmockyVoices
+382 Smooth Choir
+383 X. Vox SRX
+384 RealChoirSRX
+385 StChrMm/Ah S
+386 Mmms & Aaahs
+387 Choir /Mod
+388 Close Mouths
+389 Voice Stax
+390 MorphieChoir
+391 Morph4Choir
+392 th Movemnt
+393 Matins
+394 Quartet II 5
+395 Scat /
+396 Scatmen! SRX
+397 The Voices
+398 VocalCollect
+399 GregorianCho
+400 Soprano&co.
+401 Tenor solo
+402 ClarsahHarpS
+403 Heavens Harp
+404 C.Hrp/padSRX
+405 PhaseClarsah
+406 ClearHarpSRX
+407 Nails Harp
+408 Harp SRX
+409 Natural Harp
+410 Warm Harp
+411 Bousouk&Harp
+412 Etheral Lute
+413 DelicateCOMB
+414 St.CymblnSRX
+415 CymblnDuoSRX
+416 Bohemian SRX
+417 Bousouki Pic
+418 Bousouki
+419 PulcinelaSRX
+420 SN Roll SRX/
+421 Perc Ens 1^
+422 Perc Ens 2^
+423 Perc Ens 3^
+424 Perc Ens 4^
+425 Perc Ens 5^
+426 Orch Percs
+427 BodhranSplit
+428 BodhranVel S
+429 CrazyBodhrnS
+430 BodhranMenuS
+431 Perc Mix SRX
+432 MassiveTimpa
+433 4-way Timps
+434 DynaTimpsSRX
+435 TimpaniRoll1
+436 TimpaniRoll2
+437 MultiTimpani
+438 Roll > Klang
+439 Timpani /
+440 Big Orc.Perc
+441 WindChimeSRX
+442 FingerCymSRX
+443 ConcertBDSRX
+444 BD Roll SRX/
+445 Tam Tam SRX
+446 Piatti!! SRX
+447 SleighBellsS
+448 SlapstickS /
+449 TambourineS/
+450 CastanetsS /

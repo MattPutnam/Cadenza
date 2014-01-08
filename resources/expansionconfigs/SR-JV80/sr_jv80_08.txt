@@ -1,0 +1,256 @@
+SR-JV80-08 Keyboards of the 60's & 70's
+001 Blues Perc
+002 A LittleHelp
+003 Big Pink B
+004 Hush B3
+005 Sly Family B
+006 3 Dog B3
+007 SanFrancisco
+008 Full Stops
+009 Head Up B3
+010 Full Clique
+011 So Very BS&T
+012 R&R B3 1
+013 Organ Banks
+014 Express Way
+015 85 8808 880
+016 R&R B3 2
+017 MelloDrama
+018 B3 Sermon
+019 British B3
+020 All Skate!
+021 Br.Ballad B3
+022 Pure Bars
+023 R&B B3
+024 Felix Ballad
+025 Fudge Ballad
+026 B3 Nice Feel
+027 85 5000 050
+028 Theatrix
+029 Barleycorn
+030 Majic Carpet
+031 All Star B3
+032 BT & MG's B3
+033 Bookin' B
+034 Rock Steady
+035 NICE L100
+036 Tenderness
+037 Blue B
+038 HeavyTraffic
+039 Dyno Rotary
+040 Concert B3
+041 Salty Dog
+042 Stevie's B3
+043 Hang Twice
+044 Let It B
+045 LA Blues
+046 Mellow Blues
+047 PentaGospel
+048 Sweet&Mellow
+049 2B orNot2B3?
+050 Green Bee
+051 Whiter Shade
+052 Fire Perc
+053 Sunset Strip
+054 B3 JazzSplit
+055 Evil Ways
+056 Dyno Perc B3
+057 888+3rd
+058 8888+3rd
+059 House Organ
+060 Easy to B
+061 Harum Scarem
+062 Green Eyed
+063 8888+3rd Vel
+064 Shine On B3
+065 Procol Perc
+066 Full Perc
+067 Mellow 4'
+068 ZomBee 3
+069 Hi Harmonix
+070 Rotary Banks
+071 Gimme Some
+072 Fuzzhead
+073 Traffiking
+074 B3powerOnOff
+075 ToneWheelPno
+076 Orgiano
+077 TVA FX ORG
+078 Animalistic
+079 Animal Mod
+080 Rising Sun
+081 Surf Monkeys
+082 Palisades
+083 Soul Kitchen
+084 BreakOnThru
+085 Calif.Sun
+086 Steppin' VX
+087 Costello+Mod
+088 VX Rotary
+089 Archie's Mod
+090 Telstar VX
+091 Cheeseball
+092 The Sham
+093 Cheese Pad
+094 Crummy Organ
+095 VX Religion
+096 Farfi Combo
+097 RotaryCheese
+098 Iron Farf
+099 DancingQueen
+100 PoorMan's B
+101 Reggae Organ
+102 Farf Lite
+103 Wooly Farfy
+104 Clark Farf
+105 Pacemaker
+106 Farf Celeste
+107 Ham & Cheese
+108 Rox Organ P
+109 Rox Organ Ph
+110 Rox Organ PH
+111 Rox Organ L
+112 Runaway
+113 Ditty Doo
+114 VX Wah Org
+115 Suitcase 88
+116 Rhodes mkV
+117 ChorusRhodes
+118 NY Rhodes
+119 Touch Rhodes
+120 Stage 73
+121 Joe's Rhodes
+122 Stiff Rhodes
+123 Dirty Rhodes
+124 Mr.Suitcase
+125 Jazz Rhodes
+126 HybridRhodes
+127 Dyno Rhodes1
+128 Dyno Rhodes2
+129 Dyno Rhodes3
+130 Ring Rhodes
+131 LoungeRhodes
+132 TremSuitcase
+133 Preacher
+134 Hard Rhodes
+135 BalladRhodes
+136 Wide Rhodes
+137 Soft Fusion
+138 Phase Rhodes
+139 SpaceyRhodes
+140 I'mNotinLove
+141 Vinyl Rhodes
+142 Bread Rhodes
+143 Mutro Rhodes
+144 Ray's Pno Bs
+145 SynRhodes Bs
+146 Soft Wurly
+147 What'd I say
+148 Dry Wurly
+149 Chorus Wurly
+150 Acid Wurly
+151 Hard Wurly
+152 Tramp Wurly
+153 Tremo Wurly
+154 Smooth Wurly
+155 Grungy Wurly
+156 Breakin' Up
+157 Dist Wurly 1
+158 Dist Wurly 2
+159 Dist Wirly 3
+160 Dist Wurly 4
+161 Whirling
+162 RingMod Solo
+163 Rider/Storm
+164 Pnet Tee
+165 Stereo Pnet
+166 ShesNotThere
+167 R&B Pnet
+168 BrillantPnet
+169 Rox+Pnet
+170 Rox Piano 1
+171 Rox Vinyl
+172 Rox Piano 2
+173 Crummy Piano
+174 Rox Lute
+175 Rox Lute Ch.
+176 Rox Full+Acc
+177 Rox Pi/Ha
+178 Carpet Crawl
+179 Rox Jacuzzi
+180 TrickOfTail
+181 Rho/Wurl/Rox
+182 Rox Chorus
+183 Rox Harpsi
+184 Farfi Harpsi
+185 Octa Harpsi
+186 VX Harpsi
+187 PowerFlowers
+188 Rox Grinder
+189 Clav 1
+190 Clav 2
+191 Clav 3
+192 Clav 4
+193 Clav 5
+194 Clav 6
+195 Clav 7
+196 Phase Clav 1
+197 Rich Clav
+198 Vibraclav
+199 Mute Clav 1
+200 Mute Clav 2
+201 Flange Clav
+202 Comp Clav
+203 Space Clav
+204 Mute Clav 3
+205 Bass Clav
+206 Phase Clav 2
+207 Brite Clav
+208 WahWah Clav1
+209 WahWah Clav2
+210 Clv/Pnet Sp
+211 Clv/PnetDuo1
+212 Clv/PnetDuo2
+213 TronStrg ENS
+214 Tron Str Dry
+215 Rotary Tron1
+216 Rotary Tron2
+217 St.Tron Dry
+218 TronOctStack
+219 SmoothTron1
+220 SmoothTron2
+221 Slow Tron
+222 SymphonicTrn
+223 Moody Tron
+224 Warm Tape
+225 Tron Vls Dry
+226 Mello Vlns
+227 Tron Cello
+228 Mello Cello
+229 Tron Quartet
+230 Tron Orch
+231 DryStr/Choir
+232 Tron Vox
+233 Wet & Wiggly
+234 TronChoirDry
+235 Tron Choir
+236 Old Choir
+237 FatTronChoir
+238 Choir Blend
+239 Slow Choir
+240 Retroactive
+241 LamenTron
+242 Anthem
+243 Space Tron
+244 MelloMemries
+245 5th Tron Str
+246 Tron Vortex
+247 PlanetClaire
+248 Rox Strings
+249 Harpsiphase
+250 Cheep Phazer
+251 Swimming Bee
+252 Old Lead
+253 Organ Lead
+254 Techno Cheese
+255 33 RPM

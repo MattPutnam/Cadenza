@@ -1,0 +1,101 @@
+SRX-10 Big Brass Ensemble
+1 Pop Brs Sect
+2 Pop Brs Stac
+3 Pop Brs Fall
+4 Trumpet Sect
+5 Tp Sect Stac
+6 Tp Sect Doit
+7 Mute Tp Sect
+8 MtTpSect Stc
+9 C Tp Section
+10 C TpSect Stc
+11 C TpSect Tri
+12 TromboneSect
+13 Tb Sect Stac
+14 Tb Sect Fall
+15 Horn Section
+16 HornSect Stc
+17 HornSect Rip
+18 Tuba /
+19 Tuba Stacc
+20 Mezzo Pop
+21 Mezzo Pop WS
+22 DynaBrass M
+23 Smooth Brass
+24 Oct PopBrass
+25 PopBrass Sfz
+26 Stac PopSect
+27 PopBrs ShtFl
+28 PopBrs LngFl
+29 PopBrass Rip
+30 PopBrs /Fl 1
+31 PopBrs /Fl 2
+32 ShortBrs /Fl
+33 Smooth Tps
+34 Tpt Section
+35 Tpt Sect WS
+36 Tpt Sect M
+37 Mild Tp Sect
+38 Tp Sect Sfz
+39 Tp Sect Fall
+40 TpSect RipFl
+41 TpSect RipCp
+42 TpSect Shake
+43 Trumpets /Fl
+44 Trumpts/Shak
+45 Trumpts/Doit
+46 ShortTps /Fl
+47 ..the Ripper
+48 Don't Doit!
+49 MuteTpSect S
+50 MuteTpSect M
+51 Mild MuteTps
+52 Smooth C-Tps
+53 C-Tps w/Vib
+54 C-Tp Sect
+55 C-Tp Sect WS
+56 C-Tp Sect M
+57 Mild CTpSect
+58 CTp Sect Sfz
+59 Tripoli
+60 Mainly Stacc
+61 C Tpts /Trit
+62 Smooth Tbs
+63 Mild Tb Sect
+64 Tb Sect
+65 Tb Sect WS
+66 Tb Sect M
+67 Tb Sect Sfz
+68 Tb Sect Rip
+69 Tb Sect /Fl
+70 ShortTbs /Fl
+71 ToodleAction
+72 Smooth Horns
+73 Horn Sect
+74 Horn Sect WS
+75 Horn Sect M
+76 EmotiveHorns
+77 Mild Horns
+78 HornSect Sfz
+79 HornSect/Rip
+80 HornSwitcher
+81 Mild Tuba
+82 Tuba Sect WS
+83 Tuba Sect M
+84 TubaSwitchOn
+85 Tp+Tb Sect /
+86 CTp+Tb Sect/
+87 LOUD OK?!
+88 Hey You Mute
+89 FullOnBrass
+90 Blend Brass
+91 LR Mix Stacc
+92 Warm Tp Sect
+93 Dyna Section
+94 Warm Horns
+95 Schizo Brass
+96 Don't hit me
+97 DiminerBrass
+98 Wild Niner
+99 Mid Thirties
+100 BrsStac Echo

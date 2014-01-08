@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Fri Aug 31 02:16:49 EDT 2012
+onejar.license.required=true
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=Cadenza_win.jar
+manifest.mergeall=true
+manifest.mainclass=cadenza.gui.Cadenza
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=
+excludes=
+includes=

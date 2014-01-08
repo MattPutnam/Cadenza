@@ -1,0 +1,256 @@
+SR-JV80-06 Dance
+001  All night!
+002  Tune Up
+003  Acidic Grv
+004  Techno'Hood
+005  Space Groove
+006  Odd FXM Loop
+007  Ultrarave
+008  Easy R&B  83
+009  Caveman   83
+010  SoulShake 83
+011  HipHop Jz 88
+012  Homeboy   88
+013  Gangsta 1 94
+014  Gangsta 2 94
+015  Nite'Hood 94
+016  Party Jam 94
+017  S2S 909   94
+018  Ragga     94
+019  DeepGrine 94
+020  lopendsw 100
+021  Danger   100
+022  Breakdwn 100
+023  Owl'Hood 100
+024  Lo-Fi    100
+025  Soulmate 106
+026  Swingtmb 106
+027  Squeaky  110
+028  Swingin' 110
+029  Shufflin'110
+030  Suprise1 116
+031  Suprise2 116
+032  Perc Jam 116
+033  909Dsco1 120
+034  909Dsco2 120
+035  909Dsco3 120
+036  Superfly 120
+037  DiscoCga 120
+038  Caravan  120
+039  Jungle 1 124
+040  808CowBl 124
+041  Jungle 2 124
+042  Cruisin' 124
+043  909Swing 124
+044  Human Bt 124
+045  Mover    124
+046  Jazzy    130
+047  909 Pump 130
+048  Jammin'  130
+049  HipHouse 130
+050  Fancy Sw 130
+051  HipNoKik 130
+052  FastEuro 136
+053  Justice1 136
+054  Justice2 136
+055  New Jack 136
+056  Latin Bt 141
+057  Darknian 154
+058  Beat Menu 1
+059  Beat Menu 2
+060  Beat Menu 3
+061  Beat Menu 4
+062  Dance Split
+063  Dance Piano
+064  Odd Piano
+065  House Piano
+066  Bright Piano
+067  Velo Piano
+068  Simple Piano
+069  Night Moods
+070  50's Organ
+071  Organ Tong
+072  Organic
+073  Old Organ
+074  Mod Amb.Pipe
+075  Notre Dame
+076  Legato Synth
+077  Summer Time
+078  Def Lead
+079  Minor Rave
+080  Major Rave
+081  Dance Lead
+082  Sync Lead
+083  HyperHiPass
+084  Mono Raver
+085  Mod-Trance 1
+086  Mod-Trance 2
+087  Rave at home
+088  ResoLoot
+089  Square Tone
+090  Trianglular
+091  JP Sub-Synth
+092  Saxy Jam
+093  Reso Pad
+094  Fat Stack
+095  ResoSequence
+096  Common Synth
+097  NewAnalogEra
+098  Monstrousnes
+099  Sharpy
+100  Dance Arp
+101  Oddigeree
+102  Monstrousity
+103  Arpeggio
+104  Dance Seq
+105  Fiesta
+106  Trance Stab
+107  Digistack
+108  RaviD'Choir
+109  Random Hits
+110  Fizzy
+111  Eurostab
+112  Triumph Stab
+113  Street Stab
+114  Kik x4
+115  Reverse Nz
+116  909 Tom
+117  HiHat Menu
+118  Rev Cymbal
+119  Bang x2
+120  Ragga Hit
+121  Fly Chord
+122  Ravin'Chor s
+123  Powertechit
+124  Organ Hits
+125  Choralvibe
+126  Trancey
+127  Sharp Hit
+128  Mc Hit x3
+129  Kutt Hit
+130  Galaxy Hit
+131  Reggae Chord
+132  Saw Horn x2
+133  Rave Hit
+134  Vinyl Opera
+135  Movin'Hit
+136  2Tone Hit
+137  Club Hit x4
+138  Big Ol'Stab
+139  Loopbits x2
+140  Slide Fx x2
+141  Spooky
+142  Section Hit
+143  Gtr Fx x4
+144  Breath Fx x4
+145  Sax Fx x3
+146  Tpt Fx x3
+147  Scratch x4
+148  Scratch Loop
+149  Stab Scratch
+150  Record Noize
+151  Fizzzz
+152  Hurray!
+153  Sci-Fi
+154  Whoo-Whoo!
+155  Zigzag
+156  Hip alarm
+157  ScratchMenu1
+158  ScratchMenu2
+159  ScratchMenu3
+160  Tape Spin
+161  Noise Menu
+162  PiknMixnMod
+163  Manic Shots
+164  Sonic Stabs
+165  Stylostab
+166  CutOffSnare
+167  Selecta Drum
+168  Trans Vox
+169  Aaaah!
+170  Ahoo Yell
+171  Oohh!!
+172  Madmam
+173  Oooh Yeah!
+174  Bah
+175  And!
+176  Aaa!
+177  Hey
+178  Baby
+179  Yeah-Yeah
+180  Oooooooooo
+181  Whoooooooo
+182  No-No
+183  OOO^^^^^^^
+184  Aaaa^^^^^^
+185  Laugh-Mix
+186  Vocamatic
+187  Girl Ah
+188  Vox Menu
+189  Rev Vox Menu
+190  Here We Go!
+191  Outhere Pad
+192  Tekno Voices
+193  Old Strings
+194  Dance String
+195  Terminator
+196  AmbientSweep
+197  Ambient BPF
+198  Oper'Ambient
+199  AmbientPad 1
+200  AmbientPad 2
+201  Lunar Orbit
+202  Fly-by Pad
+203  Sync Pad
+204  Urban Pid
+205  Deep Analog
+206  Garage Pad
+207  UK Slwing Pad
+208  Warriors
+209  Br.Jupiters
+210  M+C Big Pad
+211  Wonderous Pd
+212  Super OB
+213  Euro Srings
+214  Sweep Beat
+215  Nice-n-Easy
+216  World Muzic
+217  Tri-dent Brs
+218  Dance Brass
+219  Space Bass
+220  Clix Bass
+221  System 100m
+222  Synbass Five
+223  Rawsaw Bass
+224  Groove Bass
+225  Metalrezo Bs
+226  VCF Bass
+227  Sharp Rezo
+228  Technopop Bs
+229  Acid Tripper
+230  Hood Bass
+231  Housine Bs
+232  Anti-digital
+233  Dual VCF Bs
+234  Comic Bass
+235  TB-303 Bs 1
+236  TB-303 Bs 2
+237  SH-101 Bs 1
+238  SH-101 Bs 2
+239  SH-101 Bs 3
+240  SH-101 Bs 4
+241  SH-101 Bs 5
+242  How Odd?!
+243  Hell House
+244  Nightmare!!!
+245  Flangehead
+246  Doublefunky
+247  Mystical
+248  Sci-Fi Sweep
+249  Drum Set 1
+250  Drum Set 2
+251  Drum Set 3
+252  Drum Set 4
+253  Drum Set 5
+254  Drum Set 6
+255  Drum Set 7

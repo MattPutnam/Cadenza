@@ -1,0 +1,51 @@
+SRX-02 Concert Piano
+01 PremierGrand
+02 Steady Grand
+03 DynamicGrand
+04 Concert Hall
+05 Bright Grand
+06 Classical
+07 SoftPdlGrand
+08 OnMicPremier
+09 OnMic Bright
+10 OnMicSoftPdl
+11 Premier Mono
+12 Bright Mono
+13 SoftPdl Mono
+14 Mellow Piano
+15 Enhanced Pno
+16 Comp.Piano
+17 HonkytonkPno
+18 NewAgeGrand1
+19 NewAgeGrand2
+20 Requiem
+21 Soundscape
+22 Grand w/Str
+23 Concerto 1
+24 Concerto 2
+25 SoftpadGrand
+26 Synpad Grand
+27 Vox Grand 1
+28 Vox Grand 2
+29 Oohs Piano
+30 Air Grand
+31 GtrPad Grand
+32 PhasePad Pno
+33 HeavenPadPno
+34 Somber Pad
+35 Wet Chorus
+36 Nylon Grand
+37 FM EP Grand
+38 Bell Grand
+39 Bellvox Pno
+40 StackedGrand
+41 Hard Stack 1
+42 Hard Stack 2
+43 PianoBrass
+44 PianoBrs fff
+45 Gig Split 1
+46 Gig Split 2
+47 Gig Split 3
+48 Throb Piano
+49 Feedback Pno
+50 Eastern 5th

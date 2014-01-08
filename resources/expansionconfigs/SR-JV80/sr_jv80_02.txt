@@ -1,0 +1,256 @@
+SR-JV80-02 Orchestral
+001 Warm Violins
+002 Slow Vlns 1
+003 Vlns+Vlas 1
+004 Vl Sect mono
+005 Arco Violins
+006 Marcato Vls1
+007 Vlns+Vlas 2
+008 Agitato Vls1
+009 Rosin Pad 1
+010 Dry Mid - High
+011 Natural Vlns
+012 Sad Vln Sect
+013 Marcato Vas
+014 Arco Violas
+015 Thick Violas
+016 Va Sect f
+017 Va Small Sec
+018 Agitato Vas1
+019 Sad Violas
+020 Fast Cellos1
+021 Vcs Legato 1
+022 Marcato Vcs1
+023 Small Vc Sec
+024 Agitato Vcs1
+025 Small Cellos
+026 Sad CelloSec
+027 Cb Sect ff
+028 Wide Basses
+029 mf Basses
+030 Agitato Cbs1
+031 Vcs+Cbs
+032 2 Basses
+033 Euro Strings
+034 Rich Strings
+035 Multi Strs 1
+036 VlsVasVcsCbs
+037 Bright Strs
+038 Classicl Str
+039 Full Strings
+040 Med Str Sec
+041 Small Strngs
+042 Strings Arco
+043 Vivace Strs
+044 Agitato STR1
+045 LowSTR Attak
+046 Bad Guy STR
+047 Ominous
+048 Lo Express
+049 DramaStrings
+050 Solo Vln 1
+051 Solo Vln 2
+052 Chorus Vln
+053 Stereo Vln
+054 Agitato Vln1
+055 Solo Vla 1
+056 Solo Vla 2
+057 Chorus Viola
+058 Stereo Viola
+059 Agitato Vla
+060 Solo Vc 1
+061 Solo Vc 2
+062 Stereo Cello
+063 Chorus Cello
+064 Marcato Vc 1
+065 Solo Cb 1
+066 Solo Cb 2
+067 Marcato Cb 1
+068 Chamber Ens1
+069 Chamber Ens2
+070 Vln+Vla Dble
+071 Vln+Vc Dbl1
+072 Vla+Vc Dbl2
+073 Vla+Vc Dble
+074 Pizzicato 1
+075 Mono Pizz
+076 Pizzicato 2
+077 Room Pizz
+078 Hall Pizz
+079 Tight Pizz
+080 Short Pizz
+081 STR Marcato1
+082 Oct Marcato
+083 Lower Marc!!
+084 Big Marc!
+085 STR Spiccato
+086 Fast Attacks
+087 Flute
+088 Flute V - Sw
+089 Piccolo
+090 Piccolo Flt
+091 Recorder
+092 Oboe 1
+093 Oboe 2
+094 Oboe 3
+095 Oboe 4
+096 Oboe 5
+097 English Hrn1
+098 English Hrn2
+099 English Hrn3
+100 Bassoon 1
+101 Bassoon 2
+102 Clarinet 1
+103 Clarinet 2
+104 Bs Clarinet1
+105 Bs Clarinet2
+106 Trumpet 1
+107 Trumpet 2
+108 Trumpet 3
+109 Flugelhorn 1
+110 Flugelhorn 2
+111 Cornet 1
+112 Cornet 2
+113 Solo Tb 1
+114 Solo Tb 2
+115 Solo Tb 3
+116 Solo Tb 4
+117 Bs Tb 1
+118 Bs Tb 2
+119 Harmon Mute1
+120 Harmon Mute2
+121 Tuba 1
+122 Tuba 2
+123 Solo F.Horn1
+124 Solo F.Horn2
+125 Sml F.Hrn sc
+126 Horn Sect 1
+127 F.Horn sc x4
+128 Fr.Horn sfz
+129 F.Hrn Sect2
+130 F.Hrn Sect3
+131 F.Hrn Sect4
+132 F.Hrn Sect5
+133 F.Hrn Sect6
+134 F.Hrn Sect7
+135 F.Hrn Sect8
+136 MuteHrn Sect
+137 Horn+Wood 1
+138 Horn+Wood 2
+139 Horn+Wood 3
+140 Wood Sect 1
+141 Wood Sect 2
+142 Wood Sect 3
+143 Wood Sect 4
+144 2 Oboes
+145 Oboe + Cla
+146 Flt + Piccl
+147 Flute + Cla
+148 Bassoon+EHrn
+149 Hi Woodwinds
+150 WoodwindSplt
+151 Multi Reed
+152 4 Trombones
+153 Tb Sect 1
+154 Tb + Tp
+155 4 Trumpets
+156 3 Trumpets
+157 Brass ff 1
+158 Brass ff 2
+159 Brass ff 3
+160 McArthur Brs
+161 Big Bones
+162 BassBoneSect
+163 Brass Swell
+164 Full Brs 1
+165 Brass Sect1
+166 Brass Ens 1
+167 Brass Ens 2
+168 Brass Ens 3
+169 Brass Ens 4
+170 Brass Ens 5
+171 Brass Ens 6
+172 Brass Ens 7
+173 Brass Ens 8
+174 Horn Strings
+175 Full Orch.1
+176 Full Orch.2
+177 Full Orch.3
+178 Full Orch.4
+179 Maj Hit 1
+180 Min Hit 1
+181 Dim Hit 1
+182 Major Stab!
+183 Maj Hit 2
+184 Min Hit 2
+185 Classical Gt
+186 Harp 1
+187 Harp 2
+188 Plucked Harp
+189 Harp StrumMj
+190 Harp StrumMn
+191 Water Harp
+192 ClasclPiano1
+193 ClasclPiano2
+194 ClasclPiano3
+195 ClasclPiano4
+196 Harpsichord1
+197 Harpsichord2
+198 Harpsichord3
+199 Harpsichord4
+200 Celesta 1
+201 Celesta 2
+202 Celesta 3
+203 Glockenleste
+204 Marimba
+205 BassMarimba1
+206 BassMarimba2
+207 Vibe
+208 Xylophone 1
+209 Xylophone 2
+210 Xylophone 3
+211 Glocken 1
+212 Glocken 2
+213 ChurchBells1
+214 ChurchBells2
+215 ChurchBells3
+216 TubulaBells1
+217 TubulaBells2
+218 Big Tubulars
+219 Dawning
+220 MalletStack1
+221 MalletStack2
+222 MalletStack3
+223 MalletStack4
+224 Malletstack5
+225 MalletStack6
+226 MalletStack7
+227 Choir 1
+228 Choir 2
+229 Snare Drum
+230 ConcertSNR1
+231 ConcertSNR2
+232 SNR Roll
+233 Concert BD1
+234 Concert BD2
+235 BD Roll
+236 Timpani 1
+237 Timpani 2
+238 Timpani 3
+239 Timpani 4
+240 Tam Tam
+241 Gong
+242 Piatti!!
+243 Sleigh Bells
+244 Slapstick
+245 Wind Chimes1
+246 Wind Chimes2
+247 Tambourine
+248 Castanets
+249 Rhythm Set
+250 Perc Hit 1
+251 Perc Hit 2
+252 Perc Hit 3
+253 Presenting!
+254 Presto!
+255 Christmas!!!

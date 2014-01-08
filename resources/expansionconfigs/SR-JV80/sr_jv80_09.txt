@@ -1,0 +1,255 @@
+SR-JV80-09 Session
+001 St.Concert
+002 9ft.Grand 1
+003 9ft.Grand 2
+004 Euro Classic
+005 St.Pno & Str
+006 Compress Pno
+007 LA Session
+008 Water Piano
+009 Vibra Rhodes
+010 Stack Rhodes
+011 ArcoEnsemble
+012 Vienna Strgs
+013 Str Adagio
+014 Oct Strings
+015 Silky Filter
+016 Soft Strings
+017 SlowStr.Sect
+018 GiantStrings
+019 Str+Choir 1
+020 Str+Choir 2
+021 Str+Choir 3
+022 Breathy Humz
+023 Dream Voices
+024 Mmmms
+025 Chorale
+026 Space Men
+027 Choir Mm+Aah
+028 Ivory Mist
+029 PercussiVox
+030 Mysteriouso
+031 Phase Mmhs
+032 AmbientStory
+033 Venus
+034 SessionBrass
+035 Port.Tpts
+036 R&R Brass
+037 Echo Brass
+038 E.Coast Brs
+039 Bop Soli
+040 Soft Saxes
+041 Orchestral
+042 Octalog Hrn
+043 Tpt Soloist
+044 Legato Tpt
+045 Dyno Trumpet
+046 Ethno-Trumps
+047 Super Tenor
+048 TenorExpress
+049 T.Sax f
+050 Legato Flute
+051 Touch Flute
+052 NewAge Flute
+053 Flute inMist
+054 Hybrid Flute
+055 Flute & Cla
+056 ChristmasFlt
+057 Fifth Flute
+058 Cosmic Flute
+059 Acc.de Paris
+060 Paris 50's
+061 Musette Ens
+062 Montmartre
+063 Sad Akordion
+064 Fr.Accordion
+065 Fr.Accord 2
+066 Troubadour
+067 SessionNylon
+068 Shaker MENU2
+069 Solo Nylon 2
+070 Nylon & Str
+071 Nylon & Flt
+072 Nylon Chord
+073 Stratar
+074 Clean Tele
+075 Nashville
+076 Super Trem
+077 SpaghettiGtr
+078 Duanne'sTone
+079 Big Hair Ld
+080 Metal Solo
+081 Crunch Tone
+082 Overdriven
+083 Blues Tele
+084 Tube Double
+085 Neil's Rust
+086 Short Crunch
+087 X-Fade Metal
+088 Velo Power
+089 Phazy Chunk
+090 Reso Tele
+091 Wah Wah BPM
+092 Rock P.Bass1
+093 Rock P.Bass2
+094 Rock P.Bass3
+095 Big Jazz Bs
+096 BriteJazz Bs
+097 Ch.Jazz Bs
+098 Mellow Jz Bs
+100 Octabahn Bs
+101 Slobbery Bs
+102 Phase Worm
+103 Euro Rave Bs
+104 Pumpin' Bs
+105 Tech NoBase
+106 Bad Acid Bs
+107 CheepEcho Bs
+108 Manic Bs
+109 JP6 Sqr Key
+110 Square drops
+111 Celestial
+112 Heavenly Eko
+113 JD-800 Nomad
+114 Vibrolater
+115 MartianChime
+116 Big Wet Blip
+117 Amazing Echo
+118 DelaySession
+119 Deletex
+120 Tarlia
+121 Mahoroba
+122 Eurotek Clav
+123 Dope Resoclv
+124 Tekno Juno
+125 Buzzzzzzzzzz
+126 Slop-a-rama
+127 Isn't Pretty
+128 Polywasp
+129 Quixelate
+130 Trangoa Wave
+131 Spiked Cheez
+132 Glassy Cheez
+133 Super 808Cow
+134 Arpeggiatoid
+135 Euro Hit 1
+136 Euro Hit 2
+137 Rave Slice
+138 Str Torture
+139 Juno Harpsi
+140 Big Mess Pad
+141 Harpsichoir
+142 Echo Juno
+143 Phazerave
+144 DanceStack 1
+145 DanceStack 2
+146 DanceStack 3
+147 DanceStack 4
+148 DanceStack 5
+149 DanceStack 6
+150 DanceStack 7
+151 DanceStack 8
+152 Eurotek Brs
+153 Synergy Brs
+154 PortaSynthex
+155 Razor VCOs
+156 Big PWM
+157 Flutey Stack
+158 Wobbly 5th
+159 Tekno Square
+160 Trance VoXxX
+161 Random Rave
+162 Raver Circus
+163 Resorave
+164 Flangomatic
+165 O-Zu-Nu
+166 Sub Divided
+167 Ancient Sqr
+168 Fat Flange
+169 Phaze NRG
+170 Phase Vox
+171 Systekno
+172 On the move!
+173 XP'ration
+174 Big Ensemble
+175 Lazerette
+176 Fazed String
+177 Combing Slow
+178 Jet Stack
+179 Phazeslopad
+180 Rize Mass
+181 Portent
+182 DCO Sweeper
+183 Sweep Rain
+184 Sweep Stack
+185 Big Vectors
+186 Poly Swell
+187 Alchemy
+188 Soli-na
+189 90s Str Mach
+190 Ultra Cheez
+191 Juno-60  Pad
+192 Progressive
+193 Build-Up Syn
+194 Atlantis 2
+195 Perelandra
+196 Plutonium
+197 Nautilus
+198 Metal Dreams
+199 Glass Clouds
+200 Harmonicloud
+201 Shining Veil
+202 Ethereal JX
+203 Striking 5th
+204 Meow 5ths
+205 Stepflanger
+206 Happy LFOs
+207 Aero Insect
+208 Beat Sweeper
+209 Wormy Lead
+210 Atmo Lead
+211 Caliolead
+212 Tweedles
+213 Raw PWM
+214 Voc Solo 5th
+215 Dirty Lead
+216 Boostweeper1
+217 Boostweeper2
+218 B3 Filth
+219 Phazed Organ
+220 VSw Vibrafon
+221 SA Vibe
+222 Rich Vibes
+223 SpaceGamelan
+224 Toy Vibe
+225 Analog Bomb
+226 Seashore 2
+227 Creation
+228 Cyberjunkie
+229 Sci-Fi Bells
+230 Shine on
+231 DEMO Piano1
+232 DEMO Piano2
+233 DEMO PnoVox
+234 DEMO Str 1
+235 DEMO Str 2
+236 DEMO Str 3
+237 DEMO SynPuls
+238 DEMO 5thPad
+239 DEMO Choir
+240 DEMO Brass
+241 DEMO Tenor
+242 DEMO Tpt
+243 DEMO Flute
+244 DEMO Nylon
+245 DEMO PhaseGt
+246 DEMO DistGt1
+247 DEMO DistGt2
+248 DEMO Strat
+249 DEMO SlapBs
+250 DEMO P.Bass
+251 DEMO SynBs
+252 DEMO SynLead
+253 DEMO Insect
+254 DEMO Buzzzzz
+255 DEMO Crowd

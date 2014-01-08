@@ -1,0 +1,256 @@
+SR-JV80-07 Super Sound Set
+001 Ac.Piano 1
+002 Ac.Piano 2
+003 Soft Piano
+004 U-220 APiano
+005 FortePiano
+006 Honky Tonk
+007 Pop Piano
+008 Dusty Piano
+009 NewAge Piano
+010 E.Grand 1
+011 E.Grand 2
+012 E.Grand mod
+013 U-220 EGrand
+014 Stage EGrand
+015 E.Grand ff
+016 E.Piano mod
+017 Soft Rhodes
+018 St.Rhodes
+019 Tremelo EP
+020 Long is...
+021 ...the Road
+022 High Rhodes
+023 Bright EP 1
+024 Bright EP 2
+025 Bright EP 3
+026 Bright EP 4
+027 Syn.E.Piano
+028 Xmod E.Piano
+029 <D>gtalPiano
+030 Hps Front 1
+031 Hps Front 2
+032 Hps Front 3
+033 Hps Back 1
+034 Hps Back 2
+035 Hps Back 3
+036 Hps Back 1T
+037 Hps F/B
+038 Hps F4/B
+039 Hps F/B/B4
+040 Hps Lute 1
+041 Hps Lute 2
+042 Hps Lute 3
+043 Hps Lute 1T
+044 Medieval Ens
+045 Baroque Ens.
+046 '60 CompKlav
+047 House Clav.
+048 Phase Clav.
+049 Org Flutes 1
+050 Org Flutes 2
+051 Org Flutes 3
+052 Org Flute 8'
+053 Church Organ
+054 English Org
+055 Organ Chord
+056 Happy Xmas !
+057 1001 Nights
+058 G.Star 1
+059 G.Star 2
+060 Dream Time
+061 Clavi Pad
+062 into Dream
+063 Not Old
+064 Box Guitar 1
+065 Box Guitar 2
+066 Reso Guitar
+067 V-MX Guitar
+068 Flat Picker
+069 Steel Guitar
+070 Steel there!
+071 BriteJGuitar
+072 Tympanon
+073 Live Guitar
+074 Arabic Scale
+075 Big Twelve
+076 Jazz Guitar
+077 St.Jazz Gtr
+078 Pedal Steel1
+079 Pedal Steel2
+080 Stereo Pedal
+081 Pedal Steel3
+082 Dyno Steel
+083 Super Steel
+084 Pedal Steel4
+085 PedalSteelSW
+086 Steel Fours
+087 Pedal Steel5
+088 Clean'd Comp
+089 Blues Guitar
+090 335 Guitar
+091 St.335 Pick
+092 335 VSW Pick
+093 335 Mute
+094 335 St. Mute
+095 Echo Mute
+096 VeloMute+Pik
+097 All Mutes
+098 Mute Guitar
+099 BriteChorus
+100 Clean Pick 1
+101 Clean Pick 2
+102 Clean E.Gtr
+103 Phase Guitar
+104 PickChordsX4
+105 Super Picker
+106 St. Pick
+107 Dist Guitar
+108 HEAVY !
+109 St.Dist Gtr
+110 Super Heavy
+111 Mandolin 1
+112 Mandolin 2
+113 Mandolin 3
+114 Mandolin 4
+115 Mandolins
+116 SuperMando
+117 ResonatorGt1
+118 ResonatorGt2
+119 ResonatorGt3
+120 Dobraccent
+121 Dulcimer 1
+122 Dulcimer 2
+123 Dulcimer 3
+124 Gamelan Ens.
+125 Guitar Pad
+126 Bass Mix
+127 Musette tun
+128 Musette det1
+129 Musette det2
+130 Master 1
+131 Master 2
+132 Jazz
+133 Bandoneon1
+134 Bandoneon2
+135 Bs/Musettun
+136 Bs/Musetdet1
+137 Bs/Musetdet2
+138 Bs/Master1
+139 Bs/Master2
+140 Bs/Jazz
+141 Bs/Bandoneon1
+142 Bs/bandoneon2
+143 Reed Organ1
+144 Reed Organ2
+145 Rive Gauche
+146 Iturbynth
+147 Bandeneon Duo
+148 Amsterdam
+149 Sad Musette
+150 Fiddle 1
+151 Fiddle 2
+152 Super Fiddle
+153 Fiddle About
+154 DigitalCello
+155 Four Seasons
+156 Staccato
+157 Tremelo 1 /
+158 Tremelo 2
+159 Tremelo 3 /
+160 Sop Rec  1T
+161 Tenor Rec 1T
+162 Rec Twin
+163 Rec Sect
+164 Recorder 1T
+165 Living Pipe
+166 Pipe Lead
+167 Whistle
+168 Fr'm Scotlnd
+169 Soft Sax
+170 Bright Sax
+171 St.Sax
+172 Bright TP
+173 Trombone
+174 Trombone SW
+175 Twinbone
+176 Super TB
+177 St.Trombone
+178 St.Soft TB
+179 St.Bright TB
+180 Fat Trombone
+181 Brass Sect 1
+182 Brass Sect 2
+183 Brass Sect 3
+184 Pizz Bass
+185 Sax Sect 1
+186 Sax Sect 2
+187 In the Mood
+188 Orchestra
+189 BrassOrchest
+190 Jazz Quartet
+191 B!G Stab
+192 Brass Fall 1
+193 Brass Fall 2
+194 Brass Fall 3
+195 Tp Fall 1
+196 Tp Fall 2
+197 Brass Stacc
+198 F.Horn Rip 1
+199 F.Horn Rip 2
+200 Mild ANALOG
+201 Black Ring
+202 Steel Brass
+203 S.JV Marine
+204 CarminaB/Aft
+205 Cosmic Vox
+206 Digital Vox
+207 Y Empire
+208 Cosmic Echo
+209 She does ...
+210 Sine Strings
+211 Chineez Wave
+212 Metalattack
+213 EG Vox
+214 Metal Sweep
+215 Digi Sweep
+216 Deep Space
+217 Blue Mist
+218 Trailer Pipe
+219 Cluster
+220 Pentatonic
+221 RoaringSpace
+222 Deep Cave
+223 Kokoro
+224 Nothing Air
+225 Mick'm House
+226 Mello Orch.
+227 Saturn
+228 Orch Hit Maj
+229 Orch Hit Min
+230 Orch Hit Dim
+231 Big Hits Maj
+232 Fanfare   /
+233 Owz it !
+234 Rave OrcHit
+235 OrchHit X
+236 OrchGlissMaj
+237 OrchGlissMin
+238 Orch End FX
+239 Harp m7
+240 Harp 9th
+241 Harp +7
+242 Harp b9
+243 Harp m7 Scrl
+244 Harp 9thScrl
+245 Harp +7 Scrl
+246 Harp b9 Scrl
+247 Groove 1
+248 Drum Set 1
+249 Drum Set 2
+250 Drum Set 3
+251 Drum Set 4
+252 Drum Set 5
+253 Drum Set 6
+254 Drum Set 7
+255 CountryDrums

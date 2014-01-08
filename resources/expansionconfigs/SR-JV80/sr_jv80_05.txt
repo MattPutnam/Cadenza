@@ -1,0 +1,256 @@
+SR-JV80-05 World
+001 World Tour!
+002 Afropunch
+003 Yo How
+004 Kenya Split
+005 Intar Melody
+006 BerimbauMenu
+007 Thumb Chimes
+008 Velo Afro 1
+009 Bass Kalimba
+010 Buzz Kalimba
+011 Indalimba
+012 Thumb Piano
+013 Kalimba FX
+014 AfropercMenu
+015 Udu Pot Menu
+016 Udu Pots/
+017 Baateri
+018 Log Detuner
+019 Afroperk
+020 Glass Mallet
+021 Velo Afro 2
+022 Balafon /
+023 Hrd.Balafon
+024 Pure Balafon
+025 Big ole Logs
+026 Afro Log
+027 Angklungs
+028 BellAngklung
+029 Steel Drums1
+030 Steel Drums2
+031 War Drums
+032 AfricanMarch
+033 AfricanStomp
+034 Tribal Claps
+035 Kawala Str
+036 Space-o-rama
+037 Shakupad
+038 Ceremony
+039 Los Tremolos
+040 Lo Celloez
+041 Octargans
+042 Lo Ethnoreed
+043 Eastvox
+044 Black Rain
+045 Steel 5th
+046 5th Wind
+047 5th Bell
+048 Ocarawla
+049 Conch Call
+050 Sweep Floot
+051 Space Pipe
+052 PercssivRain
+053 Asian Chord
+054 Dell Ikhitt
+055 Ghost Metal
+056 Ring-RingPad
+057 Misterious
+058 Re - mind
+059 Whistle Vox
+060 Living Dead
+061 Earth Child
+062 Spaceilimba
+063 Drop of Rain
+064 Gaia Thought
+065 Es E.Piano
+066 Piri Rise
+067 Pandoras Box
+068 Ethno Dreams
+069 Snow Man
+070 Cuica Steps
+071 Saintly
+072 Trade Winds
+073 Pure Logic
+074 Earth Color
+075 Jawbreath
+076 AsiaCYM Menu
+077 Gong Menu
+078 Gong /
+079 China Menu
+080 Kabuki Menu
+081 Biwa
+082 Genderous
+083 Temple Metal
+084 Gomelan Tuti
+085 African Snow
+086 Bonang-Gam.
+087 Gamelan x4
+088 Saron-Gameln
+089 Temple Chime
+090 Prayer Bowls
+091 Hiten Bells
+092 Trash Metal
+093 Singing Bell
+094 Rama Chimes
+095 Rama Cymbals
+096 Tibet Bells
+097 Big Bowls
+098 Spoke Mallet
+099 Shakuhachi
+100 Shaku Accent
+101 Shakueko
+102 Pipe Melodi
+103 Flautwist
+104 Flute Press
+105 Zamponia
+106 Wosh Chiff
+107 Tramaloo
+108 FantasicPipe
+109 Pan Pipe /
+110 Random Zamp
+111 Zampona tr 2
+112 Ethno Pipesl
+113 Ethno Pipes2
+114 Ethno Pipes3
+115 Ocarina 3
+116 Quena
+117 Kawala
+118 Kawallabe
+119 Romance Exp
+120 Wind 7 Split
+121 Uni-Jig Pan
+122 OcarinaLead
+123 Zamp Lead
+124 Blown Touch
+125 Barkit
+126 Jungle Pipes
+127 C Shell+echo
+128 Atmospluck
+129 Afroharp Arq
+130 East/WestPlk
+131 Koto
+132 Zhueng
+133 Kotokeum
+134 Kayakeum Plk
+135 Asian Dawn
+136 Shamisen
+137 Noo Tye Whan
+138 Time Vault
+139 Afroharp 1
+140 OctHarp
+141 ChineseOrch2
+142 Euro Zither
+143 AfricaZither
+144 Zithgliss
+145 Hmr.Dulcimer
+146 Cymbalom
+147 Brt.Dulcimer
+148 Yangchin 1
+149 EasternTwang
+150 12th Knight
+151 Bandolim
+152 Cavaquinho
+153 Oud
+154 Mondo Oud!
+155 HybridStrung
+156 GlobalChorus
+157 Kanoum
+158 MultieastPix
+159 Yuehchin
+160 Crossbreed
+161 SoftRezituar
+162 Ethnic VLNx3
+163 Singil Piper
+164 Kulture Shok
+165 Erhu Lead
+166 ChineseOrch1
+167 Mosque Reeds
+168 E.Com Lead 1
+169 Piri Solo
+170 Mizmar
+171 Shahnai
+172 Hichirick
+173 VeloB
+174 Bagpipes
+175 Dholla Menu
+176 Egypt Tablah
+177 Madal Menu
+178 Dholak Menu
+179 TablaProcess
+180 Tinjaw
+181 Moroco FX
+182 Arabian
+183 TablanRhythm
+184 Tablafun
+185 Rattabla
+186 Sitarchestra
+187 Ravis Axe
+188 Passag2lndia
+189 Tambra Swirl
+190 Sitar ++
+191 Movie Synth
+192 Sitarsqeezer
+193 Sitar Gliss
+194 Tambura
+195 Tamb. Drone
+196 Breath Drum
+197 Tribe Switch
+198 Perc. Hit 1
+199 Perc. Hit 2
+200 Big Perc.Hit
+201 Doira Drum
+202 Bendir
+203 Chekere
+204 Rek Menu
+205 Shaker Menu
+206 Caixa Menu
+207 Cowbell Menu
+208 Bongo Set
+209 Guiro /
+210 Samba Menu
+211 Pandeiro Menu
+212 Surdo Menu
+213 Cuica
+214 Rain Stick
+215 Rotating Drm
+216 BellsOfSarna
+217 Comb.Loop 1
+218 Comb.Loop 2
+219 Comb.Loop 3
+220 Comb.Loop 4
+221 Comb.Loop 5
+222 Comb.Loop 6
+223 Slow.Loop 1
+224 2Bar Loop 1
+225 2Bar Loop 2
+226 2Bar Loop 3
+227 CylicSweep16
+228 Special Loop
+229 Samba Break/
+230 Bushroot
+231 Didgeridrone
+232 Dingodrone
+233 Didgeridoo
+234 Paila MG
+235 Ethno Bass 1
+236 Ethno Bass 2
+237 Farth Com Bs
+238 Clay HouseBs
+239 Berimbass
+240 Hunter
+241 Jawskin
+242 JawHarp Menu
+243 AfricaVoices
+244 Voice Set
+245 Zaghruta
+246 Maiting Call
+247 Lost my way.
+248 PlayLoHi F#m
+249 Going Deep
+250 Worm Hole
+251 Ethno Splash
+252 DinosaurPark
+253 BackwardGong
+254 AfricanQueen
+255 BedRock 5.30

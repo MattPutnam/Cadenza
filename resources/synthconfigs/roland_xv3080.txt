@@ -1,0 +1,906 @@
+Roland XV-3080
+XpA=SR-JV80, XpB=SR-JV80, XpC=SR-JV80, XpD=SR-JB80, XpE=SRX, XpF=SRX
+#User
+001 Y2K Concerto
+002 XV SteelGt 1
+003 Shapeshifter
+004 Trance Fair 
+005 MOVE!
+006 VoyagerBrass
+007 Rholitzer
+008 Grand XV
+009 Pianomonics
+010 Nylozzicato
+011 Searing Lead
+012 Square Roots
+013 Winky
+014 Atmospherics
+015 Soft Perky
+016 NewR&RBrass
+017 Lunar Strngs
+018 LegatoBamboo
+019 West End Bs
+020 Marcato Str
+021 Henry VIII
+022 Chime Bells
+023 Morph Pad
+024 Dirty Hit
+025 Soaring Hrns
+026 XV Ac.Bass
+027 Grounded Bs
+028 Severe Ow Bs
+029 Celtic Harp
+030 XV Strings
+031 Air Pad
+032 Hit Rhodes
+033 The Beast
+034 SteppingPhsr
+035 LivingInSync
+036 PhazeWahClav
+037 Rippling
+038 Rhodes Trem
+039 Rocker Org
+040 Cutter>ModWh
+041 Queen V
+042 Flyin' High
+043 Soft Nylon
+044 Don't Jump
+045 RockPiano Ch
+046 St. Choir
+047 Galactic
+048 Phaser Dyno
+049 Andreas Cave
+050 ChmbrQuartet
+051 Plug n' Play
+052 Agent X
+053 Lo-fi Sweep
+054 2ndRateChord
+055 Creamy Bass
+056 Phunky DC
+057 Suite Combo
+058 JupiterHorns
+059 Talking Box
+060 Piano+SftPad
+061 8VCO MonoSyn
+062 Double Steel
+063 Cutter Clav
+064 Prelude
+065 Wurlie
+066 TB Squelch
+067 The Ganges
+068 British B
+069 Power Stack
+070 Predator 2
+071 Moonchimes
+072 Ooh)Aah Mod
+073 PercInterval
+074 Vocals: Boys
+075 Fat Strings
+076 Str&Brs Orch
+077 ChamberPlyrs
+078 Glass Orbit
+079 The Andes
+080 ClassicJPpad
+081 FullSt Brass
+082 Punker
+083 Pop Bass
+084 Solo SoprSax
+085 Fat Rhodes
+086 X-mod Sweep
+087 XV DynoTenor
+088 Hybrid Nylon
+089 SquareBounce
+090 8-str F'less
+091 Big Bubbles
+092 SampleThe80s
+093 BOG
+094 96 Years
+095 LookMaNoFret
+096 X-mod Reso
+097 SkinnyBounce
+098 Tap Bass
+099 Brite Vox 1
+100 Brass Tubes
+101 80s Retrosyn
+102 MountainFolk
+103 Soaring Sync
+104 Analogical
+105 MinorIncidnt
+106 Slap Timps
+107 Comp'Steel
+108 Reel Slam
+109 Adrenaline
+110 Choir Bounce
+111 Jet Voxs
+112 Halographix
+113 3PartInventn
+114 Retro Rhodes
+115 Slap Bass 3
+116 Guttural
+117 Blades
+118 Nasal Spray
+119 Synergistic
+120 Dragnet
+121 5th Atm /Aft
+122 AmbiPizza
+123 GR700 Pad
+124 Tape Strings
+125 Soaring Saws
+126 Temple of JV
+127 Alternative
+128 Sun Dive
+#PrA
+001 128voicePno
+002 Bright Piano
+003 Classique
+004 Nice Piano
+005 Piano Thang
+006 Power Grand
+007 House Piano
+008 E.Grand
+009 MIDIed Grand
+010 Piano Blend
+011 West Coast
+012 PianoStrings
+013 Bs/Pno+Brs
+014 Waterhodes
+015 S.A.E.P.
+016 SA Rhodes 1
+017 SA Rhodes 2
+018 Stiky Rhodes
+019 Dig Rhodes
+020 Nylon EPiano
+021 Nylon Rhodes
+022 Rhodes Mix
+023 PsychoRhodes
+024 Tremo Rhodes
+025 MK-80 Rhodes
+026 MK-80 Phaser
+027 Delicate EP
+028 Octa Rhodes1
+029 Octa Rhodes2
+030 JV Rhodes+
+031 EP+Mod Pad
+032 Mr.Mellow
+033 Comp Clav
+034 Klavinet
+035 Winger Clav
+036 Phaze Clav 1
+037 Phaze Clav 2
+038 Phuzz Clav
+039 Chorus Clav
+040 Claviduck
+041 Velo-Rez Clv
+042 Clavicembalo
+043 Analog Clav1
+044 Analog Clav2
+045 Metal Clav
+046 Full Stops
+047 Ballad B
+048 Mellow Bars
+049 AugerMentive
+050 Perky B
+051 The Big Spin
+052 Gospel Spin
+053 Roller Spin
+054 Rocker Spin
+055 Tone Wh.Solo
+056 Purple Spin
+057 60's LeadORG
+058 Assalt Organ
+059 D-50 Organ
+060 Cathedral
+061 Church Pipes
+062 Poly Key
+063 Poly Saws
+064 Poly Pulse
+065 Dual Profs
+066 Saw Mass
+067 Poly Split
+068 Poly Brass
+069 Stackoid
+070 Poly Rock
+071 D-50 Stack
+072 Fantasia JV
+073 Jimmee Dee
+074 Heavenals
+075 Mallet Pad
+076 Huff N Stuff
+077 Puff 1080
+078 BellVox 1080
+079 Fantasy Vox
+080 Square Keys
+081 Childlike
+082 Music Box
+083 Toy Box
+084 Wave Bells
+085 Tria Bells
+086 Beauty Bells
+087 Music Bells
+088 Pretty Bells
+089 Pulse Key
+090 Wide Tubular
+091 AmbienceVibe
+092 Warm Vibes
+093 Dyna Marimba
+094 Bass Marimba
+095 Nomad Perc
+096 Ethno Metals
+097 Islands Mlt
+098 Steelin Keys
+099 Steel Drums
+100 Voicey Pizz
+101 Sitar
+102 Drone Split
+103 Ethnopluck
+104 Jamisen
+105 Dulcimer
+106 East Melody
+107 MandolinTrem
+108 Nylon Gtr
+109 Gtr Strings
+110 Steel Away
+111 Heavenly Gtr
+112 12str Gtr 1
+113 12str Gtr 2
+114 Jz Gtr Hall
+115 LetterFrmPat
+116 Jazz Scat
+117 Lounge Gig
+118 JC Strat
+119 Twin Strats
+120 JV Strat
+121 Syn Strat
+122 Rotary Gtr
+123 Muted Gtr
+124 SwitchOnMute
+125 Power Trip
+126 Crunch Split
+127 Rezodrive
+128 RockYurSocks
+#PrB
+001 Dist Gtr 1
+002 Dist Gtr 2
+003 R&R Chunk
+004 Phripphuzz
+005 Grungeroni
+006 Black Widow
+007 Velo-Wah Gtr
+008 Mod-Wah Gtr
+009 Pick Bass
+010 Hip Bass
+011 Perc.Bass
+012 Homey Bass
+013 Finger Bass
+014 Nylon Bass
+015 Ac.Upright
+016 Wet Fretls
+017 Fretls Dry
+018 Slap Bass 1
+019 Slap Bass 2
+020 Slap Bass 3
+021 Slap Bass 4
+022 4 Pole Bass
+023 Tick Bass
+024 House Bass
+025 Mondo Bass
+026 Clk AnalogBs
+027 Bass In Face
+028 101 Bass
+029 Noiz Bass
+030 Super Jup Bs
+031 Occitan Bass
+032 Hugo Bass
+033 Multi Bass
+034 Moist Bass
+035 BritelowBass
+036 Untamed Bass
+037 Rubber Bass
+038 Stereoww Bs
+039 Wonder Bass
+040 Deep Bass
+041 Super JX Bs
+042 W<RED>-Bass
+043 HI-Ring Bass
+044 Euro Bass
+045 SinusoidRave
+046 Alternative
+047 Acid Line
+048 Auto TB-303
+049 Hihat Tekno
+050 Velo Tekno 1
+051 Raggatronic
+052 Blade Racer
+053 S&H Pad
+054 Syncrosonix
+055 Fooled Again
+056 Alive
+057 Velo Tekno 2
+058 Rezoid
+059 Raverborg
+060 Blow Hit
+061 Hammer Bell
+062 Seq Mallet
+063 Intentions
+064 Pick It
+065 Analog Seq
+066 Impact Vox
+067 TeknoSoloVox
+068 X-Mod Man
+069 Paz <==> Zap
+070 4 Hits 4 You
+071 Impact
+072 Phase Hit
+073 Tekno Hit 1
+074 Tekno Hit 2
+075 Tekno Hit 3
+076 Reverse Hit
+077 SquareLead 1
+078 SquareLead 2
+079 You and Luck
+080 Belly Lead
+081 WhistlinAtom
+082 Edye Boost
+083 MG Solo
+084 FXM Saw Lead
+085 Sawteeth
+086 Smoothe
+087 MG Lead
+088 MG Interval
+089 Pulse Lead 1
+090 Pulse Lead 2
+091 Little Devil
+092 Loud SynLead
+093 Analog Lead
+094 5th Lead
+095 Flute
+096 Piccolo
+097 VOX Flute
+098 Air Lead
+099 Pan Pipes
+100 Airplaaane
+101 Taj Mahal
+102 Raya Shaku
+103 Oboe mf
+104 Oboe Express
+105 Clarinet mp
+106 ClariExpress
+107 Mitzva Split
+108 ChamberWinds
+109 ChamberWoods
+110 Film Orch
+111 Sop.Sax mf
+112 Alto Sax
+113 AltoLead Sax
+114 Tenor Sax
+115 Baritone Sax
+116 Take A Tenor
+117 Sax Section
+118 Bigband Sax
+119 Harmonica
+120 Harmo Blues
+121 BluesHarp
+122 Hillbillys
+123 French Bags
+124 Majestic Tpt
+125 Voluntare
+126 2Trumpets
+127 Tpt Sect
+128 Mute TP mod
+#PrC
+001 Harmon Mute
+002 Tp&Sax Sect
+003 Sax+Tp+Tb
+004 Brass Sect
+005 Trombone
+006 Hybrid Bones
+007 Noble Horns
+008 Massed Horns
+009 Horn Swell
+010 Brass It!
+011 Brass Attack
+012 Archimede
+013 Rugby Horn
+014 MKS-80 Brass
+015 True ANALOG
+016 Dark Vox
+017 RandomVowels
+018 Angels Sing
+019 Pvox Oooze
+020 Longing...
+021 Arasian Morn
+022 Beauty Vox
+023 Mary-AnneVox
+024 Belltree Vox
+025 Vox Panner
+026 Spaced Voxx
+027 Glass Voices
+028 Tubular Vox
+029 Velo Voxx
+030 Wavox
+031 Doos
+032 Synvox Comps
+033 Vocal Oohz
+034 LFO Vox
+035 St.Strings
+036 Warm Strings
+037 Somber Str
+038 Marcato
+039 Bright Str
+040 String Ens
+041 TremoloStrng
+042 Chambers
+043 ViolinCello
+044 Symphonique
+045 Film Octaves
+046 Film Layers
+047 Bass Pizz
+048 Real Pizz
+049 Harp On It
+050 Harp
+051 JP-8 Str 1
+052 JP-8 Str 2
+053 E-Motion Pad
+054 JP-8 Str 3
+055 Vintage Orch
+056 JUNO Strings
+057 Gigantalog
+058 PWM Strings
+059 Warmth
+060 ORBit Pad
+061 Deep Strings
+062 Pulsify
+063 Pulse Pad
+064 Greek Power
+065 Harmonicum
+066 D-50 Heaven
+067 Afro Horns
+068 Pop Pad
+069 Dreamesque
+070 Square Pad
+071 JP-8 Hollow
+072 JP-8Haunting
+073 Heirborne
+074 Hush Pad
+075 Jet Pad 1
+076 Jet Pad 2
+077 Phaze Pad
+078 Phaze Str
+079 Jet Str Ens
+080 Pivotal Pad
+081 3D Flanged
+082 Fantawine
+083 Glassy Pad
+084 Moving Glass
+085 Glasswaves
+086 Shiny Pad
+087 ShiftedGlass
+088 Chime Pad
+089 Spin Pad
+090 Rotary Pad
+091 Dawn 2 Dusk
+092 Aurora
+093 Strobe Mode
+094 Albion
+095 Running Pad
+096 Stepped Pad
+097 Random Pad
+098 SoundtrkDANC
+099 Flying Waltz
+100 Vanishing
+101 5th Sweep
+102 Phazweep
+103 Big BPF
+104 MG Sweep
+105 CeremonyTimp
+106 Dyno Toms
+107 Sands ofTime
+108 Inertia
+109 Vektogram
+110 Crash Pad
+111 Feedback VOX
+112 Cascade
+113 Shattered
+114 NextFrontier
+115 Pure Tibet
+116 Chime Wash
+117 Night Shade
+118 Tortured
+119 Dissimilate
+120 Dunes
+121 Ocean Floor
+122 Cyber Space
+123 Biosphere
+124 Variable Run
+125 Ice Hall
+126 ComputerRoom
+127 Inverted
+128 Terminate
+#PrD
+001 Echo Piano
+002 Upright Pno
+003 RD-1000
+004 Player's EP
+005 D-50 Rhodes
+006 Innocent EP
+007 Echo Rhodes
+008 See-Thru EP
+009 FM BellPiano
+010 Ring E.Piano
+011 Soap Opera
+012 Dirty Organ
+013 Surf's Up!
+014 Organesque
+015 pp Harmonium
+016 PieceOfCheez
+017 Harpsy Clav
+018 Exotic Velo
+019 HolidayCheer
+020 Morning Lite
+021 Prefab Chime
+022 Belfry Chime
+023 Stacc.Heaven
+024 2.2 Bell Pad
+025 Far East
+026 Wire Pad
+027 PhaseBlipper
+028 Sweep Clav
+029 Glider
+030 Solo Steel
+031 DesertCrystl
+032 Clear Guitar
+033 Solo Strat
+034 Feed Me!
+035 Tube Smoke
+036 Creamy
+037 Blusey OD
+038 Grindstone
+039 OD 5ths
+040 East Europe
+041 Dulcitar
+042 Atmos Harp
+043 Pilgrimage
+044 202 Rude Bs
+045 2pole Bass
+046 4pole Bass
+047 Phaser MC
+048 Miniphaser
+049 Acid TB
+050 Full Orchest
+051 Str + Winds
+052 Flute 2080
+053 Scat Flute
+054 Sax Choir
+055 Ballad Trump
+056 Sm.Brass Grp
+057 Royale
+058 Brass Mutes
+059 Breathy Brs
+060 3 Osc Brass
+061 P5 Polymod
+062 Triumph Brs
+063 Techno Dream
+064 Organizer
+065 Civilization
+066 Mental Chord
+067 House Chord
+068 Sequalog
+069 Booster Bips
+070 VintagePlunk
+071 Plik-Plok
+072 RingSequence
+073 Cyber Swing
+074 Keep :-)
+075 Resojuice
+076 B'on d'moov!
+077 Dist TB-303
+078 Temple of JV
+079 Planet Asia
+080 Afterlife
+081 Trancing Pad
+082 Pulsatronic
+083 Cyber Dreams
+084 Warm Pipe
+085 Pure Pipe
+086 SH-2000
+087 X..? Whistle
+088 Jay Vee Solo
+089 Progresso Ld
+090 Adrenaline
+091 Enlighten
+092 Glass Blower
+093 Earth Blow
+094 JX SqrCarpet
+095 Dimensional
+096 Jupiterings
+097 Analog Drama
+098 Rich Dynapad
+099 Silky Way
+100 Gluey Pad
+101 BandPass Mod
+102 Soundtraque
+103 Translucence
+104 Darkshine
+105 D'light
+106 December Sky
+107 Octapad
+108 JUNO Power!
+109 Spectrum Mod
+110 Stringsheen
+111 GR500 TmpDly
+112 Mod DirtyWav
+113 Silicon Str
+114 D50FantaPerc
+115 Rotodreams
+116 Blue Notes
+117 RiversOfTime
+118 Phobos
+119 2 0 8 0
+120 Unearthly
+121 Glistening
+122 Sci-Fi Str
+123 Shadows
+124 Helium Queen
+125 Sci-Fi FX x4
+126 Perky Noize
+127 Droplet
+128 Rain Forest
+#PrE
+001 Grand XV
+002 Contemplate
+003 Rock Piano
+004 RockPiano Ch
+005 Pianomonics
+006 Piano+SftPad
+007 WarmVoxPiano
+008 Y2K Concerto
+009 Piano+AirPad
+010 ChoraLeader
+011 SparklePiano
+012 Retro Rhodes
+013 Fat Rhodes
+014 Rhodes Trem
+015 Phaser Dyno
+016 Hit Rhodes
+017 Sweet Tynes
+018 Pluk Rhodes
+019 Rhodes Trip
+020 AmbiRhodes
+021 Rholitzer
+022 Wurlie
+023 FM Delight
+024 Cutter Clav
+025 Mute Clav D6
+026 PhazeWahClav
+027 St.Harpsichd
+028 3PartInventn
+029 Soft Perky
+030 Fullness
+031 Paleface 1
+032 Paleface 2
+033 Soft B
+034 British B
+035 Rocker Org
+036 Split B
+037 PercInterval
+038 Happy 60s
+039 96 Years
+040 Glory Us Rok
+041 Church Harmn
+042 Cathdr Harmn
+043 Morph Pad
+044 Air Pad
+045 Soft Padding
+046 Warmth Pad
+047 ClassicJPpad
+048 Jupiter Str
+049 Fat Pad
+050 GR700 Pad
+051 Paradise
+052 Moonchimes
+053 SusPed Swap
+054 PhasingPad
+055 Ethereal Str
+056 Velcropad
+057 NothrnLights
+058 Sun Dive
+059 Brite Vox 1
+060 Brite Vox 2
+061 Ooh)Aah Mod
+062 Vocals: Ooh
+063 Vocals: Scat
+064 Vocals: Boys
+065 St. Choir
+066 SampleThe80s
+067 Sacred Tree
+068 VP330 OctEko
+069 XV Strings
+070 Fat Strings
+071 Dolce p/m/f
+072 Sad Strings
+073 Lush Strings
+074 Strings4Film
+075 Marcato Str
+076 End Titles
+077 ChmbrQuartet
+078 ChamberSect.
+079 FullChmbrStr
+080 Tape Strings
+081 Henry VIII
+082 Prelude
+083 Str&Brs Orch
+084 Hornz
+085 TudorFanfare
+086 ChamberPlyrs
+087 Flute/Clari
+088 Orch Reeds
+089 Dual Flutes
+090 Jazzer Flute
+091 LegatoBamboo
+092 Ambience Flt
+093 The Andes
+094 Deja Vlute
+095 Simply Brass
+096 FullSt Brass
+097 Dragnet
+098 NewR&RBrass
+099 Tower Trumps
+100 BigBrassBand
+101 Lil'BigHornz
+102 VoyagerBrass
+103 Symph Horns
+104 Trombone Atm
+105 XV Trombone
+106 XV Trumpet
+107 JupiterHorns
+108 Solo SoprSax
+109 Solo AltoSax
+110 XV DynoTenor
+111 Honker Bari
+112 Full Saxz
+113 Soaring Hrns
+114 Glass Orbit
+115 5th Atm /Aft
+116 Lo-fi Sweep
+117 Modular Life
+118 Oscillations
+119 Combing
+120 Rolling 5ths
+121 Analogue Str
+122 Lunar Strngs
+123 BPFsweep Mod
+124 Queen V
+125 SkinnyBounce
+126 SquareBounce
+127 Galactic
+128 Powerwiggle
+#PrF
+001 80s Retrosyn
+002 Power Stack
+003 Don't Jump
+004 Big Bubbles
+005 X-mod Sweep
+006 Bag O' Bones
+007 AirSoThin
+008 Analogical
+009 Waspy Pulse
+010 Soaring Saws
+011 Square Roots
+012 BOG
+013 Talking Box
+014 Retro Lead
+015 LivingInSync
+016 Leads United
+017 Dirty Sync
+018 DistortaSync
+019 Blistering
+020 Guttural
+021 Flyin' High
+022 Soft Tooth
+023 Soaring Sqr
+024 Soaring Sync
+025 Nasal Spray
+026 Lamb Lead
+027 Creamer
+028 Sine System
+029 Soft Nylon
+030 Nylozzicato
+031 Mutezzicato
+032 Hybrid Nylon
+033 XV SteelGt 1
+034 XV SteelGt 2
+035 Comp'Steel
+036 Double Steel
+037 Folk Guitar
+038 SpanishNight
+039 Plug n' Play
+040 Fab 4 Guitar
+041 Searing Lead
+042 Punker
+043 LouderPlease
+044 XV Upright
+045 XV Ac.Bass
+046 LookMaNoFret
+047 XV Fretless
+048 Basic F'less
+049 8-str F'less
+050 Tap Bass
+051 Pop Bass
+052 P.Bs Chorus
+053 TremCho Bs
+054 Creamy Bass
+055 Buster Bass
+056 TB Squelch
+057 Ticker Bass
+058 Muscle Bass
+059 Grounded Bs
+060 West End Bs
+061 Snap Bass
+062 700 Bassboy
+063 8VCO MonoSyn
+064 ResoMoist Bs
+065 Kickin' Bass
+066 Sub Zero
+067 Liquid Bass
+068 Hefty Bass
+069 Severe Ow Bs
+070 Chime Bells
+071 Celestabox
+072 Brass Tubes
+073 Dreams East
+074 Synergistic
+075 Andreas Cave
+076 AmbiPizza
+077 Voxy Nylon
+078 EastrnEurope
+079 Celtic Harp
+080 Reso Sitar
+081 The Ganges
+082 MountainFolk
+083 Byzantine
+084 AsiaPlectrum
+085 VelHarp)Harm
+086 Pluckaphone
+087 Slap Timps
+088 Suite Combo
+089 Jet Voxs
+090 Dirty Hit
+091 MOVE!
+092 Reel Slam
+093 OffTheRecord
+094 2ndRateChord
+095 RageInYouth
+096 MinorIncidnt
+097 Phunky DC
+098 Agent X
+099 Winky
+100 Looney 2nz
+101 Shortrave
+102 DeeperBeeper
+103 Percolator
+104 Filter Morph
+105 Choir Bounce
+106 Rippling
+107 SteppingPhsr
+108 Trance Fair
+109 GermanBounce
+110 Acid JaZZ
+111 Cutter>ModWh
+112 Blades
+113 Mad Bender
+114 Shapeshifter
+115 ForestMoon
+116 Predator 2
+117 Dark Side
+118 The Beast
+119 X-mod Reso
+120 Planet Meta
+121 Nexus
+122 Halographix
+123 Moon Rise
+124 Gruvacious
+125 Windy Dunes
+126 Ice Blasts
+127 Ringy Thingy
+128 Atmospherics
+#GM2

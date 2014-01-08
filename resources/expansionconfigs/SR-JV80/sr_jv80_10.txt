@@ -1,0 +1,205 @@
+SR-JV80-10 BASS and DRUM
+001 Marcus 3way
+002 MM Slap/Hrm
+003 MM Fat Slap
+004 Miller Pop
+005 MM Dynathumb
+006 Abe Sr. 4wat
+007 AL 3way/Nz
+008 AL 3way P Bs
+009 Abe Limiter
+010 Space Bass
+011 Hyper Funk
+012 Abe's Thumbs
+013 AL Dark Slap
+014 Poppin' Abe
+015 John P. w/Nz
+016 John P. w/Nz
+017 JP Chorus Bs
+018 6StringThing
+019 Mondo Johndo
+020 JP Flat Slap
+021 JP Brite Sla
+022 JP Fing+Slap
+023 Solo Fretles
+024 MM FretnotBs
+025 Marcus OctFl
+026 MM FrtlsBend
+027 MM Smooth Fl
+028 MM Weathery
+029 Abe's Fretls
+030 AL Fernch Ch
+031 AL Layer Fls
+032 AL Fls Solo
+033 JP 6Str Fls
+034 JP Solo Fls
+035 John's OctFl
+036 B-Motional
+037 Weather Frls
+038 AcoustiTouch
+039 JP Soft A.Bs
+040 JP Hard A.Bs
+041 Ac.Bs. Club
+042 Dry Acoustic
+043 Hybrid Wood
+044 John's Rock
+045 Pick Up
+046 JP Rock Pick
+047 Dark Pick
+048 JP Rock+Slap
+049 JP Rock Fls
+050 Velo Rock Bs
+051 JP P.Bass 1
+052 JP P.Bass 2
+053 JP P.Bass 3
+054 JP P.Bass 4
+055 Dyno Ballad
+056 Velo Fingers
+057 Ch. Fingers
+058 StudioMellow
+059 Fat Fingers
+060 Toucht Bass
+061 Abe's P.Bass
+062 AL Solid Fng
+063 AL 2way Fng
+064 AbeSoftBs/Nz
+065 Abe Latin Bs
+066 AL Latin Ch.
+067 AL Fat Latin
+068 AL Old Soul
+069 AL Mellow
+070 Marcus Jazz
+071 MM Jazz Ch.
+072 MM Jazz Bs
+073 Marcus Mute
+074 Bright Pick
+075 Garden Party
+076 Phaser Mute
+077 MM Dry Mute
+078 MM Hip-Hop
+079 Wild Thang
+080 Distorted Bs
+081 Rock Phaser
+082 Mod.Fuzz Bs
+083 Sticky Bass
+084 Abe Flangpop
+085 Mutey SynBs
+086 Funkin'WahBs
+087 T-Wow Fretls
+088 T-Wow Slappy
+089 Bass SOLO!!
+090 Refretter
+091 Bass Harmos
+092 Marcus Harms
+093 Harmonicus
+094 Tune Up
+095 Harm Up
+096 Harm Down
+097 Harm A#9
+098 Harm Eb#9
+099 Harm E+11
+100 Harm E69
+101 SlidesNoise
+102 All Slides
+103 All Noises
+104 Ac.Bs Noises
+105 Kick Menu
+106 Snare Menu 1
+107 Snare Menu 2
+108 Snare Menu 3
+109 Hi-Hat Menu
+110 Tom-Tom Menu
+111 Cymbals Menu
+112 Drum LP Demo
+113 Sweeping LPs
+114 Lo-Fi Loops
+115 AmbGrv/Bs 90
+116 SlapHappy 90
+117 PlayC4Fun 90
+118 Flanged 112
+119 BW Jz 6/8 52
+120 BW Brush 66
+121 AL Slam 66
+122 AL Whack 76
+123 AL Grunge 84
+124 BW Swamp 90
+125 BW Latin 102
+126 BW Fusion112
+127 AL Funk 120
+128 AL Shuff.126
+129 Fat Rock KIT
+130 Ringer KIT
+131 DynaPicc.KIT
+132 Whammer KIT
+133 BigBalladKIT
+134 Fat PunchKIT
+135 Fat Funk KIT
+136 Garage KIT
+137 Rock On KIT
+138 Natural KIT
+139 Pitched KIT
+140 Basher KIT
+141 Edgy KIT
+142 FAT Comp.KIT
+143 FAT & Tight
+144 Studio KIT
+145 Tight FunKIT
+146 TightPiccKIT
+147 Dry DanceKIT
+148 R&B KIT
+149 DynoSnareKIT
+150 Room Toms
+151 Natural Toms
+152 Soft Toms
+153 Big Toms Dry
+154 Big Toms Wet
+155 Ringer Snare
+156 Loud Ring Sn
+157 Live Piccolo
+158 Wet Piccolo
+159 Natural Crak
+160 Natural Verb
+161 Natural Bryt
+162 Dry Ringer
+163 Rock On Room
+164 Rock On Wet
+165 FAT Impact
+166 Nice Ballad
+167 Huge FAT Snr
+168 Warm Room Sn
+169 Warm Verb Sn
+170 Dry FAT Sn
+171 FAT Hall Sn
+172 Funk Sn Dry
+173 Funk Sn Room
+174 Natural Ping
+175 Room Ping
+176 Dance Snr 1
+177 Dance Snr 2
+178 Kick&Cym 1/2
+179 Kick&Cym 1/4
+180 Kick&Cym 2
+181 Butt Kicker
+182 Kick&Cym 2/3
+183 Kick&Cym 2/8
+184 Kick&Cym 3
+185 Kick&Cym 4
+186 Kick&Cym 5
+187 Kick&Cym 6
+188 Kick&Cym 7
+189 Kick&Cym 6/8
+190 Kick&Cym 8
+191 Kick&Cym 8/2
+192 Kick&Cym 9
+193 KickCym 9/6
+194 Kick&Cym 10
+195 Kick&Cym 11
+196 Kick&Cym 12
+197 Kik&Cym11/12
+198 Kick&Cym12/4
+199 Lo-Fi Kick
+200 18"Hi-Hats1
+201 18"Hi-Hats2
+202 16"Hi-Hats1
+203 16"Hi-Hats2
+204 CR-78 Hi-Hat

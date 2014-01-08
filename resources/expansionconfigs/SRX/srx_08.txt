@@ -1,0 +1,449 @@
+SRX-08 Platinum Trax
+1 Autopilot
+2 ElasticHouse
+3 Smash Beat
+4 SawPortaLead
+5 Pure Bass
+6 Jazz Parrotz
+7 Nicer Slicer
+8 Masssive
+9 Trance Line1
+10 Subtle Pads
+11 Look Back
+12 VesperTONE
+13 Hit&FX Menu
+14 Crowd
+15 Hop Chop SRX
+16 Skid
+17 Predator
+18 Scream! SRX
+19 8 BPM
+20 X-Tronic SRX
+21 Trans SRX
+22 AcidRiff
+23 FullHous SRX
+24 Funk E
+25 Le Punk
+26 TekOp SRX
+27 Cauldron
+28 Punken
+29 Blitzkrieg
+30 Hauln
+31 Antenna
+32 Barry
+33 Slipn
+34 UndrTheStair
+35 Slam
+36 Only Human
+37 BAD
+38 Drama
+39 Mon
+40 McSick
+41 Meanstreet
+42 Meow
+43 Blvd
+44 Coder
+45 iROBOT
+46 Lifeform
+47 Haiti
+48 Hiphouse
+49 OW!
+50 CHI
+51 Miami
+52 Swing
+53 ObsessionSRX
+54 PJ
+55 Sky
+56 Aerosol Can
+57 Triggroove
+58 De Final CUT
+59 Chemiclspill
+60 DerangedBeat
+61 Cubit Dance
+62 Multi Level
+63 Random Beat
+64 Sonic Beat
+65 Fuzzy Wuzzy
+66 Cyclone
+67 Electrolux
+68 Bongo Congo
+69 Tricky Beat
+70 Windmill
+71 SlamSymphony
+72 Time Pulse
+73 TrainAComin
+74 House Rules
+75 Mother Ship
+76 YankyDoodlDo
+77 Elven Kbds
+78 DnB SRX
+79 Beat Menu 1
+80 Beat Menu 2
+81 TarzanBottom
+82 Subporter
+83 Subsonics
+84 Sub Bass
+85 HiLo/Mod
+86 Bass Ment 1
+87 Bass Ment 2
+88 TB SawBs SRX
+89 TB OwBs SRX
+90 Acidic Testz
+91 Talk Bass
+92 VocoBass SRX
+93 Massive Bass
+94 TB Sqr SRX
+95 SQR Reso Bs
+96 SH-5 Synbass
+97 Juno Bs SRX
+98 SlippyBs SRX
+99 Arrpy Bs SRX
+100 TB / SRX
+101 TB-notTB SRX
+102 Si<n>ck Bass
+103 Deep Fat Bas
+104 7 bit bass
+105 DistortObass
+106 Double Bass
+107 Killer Bass
+108 Dancer Bass
+109 Rave Bass
+110 Big Bad Bass
+111 Fat FM Bass
+112 JackYourBody
+113 Solid Bs SRX
+114 Thick Bass
+115 Deep Bass 2
+116 Bassamatazz
+117 Juno 6 Bass
+118 Da JuBs SRX
+119 Fizzle Bass
+120 Ringin` bass
+121 No Rez 4 You
+122 Boomer
+123 OrgAtk Bass
+124 WahBassMod X
+125 LFO SqrBass
+126 FallBend Bs
+127 Hocket Bass
+128 FatBs / SRX
+129 LoFi A.BsSRX
+130 ProcesBs SRX
+131 Solo flight
+132 Euro mix SRX
+133 Nitty Gritty
+134 Alias Lead
+135 Old Fi
+136 Dist-O-Matic
+137 Lead Dirt
+138 RetroRave
+139 Skreech Lead
+140 Outrage
+141 HipassTB SRX
+142 TB Squared
+143 TB Saw
+144 DistortedSaw
+145 Nail Driver
+146 Nasty
+147 Dance Baby
+148 5th Rave
+149 Auto
+150 Sine me in
+151 SoloSin SRX1
+152 SoloSin SRX2
+153 Piccolo solo
+154 Ana Flt SRX
+155 JUResLd SRX1
+156 Med Solo SRX
+157 MilkyWay SRX
+158 Shalot SRX
+159 3D Lead
+160 JUResLd SRX2
+161 Gringeley
+162 EuroSteroidz
+163 Operator
+164 NeverStopRvn
+165 TheSteamRoks
+166 TechnoAttack
+167 Formantz
+168 SRX Talker
+169 Nanite Pops
+170 TechnoAmbint
+171 Ringywig
+172 OrganOran
+173 Piddlee-Dee
+174 Cool Beam
+175 First Synth
+176 Santaz House
+177 Sub Melodic
+178 Landing Crew
+179 Chime Blocks
+180 Chordon Bleu
+181 Porter Rix
+182 PhenomenaSRX
+183 Club Hit
+184 ChrdMaj7 SRX
+185 ChrdMin7 SRX
+186 CordintheAct
+187 MetroPoly
+188 Lava Flow
+189 Panorama
+190 Nautilus
+191 Sliced Bread
+192 Time Machine
+193 Ana Logic
+194 Bass & More
+195 In The Lab
+196 Galaxia
+197 Charmer
+198 BrainWaveSRX
+199 Replicants
+200 Speak Delay
+201 Location
+202 Cyber SRX
+203 EtheraltySRX
+204 IceDream SRX
+205 UpperStepper
+206 Padestrians
+207 Starlite XV
+208 Trance Line2
+209 Eurosynth
+210 Fat JP
+211 EuroDnc SRX1
+212 EuroDnc SRX2
+213 XpressiveSRX
+214 Organ-ized
+215 Juno Pluck
+216 Juno Plucked
+217 Rubberized
+218 Intense Vibe
+219 Intense Euro
+220 Generation e
+221 NewSkool s
+222 SyncDiffrent
+223 Kill Eyeopee
+224 FM Ringer
+225 Live at 5
+226 Octo
+227 Alpha Fizz
+228 FunkyJunoHrp
+229 Steel Piano
+230 Velorez 0
+231 JU Keys SRX
+232 Euronal Syn
+233 Daft
+234 Neurotic Syn
+235 Deep Forest
+236 Pip Square
+237 Funky Pluck
+238 Tight TB
+239 Saw Yr Point
+240 Shortsawz
+241 Tropical Syn
+242 JU Pluck SRX
+243 TB AtkDst
+244 Amber
+245 Vox Switcher
+246 Juno Strings
+247 DetuneSawStr
+248 Wavebreaker
+249 Vintage Pad
+250 Glitz
+251 Discrete
+252 VntageRevSRX
+253 Explore SRX
+254 AfterPad SRX
+255 Euro Strings
+256 Powder
+257 JU&JP PhsSRX
+258 Lost In Time
+259 Europad
+260 Avalon SRX
+261 Dreames SRX
+262 SirenSng SRX
+263 CricketChoir
+264 TV Drama
+265 Elven Times
+266 TwilightPad
+267 WarmerPd SRX
+268 SoftStrngSRX
+269 AlphaWavePad
+270 Micromusic
+271 LitleDowners
+272 Fulcanelli
+273 Galaxial
+274 It's Outside
+275 Alien Life
+276 Prey
+277 Transender
+278 Steel Drone
+279 Trissle
+280 Dimensions
+281 TuneBrethSRX
+282 Sonic Saucer
+283 Alter Native
+284 Evolution
+285 Outer Space
+286 Hyperspace
+287 WhaleUnitSRX
+288 Orcafreq SRX
+289 CrepedOutSRX
+290 Bombay Drone
+291 Fathoms SRX
+292 MothrshipSRX
+293 Cleansers
+294 Vinylprelude
+295 Turbine SRX
+296 Thrilling
+297 Bada Boing
+298 Confused
+299 Revolution#9
+300 Bugstep Noot
+301 Crotals
+302 Big Bang *
+303 South Sahara
+304 MunchiesPt
+305 AlternSawSRX
+306 ElctroJamSRX
+307 Zaps
+308 B-Movie
+309 ScientistSRX
+310 Siren
+311 Sliderz SRX
+312 Krashead
+313 Iron Hit SRX
+314 DrumMeltDown
+315 TR Synhit
+316 Pit People
+317 Mad RHyThM
+318 ModrnLifeSRX
+319 BigBang SRX
+320 GateKeperSRX
+321 UndrWaterSRX
+322 TheWetSet
+323 DJ stuff SRX
+324 Skratchy SRX
+325 RPM SRX
+326 3D Turntable
+327 RadioBrekSRX
+328 Faze Gt&Bass
+329 Hse Stb
+330 Full Force
+331 Soho Clubs
+332 GarageChdSRX
+333 Crap Stab
+334 2am-am
+335 Hit&Run SRX
+336 HIT in face
+337 LoFiHits SRX
+338 Next Stab
+339 Brazzer LoFi
+340 Big Stab SRX
+341 's Tpt SRX
+342 BrsFall SRX
+343 Slammer
+344 Tribal Disco
+345 DiscoStr Hit
+346 Break HIT
+347 Cwisp SRX
+348 NYC Club SRX
+349 Tape Stops
+350 LoFi Subsine
+351 Maj/Min /
+352 Techno Logic
+353 Slam Hit
+354 Image BOOOM!
+355 Keep Clubing
+356 Techno Riff1
+357 MySweetHouse
+358 LateNiteTunz
+359 Moody Vibes
+360 Exit 2
+361 Massive
+362 Techno Riff2
+363 Metalsmith
+364 Meteor Pelt
+365 China White
+366 NewTech D&B
+367 Water Plug
+368 Tribal Steel
+369 Tech Pno SRX
+370 LightPno SRX
+371 s Pno SRX
+372 1FingrPnoSRX
+373 Pf/Key Menu
+374 Substitute
+375 HiphopEP SRX
+376 Assembled
+377 MelowTremSRX
+378 EchoRhds SRX
+379 GaragesSRX
+380 Wurlpool
+381 Lo Fi Wurli
+382 Dance Organ
+383 Juno Org SRX
+384 Clubed Organ
+385 Pop B
+386 Vel Syn Org
+387 SpenderOrgan
+388 Tines&Wheels
+389 Thick Organ
+390 1FingrOrgSRX
+391 Shorty Organ
+392 1FingrShrOrg
+393 Clav-ClubSRX
+394 DanceClavSRX
+395 CeremonyBell
+396 AnaBells SRX
+397 Guitar Stuff
+398 WahWahMelSRX
+399 GTRPowerSRX1
+400 GTRPowerSRX2
+401 FakeHead Hit
+402 Distinctive
+403 Gtr&BassMenu
+404 Pizz Xpress
+405 Tek Pizz SRX
+406 Stringy Stab
+407 CSBrass
+408 Fat Brass
+409 Talk Box SRX
+410 TekMusic SRX
+411 1.2.3.4. SRX
+412 4 x4 SRX
+413 Baby...? SRX
+414 Vox Menu 1
+415 Vox Menu 2
+416 MelodicDrums
+417 Drumpeopled1
+418 Drumpeopled2
+419 Drumpeopled3
+420 KitTek.drmFX
+421 Hardcore Hit
+422 Kick Menu 1
+423 Kick Menu 2
+424 Kick Menu 3
+425 Snare Menu 1
+426 Snare Menu 2
+427 Snare Menu 3
+428 Snare Menu 4
+429 Snare Menu 5
+430 HiHat Menu 1
+431 HiHat Menu 2
+432 HH&Cym Menu
+433 Cymbal Menu
+434 Tom Menu
+435 Clap Menu
+436 Chord
+437 Conga 3D
+438 Slow Chimes
+439 Dirty Sox
+440 ExtremPercus
+441 Pure Tribal
+442 TeknoTriangl
+443 Tamb&SkrMenu
+444 Cow&Rim Menu
+445 Perc Menu 1
+446 Perc Menu 2
+447 Perc Menu 3
+448 Perc Menu 4

@@ -1,0 +1,13 @@
+SRX-97 Jon Lord's Rock Organ
+1 HardLead ORG
+2 HardRock ORG
+3 In Time ORG
+4 SuperDistORG
+5 SuperDistLd1
+6 SuperDiskLd2
+7 VeloRock ORG
+8 VK Rock ORG
+9 Comp DistORG
+10 OD-1 DistORG
+11 RadioDistORG
+12 ModDelayORG

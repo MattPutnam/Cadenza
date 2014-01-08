@@ -1,0 +1,79 @@
+SRX-98 Analog Essentials
+1 RealAnaSaw
+2 FullAnaSaw
+3 Forever
+4 StringsEns
+5 DryMG Lead
+6 EPw/GtrAMP
+7 TrancySaw1
+8 Distorted
+9 Sweep Saw
+10 MG Bass 1
+11 Dist Saw
+12 C-Piano
+13 Retro Flt
+14 UnisonSaws
+15 90’s EP
+16 SawBrs2006
+17 LoFi Ambi
+18 Saw Lead
+19 MagicPiano
+20 Synth Key
+21 SquLead 06
+22 Old EP
+23 HimalayaFl
+24 Curse
+25 Echo EP
+26 Big Sect
+27 Flare Pad
+28 MG Bass 2
+29 MG SawLead
+30 Dry Str
+31 Poly Synth
+32 Blue EP
+33 Reso Bass
+34 DetuneBrs
+35 5th EP Pad
+36 SquareBass
+37 Hybrid Str
+38 Old Phaser
+39 SuperSaw 1
+40 Pluck Clav
+41 101 Bass
+42 Solo Sine
+43 Arie EP
+44 SftDist Ld
+45 Tre EP
+46 Vinyl Str
+47 Cave 2006
+48 Motion
+49 JP8 Square
+50 Creation
+51 Super-S
+52 Saw Brass
+53 Phase EP
+54 Phase Bs
+55 SuperSaw2
+56 TrancySaw2
+57 POP EP
+58 Treck Pad
+59 Dyno Str
+60 JP8 SquPad
+61 Phase Pad
+62 JP-8 Lead
+63 Tekno Bass
+64 Magma
+65 Old Days
+66 TapeEchoEP
+67 FlareSweep
+68 Sweep Saw2
+69 Saw Stack
+70 Retro Str
+71 EP w/SP
+72 StrMachine
+73 Saw/SquPad
+74 Power Saws
+75 70’s EP
+76 Reso Lead
+77 Phase Saws
+78 Explosion

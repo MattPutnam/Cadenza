@@ -1,0 +1,42 @@
+SRX-01 Dynamic Drums
+01 Kick 1 Menu
+02 Kick 2 Menu
+03 Kick 3 Menu
+04 Kick 4 Menu
+05 OldFnkS Menu
+06 Latin S Menu
+07 HiPiccS Menu
+08 Tight S Menu
+09 StdRk1S Menu
+10 StdRk2S Menu
+11 OhBabyS Menu
+12 PoppinS Menu
+13 StdFatS Menu
+14 JazStkS Menu
+15 StdJazS Menu
+16 BalladS Menu
+17 PwrBldS Menu
+18 AlBeefS Menu
+19 BigRckS Menu
+20 70BrshS Menu
+21 JzBrshS Menu
+22 CrsStk Menu
+23 Latin T Menu
+24 Tight T Menu
+25 JazStkT Menu
+26 OldFnkT Menu
+27 OhBabyT Menu
+28 PwrBldT Menu
+29 BigRckT Menu
+30 OldBrsT Menu
+31 OhBabyH Menu
+32 JazStkH Menu
+33 Latin H Menu
+34 Disco H Menu
+35 OldFnkH Menu
+36 StreetH Menu
+37 BigRckH Menu
+38 OldBrsH Menu
+39 Crash Menu
+40 Ride Menu
+41 OthrCym Menu
