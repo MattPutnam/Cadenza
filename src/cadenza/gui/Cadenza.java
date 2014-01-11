@@ -266,6 +266,7 @@ public class Cadenza extends JFrame {
 		if (selected != null && selected.length > 0) {
 			final File file = selected[0];
 			_lastPath = file;
+			notifyRecent(file);
 			try {
 				@SuppressWarnings("resource")
 				final CadenzaFrame temp = new CadenzaFrame(loadFile(file));
@@ -284,8 +285,14 @@ public class Cadenza extends JFrame {
 		return CadenzaData.readFromXML(file);
 	}
 	
+	private static File getRecents() throws IOException {
+		if (!_RECENTS.exists())
+			_RECENTS.createNewFile();
+		return _RECENTS;
+	}
+	
 	private static List<File> loadRecents() throws IOException {
-		final List<String> paths = IOUtils.getLineList(_RECENTS);
+		final List<String> paths = IOUtils.getLineList(getRecents());
 		final List<File> result = new ArrayList<>();
 		for (final String path : paths) {
 			final File temp = new File(path);
@@ -299,7 +306,7 @@ public class Cadenza extends JFrame {
 	}
 	
 	private static void saveRecents(List<File> files) {
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(_RECENTS))) {
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(getRecents()))) {
 			for (final File file : files) {
 				writer.write(file.getAbsolutePath());
 				writer.newLine();
