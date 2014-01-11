@@ -433,10 +433,20 @@ public final class Scale implements Serializable {
 	private final List<PitchClass> _pitches;
 	private final int _size;
 	
+	/**
+	 * Creates a new Scale with the given name and array of PitchClass
+	 * @param name the name
+	 * @param pitches the set of pitches in the scale
+	 */
 	public Scale(String name, PitchClass... pitches) {
 		this(name, Arrays.asList(pitches));
 	}
 	
+	/**
+	 * Creates a new Scale with the given name and list of PitchClass
+	 * @param name the name
+	 * @param pitches the set of pitches in the scale
+	 */
 	public Scale(String name, List<PitchClass> pitches) {
 		_name = name;
 		_pitches = new ArrayList<>(pitches);
@@ -444,12 +454,22 @@ public final class Scale implements Serializable {
 		Collections.sort(_pitches);
 	}
 	
+	/**
+	 * Creates a new Scale with the given name and all of the pitches from the
+	 * given scale.  Useful for scales sharing the same notes, for example
+	 * C major and A minor.
+	 * @param name the name
+	 * @param scale the scale to copy pitches from
+	 */
 	public Scale(String name, Scale scale) {
 		_name = name;
 		_pitches = new ArrayList<>(scale._pitches);
 		_size = scale._size;
 	}
 	
+	/**
+	 * @return the name of this scale
+	 */
 	public String getName() {
 		return _name;
 	}
@@ -459,14 +479,29 @@ public final class Scale implements Serializable {
 		return _name;
 	}
 	
+	/**
+	 * Returns whether or not this Scale contains the given PitchClass
+	 * @param pitch the pitch class
+	 * @return whether or not this Scale contains <tt>pitch</tt>
+	 */
 	public boolean contains(PitchClass pitch) {
 		return _pitches.contains(pitch);
 	}
 	
+	/**
+	 * Returns whether or not this Scale includes the given Note
+	 * @param note the note
+	 * @return whether or not this Scale contains <tt>note</tt>
+	 */
 	public boolean contains(Note note) {
 		return _pitches.contains(note.getPitchClass());
 	}
 	
+	/**
+	 * Returns the next PitchClass in the Scale above the given one
+	 * @param pitch the pitch
+	 * @return the next PitchClass in the Scale above <tt>pitch</tt>
+	 */
 	public PitchClass next(PitchClass pitch) {
 		while (true) {
 			pitch = pitch.next();
@@ -475,6 +510,11 @@ public final class Scale implements Serializable {
 		}
 	}
 	
+	/**
+	 * Returns the next Note in the Scale above the given one
+	 * @param note the note
+	 * @return the next Note in the Scale above <tt>note>
+	 */
 	public Note next(Note note) {
 		while (true) {
 			note = note.next();
@@ -483,6 +523,11 @@ public final class Scale implements Serializable {
 		}
 	}
 	
+	/**
+	 * Returns the next PitchClass in the scale below the given one
+	 * @param pitch the pitch
+	 * @return the next PitchClass in the scale below <tt>pitch</tt>
+	 */
 	public PitchClass prev(PitchClass pitch) {
 		while (true) {
 			pitch = pitch.prev();
@@ -491,6 +536,11 @@ public final class Scale implements Serializable {
 		}
 	}
 	
+	/**
+	 * Returns the next Note in the scale below the given one
+	 * @param note the note
+	 * @return the next Note in the scale below <tt>note</tt>
+	 */
 	public Note prev(Note note) {
 		while (true) {
 			note = note.prev();
@@ -499,9 +549,18 @@ public final class Scale implements Serializable {
 		}
 	}
 	
-	public Note upDiatonic(Note note, int interval) {
+	/**
+	 * Finds the Note in the Scale which is the given interval above the given
+	 * note.  The interval is in terms of the notes of the scale, so 2 above C
+	 * in C blues is F.
+	 * @param note the base note
+	 * @param interval the interval
+	 * @return the Note in the Scale which is <tt>interval</tt> steps above
+	 * <tt>note</tt>
+	 */
+	public Note upDegrees(Note note, int interval) {
 		if (interval < 0)
-			return downDiatonic(note, interval);
+			return downDegrees(note, interval);
 		
 		while (interval > 0) {
 			note = note.next();
@@ -511,9 +570,18 @@ public final class Scale implements Serializable {
 		return note;
 	}
 	
-	public Note downDiatonic(Note note, int interval) {
+	/**
+	 * Finds the Note in the Scale which is the given interval below the given
+	 * note.  The interval is in terms of the notes of the scale, so 2 below C
+	 * in C blues is G.
+	 * @param note the base note
+	 * @param interval the interval
+	 * @return the Note in the Scale which is <tt>interval</tt> steps below
+	 * <tt>note</tt>
+	 */
+	public Note downDegrees(Note note, int interval) {
 		if (interval < 0)
-			return upDiatonic(note, interval);
+			return upDegrees(note, interval);
 		
 		while (interval > 0) {
 			note = note.prev();
@@ -523,15 +591,44 @@ public final class Scale implements Serializable {
 		return note;
 	}
 	
-	public List<Note> buildDiatonicChord(Note root, int... intervals) {
+	/**
+	 * Builds a chord based on the given note, and the intervals from it.
+	 * Example:
+	 * <pre>Scale.Diatonic.C_Major.buildChord(new Note("D4"), 2, 4) => {D4, F4, A4}</pre>
+	 * @param root the base note
+	 * @param intervals the intervals
+	 * @return a list of the notes that are the given intervals above/below the root
+	 */
+	public List<Note> buildChord(Note root, int... intervals) {
 		final List<Note> result = new ArrayList<>(intervals.length+1);
 		result.add(root);
 		for (final int interval : intervals)
-			result.add(upDiatonic(root, interval));
+			result.add(upDegrees(root, interval));
 		return result;
 	}
 
-	public Map<PitchClass, Integer> buildMapFromWhiteKeys() {
+	/**
+	 * Builds a map from the natural of each pitch in the scale to the number
+	 * of half steps needed to take that natural to the original pitch.
+	 * Example:
+	 * <pre>Scale.Diatonic.G_Major.buildMapFromNaturals() =>
+	 * {
+	 *   C => 0
+	 *   D => 0
+	 *   E => 0
+	 *   F => 1
+	 *   G => 0
+	 *   A => 0
+	 *   B => 0
+	 * }</pre>
+	 * 
+	 * <b>Note:</b> This method will not work properly on any scale which has
+	 * multiple uses of any pitch class, which includes all octatonic (and
+	 * above) scales and many of the blues scales.
+	 * @return a map from the natural of each pitch class to the number of
+	 * half steps needed to take that natural back to the original pitch
+	 */
+	public Map<PitchClass, Integer> buildMapFromNaturals() {
 		final Map<PitchClass, Integer> result = new IdentityHashMap<>();
 		
 		for (final PitchClass pc : _pitches) {
