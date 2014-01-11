@@ -298,6 +298,7 @@ public class ProgramMidiSolutionsFrame extends JFrame {
 		return checkBox.isSelected();
 	}
 	
+	@SuppressWarnings("unused")
 	private static int extractInt(JRadioButton[] buttons) {
 		for (int i = 0; i < buttons.length; ++i)
 			if (buttons[i].isSelected())

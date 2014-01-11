@@ -114,7 +114,7 @@ public class CustomScalePatchUsageEditor extends JPanel {
 	private class ScaleAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			final JComboBox<Scale> combo = (JComboBox<Scale>) e.getSource();
+			final JComboBox<?> combo = (JComboBox<?>) e.getSource();
 			_selectedScale = (Scale) combo.getSelectedItem();
 			_map.clear();
 			_map.putAll(_selectedScale.buildMapFromWhiteKeys());
