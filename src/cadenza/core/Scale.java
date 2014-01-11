@@ -1,6 +1,26 @@
 package cadenza.core;
 
-import static cadenza.core.Note.PitchClass.*;
+import static cadenza.core.Note.PitchClass.A;
+import static cadenza.core.Note.PitchClass.Ab;
+import static cadenza.core.Note.PitchClass.As;
+import static cadenza.core.Note.PitchClass.B;
+import static cadenza.core.Note.PitchClass.Bb;
+import static cadenza.core.Note.PitchClass.Bs;
+import static cadenza.core.Note.PitchClass.C;
+import static cadenza.core.Note.PitchClass.Cb;
+import static cadenza.core.Note.PitchClass.Cs;
+import static cadenza.core.Note.PitchClass.D;
+import static cadenza.core.Note.PitchClass.Db;
+import static cadenza.core.Note.PitchClass.Ds;
+import static cadenza.core.Note.PitchClass.E;
+import static cadenza.core.Note.PitchClass.Eb;
+import static cadenza.core.Note.PitchClass.Es;
+import static cadenza.core.Note.PitchClass.F;
+import static cadenza.core.Note.PitchClass.Fb;
+import static cadenza.core.Note.PitchClass.Fs;
+import static cadenza.core.Note.PitchClass.G;
+import static cadenza.core.Note.PitchClass.Gb;
+import static cadenza.core.Note.PitchClass.Gs;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,6 +32,11 @@ import java.util.Map;
 
 import cadenza.core.Note.PitchClass;
 
+/**
+ * A Scale is a collection of {@link PitchClass}es with a name.
+ * 
+ * @author Matt Putnam
+ */
 public final class Scale implements Serializable {
 	public static final class Diatonic {
 		public static final Scale C_Major  = new Scale("C Major", C, D, E, F, G, A, B);
@@ -510,13 +535,7 @@ public final class Scale implements Serializable {
 		final Map<PitchClass, Integer> result = new IdentityHashMap<>();
 		
 		for (final PitchClass pc : _pitches) {
-			if (pc.name().endsWith("b"))
-				result.put(pc.getNatural(), -1);
-			else if (pc.name().endsWith("s"))
-				result.put(pc.getNatural(), 1);
-			else // natural
-				result.put(pc, 0);
-//			result.put(pc, pc.ordinal()-pc.getNatural().ordinal());
+			result.put(pc.getNatural(), pc.ordinal()-pc.getNatural().ordinal());
 		}
 		
 		return result;

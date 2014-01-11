@@ -63,7 +63,7 @@ public class CustomScalePatchUsage extends PatchUsage {
 	 */
 	public CustomScalePatchUsage(Patch patch, Location location, int volume, Scale scale) {
 		super(patch, location, volume);
-		map = Collections.unmodifiableMap(scale.buildMapFromWhiteKeys());
+		map = Collections.unmodifiableMap(scale.buildMapFromNaturals());
 		this.scale = scale;
 	}
 
