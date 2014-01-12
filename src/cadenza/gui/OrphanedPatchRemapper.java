@@ -69,7 +69,7 @@ public class OrphanedPatchRemapper extends OKCancelDialog {
 					final int distance = Utils.levenshteinDistance(orphanName, sPatchName);
 					
 					if (distance <= DISTANCE_THRESHOLD || orphanName.contains(sPatchName) || sPatchName.contains(orphanName)) {
-						suggestions.put(distance, sPatch);
+						suggestions.put(Integer.valueOf(distance), sPatch);
 						if (suggestions.size() > MAX_SUGGESTIONS)
 							suggestions.remove(suggestions.lastKey());
 					}

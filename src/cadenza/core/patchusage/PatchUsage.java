@@ -13,7 +13,6 @@ import cadenza.core.Synthesizer;
 import cadenza.core.plugins.Plugin;
 
 import common.swing.ColorUtils;
-import common.tuple.Pair;
 
 /**
  * The usage of a patch as part of a cue.  This base class defines the patch,
@@ -55,13 +54,13 @@ public abstract class PatchUsage implements Serializable {
 	}
 	
 	/**
-	 * Returns a list of [note, velocity] pairs that should be played given an
+	 * Returns an array of [note, velocity] pairs that should be played given an
 	 * input note and velocity
 	 * @param midiNumber - the note number of the input note
 	 * @param velocity - the velocity of the input note, before plugins
-	 * @return a list of [note, velocity] pairs to be played
+	 * @return an array of [note, velocity] pairs to be played
 	 */
-	public abstract List<Pair<Integer, Integer>> getNotes(int midiNumber, int velocity);
+	public abstract int[][] getNotes(int midiNumber, int velocity);
 	
 	/**
 	 * Determines if this patch usage should play the given note.  Uses the

@@ -155,7 +155,7 @@ public final class CadenzaController {
 	public synchronized void updateKeyboardChannelMap() {
 		_channelKeyboards = new HashMap<>();
 		for (final Keyboard keyboard : _data.keyboards) {
-			_channelKeyboards.put(keyboard.channel, keyboard);
+			_channelKeyboards.put(Integer.valueOf(keyboard.channel), keyboard);
 		}
 		
 		Debug.println("Keyboard->Channel map updated to " + _channelKeyboards);
@@ -254,7 +254,7 @@ public final class CadenzaController {
 	public synchronized void sendCC(int cc, int value, PatchUsage patch) {
 		ensureMode(Mode.PERFORM);
 		
-		sendCC(cc, value, _currentAssignments.get(patch));
+		sendCC(cc, value, _currentAssignments.get(patch).intValue());
 	}
 	
 	public synchronized void sendNoteOn(int midiNumber, int velocity, int channel) {
@@ -273,7 +273,7 @@ public final class CadenzaController {
 	}
 	
 	public synchronized void sendNoteOn(int midiNumber, int velocity, PatchUsage patch) {
-		sendNoteOn(midiNumber, velocity, _currentAssignments.get(patch));
+		sendNoteOn(midiNumber, velocity, _currentAssignments.get(patch).intValue());
 	}
 	
 	public synchronized void sendNoteOff(int midiNumber, int channel) {
@@ -292,7 +292,7 @@ public final class CadenzaController {
 	}
 	
 	public synchronized void sendNoteOff(int midiNumber, PatchUsage patch) {
-		sendNoteOff(midiNumber, _currentAssignments.get(patch));
+		sendNoteOff(midiNumber, _currentAssignments.get(patch).intValue());
 	}
 	
 	/**
@@ -338,7 +338,7 @@ public final class CadenzaController {
 			final Patch patch = newUsage.patch;
 			for (final PatchUsage oldUsage : oldPatchUsages) {
 				if (patch == oldUsage.patch && oldAssignments.containsKey(oldUsage)) {
-					final int channel = oldAssignments.get(oldUsage);
+					final Integer channel = oldAssignments.get(oldUsage);
 					Debug.println("Patch '" + patch.name + "' was already assigned, keeping on channel " + channel);
 					newAssignments.put(newUsage, channel);
 					availableChannels.get(patch.getSynthesizer()).remove(channel);
@@ -358,14 +358,14 @@ public final class CadenzaController {
 				continue;
 			}
 			
-			final int channel = available.remove(0);
+			final Integer channel = available.remove(0);
 			Debug.println("Patch '" + pu.patch.name + "' assigned to channel " + channel);
 			newAssignments.put(pu, channel);
-			PatchChangeDelegate.performPatchChange(_midiOut, pu.patch, channel);
+			PatchChangeDelegate.performPatchChange(_midiOut, pu.patch, channel.intValue());
 		}
 		
 		for (final PatchUsage pu : newPatchUsages) {
-			sendCC(7, pu.volume, newAssignments.get(pu));
+			sendCC(7, pu.volume, newAssignments.get(pu).intValue());
 		}
 		
 		_currentAssignments = newAssignments;
@@ -407,7 +407,7 @@ public final class CadenzaController {
 		Debug.println("ShortMessage received: " + MidiUtilities.toString(sm));
 		
 		// find input keyboard:
-		final Keyboard keyboard = _channelKeyboards.get(channel);
+		final Keyboard keyboard = _channelKeyboards.get(Integer.valueOf(channel));
 		if (keyboard == null)
 			return;
 		
@@ -427,12 +427,12 @@ public final class CadenzaController {
 				pu.noteReleased(midiNumber);
 			}
 			
-			final Pair<Keyboard, Integer> key = Pair.make(keyboard, midiNumber);
+			final Pair<Keyboard, Integer> key = Pair.make(keyboard, new Integer(midiNumber));
 			final Set<Pair<Integer, Integer>> notes = _currentNotes.get(key);
 			if (notes != null) {
 				for (final Pair<Integer, Integer> entry : notes) {
-					final int outChannel = entry._1();
-					final int outNumber = entry._2();
+					final int outChannel = entry._1().intValue();
+					final int outNumber = entry._2().intValue();
 
 					Debug.println("\t\tchannel=" + outChannel + " note=" + outNumber);
 
@@ -450,7 +450,7 @@ public final class CadenzaController {
 			if (control == 64) {
 				// CC64 (damper) is speshul.  It needs to always be sent to all allocated channels.
 				for (final Integer outChannel : _currentAssignments.values()) {
-					sendCC(64, value, outChannel);
+					sendCC(64, value, outChannel.intValue());
 				}
 				break noteorCC;
 			}
@@ -464,7 +464,7 @@ public final class CadenzaController {
 					Debug.println("\tCue set to map this to: " + entry.destCCs + " on " + entry.destPatches);
 					for (final PatchUsage outPU : entry.destPatches) {
 						for (final Integer outControl : entry.destCCs) {
-							sendCC(outControl, value, outPU);
+							sendCC(outControl.intValue(), value, outPU);
 						}
 					}
 					
@@ -480,7 +480,7 @@ public final class CadenzaController {
 						Debug.println("\tGlobally to map this to: " + Utils.mkString(entry.destCCs) + " on all channels");
 						for (final Integer outControl : entry.destCCs) {
 							for (final Integer outChannel : _currentAssignments.values()) {
-								sendCC(outControl, value, outChannel);
+								sendCC(outControl.intValue(), value, outChannel.intValue());
 							}
 						}
 						break;
@@ -493,7 +493,7 @@ public final class CadenzaController {
 				Debug.println("\tNo override, sending to all currently-assigned channels");
 				for (final Integer outChannel : _currentAssignments.values()) {
 					Debug.println("\tSending to channel " + outChannel);
-					sendCC(control, value, outChannel);
+					sendCC(control, value, outChannel.intValue());
 				}
 			}
 		} else if (MidiUtilities.isNoteOn(sm)) {
@@ -503,16 +503,16 @@ public final class CadenzaController {
 			
 			for (final PatchUsage patchUsage : _currentCue.patches) {
 				if (patchUsage.location.getKeyboard() == keyboard && patchUsage.location.contains(inputMidiNumber)) {
-					final int outputChannel = _currentAssignments.get(patchUsage);
+					final Integer outputChannel = _currentAssignments.get(patchUsage);
 					Debug.println("\tMessage will be sent for patch '" + patchUsage.patch.name + "' on channel " + outputChannel);
 					
 					final List<Plugin> puPlugins = new LinkedList<>();
 					puPlugins.addAll(patchUsage.plugins);
 					puPlugins.addAll(_currentGlobalCuePlugins);
 					if (patchUsage.respondsTo(inputMidiNumber, inputVelocity)) {
-						for (final Pair<Integer, Integer> note : patchUsage.getNotes(inputMidiNumber, inputVelocity)) {
-							int midiNumber = note._1();
-							int velocity = note._2();
+						for (final int[] note : patchUsage.getNotes(inputMidiNumber, inputVelocity)) {
+							int midiNumber = note[0];
+							int velocity = note[1];
 							
 							Debug.println("\tPatch responds by playing midi#" + midiNumber + " velocity=" + velocity);
 							
@@ -521,14 +521,14 @@ public final class CadenzaController {
 								Debug.println("\t\tPlugin " + plugin.toString() + " results in velocity of " + velocity);
 							}
 							
-							sendNoteOn(midiNumber, velocity, outputChannel);
-							noteEntry.add(Pair.make(outputChannel, note._1()));
+							sendNoteOn(midiNumber, velocity, outputChannel.intValue());
+							noteEntry.add(Pair.make(outputChannel, Integer.valueOf(midiNumber)));
 						}
 					}
 				}
 			}
 			
-			_currentNotes.put(Pair.make(keyboard, sm.getData1()), noteEntry);
+			_currentNotes.put(Pair.make(keyboard, Integer.valueOf(inputMidiNumber)), noteEntry);
 		} else {
 			Debug.println("Unknown MIDI message: " + MidiUtilities.toString(sm));
 		}

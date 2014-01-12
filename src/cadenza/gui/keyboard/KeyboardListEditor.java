@@ -129,7 +129,7 @@ public class KeyboardListEditor extends JPanel implements CustomWizardComponent 
 						case Col.RANGE:				return row.low.toString() + "-" + row.high.toString();
 						case Col.SOUNDING_RANGE:	return row.soundingLow.toString() + "-" + row.soundingHigh.toString();
 						case Col.MAIN:				return Boolean.valueOf(row.isMain);
-						case Col.CHANNEL:			return row.channel;
+						case Col.CHANNEL:			return Integer.valueOf(row.channel);
 						default: throw new IllegalStateException("Unknown Column!");
 					}
 				}

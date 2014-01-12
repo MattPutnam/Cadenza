@@ -8,12 +8,12 @@ import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import javax.swing.GroupLayout.Alignment;
 
 import cadenza.core.Keyboard;
 import cadenza.core.Note;
@@ -169,7 +169,7 @@ public class TriggerPredicateEditDialog extends OKCancelDialog {
 					@Override
 					public void mouseClicked(MouseEvent e) {
 						final Pair<Keyboard, Integer> pair = Pair.make(
-								keyboard, panel.getNoteAt(e.getPoint()).getMidiNumber());
+								keyboard, Integer.valueOf(panel.getNoteAt(e.getPoint()).getMidiNumber()));
 						
 						if (_notes.contains(pair))
 							_notes.remove(pair);

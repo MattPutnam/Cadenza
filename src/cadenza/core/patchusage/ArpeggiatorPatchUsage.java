@@ -12,8 +12,6 @@ import cadenza.core.metronome.Metronome;
 import cadenza.core.metronome.Metronome.Subdivision;
 import cadenza.core.metronome.MetronomeListener;
 
-import common.tuple.Pair;
-
 /**
  * A PatchUsage type that arpeggiates the currently played chord in a variety
  * of different ways.  Uses a minimum number of notes to avoid the race
@@ -91,12 +89,12 @@ public class ArpeggiatorPatchUsage extends PatchUsage implements MetronomeListen
 	}
 
 	@Override
-	public List<Pair<Integer, Integer>> getNotes(int midiNumber, int velocity) {
+	public int[][] getNotes(int midiNumber, int velocity) {
 		// abuse this just to get key pressed info
-		_currentNotes.add(midiNumber);
+		_currentNotes.add(Integer.valueOf(midiNumber));
 		Collections.sort(_currentNotes);
 		Metronome.getInstance().start();
-		return Collections.emptyList();
+		return new int[][] {};
 	}
 	
 	@Override
@@ -121,7 +119,7 @@ public class ArpeggiatorPatchUsage extends PatchUsage implements MetronomeListen
 	
 	@Override
 	public void noteReleased(int midiNumber) {
-		_currentNotes.remove((Integer) midiNumber);
+		_currentNotes.remove(Integer.valueOf(midiNumber));
 	}
 
 	@Override
@@ -142,7 +140,7 @@ public class ArpeggiatorPatchUsage extends PatchUsage implements MetronomeListen
 			}
 
 			_index = nextIndex();
-			_currentlyPlayingNote = _currentNotes.get(_index);
+			_currentlyPlayingNote = _currentNotes.get(_index).intValue();
 			_controller.sendNoteOn(_currentlyPlayingNote, volume, _channel);
 		}
 	}

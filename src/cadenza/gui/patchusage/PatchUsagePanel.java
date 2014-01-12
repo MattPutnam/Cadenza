@@ -388,8 +388,8 @@ public class PatchUsagePanel extends JPanel implements AcceptsKeyboardInput {
 		
 		if (_activeKeyboard == null || source == _activeKeyboard) {
 			_activeKeyboard = source;
-			_accumulatedPressedKeys.add(midiNumber);
-			_currentlyPressedKeys.add(midiNumber);
+			_accumulatedPressedKeys.add(Integer.valueOf(midiNumber));
+			_currentlyPressedKeys.add(Integer.valueOf(midiNumber));
 		} else {
 			// key pressed on other keyboard
 			_activeKeyboard = null;
@@ -403,7 +403,7 @@ public class PatchUsagePanel extends JPanel implements AcceptsKeyboardInput {
 		_keyboardPanels.get(_data.keyboards.indexOf(source)).accessKeyboardPanel().unhighlightNote(new Note(midiNumber));
 		
 		if (source == _activeKeyboard) {
-			_currentlyPressedKeys.remove(midiNumber);
+			_currentlyPressedKeys.remove(Integer.valueOf(midiNumber));
 			if (_currentlyPressedKeys.isEmpty()) {
 				if (_accumulatedPressedKeys.size() == 1) {
 					// Spoof click

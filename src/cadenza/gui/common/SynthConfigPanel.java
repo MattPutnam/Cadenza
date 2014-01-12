@@ -116,12 +116,12 @@ public class SynthConfigPanel extends JPanel {
 		for (final String token : tokens) {
 			final int index = token.indexOf('-');
 			if (index == -1) {
-				result.add(Integer.parseInt(token));
+				result.add(Integer.valueOf(token));
 			} else {
 				final int min = Integer.parseInt(token.substring(0, index).trim());
 				final int max = Integer.parseInt(token.substring(index+1).trim());
 				for (int i = min; i <= max; ++i)
-					result.add(i);
+					result.add(Integer.valueOf(i));
 			}
 		}
 		return result;
@@ -137,7 +137,7 @@ public class SynthConfigPanel extends JPanel {
 				if (i < 1)
 					throw new VerificationException("Channels must be >= 1", _channelField);
 				for (final Synthesizer synth : _otherSynthesizers)
-					if (synth.getChannels().contains(i))
+					if (synth.getChannels().contains(Integer.valueOf(i)))
 						throw new VerificationException("Another synthesizer already uses channel " + i, _channelField);
 			}
 		} catch (NumberFormatException e) {

@@ -29,7 +29,7 @@ public class GhostNotePatchUsageEditor extends JPanel {
 	private KeyboardPanel _destPanel;
 	
 	private Note _currentlySelected;
-	private int _currentlySelectedNum;
+	private Integer _currentlySelectedNum;
 	
 	private Box _sourceRow;
 
@@ -51,14 +51,14 @@ public class GhostNotePatchUsageEditor extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				if (_currentlySelected != null) {
 					final Note clicked = _destPanel.getNoteAt(e.getPoint());
-					final int clickedNum = clicked.getMidiNumber();
+					final Integer clickedNum = Integer.valueOf(clicked.getMidiNumber());
 					
 					if (_map.containsKey(_currentlySelectedNum)) {
 						final List<Integer> list = _map.get(_currentlySelectedNum);
 						
 						if (list.contains(clickedNum)) {
 							_destPanel.unhighlightNote(clicked);
-							list.remove((Integer) clickedNum);
+							list.remove(clickedNum);
 						} else {
 							_destPanel.highlightNote(clicked, KeyboardPanel.HIGHLIGHT_COLOR);
 							list.add(clickedNum);
@@ -113,19 +113,19 @@ public class GhostNotePatchUsageEditor extends JPanel {
 		
 		final List<Integer> keysToRemove = new LinkedList<>();
 		for (final Entry<Integer, List<Integer>> entry : _map.entrySet()) {
-			if (!location.contains(entry.getKey()))
+			if (!location.contains(entry.getKey().intValue()))
 				keysToRemove.add(entry.getKey());
 		}
 		for (final Integer key : keysToRemove)
 			_map.remove(key);
 		
 		_currentlySelected = null;
-		_currentlySelectedNum = -1;
+		_currentlySelectedNum = Integer.valueOf(-1);
 		_sourcePanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				_currentlySelected = _sourcePanel.getNoteAt(e.getPoint());
-				_currentlySelectedNum = _currentlySelected.getMidiNumber();
+				_currentlySelectedNum = Integer.valueOf(_currentlySelected.getMidiNumber());
 				
 				rehighlight();
 			}
@@ -137,9 +137,9 @@ public class GhostNotePatchUsageEditor extends JPanel {
 		_destPanel.unhighlightAll();
 		
 		for (final Entry<Integer, List<Integer>> entry : _map.entrySet()) {
-			_sourcePanel.highlightNote(new Note(entry.getKey()), KeyboardPanel.LIGHT_HIGHLIGHT_COLOR);
+			_sourcePanel.highlightNote(new Note(entry.getKey().intValue()), KeyboardPanel.LIGHT_HIGHLIGHT_COLOR);
 			for (final Integer i : entry.getValue()) {
-				_destPanel.highlightNote(new Note(i), KeyboardPanel.LIGHT_HIGHLIGHT_COLOR);
+				_destPanel.highlightNote(new Note(i.intValue()), KeyboardPanel.LIGHT_HIGHLIGHT_COLOR);
 			}
 		}
 		
@@ -147,7 +147,7 @@ public class GhostNotePatchUsageEditor extends JPanel {
 			_sourcePanel.highlightNote(_currentlySelected, KeyboardPanel.HIGHLIGHT_COLOR);
 			if (_map.containsKey(_currentlySelectedNum)) {
 				for (final Integer i : _map.get(_currentlySelectedNum))
-					_destPanel.highlightNote(new Note(i), KeyboardPanel.HIGHLIGHT_COLOR);
+					_destPanel.highlightNote(new Note(i.intValue()), KeyboardPanel.HIGHLIGHT_COLOR);
 			}
 		}
 	}

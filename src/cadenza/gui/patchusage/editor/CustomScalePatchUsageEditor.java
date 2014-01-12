@@ -141,7 +141,7 @@ public class CustomScalePatchUsageEditor extends JPanel {
 				public void keyDragged(Note startNote, KeyboardPanel startSource,
 									   Note endNote, KeyboardPanel endSource) {
 					if (startSource == _srcPanel && endSource == _destPanel && startNote.getPitchClass().isWhite()) {
-						_map.put(startNote.getPitchClass(), endNote.getMidiNumber() - startNote.getMidiNumber());
+						_map.put(startNote.getPitchClass(), Integer.valueOf(endNote.getMidiNumber() - startNote.getMidiNumber()));
 						_selectedScale = null;
 						repaint();
 					}
@@ -161,7 +161,7 @@ public class CustomScalePatchUsageEditor extends JPanel {
 				final int x1 = startRect.x + (startRect.width/2) + _srcPanel.getLocation().x;
 				final int y1 = _srcPanel.getHeight();
 				
-				final Note end = new Note(start.getMidiNumber() + entry.getValue());
+				final Note end = new Note(start.getMidiNumber() + entry.getValue().intValue());
 				final Rectangle endRect = _destPanel.getKeyPosition(end);
 				final int x2 = endRect.x + (endRect.width/2);
 				final int y2 = _srcPanel.getHeight() + GAP;

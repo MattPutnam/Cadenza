@@ -36,7 +36,7 @@ public class ControlMapEditDialog extends OKCancelDialog {
 	protected JComponent buildContent() {
 		final Integer[] ints = new Integer[128];
 		for (int i = 0; i < 128; ++i)
-			ints[i] = i;
+			ints[i] = Integer.valueOf(i);
 		
 		_fromList = new JList<>(ints);
 		_fromList.setCellRenderer(new ControlListRenderer());
@@ -54,7 +54,7 @@ public class ControlMapEditDialog extends OKCancelDialog {
 			
 			final int[] ta = new int[_entry.destCCs.size()];
 			for (int i = 0; i < ta.length; ++i)
-				ta[i] = _entry.destCCs.get(i);
+				ta[i] = _entry.destCCs.get(i).intValue();
 			_toList.setSelectedIndices(ta);
 			
 			if (_patchUsages != null) {

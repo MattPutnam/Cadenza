@@ -1,13 +1,8 @@
 package cadenza.core.patchusage;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cadenza.control.CadenzaController;
 import cadenza.core.Location;
 import cadenza.core.Patch;
-
-import common.tuple.Pair;
 
 /**
  * A PatchUsage which is just a simple range of notes, possibly transposed
@@ -64,25 +59,23 @@ public class SimplePatchUsage extends PatchUsage {
 	}
 
 	@Override
-	public List<Pair<Integer, Integer>> getNotes(int midiNumber, int velocity) {
+	public int[][] getNotes(int midiNumber, int velocity) {
 		if (monophonic) {
 			_controller.sendNoteOff(_currentNote, _channel);
 		}
 		
 		_currentNote = midiNumber + transposition;
 		
-		final List<Pair<Integer, Integer>> result = new ArrayList<>(1);
-		
 		if (volumeLimit == -1)
-			result.add(Pair.make(_currentNote, velocity));
+			return new int[][] {{_currentNote, velocity}};
 		else {
 			if (isLimitToBelow && velocity < volumeLimit)
-				result.add(Pair.make(_currentNote, velocity));
+				return new int[][] {{_currentNote, velocity}};
 			else if (!isLimitToBelow && velocity >= volumeLimit)
-				result.add(Pair.make(_currentNote, velocity - volumeReduction));
+				return new int[][] {{_currentNote, velocity - volumeReduction}};
 		}
 		
-		return result;
+		return new int[][] {};
 	}
 	
 	@Override

@@ -40,7 +40,7 @@ public class GeneralMIDI {
 					GM1_PATCHES.add(new Patch(Synthesizer.TEMP, name, "GM", PCnum));
 				
 				GM2_PATCHES.add(new Patch(Synthesizer.TEMP, name, "GM2", num));
-				GM2_DATA.add(Pair.make(PCnum, GM2num));
+				GM2_DATA.add(Pair.make(Integer.valueOf(PCnum), Integer.valueOf(GM2num)));
 				num++;
 			}
 			

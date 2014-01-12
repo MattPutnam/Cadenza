@@ -632,7 +632,7 @@ public final class Scale implements Serializable {
 		final Map<PitchClass, Integer> result = new IdentityHashMap<>();
 		
 		for (final PitchClass pc : _pitches) {
-			result.put(pc.getNatural(), pc.ordinal()-pc.getNatural().ordinal());
+			result.put(pc.getNatural(), Integer.valueOf(pc.ordinal()-pc.getNatural().ordinal()));
 		}
 		
 		return result;

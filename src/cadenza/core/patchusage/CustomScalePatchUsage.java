@@ -2,7 +2,6 @@ package cadenza.core.patchusage;
 
 import java.util.Collections;
 import java.util.IdentityHashMap;
-import java.util.List;
 import java.util.Map;
 
 import cadenza.core.Location;
@@ -10,8 +9,6 @@ import cadenza.core.Note;
 import cadenza.core.Note.PitchClass;
 import cadenza.core.Patch;
 import cadenza.core.Scale;
-
-import common.tuple.Pair;
 
 /**
  * A PatchUsage that maps the white keys (or a subset of them) to other notes.
@@ -68,12 +65,12 @@ public class CustomScalePatchUsage extends PatchUsage {
 	}
 
 	@Override
-	public List<Pair<Integer, Integer>> getNotes(int midiNumber, int velocity) {
+	public int[][] getNotes(int midiNumber, int velocity) {
 		final PitchClass pc = new Note(midiNumber).getPitchClass();
 		if (map.containsKey(pc)) {
-			return Collections.singletonList(Pair.make(midiNumber + map.get(pc), velocity));
+			return new int[][] {{midiNumber + map.get(pc).intValue(), velocity}};
 		} else {
-			return Collections.emptyList();
+			return new int[][] {};
 		}
 	}
 	

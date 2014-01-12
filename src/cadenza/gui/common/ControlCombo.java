@@ -20,7 +20,7 @@ public class ControlCombo extends JComboBox<Integer> {
 		setModel(new DefaultComboBoxModel<>(options));
 		
 		if (initValue != null)
-			setSelectedIndex(initValue);
+			setSelectedIndex(initValue.intValue());
 		else
 			setSelectedIndex(0);
 		

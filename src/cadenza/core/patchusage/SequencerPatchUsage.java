@@ -1,6 +1,5 @@
 package cadenza.core.patchusage;
 
-import java.util.Collections;
 import java.util.List;
 
 import cadenza.control.CadenzaController;
@@ -10,8 +9,6 @@ import cadenza.core.metronome.Metronome;
 import cadenza.core.metronome.MetronomeListener;
 import cadenza.core.sequencer.Sequencer;
 import cadenza.core.sequencer.Sequencer.NoteChangeBehavior;
-
-import common.tuple.Pair;
 
 public class SequencerPatchUsage extends PatchUsage implements MetronomeListener {
 	public final Sequencer sequencer;
@@ -32,7 +29,7 @@ public class SequencerPatchUsage extends PatchUsage implements MetronomeListener
 	}
 
 	@Override
-	public List<Pair<Integer, Integer>> getNotes(int midiNumber, int velocity) {
+	public int[][] getNotes(int midiNumber, int velocity) {
 		// abuse this just to get note input
 		_activeDepressedNote = midiNumber;
 		if (_noteForSounding == -1)
@@ -43,7 +40,7 @@ public class SequencerPatchUsage extends PatchUsage implements MetronomeListener
 		}
 		
 		Metronome.getInstance().start();
-		return Collections.emptyList();
+		return new int[][] {};
 	}
 	
 	@Override

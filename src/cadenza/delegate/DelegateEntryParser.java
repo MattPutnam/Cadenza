@@ -95,7 +95,7 @@ public class DelegateEntryParser {
 						", expected format is 'VALUE=[num]' or 'VALUE=[min-max]''");
 			}
 			
-			commands.add(Triple.make(mt, cc, val));
+			commands.add(Triple.make(mt, Integer.valueOf(cc), Integer.valueOf(val)));
 		}
 		
 		return new DelegateEntry(bank, minNum, maxNum, commands);

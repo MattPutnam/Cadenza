@@ -95,10 +95,10 @@ public class PatchChangeDelegate {
 			msg.setMessage(ShortMessage.CONTROL_CHANGE, channel, 0, 121);
 			receiver.send(msg, -1);
 			
-			msg.setMessage(ShortMessage.CONTROL_CHANGE, channel, 32, GM2_PCNum_LSB._2());
+			msg.setMessage(ShortMessage.CONTROL_CHANGE, channel, 32, GM2_PCNum_LSB._2().intValue());
 			receiver.send(msg, -1);
 			
-			msg.setMessage(ShortMessage.PROGRAM_CHANGE, channel, GM2_PCNum_LSB._1()-1, 0);
+			msg.setMessage(ShortMessage.PROGRAM_CHANGE, channel, GM2_PCNum_LSB._1().intValue()-1, 0);
 			receiver.send(msg, -1);
 		} else {
 			DelegateEntry entry = null;
@@ -114,10 +114,10 @@ public class PatchChangeDelegate {
 			
 			for (final Triple<MessageType, Integer, Integer> command : entry.commands) {
 				if (command._1() == MessageType.CONTROL_CHANGE) {
-					msg.setMessage(ShortMessage.CONTROL_CHANGE, channel, command._2(), command._3());
+					msg.setMessage(ShortMessage.CONTROL_CHANGE, channel, command._2().intValue(), command._3().intValue());
 					receiver.send(msg, -1);
 				} else { // PC
-					msg.setMessage(ShortMessage.PROGRAM_CHANGE, channel, patchNum - entry.minNum + command._3(), 0);
+					msg.setMessage(ShortMessage.PROGRAM_CHANGE, channel, patchNum - entry.minNum + command._3().intValue(), 0);
 					receiver.send(msg, -1);
 				}
 			}

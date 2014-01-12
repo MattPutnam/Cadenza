@@ -123,8 +123,8 @@ public class PatchEditor extends JPanel {
 						case 0: return row.name;
 						case 1: return row.getSynthesizer().getName();
 						case 2: return row.bank;
-						case 3: return row.number;
-						case 4: return row.defaultVolume;
+						case 3: return Integer.valueOf(row.number);
+						case 4: return Integer.valueOf(row.defaultVolume);
 						default: throw new IllegalStateException("Unknown Column!");
 					}
 				}

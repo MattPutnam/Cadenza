@@ -54,34 +54,34 @@ public final class KeyboardPanel extends JPanel {
 	
 	private static final Map<PitchClass, Integer> ADVANCE = new HashMap<>();
 	static {
-		ADVANCE.put(PitchClass.C, CUT_HALF);
-			ADVANCE.put(PitchClass.Cs, CUT_HALF);
-		ADVANCE.put(PitchClass.D, WHITE_WIDTH - CUT_NEGHALF);
-			ADVANCE.put(PitchClass.Ds, CUT_NEGHALF);
-		ADVANCE.put(PitchClass.E, WHITE_WIDTH);
-		ADVANCE.put(PitchClass.F, CUT_HALF);
-			ADVANCE.put(PitchClass.Fs, CUT_HALF);
-		ADVANCE.put(PitchClass.G, WHITE_WIDTH - CUT_MIDHALF);
-			ADVANCE.put(PitchClass.Gs, CUT_MIDHALF);
-		ADVANCE.put(PitchClass.A, WHITE_WIDTH - CUT_NEGHALF);
-			ADVANCE.put(PitchClass.As, CUT_NEGHALF);
-		ADVANCE.put(PitchClass.B, WHITE_WIDTH);
+		ADVANCE.put(PitchClass.C, Integer.valueOf(CUT_HALF));
+			ADVANCE.put(PitchClass.Cs, Integer.valueOf(CUT_HALF));
+		ADVANCE.put(PitchClass.D, Integer.valueOf(WHITE_WIDTH - CUT_NEGHALF));
+			ADVANCE.put(PitchClass.Ds, Integer.valueOf(CUT_NEGHALF));
+		ADVANCE.put(PitchClass.E, Integer.valueOf(WHITE_WIDTH));
+		ADVANCE.put(PitchClass.F, Integer.valueOf(CUT_HALF));
+			ADVANCE.put(PitchClass.Fs, Integer.valueOf(CUT_HALF));
+		ADVANCE.put(PitchClass.G, Integer.valueOf(WHITE_WIDTH - CUT_MIDHALF));
+			ADVANCE.put(PitchClass.Gs, Integer.valueOf(CUT_MIDHALF));
+		ADVANCE.put(PitchClass.A, Integer.valueOf(WHITE_WIDTH - CUT_NEGHALF));
+			ADVANCE.put(PitchClass.As, Integer.valueOf(CUT_NEGHALF));
+		ADVANCE.put(PitchClass.B, Integer.valueOf(WHITE_WIDTH));
 	}
 	
 	private static final Map<PitchClass, Integer> WHITE_ORDINAL = new HashMap<>();
 	static {
-		WHITE_ORDINAL.put(PitchClass.C, 1);
-			WHITE_ORDINAL.put(PitchClass.Cs, 1);
-		WHITE_ORDINAL.put(PitchClass.D, 2);
-			WHITE_ORDINAL.put(PitchClass.Ds, 2);
-		WHITE_ORDINAL.put(PitchClass.E, 3);
-		WHITE_ORDINAL.put(PitchClass.F, 4);
-			WHITE_ORDINAL.put(PitchClass.Fs, 4);
-		WHITE_ORDINAL.put(PitchClass.G, 5);
-			WHITE_ORDINAL.put(PitchClass.Gs, 5);
-		WHITE_ORDINAL.put(PitchClass.A, 6);
-			WHITE_ORDINAL.put(PitchClass.As, 6);
-		WHITE_ORDINAL.put(PitchClass.B, 7);
+		WHITE_ORDINAL.put(PitchClass.C, Integer.valueOf(1));
+			WHITE_ORDINAL.put(PitchClass.Cs, Integer.valueOf(1));
+		WHITE_ORDINAL.put(PitchClass.D, Integer.valueOf(2));
+			WHITE_ORDINAL.put(PitchClass.Ds, Integer.valueOf(2));
+		WHITE_ORDINAL.put(PitchClass.E, Integer.valueOf(3));
+		WHITE_ORDINAL.put(PitchClass.F, Integer.valueOf(4));
+			WHITE_ORDINAL.put(PitchClass.Fs, Integer.valueOf(4));
+		WHITE_ORDINAL.put(PitchClass.G, Integer.valueOf(5));
+			WHITE_ORDINAL.put(PitchClass.Gs, Integer.valueOf(5));
+		WHITE_ORDINAL.put(PitchClass.A, Integer.valueOf(6));
+			WHITE_ORDINAL.put(PitchClass.As, Integer.valueOf(6));
+		WHITE_ORDINAL.put(PitchClass.B, Integer.valueOf(7));
 	}
 	
 	private static final Font LABEL_FONT_WHITE = Font.decode("Arial 12");
@@ -128,7 +128,8 @@ public final class KeyboardPanel extends JPanel {
 	}
 	
 	private Dimension calcSize() {
-		final int numWhiteKeys = WHITE_ORDINAL.get(_highNote.getPitchClass()) - WHITE_ORDINAL.get(_lowNote.getPitchClass()) +
+		final int numWhiteKeys = WHITE_ORDINAL.get(_highNote.getPitchClass()).intValue() -
+								 WHITE_ORDINAL.get(_lowNote.getPitchClass()).intValue() +
 								 1 + 7 * (_highNote.getOctave() - _lowNote.getOctave());
 		
 		return new Dimension(numWhiteKeys * WHITE_WIDTH + 1, WHITE_HEIGHT + 1);
@@ -153,7 +154,7 @@ public final class KeyboardPanel extends JPanel {
 				_blackMap.put(note, rect);
 			}
 			
-			xpos += ADVANCE.get(currentPitchClass);
+			xpos += ADVANCE.get(currentPitchClass).intValue();
 			
 			currentPitchClass = currentPitchClass.next();
 			if (currentPitchClass == PitchClass.C)
