@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
+import javax.sound.midi.SysexMessage;
 
 import cadenza.core.Patch;
 import cadenza.delegate.DelegateEntry.MessageType;
@@ -112,13 +113,19 @@ public class PatchChangeDelegate {
 			if (entry == null)
 				throw new InvalidMidiDataException("Could not find delegate entry for patch " + patch.toString());
 			
-			for (final Triple<MessageType, Integer, Integer> command : entry.commands) {
+			for (final Triple<MessageType, Integer, ?> command : entry.commands) {
 				if (command._1() == MessageType.CONTROL_CHANGE) {
-					msg.setMessage(ShortMessage.CONTROL_CHANGE, channel, command._2().intValue(), command._3().intValue());
+					msg.setMessage(ShortMessage.CONTROL_CHANGE, channel, command._2().intValue(), ((Integer) command._3()).intValue());
 					receiver.send(msg, -1);
-				} else { // PC
-					msg.setMessage(ShortMessage.PROGRAM_CHANGE, channel, patchNum - entry.minNum + command._3().intValue(), 0);
+				} else if (command._1() == MessageType.PROGRAM_CHANGE) {
+					msg.setMessage(ShortMessage.PROGRAM_CHANGE, channel, patchNum - entry.minNum + ((Integer) command._3()).intValue(), 0);
 					receiver.send(msg, -1);
+				} else if (command._1() == MessageType.SYSEX) {
+					final byte[] bytes = (byte[]) command._3();
+					final SysexMessage sm = new SysexMessage(bytes, bytes.length);
+					receiver.send(sm, -1);
+				} else {
+					throw new InvalidMidiDataException("Unknown message type: " + command._1());
 				}
 			}
 		}
