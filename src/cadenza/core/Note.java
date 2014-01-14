@@ -152,20 +152,6 @@ public class Note implements Comparable<Note>, Serializable {
 		_pitchClassDisplay = _pitchClass.getDisplay();
 	}
 	
-	public Note(String stringRep) {
-		_midiNumber = MidiUtilities.noteNameToNumber(stringRep);
-		_octave = (_midiNumber / 12) - 1;
-		_pitchClass = PitchClass.getNormal(_midiNumber % 12);
-		
-		int firstDigit = -1;
-		for (int i = 0; i < stringRep.length(); ++i)
-			if (Character.isDigit(stringRep.charAt(i))) {
-				firstDigit = i;
-				break;
-			}
-		_pitchClassDisplay = stringRep.substring(0, firstDigit);
-	}
-	
 	public PitchClass getPitchClass() {
 		return _pitchClass;
 	}
