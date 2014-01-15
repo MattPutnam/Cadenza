@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="make-jar">
+    <target name="make-jar">
+        <jar destfile="lib/export/Cadenza.jar">
+            <manifest>
+                <attribute name="Main-Class" value="cadenza.gui.CadenzaLauncher"/>
+            </manifest>
+            <fileset dir="bin"/>
+        	<fileset dir="resources"/>
+            <zipgroupfileset dir="lib/import" includes="*.jar"/>
+            <fileset dir="../Common/bin"/>
+        </jar>
+    </target>
+</project>
