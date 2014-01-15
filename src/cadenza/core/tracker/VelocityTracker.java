@@ -21,10 +21,6 @@ public final class VelocityTracker {
 		return INSTANCE;
 	}
 	
-	private Object readResolve()  {
-	    return INSTANCE;
-	}
-	
 	private final Map<Integer, FixedSizeIntBuffer> _buffers;
 	
 	private VelocityTracker() {

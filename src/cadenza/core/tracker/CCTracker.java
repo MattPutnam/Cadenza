@@ -17,10 +17,6 @@ public final class CCTracker {
 		return INSTANCE;
 	}
 	
-	private Object readResolve()  {
-	    return INSTANCE;
-	}
-	
 	/*
 	 * Implementation note: we use a Map<Integer, int[128]> instead of the
 	 * faster int[16][128] because MIDI interfaces with multiple I/O ports
