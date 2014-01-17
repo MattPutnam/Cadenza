@@ -3,11 +3,11 @@
 	<path id="import.path.ref">
 		<fileset dir="lib/import" includes="*.jar"/>
 	</path>
-	
+
 	<target name="clean">
 		<delete dir="bin"/>
 	</target>
-	
+
 	<target name="compile" depends="clean">
 		<mkdir dir="bin"/>
 		<javac srcdir="src"
@@ -18,24 +18,24 @@
 			   target="1.7"
 		/>
 	</target>
-	
-    <target name="make-jar" depends="compile">
-    	<delete dir="lib/export/cadenza"/>
-        <jar destfile="lib/export/cadenza/Cadenza.jar">
-            <manifest>
-                <attribute name="Main-Class" value="cadenza.gui.CadenzaLauncher"/>
-            </manifest>
-            <fileset dir="bin"/>
-            <zipgroupfileset dir="lib/import" includes="*.jar"/>
-        </jar>
-    	<copy todir="lib/export/cadenza/resources">
-    		<fileset dir="resources">
-    			<exclude name="recentfiles.txt"/>
-    		</fileset>
-    	</copy>
-    	<copy todir="lib/export/cadenza/documentation">
-    		<fileset dir="documentation"/>
-    	</copy>
-    	<zip destfile="Cadenza.zip" basedir="lib/export/cadenza"/>
-    </target>
+
+	<target name="make-jar" depends="compile">
+		<delete dir="lib/export/cadenza"/>
+		<jar destfile="lib/export/cadenza/Cadenza.jar">
+			<manifest>
+				<attribute name="Main-Class" value="cadenza.gui.CadenzaLauncher"/>
+			</manifest>
+			<fileset dir="bin"/>
+			<zipgroupfileset dir="lib/import" includes="*.jar"/>
+		</jar>
+		<copy todir="lib/export/cadenza/resources">
+			<fileset dir="resources">
+				<exclude name="recentfiles.txt"/>
+			</fileset>
+		</copy>
+		<copy todir="lib/export/cadenza/documentation">
+			<fileset dir="documentation"/>
+		</copy>
+		<zip destfile="Cadenza.zip" basedir="lib/export/cadenza"/>
+	</target>
 </project>
