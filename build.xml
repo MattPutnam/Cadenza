@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="make-jar">
-    <target name="make-jar">
+	<path id="import.path.ref">
+		<fileset dir="lib/import" includes="*.jar"/>
+	</path>
+	
+	<target name="clean">
+		<delete dir="bin"/>
+	</target>
+	
+	<target name="compile" depends="clean">
+		<mkdir dir="bin"/>
+		<javac srcdir="src"
+			   classpathref="import.path.ref"
+			   destdir="bin"
+			   includeAntRuntime="false"
+			   source="1.7"
+			   target="1.7"
+		/>
+	</target>
+	
+    <target name="make-jar" depends="compile">
     	<delete dir="lib/export/cadenza"/>
         <jar destfile="lib/export/cadenza/Cadenza.jar">
             <manifest>
