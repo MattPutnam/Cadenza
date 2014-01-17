@@ -8,7 +8,6 @@
             </manifest>
             <fileset dir="bin"/>
             <zipgroupfileset dir="lib/import" includes="*.jar"/>
-            <fileset dir="../Common/bin"/>
         </jar>
     	<copy todir="lib/export/cadenza/resources">
     		<fileset dir="resources">
