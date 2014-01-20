@@ -24,7 +24,7 @@ public class ImageStore {
 	public static final ImageIcon SEARCH;
 
 	static {
-		APPLICATION_ICON = getImageIcon("add.png", "app icon"); // TODO fix app icon
+		APPLICATION_ICON = getImageIcon("logo.png", "app icon"); // TODO fix app icon
 		
 		ADD = getImageIcon("add.png", "add");
 		EDIT = getImageIcon("edit.png", "edit");
