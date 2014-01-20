@@ -44,12 +44,12 @@ import common.swing.dialog.Dialog;
 
 public class Cadenza extends JFrame {
 	private static File _lastPath = null;
-	private static final File _RECENTS = new File("resources/recentfiles.txt");
+	private static final File _RECENTS = new File("resources" + File.separator + "recentfiles.txt");
 	private static final int NUM_RECENTS = 10;
 	
-	private static final String DELEGATE_PATH = "resources/delegates/";
-	private static final String SYNTH_CONFIG_PATH = "resources/synthconfigs/";
-	private static final String EXPANSION_CONFIG_PATH = "resources/expansionconfigs/";
+	private static final String DELEGATE_PATH = "resources" + File.separator + "delegates" + File.separator;
+	private static final String SYNTH_CONFIG_PATH = "resources" + File.separator + "synthconfigs" + File.separator;
+	private static final String EXPANSION_CONFIG_PATH = "resources" + File.separator + "expansionconfigs" + File.separator;
 	
 	private static JComboBox<File> _recents;
 	
@@ -372,7 +372,7 @@ public class Cadenza extends JFrame {
 					foundExpansion = JOptionPane.showInputDialog(Cadenza.this, "Enter the name of the expansion card");
 				}
 				
-				final String directory = EXPANSION_CONFIG_PATH + foundExpansion + "/";
+				final String directory = EXPANSION_CONFIG_PATH + foundExpansion + File.separator;
 				final File dir = new File(directory);
 				if (!dir.exists())
 					dir.mkdir();
