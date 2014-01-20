@@ -23,8 +23,8 @@ import common.tuple.Pair;
 public class Synthesizers {
 	private Synthesizers() {}
 	
-	private static final String _SYNTH_PATH = "resources/synthconfigs/";
-	private static final String _EXP_PATH = "resources/expansionconfigs/";
+	private static final String _SYNTH_PATH = "resources" + File.separator + "synthconfigs";
+	private static final String _EXP_PATH = "resources" + File.separator + "expansionconfigs";
 	
 	/** List of all synthesizer names */
 	public static List<String> SYNTH_NAMES = new ArrayList<>();

@@ -12,7 +12,7 @@ import common.io.IOUtils;
 import common.tuple.Pair;
 
 public class GeneralMIDI {
-	private static final String GM_PATH = "resources/GM/GM.txt";
+	private static final String GM_PATH = "resources" + File.separator + "GM" + File.separator + "GM.txt";
 	
 	private static final List<Patch> GM1_PATCHES = new ArrayList<>(128);
 	private static final List<Patch> GM2_PATCHES = new ArrayList<>(256);
