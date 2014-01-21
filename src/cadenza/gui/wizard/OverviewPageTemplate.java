@@ -6,21 +6,24 @@ import java.awt.Component;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import org.ciscavate.cjwizard.WizardPage;
 import org.ciscavate.cjwizard.pagetemplates.PageTemplate;
 import org.ciscavate.cjwizard.pagetemplates.TitledPageTemplate;
 
-import cadenza.gui.ImageStore;
-
 import common.swing.SwingUtils;
+import common.swing.icon.ArrowIcon;
 
 public class OverviewPageTemplate extends PageTemplate {
+	public static Icon ICON = new ArrowIcon(SwingConstants.EAST);
+	
 	private final JList<WizardPage> _overview;
 	private final PageTemplate _innerTemplate;
 	private final CadenzaWizardPageFactory _pageFactory;
@@ -67,7 +70,7 @@ public class OverviewPageTemplate extends PageTemplate {
 				JList<? extends WizardPage> list, WizardPage value, int index,
 				boolean isSelected, boolean cellHasFocus) {
 			setText(value.getTitle());
-			setIcon(isSelected ? ImageStore.ADD : null);
+			setIcon(isSelected ? ICON : null);
 			
 			return this;
 		}
