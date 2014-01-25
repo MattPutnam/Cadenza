@@ -25,7 +25,6 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import org.apache.commons.lang3.SystemUtils;
 import org.ciscavate.cjwizard.WizardContainer;
 import org.ciscavate.cjwizard.WizardListener;
 import org.ciscavate.cjwizard.WizardPage;
@@ -35,10 +34,6 @@ import cadenza.core.CadenzaData;
 import cadenza.gui.wizard.CadenzaWizardPageFactory;
 import cadenza.gui.wizard.OverviewPageTemplate;
 
-import com.apple.eawt.AppEvent.QuitEvent;
-import com.apple.eawt.Application;
-import com.apple.eawt.QuitHandler;
-import com.apple.eawt.QuitResponse;
 import common.io.IOUtils;
 import common.swing.dialog.Dialog;
 
@@ -52,6 +47,7 @@ public class Cadenza extends JFrame {
 	private static final String EXPANSION_CONFIG_PATH = "resources" + File.separator + "expansionconfigs" + File.separator;
 	
 	private static JComboBox<File> _recents;
+	private static CadenzaDelegate _delegate;
 	
 	private static Cadenza INSTANCE = new Cadenza();
 	
@@ -61,21 +57,17 @@ public class Cadenza extends JFrame {
 		init();
 	}
 	
-	static void showHome() {
-		INSTANCE.setVisible(true);
-		if (SystemUtils.IS_OS_MAC_OSX) {
-			final Application app = Application.getApplication();
-
-			app.setQuitHandler(new QuitHandler() {
-				@Override
-				public void handleQuitRequestWith(QuitEvent _, QuitResponse response) {
-					response.performQuit();
-				}
-			});
-		}
+	static void setDelegate(CadenzaDelegate delegate) {
+		_delegate = delegate;
 	}
 	
-	static void hideHome() {
+	static void showHome() {
+		INSTANCE.setVisible(true);
+		if (_delegate != null)
+			_delegate.doAfterShowHome();
+	}
+	
+	private static void hideHome() {
 		INSTANCE.setVisible(false);
 	}
 	
@@ -209,10 +201,14 @@ public class Cadenza extends JFrame {
 			final File selected = _recents.getItemAt(_recents.getSelectedIndex());
 			if (selected != null && selected.exists()) {
 				try {
-					@SuppressWarnings("resource")
-					CadenzaFrame temp = new CadenzaFrame(loadFile(selected));
+					final CadenzaFrame temp = new CadenzaFrame(loadFile(selected));
 					temp._associatedSave = selected;
 					temp.makeClean();
+					if (_delegate != null)
+						_delegate.setupFrame(temp);
+					
+					hideHome();
+					temp.setVisible(true);
 				} catch (Exception ex) {
 					Dialog.error(Cadenza.this, "Unable to read file " +
 							"because it is from an earlier version of Cadenza " +
@@ -223,7 +219,6 @@ public class Cadenza extends JFrame {
 		}
 	}
 	
-	@SuppressWarnings("resource")
 	private static void showWizard(Frame parent) {
 		hideHome();
 		final CadenzaData newData = new CadenzaData();
@@ -243,8 +238,13 @@ public class Cadenza extends JFrame {
 			public void onFinished(List<WizardPage> path, WizardSettings settings) {
 				for (final WizardPage page : path)
 					page.updateSettings(settings);
-				new CadenzaFrame(newData);
+				
+				final CadenzaFrame temp = new CadenzaFrame(newData);
+				if (_delegate != null)
+					_delegate.setupFrame(temp);
+				
 				dialog.dispose();
+				temp.setVisible(true);
 			}
 	
 			@Override
@@ -268,10 +268,16 @@ public class Cadenza extends JFrame {
 			_lastPath = file;
 			notifyRecent(file);
 			try {
-				@SuppressWarnings("resource")
 				final CadenzaFrame temp = new CadenzaFrame(loadFile(file));
 				temp._associatedSave = file;
 				temp.makeClean();
+				
+				if (_delegate != null)
+					_delegate.setupFrame(temp);
+				
+				hideHome();
+				temp.setVisible(true);
+				
 			} catch (Exception e) {
 				Dialog.error(parent, "Unable to read file " +
 						"because it is from an earlier version of Cadenza " +

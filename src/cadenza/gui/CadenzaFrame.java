@@ -52,10 +52,6 @@ import cadenza.gui.control.CadenzaListener;
 import cadenza.gui.control.ControlWindow;
 import cadenza.gui.synthesizer.SynthesizerListEditor;
 
-import com.apple.eawt.AppEvent.QuitEvent;
-import com.apple.eawt.Application;
-import com.apple.eawt.QuitHandler;
-import com.apple.eawt.QuitResponse;
 import common.collection.ListAdapter;
 import common.collection.ListEvent;
 import common.io.IOUtils;
@@ -95,8 +91,6 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 	
 	public CadenzaFrame(CadenzaData data) {
 		super();
-		
-		Cadenza.hideHome();
 		
 		_data = data;
 		_controller = new CadenzaController(data);
@@ -193,28 +187,10 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 			}
 		});
 		
-		setVisible(true);
 		_controller.addCadenzaListener(this);
 	}
 	
 	private void createMenuBar() {
-		// /////////////////////////////////////////////////////////////////////
-		// Application menu, if Mac OS X:
-		if (SystemUtils.IS_OS_MAC_OSX) {
-			final Application app = Application.getApplication();
-
-			app.setQuitHandler(new QuitHandler() {
-				@Override
-				public void handleQuitRequestWith(QuitEvent _,
-						QuitResponse response) {
-					if (_dirty && !safeClose(true))
-						response.cancelQuit();
-					else
-						response.performQuit();
-				}
-			});
-		}
-		
 		///////////////////////////////////////////////////////////////////////
 		// File menu:
 		final JMenu fileMenu = SwingUtils.menu("File", 'F');
@@ -475,6 +451,10 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 		setTitle("Cadenza - " + (_associatedSave == null ? "[unsaved]" : _associatedSave.getName()));
 		getRootPane().putClientProperty("Window.documentModified", Boolean.FALSE);
 		getRootPane().putClientProperty("Window.documentFile", _associatedSave);
+	}
+	
+	boolean isDirty() {
+		return _dirty;
 	}
 	
 	private boolean safeClose(boolean allowCancel) {

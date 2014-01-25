@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="make-jar">
+<project default="make-zips">
 	<path id="import.path.ref">
 		<fileset dir="lib/import" includes="*.jar"/>
 	</path>
@@ -19,13 +19,16 @@
 		/>
 	</target>
 
-	<target name="make-jar" depends="compile">
+	<target name="make-zips" depends="compile">
+		<!-- Make Mac OS X zip -->
 		<delete dir="lib/export/cadenza"/>
 		<jar destfile="lib/export/cadenza/Cadenza.jar">
 			<manifest>
-				<attribute name="Main-Class" value="cadenza.gui.CadenzaLauncher"/>
+				<attribute name="Main-Class" value="cadenza.gui.CadenzaLauncher_MacOSX"/>
 			</manifest>
-			<fileset dir="bin"/>
+			<fileset dir="bin">
+				<exclude name="**/*Windows_Linux*"/>
+			</fileset>
 			<zipgroupfileset dir="lib/import" includes="*.jar"/>
 		</jar>
 		<copy todir="lib/export/cadenza/resources">
@@ -36,6 +39,27 @@
 		<copy todir="lib/export/cadenza/documentation">
 			<fileset dir="documentation"/>
 		</copy>
-		<zip destfile="Cadenza.zip" basedir="lib/export/cadenza"/>
+		<zip destfile="Cadenza_MacOSX.zip" basedir="lib/export/cadenza"/>
+		
+		<!--Make Windows/Linux zip -->
+		<delete dir="lib/export/cadenza"/>
+		<jar destfile="lib/export/cadenza/Cadenza.jar">
+			<manifest>
+				<attribute name="Main-Class" value="cadenza.gui.CadenzaLauncher_Windows_Linux"/>
+			</manifest>
+			<fileset dir="bin">
+				<exclude name="**/*MacOSX*"/>
+			</fileset>
+			<zipgroupfileset dir="lib/import" includes="*.jar"/>
+		</jar>
+		<copy todir="lib/export/cadenza/resources">
+			<fileset dir="resources">
+				<exclude name="recentfiles.txt"/>
+			</fileset>
+		</copy>
+		<copy todir="lib/export/cadenza/documentation">
+			<fileset dir="documentation"/>
+		</copy>
+		<zip destfile="Cadenza_Windows_Linux.zip" basedir="lib/export/cadenza"/>
 	</target>
 </project>
