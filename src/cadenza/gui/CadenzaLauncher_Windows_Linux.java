@@ -10,9 +10,6 @@ public class CadenzaLauncher_Windows_Linux {
 	private static final String APP_ID = "cadenzasoftware.cadenza";
 	
 	public static void main(String[] args) throws Exception {
-		System.setProperty("apple.laf.useScreenMenuBar", "true");
-		System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Cadenza");
-		
 		try {
 			JUnique.acquireLock(APP_ID);
 		} catch (AlreadyLockedException e) {
