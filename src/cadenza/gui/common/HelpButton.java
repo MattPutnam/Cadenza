@@ -10,7 +10,7 @@ import cadenza.gui.ImageStore;
 
 public class HelpButton extends JButton {
 	public HelpButton(final String message) {
-		super(ImageStore.HELP_LARGE);
+		super(ImageStore.HELP);
 		
 		setBorder(null);
 		addActionListener(new ActionListener() {
