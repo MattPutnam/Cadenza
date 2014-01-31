@@ -17,8 +17,7 @@ import javax.swing.JTextField;
 import cadenza.core.metronome.Metronome.Subdivision;
 import cadenza.core.sequencer.Sequencer;
 import cadenza.core.sequencer.Sequencer.NoteChangeBehavior;
-import cadenza.gui.ScaleSelector;
-
+import cadenza.gui.common.ScaleSelector;
 import common.swing.NonNegativeIntField;
 import common.swing.SwingUtils;
 import common.swing.VerificationException;

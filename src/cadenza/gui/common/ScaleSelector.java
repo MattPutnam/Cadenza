@@ -1,4 +1,4 @@
-package cadenza.gui;
+package cadenza.gui.common;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
