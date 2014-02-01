@@ -383,12 +383,14 @@ public class PatchUsagePanel extends JPanel implements AcceptsKeyboardInput {
 	private Set<Integer> _currentlyPressedKeys = new HashSet<>(10);
 	private Set<Integer> _accumulatedPressedKeys = new HashSet<>(10);
 	@Override
-	public void keyPressed(Keyboard source, int midiNumber, int velocity) {
-		_keyboardPanels.get(_data.keyboards.indexOf(source)).accessKeyboardPanel().
+	public void keyPressed(int channel, int midiNumber, int velocity) {
+		final Keyboard kbd = findKeyboard(channel);
+		
+		_keyboardPanels.get(_data.keyboards.indexOf(kbd)).accessKeyboardPanel().
 				highlightNote(new Note(midiNumber), KeyboardPanel.HIGHLIGHT_COLOR);
 		
-		if (_activeKeyboard == null || source == _activeKeyboard) {
-			_activeKeyboard = source;
+		if (_activeKeyboard == null || kbd == _activeKeyboard) {
+			_activeKeyboard = kbd;
 			_accumulatedPressedKeys.add(Integer.valueOf(midiNumber));
 			_currentlyPressedKeys.add(Integer.valueOf(midiNumber));
 		} else {
@@ -400,10 +402,12 @@ public class PatchUsagePanel extends JPanel implements AcceptsKeyboardInput {
 	}
 	
 	@Override
-	public void keyReleased(Keyboard source, int midiNumber) {
-		_keyboardPanels.get(_data.keyboards.indexOf(source)).accessKeyboardPanel().unhighlightNote(new Note(midiNumber));
+	public void keyReleased(int channel, int midiNumber) {
+		final Keyboard kbd = findKeyboard(channel);
 		
-		if (source == _activeKeyboard) {
+		_keyboardPanels.get(_data.keyboards.indexOf(kbd)).accessKeyboardPanel().unhighlightNote(new Note(midiNumber));
+		
+		if (kbd == _activeKeyboard) {
 			_currentlyPressedKeys.remove(Integer.valueOf(midiNumber));
 			if (_currentlyPressedKeys.isEmpty()) {
 				if (_accumulatedPressedKeys.size() == 1) {
@@ -417,6 +421,13 @@ public class PatchUsagePanel extends JPanel implements AcceptsKeyboardInput {
 		}
 	}
 	
+	private Keyboard findKeyboard(int channel) {
+		for (final Keyboard kbd : _data.keyboards)
+			if (kbd.channel == channel)
+				return kbd;
+		return null;
+	}
+	
 	@Override
-	public void controlReceived(Keyboard source, int ccNumber, int value) { /* ignore */ }
+	public void controlReceived(int channel, int ccNumber, int value) { /* ignore */ }
 }

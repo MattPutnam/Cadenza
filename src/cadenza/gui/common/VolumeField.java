@@ -1,8 +1,6 @@
 package cadenza.gui.common;
 
 import cadenza.control.midiinput.AcceptsKeyboardInput;
-import cadenza.core.Keyboard;
-
 import common.swing.NonNegativeIntField;
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
@@ -35,7 +33,7 @@ public class VolumeField extends NonNegativeIntField implements AcceptsKeyboardI
 	}
 	
 	@Override
-	public void controlReceived(Keyboard source, int ccNumber, final int value) { 
+	public void controlReceived(int channel, int ccNumber, final int value) { 
 		SwingUtils.doInSwing(new Runnable() {
 			@Override
 			public void run() {
@@ -46,8 +44,8 @@ public class VolumeField extends NonNegativeIntField implements AcceptsKeyboardI
 	}
 	
 	@Override
-	public void keyPressed(Keyboard source, int midiNumber, int velocity) { /* ignore */ }
+	public void keyPressed(int channel, int midiNumber, int velocity) { /* ignore */ }
 	@Override
-	public void keyReleased(Keyboard source, int midiNumber) { /* ignore */ }
+	public void keyReleased(int channel, int midiNumber) { /* ignore */ }
 
 }

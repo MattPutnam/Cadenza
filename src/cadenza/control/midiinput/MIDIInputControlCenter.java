@@ -39,11 +39,11 @@ public class MIDIInputControlCenter {
 		if (_active && (_componentWithFocus != null) && (message instanceof ShortMessage)) {
 			final ShortMessage sm = (ShortMessage) message;
 			if (MidiUtilities.isNoteOn(sm))
-				_componentWithFocus.keyPressed(null, sm.getData1(), sm.getData2());
+				_componentWithFocus.keyPressed(sm.getChannel(), sm.getData1(), sm.getData2());
 			else if (MidiUtilities.isNoteOff(sm))
-				_componentWithFocus.keyReleased(null, sm.getData1());
+				_componentWithFocus.keyReleased(sm.getChannel(), sm.getData1());
 			else if (MidiUtilities.isControlChange(sm))
-				_componentWithFocus.controlReceived(null, sm.getData1(), sm.getData2());
+				_componentWithFocus.controlReceived(sm.getChannel(), sm.getData1(), sm.getData2());
 		}
 	}
 }
