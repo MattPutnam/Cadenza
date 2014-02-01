@@ -66,7 +66,7 @@ public class PatchEditor extends JPanel {
 	}
 	
 	private void init() {
-		final JButton selectButton = SwingUtils.iconButton(ImageStore.SEARCH, new SelectPatchAction());
+		final JButton selectButton = SwingUtils.iconButton(ImageStore.SELECT, new SelectPatchAction());
 		final JButton replaceButton = SwingUtils.iconButton(ImageStore.REPLACE, new ReplacePatchAction());
 		replaceButton.setEnabled(false);
 		
