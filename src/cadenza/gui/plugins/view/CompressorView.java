@@ -15,6 +15,7 @@ import cadenza.gui.plugins.edit.PluginEditor;
 import common.swing.GraphicsUtils;
 import common.swing.SwingUtils;
 
+@SuppressWarnings("serial")
 public class CompressorView extends PluginView {
 	private static final int SIZE = 128 + MARGIN + MARGIN;
 	private static final DecimalFormat FORMAT = new DecimalFormat("0.000");

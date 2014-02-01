@@ -10,6 +10,8 @@ import cadenza.core.Patch;
  * @author Matt Putnam
  */
 public class SimplePatchUsage extends PatchUsage {
+	private static final long serialVersionUID = 1L;
+	
 	/**
 	 * The transposition, in half steps to add to the sounding note
 	 * (i.e. +2 to sound a whole step higher than played)

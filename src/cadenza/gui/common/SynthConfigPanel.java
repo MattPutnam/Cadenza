@@ -23,6 +23,7 @@ import common.swing.SimpleGrid;
 import common.swing.VerificationException;
 import common.tuple.Pair;
 
+@SuppressWarnings("serial")
 public class SynthConfigPanel extends JPanel {
 	private static final String NONE = "[none]";
 	

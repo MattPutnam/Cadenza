@@ -21,6 +21,7 @@ import cadenza.gui.common.HelpButton;
 
 import common.swing.table.ListTableModel;
 
+@SuppressWarnings("serial")
 public class ControlMapPanel extends JPanel implements CustomWizardComponent {
 	private static final String HELP_TEXT = "<html>Define control map overrides.<br><br>" +
 			WordUtils.wrap("By default, all control signals are sent to all active patches.  " +

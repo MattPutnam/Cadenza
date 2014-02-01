@@ -18,6 +18,8 @@ import cadenza.core.Scale;
  * @author Matt Putnam
  */
 public class CustomScalePatchUsage extends PatchUsage {
+	private static final long serialVersionUID = 1L;
+	
 	/**
 	 * Maps the pitch class of the input note to the number of half steps to
 	 * sound the pitch.  For example, the G major scale would map F to 1 (+1

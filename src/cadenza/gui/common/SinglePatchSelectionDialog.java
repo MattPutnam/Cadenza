@@ -1,6 +1,5 @@
 package cadenza.gui.common;
 
-
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -24,7 +23,7 @@ import cadenza.gui.patch.PatchPickerDialog;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
 
-
+@SuppressWarnings("serial")
 public class SinglePatchSelectionDialog extends OKCancelDialog {
 	private final Component _parent;
 	private final List<Patch> _patches;

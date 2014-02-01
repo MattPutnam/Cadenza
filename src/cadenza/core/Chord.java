@@ -1,6 +1,16 @@
 package cadenza.core;
 
-import static cadenza.core.Chord.Interval.*;
+import static cadenza.core.Chord.Interval.AUG_5;
+import static cadenza.core.Chord.Interval.DIM_5;
+import static cadenza.core.Chord.Interval.DIM_7;
+import static cadenza.core.Chord.Interval.MAJ_2;
+import static cadenza.core.Chord.Interval.MAJ_3;
+import static cadenza.core.Chord.Interval.MAJ_7;
+import static cadenza.core.Chord.Interval.MAJ_9;
+import static cadenza.core.Chord.Interval.MIN_3;
+import static cadenza.core.Chord.Interval.MIN_7;
+import static cadenza.core.Chord.Interval.PFT_4;
+import static cadenza.core.Chord.Interval.PFT_5;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -9,6 +19,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class Chord implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	public static enum Interval {
 		PFT_U("P1", 0),
 		AUG_U("A1", 1),

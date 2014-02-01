@@ -20,6 +20,7 @@ import cadenza.gui.sequencer.SequencerEditDialog;
 import common.swing.VerificationException;
 import common.swing.table.ListTableModel;
 
+@SuppressWarnings("serial")
 public class SequencerPatchUsageEditor extends JPanel {
 	private final CadenzaData _data;
 	private final SequencerTable _table;

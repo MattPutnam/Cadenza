@@ -5,6 +5,8 @@ import cadenza.core.metronome.Metronome;
 import cadenza.core.metronome.MetronomeAdapter;
 
 public class WaitAction implements TriggerAction {
+	private static final long serialVersionUID = 1L;
+	
 	private final int _num;
 	private final boolean _isMillis;
 	

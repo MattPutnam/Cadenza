@@ -14,6 +14,7 @@ import javax.swing.SwingUtilities;
 import common.midi.MidiUtilities;
 import common.swing.SwingUtils;
 
+@SuppressWarnings("serial")
 public class InputMonitor extends JFrame {
 	private static final InputMonitor INSTANCE = new InputMonitor();
 	public static InputMonitor getInstance() {

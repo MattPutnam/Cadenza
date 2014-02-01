@@ -21,6 +21,8 @@ import common.swing.ColorUtils;
  * @author Matt Putnam
  */
 public abstract class PatchUsage implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	/** The patch to play */
 	public Patch patch;
 	

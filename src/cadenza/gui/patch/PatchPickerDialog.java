@@ -25,6 +25,7 @@ import common.swing.DocumentAdapter;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
 
+@SuppressWarnings("serial")
 public class PatchPickerDialog extends OKCancelDialog {
 	private final List<Synthesizer> _synthesizers;
 	private final List<Patch> _suggestions;

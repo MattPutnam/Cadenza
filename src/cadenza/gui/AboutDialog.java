@@ -13,6 +13,7 @@ import javax.swing.Box;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 
+@SuppressWarnings("serial")
 public class AboutDialog extends JDialog {
 	private static final String WEBSITE = "http://www.cadenzasoftware.com";
 	

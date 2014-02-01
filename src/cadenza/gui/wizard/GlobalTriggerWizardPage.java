@@ -9,6 +9,7 @@ import org.ciscavate.cjwizard.WizardSettings;
 import cadenza.core.CadenzaData;
 import cadenza.gui.trigger.TriggerPanel;
 
+@SuppressWarnings("serial")
 public class GlobalTriggerWizardPage extends WizardPage {
 	public static final String GLOBAL_TRIGGERS_KEY = "Global Triggers";
 	

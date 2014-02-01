@@ -5,6 +5,8 @@ import cadenza.core.metronome.Metronome;
 import cadenza.core.metronome.TempoTapper;
 
 public class MetronomeAction implements TriggerAction {
+	private static final long serialVersionUID = 1L;
+	
 	public static enum Type { START, STOP, SET_BPM, TAP }
 	
 	private final Type _type;

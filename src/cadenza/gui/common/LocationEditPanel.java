@@ -27,6 +27,7 @@ import cadenza.gui.keyboard.SingleKeyboardPanel;
 
 import common.swing.SwingUtils;
 
+@SuppressWarnings("serial")
 public class LocationEditPanel extends JPanel {
 	private final List<Keyboard> _keyboards;
 	private final List<SingleKeyboardPanel> _keyboardPanels;

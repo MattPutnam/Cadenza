@@ -31,6 +31,7 @@ import common.Utils;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
 
+@SuppressWarnings("serial")
 public class OrphanedPatchRemapper extends OKCancelDialog {
 	private static final String MESSAGE = "The following patches were left " +
 			"orphaned by the synthesizer edit process.\nDouble-click each row to select a new patch.";

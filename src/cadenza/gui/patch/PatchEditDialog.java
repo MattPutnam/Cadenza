@@ -21,6 +21,7 @@ import common.swing.ColorPreviewPanel;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
 
+@SuppressWarnings("serial")
 public class PatchEditDialog extends OKCancelDialog {
 	private JComboBox<Synthesizer> _synthesizerCombo;
 	private JTextField _nameField;

@@ -10,6 +10,7 @@ import java.util.Map;
 import common.Utils;
 
 public class Synthesizer implements Serializable {
+	private static final long serialVersionUID = 1L;
 	
 	public static final Synthesizer TEMP = new Synthesizer("TEMP", new ArrayList<String>(),
 			new HashMap<String, String>(), new ArrayList<Integer>());

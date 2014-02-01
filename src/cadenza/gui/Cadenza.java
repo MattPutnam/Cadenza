@@ -37,6 +37,7 @@ import cadenza.gui.wizard.OverviewPageTemplate;
 import common.io.IOUtils;
 import common.swing.dialog.Dialog;
 
+@SuppressWarnings("serial")
 public class Cadenza extends JFrame {
 	private static File _lastPath = null;
 	private static final File _RECENTS = new File("resources" + File.separator + "recentfiles.txt");

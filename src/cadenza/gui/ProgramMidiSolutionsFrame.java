@@ -23,6 +23,7 @@ import common.swing.NonNegativeIntField;
 import common.swing.SwingUtils;
 import common.swing.dialog.Dialog;
 
+@SuppressWarnings("serial")
 public class ProgramMidiSolutionsFrame extends JFrame {
 	private final MidiSolutionsMessageSender _sender;
 	

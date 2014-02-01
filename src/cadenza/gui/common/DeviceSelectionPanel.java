@@ -13,6 +13,7 @@ import javax.swing.event.DocumentEvent;
 
 import common.swing.DocumentAdapter;
 
+@SuppressWarnings("serial")
 public class DeviceSelectionPanel extends JPanel {
 	private final DeviceCombo _combo;
 	private final JTextField _textField;

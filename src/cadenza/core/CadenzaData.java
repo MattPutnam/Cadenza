@@ -24,6 +24,8 @@ import common.collection.NotifyingList;
  * @author Matt Putnam
  */
 public class CadenzaData implements Serializable, HasTriggers, ControlMapProvider {
+	private static final long serialVersionUID = 1L;
+	
 	/** The synthesizers to be used */
 	public NotifyingList<Synthesizer> synthesizers;
 	

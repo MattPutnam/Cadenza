@@ -17,6 +17,7 @@ import common.swing.SwingUtils;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
 
+@SuppressWarnings("serial")
 public class ControlMapEditDialog extends OKCancelDialog {
 	private final List<PatchUsage> _patchUsages;
 	private final ControlMapEntry _entry;

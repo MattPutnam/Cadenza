@@ -4,11 +4,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import common.Utils;
-
 import cadenza.core.patchusage.PatchUsage;
 
+import common.Utils;
+
 public class ControlMapEntry implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	public int sourceCC;
 	public List<Integer> destCCs;
 	public List<PatchUsage> destPatches;

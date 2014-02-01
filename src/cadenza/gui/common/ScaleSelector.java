@@ -10,10 +10,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
-import common.swing.SwingUtils;
-
 import cadenza.core.Scale;
 
+import common.swing.SwingUtils;
+
+@SuppressWarnings("serial")
 public class ScaleSelector extends JPanel {
 	private JRadioButton _chromaticRadioButton;
 	private JRadioButton _scaleRadioButton;

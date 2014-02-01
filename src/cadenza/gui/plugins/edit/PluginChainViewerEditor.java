@@ -36,6 +36,7 @@ import common.swing.VerificationException;
 import common.swing.dialog.Dialog;
 import common.swing.dialog.OKCancelDialog;
 
+@SuppressWarnings("serial")
 public class PluginChainViewerEditor extends JPanel {
 	private static final int INSERT_SIZE = 40;
 	private static final int[] INSERT_xPoints = new int[] {0,  32, 26, 29, 40, 29, 26, 32, 0};

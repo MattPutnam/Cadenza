@@ -6,6 +6,8 @@ import cadenza.gui.plugins.view.GraphicEQView;
 import cadenza.gui.plugins.view.PluginView;
 
 public class GraphicEQ implements Plugin {
+	private static final long serialVersionUID = 1L;
+	
 	private int[] _levels;
 	
 	public GraphicEQ(int[] levels) {

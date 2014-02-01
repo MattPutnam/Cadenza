@@ -15,6 +15,7 @@ import cadenza.gui.plugins.edit.PluginEditor;
 import common.swing.GraphicsUtils;
 import common.swing.SwingUtils;
 
+@SuppressWarnings("serial")
 public class ParametricEQView extends PluginView {
 	private static final int BAND_WIDTH = 3;
 	private static final int THROW_HEIGHT = 64;

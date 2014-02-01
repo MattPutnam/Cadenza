@@ -7,6 +7,7 @@ import cadenza.gui.ImageStore;
 
 import common.swing.table.ListTable;
 
+@SuppressWarnings("serial")
 public abstract class CadenzaTable<T> extends ListTable<T> {
 	public CadenzaTable(List<T> list, boolean allowEdit, boolean allowArrows) {
 		super(list, allowEdit, allowArrows,

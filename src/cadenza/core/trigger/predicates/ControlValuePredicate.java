@@ -3,12 +3,14 @@ package cadenza.core.trigger.predicates;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.ShortMessage;
 
-import common.midi.MidiUtilities;
-
 import cadenza.core.ControlNames;
 import cadenza.core.Keyboard;
 
+import common.midi.MidiUtilities;
+
 public class ControlValuePredicate implements TriggerPredicate {
+	private static final long serialVersionUID = 1L;
+	
 	private final Keyboard _keyboard;
 	private final int _cc;
 	private final int _low;

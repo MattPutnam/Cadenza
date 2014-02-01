@@ -14,6 +14,8 @@ import common.midi.MidiUtilities;
 import common.tuple.Pair;
 
 public class ChordPredicate implements TriggerPredicate {
+	private static final long serialVersionUID = 1L;
+	
 	private final List<Pair<Integer, Integer>> _notes;
 	
 	private final List<Pair<Keyboard, Integer>> _originalInput;

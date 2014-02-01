@@ -20,6 +20,7 @@ import cadenza.gui.ImageStore;
 
 import common.swing.SwingUtils;
 
+@SuppressWarnings("serial")
 public class OverviewPageTemplate extends PageTemplate {
 	private final JList<WizardPage> _overview;
 	private final PageTemplate _innerTemplate;

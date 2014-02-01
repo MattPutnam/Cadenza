@@ -10,6 +10,8 @@ import cadenza.gui.plugins.view.PluginView;
 import common.Utils;
 
 public class ParametricEQ implements Plugin {
+	private static final long serialVersionUID = 1L;
+	
 	public static class Band {
 		private int _frequency;
 		private double _gain;

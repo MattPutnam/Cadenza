@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import net.java.balloontip.BalloonTip;
 import cadenza.gui.ImageStore;
 
+@SuppressWarnings("serial")
 public class HelpButton extends JButton {
 	public HelpButton(final String message) {
 		super(ImageStore.HELP);

@@ -2,6 +2,7 @@ package cadenza.gui.common;
 
 import common.swing.NonNegativeIntField;
 
+@SuppressWarnings("serial")
 public class MidiValueField extends NonNegativeIntField {
 	public MidiValueField() {
 		super();

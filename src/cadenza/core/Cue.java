@@ -23,6 +23,8 @@ import common.Utils;
  * @author Matt Putnam
  */
 public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, HasTriggers {
+	private static final long serialVersionUID = 1L;
+	
 	/** The song number */
 	public Song song;
 	

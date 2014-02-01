@@ -26,6 +26,7 @@ import common.swing.SwingUtils;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
 
+@SuppressWarnings("serial")
 public class TriggerActionEditDialog extends OKCancelDialog {
 	private final CadenzaData _data;
 	private final TriggerAction _initial;

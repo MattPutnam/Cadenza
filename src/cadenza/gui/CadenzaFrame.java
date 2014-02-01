@@ -60,6 +60,7 @@ import common.swing.SwingUtils;
 import common.swing.dialog.Dialog;
 import common.swing.dialog.OKCancelDialog;
 
+@SuppressWarnings("serial")
 public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 	private static final String MAC_OSX_MIDI_BUG_INFO =
 			"There is a bug in the Mac OS X Java implementation that prevents the system\n" +

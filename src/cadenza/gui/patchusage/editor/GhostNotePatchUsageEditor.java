@@ -22,6 +22,7 @@ import cadenza.gui.keyboard.KeyboardPanel;
 
 import common.swing.SwingUtils;
 
+@SuppressWarnings("serial")
 public class GhostNotePatchUsageEditor extends JPanel {
 	private final Map<Integer, List<Integer>> _map;
 	

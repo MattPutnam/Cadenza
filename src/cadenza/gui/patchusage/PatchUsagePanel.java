@@ -43,6 +43,7 @@ import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
 import common.swing.icon.DeleteIcon;
 
+@SuppressWarnings("serial")
 public class PatchUsagePanel extends JPanel implements AcceptsKeyboardInput {
 	private static final Color PATCH_BORDER = Color.DARK_GRAY;
 	

@@ -34,6 +34,7 @@ import cadenza.gui.song.SongPanel;
 import common.Utils;
 import common.swing.SwingUtils;
 
+@SuppressWarnings("serial")
 public class ControlWindow extends JFrame implements CadenzaListener, MetronomeListener {
 	private static final Color BG = Color.BLACK;
 	private static final Color FG = Color.WHITE;

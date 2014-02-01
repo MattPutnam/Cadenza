@@ -15,6 +15,7 @@ import common.midi.MidiUtilities;
 import common.swing.SimpleGrid;
 import common.swing.SwingUtils;
 
+@SuppressWarnings("serial")
 public class GraphicEQEditor extends PluginEditor {
 	private static final int SLIDER_MAX = 10;
 	

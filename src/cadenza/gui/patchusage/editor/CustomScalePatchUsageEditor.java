@@ -28,6 +28,7 @@ import cadenza.gui.keyboard.MultipleKeyboardPanel;
 import common.swing.GraphicsUtils;
 import common.swing.SwingUtils;
 
+@SuppressWarnings("serial")
 public class CustomScalePatchUsageEditor extends JPanel {
 	private static final Note B4 = new Note(PitchClass.B, 4);
 	private static final Note C3 = new Note(PitchClass.C, 3);

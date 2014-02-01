@@ -12,6 +12,7 @@ import cadenza.core.Song;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
 
+@SuppressWarnings("serial")
 public class SongEditDialog extends OKCancelDialog {
 	final Song _song;
 	

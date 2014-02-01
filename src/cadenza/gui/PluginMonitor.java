@@ -12,6 +12,7 @@ import cadenza.gui.plugins.edit.PluginChainViewerEditor;
 
 import common.swing.SwingUtils;
 
+@SuppressWarnings("serial")
 public class PluginMonitor extends JFrame {
 	private static final PluginMonitor INSTANCE = new PluginMonitor();
 	public static PluginMonitor getInstance() {

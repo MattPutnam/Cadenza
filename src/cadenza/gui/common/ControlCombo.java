@@ -10,6 +10,7 @@ import javax.swing.JList;
 
 import cadenza.core.ControlNames;
 
+@SuppressWarnings("serial")
 public class ControlCombo extends JComboBox<Integer> {
 
 	public ControlCombo(Integer initValue) {

@@ -8,6 +8,7 @@ import javax.swing.JList;
 
 import cadenza.core.ControlNames;
 
+@SuppressWarnings("serial")
 public class ControlListRenderer extends DefaultListCellRenderer {
 	@Override
 	public Component getListCellRendererComponent(JList<?> list, Object value,

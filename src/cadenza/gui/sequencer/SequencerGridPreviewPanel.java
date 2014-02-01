@@ -11,6 +11,7 @@ import cadenza.core.sequencer.Sequencer;
 import common.swing.SimpleGrid;
 import common.swing.SwingUtils;
 
+@SuppressWarnings("serial")
 public class SequencerGridPreviewPanel extends JPanel {
 	private static final int GRID_SIZE = 8;
 	private static final Color ON = Color.GREEN;

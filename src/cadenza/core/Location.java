@@ -5,6 +5,8 @@ import java.io.Serializable;
 import common.midi.MidiUtilities;
 
 public class Location implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	/**
 	 * Enumerates the types of note ranges available
 	 */

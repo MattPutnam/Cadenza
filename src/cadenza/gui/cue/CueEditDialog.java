@@ -34,6 +34,7 @@ import common.swing.SwingUtils;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
 
+@SuppressWarnings("serial")
 public class CueEditDialog extends OKCancelDialog implements ControlMapProvider {
 	private final Cue _cue;
 	private final NotifyingList<Cue> _otherCues;

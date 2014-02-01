@@ -45,6 +45,7 @@ import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
 import common.swing.table.ListTableModel;
 
+@SuppressWarnings("serial")
 public class KeyboardListEditor extends JPanel implements CustomWizardComponent {
 	private static final String HELP_TEXT =
 			"<html>Define the keyboards used.<br><br>" +

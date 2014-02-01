@@ -18,11 +18,13 @@ import cadenza.core.metronome.Metronome.Subdivision;
 import cadenza.core.sequencer.Sequencer;
 import cadenza.core.sequencer.Sequencer.NoteChangeBehavior;
 import cadenza.gui.common.ScaleSelector;
+
 import common.swing.NonNegativeIntField;
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
 
+@SuppressWarnings("serial")
 public class SequencerEditDialog extends OKCancelDialog {
 	private final Sequencer _initial;
 	

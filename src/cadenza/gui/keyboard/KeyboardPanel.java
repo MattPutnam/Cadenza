@@ -36,6 +36,7 @@ import common.swing.GraphicsUtils;
  * 
  * @author Matt Putnam
  */
+@SuppressWarnings("serial")
 public final class KeyboardPanel extends JPanel {
 	public static final Color HIGHLIGHT_COLOR = new Color(22, 136, 220);
 	public static final Color LIGHT_HIGHLIGHT_COLOR = new Color(176, 217, 247);

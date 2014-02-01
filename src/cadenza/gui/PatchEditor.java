@@ -37,6 +37,7 @@ import common.swing.ColorUtils;
 import common.swing.SwingUtils;
 import common.swing.table.ListTableModel;
 
+@SuppressWarnings("serial")
 public class PatchEditor extends JPanel {
 	private static final Color ODD_BACKGROUND = new Color(200, 210, 255);
 	private static final Color EVEN_BACKGROUND = Color.WHITE;

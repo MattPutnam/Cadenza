@@ -39,6 +39,7 @@ import common.swing.SimpleGrid;
 import common.swing.SwingUtils;
 import common.swing.icon.DeleteIcon;
 
+@SuppressWarnings("serial")
 public class ParametricEQEditor extends PluginEditor {
 	private final List<Band> _bands;
 	private final ParametricEQ _peq;

@@ -11,6 +11,8 @@ import cadenza.core.sequencer.Sequencer;
 import cadenza.core.sequencer.Sequencer.NoteChangeBehavior;
 
 public class SequencerPatchUsage extends PatchUsage implements MetronomeListener {
+	private static final long serialVersionUID = 1L;
+	
 	public final Sequencer sequencer;
 	
 	private transient CadenzaController _controller;

@@ -46,6 +46,7 @@ import common.collection.ListEvent;
 import common.swing.SwingUtils;
 import common.swing.table.ListTableModel;
 
+@SuppressWarnings("serial")
 public class CueListEditor extends JPanel {
 	private static final Color SONG_BACKGROUND = new Color(200, 210, 255);
 	

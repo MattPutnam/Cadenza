@@ -23,6 +23,7 @@ import cadenza.gui.trigger.TriggerPanel;
 
 import common.swing.dialog.OKCancelDialog;
 
+@SuppressWarnings("serial")
 public class GlobalsToolbar extends JPanel {
 	private static final long ERROR_TIMEOUT = 10000;
 	

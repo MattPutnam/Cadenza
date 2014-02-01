@@ -7,6 +7,7 @@ import common.swing.NonNegativeIntField;
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
 
+@SuppressWarnings("serial")
 public class VolumeField extends NonNegativeIntField implements AcceptsKeyboardInput {
 	public VolumeField(int volume) {
 		super(volume);

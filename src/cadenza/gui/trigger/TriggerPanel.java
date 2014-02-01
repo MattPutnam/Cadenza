@@ -18,6 +18,7 @@ import cadenza.gui.common.HelpButton;
 import common.Utils;
 import common.swing.table.ListTableModel;
 
+@SuppressWarnings("serial")
 public class TriggerPanel extends JPanel implements CustomWizardComponent {
 	private static final String HELP_TEXT = "<html>Define the triggers used.<br><br>" +
 			WordUtils.wrap("Triggers listen for various inputs and fire actions in response.  " +

@@ -22,6 +22,7 @@ import common.swing.NonNegativeIntField;
 import common.swing.SimpleGrid;
 import common.swing.SwingUtils;
 
+@SuppressWarnings("serial")
 public class CompressorEditor extends PluginEditor {
 	private static final int RATIO_SLIDER_STEPS = 100000;
 	private static final DecimalFormat RATIO_FORMAT = new DecimalFormat("0.000");

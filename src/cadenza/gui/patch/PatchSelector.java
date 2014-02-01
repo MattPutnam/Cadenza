@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import cadenza.core.Patch;
 import cadenza.core.Synthesizer;
 
+@SuppressWarnings("serial")
 public class PatchSelector extends JPanel {
 	private final JComboBox<Patch> _patchList;
 	

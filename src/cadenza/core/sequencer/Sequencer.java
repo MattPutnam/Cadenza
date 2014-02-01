@@ -13,6 +13,8 @@ import cadenza.core.metronome.Metronome.Subdivision;
 import cadenza.gui.sequencer.SequencerGridPreviewPanel;
 
 public class Sequencer implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	public static enum NoteChangeBehavior {
 		CONTINUE_SEQUENCE("Finish sequence"),
 		RESTART_SEQUENCE("Restart sequence");

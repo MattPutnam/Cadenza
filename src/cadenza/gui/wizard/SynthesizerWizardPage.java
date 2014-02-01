@@ -11,6 +11,7 @@ import cadenza.core.CadenzaData;
 import cadenza.core.Synthesizer;
 import cadenza.gui.synthesizer.SynthesizerListEditor;
 
+@SuppressWarnings("serial")
 public class SynthesizerWizardPage extends WizardPage {
 	public static final String SYNTHESIZERS_KEY = "Synthesizers";
 	

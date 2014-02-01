@@ -19,6 +19,7 @@ import cadenza.core.metronome.MetronomeListener;
 import common.swing.NonNegativeIntField;
 import common.swing.SwingUtils;
 
+@SuppressWarnings("serial")
 public class MetronomeView extends JFrame implements MetronomeListener {
 	private static final Color METRONOME_OFF = Color.BLACK;
 	private static final Color CLICK_ON = Color.GREEN;

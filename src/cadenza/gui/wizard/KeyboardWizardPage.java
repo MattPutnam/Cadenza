@@ -10,6 +10,7 @@ import cadenza.core.CadenzaData;
 import cadenza.core.Keyboard;
 import cadenza.gui.keyboard.KeyboardListEditor;
 
+@SuppressWarnings("serial")
 public class KeyboardWizardPage extends WizardPage {
 	public static final String KEYBOARDS_KEY = "Keyboards";
 	

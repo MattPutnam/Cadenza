@@ -12,6 +12,8 @@ import cadenza.gui.plugins.view.PluginView;
  * @author Matt Putnam
  */
 public class Compressor implements Plugin {
+	private static final long serialVersionUID = 1L;
+	
 	private int _threshold;
 	private double _ratio;
 	

@@ -33,6 +33,7 @@ import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
 import common.tuple.Pair;
 
+@SuppressWarnings("serial")
 public class TriggerPredicateEditDialog extends OKCancelDialog {
 	private final List<Keyboard> _keyboards;
 	private final TriggerPredicate _initial;

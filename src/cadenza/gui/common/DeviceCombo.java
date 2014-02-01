@@ -5,6 +5,7 @@ import javax.swing.JComboBox;
 import cadenza.synths.Synthesizers;
 
 
+@SuppressWarnings("serial")
 public class DeviceCombo extends JComboBox<String> {
 	public DeviceCombo(String device) {
 		super(Synthesizers.SYNTH_NAMES.toArray(new String[Synthesizers.SYNTH_NAMES.size()]));

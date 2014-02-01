@@ -21,6 +21,7 @@ import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
 import common.swing.table.ListTableModel;
 
+@SuppressWarnings("serial")
 public class SynthesizerListEditor extends JPanel implements CustomWizardComponent {
 	private static final String HELP_TEXT = "<html>Define the synthesizers used.<br><br>" +
 			WordUtils.wrap("The <b>Default</b> synthesizer contains only the General " +

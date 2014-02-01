@@ -19,6 +19,7 @@ import cadenza.core.Song;
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
 
+@SuppressWarnings("serial")
 public class SongPanel extends JPanel {
 	private final List<Song> _songs;
 	

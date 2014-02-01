@@ -8,6 +8,8 @@ import cadenza.control.CadenzaController;
  * @author Matt Putnam
  */
 public class AdvanceAction implements TriggerAction {
+	private static final long serialVersionUID = 1L;
+	
 	@Override
 	public void takeAction(CadenzaController controller) {
 		controller.advance();

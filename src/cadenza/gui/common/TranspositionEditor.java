@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 
 import common.swing.SwingUtils;
 
+@SuppressWarnings("serial")
 public class TranspositionEditor extends JPanel {
 	private static final String[] DIRECTIONS = new String[] {
 		"Up",

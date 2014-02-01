@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 
 import cadenza.gui.plugins.edit.PluginEditor;
 
+@SuppressWarnings("serial")
 public abstract class PluginView extends JPanel {
 	public static final int MARGIN = 14;
 	

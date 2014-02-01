@@ -8,6 +8,7 @@ import javax.swing.JList;
 
 import cadenza.core.Patch;
 
+@SuppressWarnings("serial")
 public class PatchRenderer extends DefaultListCellRenderer {
 	@Override
 	public Component getListCellRendererComponent(JList<?> list, Object value,

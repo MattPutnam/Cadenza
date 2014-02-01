@@ -45,6 +45,7 @@ import common.swing.SwingUtils;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
 
+@SuppressWarnings("serial")
 public class PatchUsageEditDialog extends OKCancelDialog {
 	private final PatchUsage _startingPatchUsage;
 	private final CadenzaData _data;

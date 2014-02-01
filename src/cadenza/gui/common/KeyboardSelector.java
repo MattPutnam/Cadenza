@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 
 import cadenza.core.Keyboard;
 
+@SuppressWarnings("serial")
 public class KeyboardSelector extends JPanel {
 	private final JComboBox<Keyboard> _combo;
 	

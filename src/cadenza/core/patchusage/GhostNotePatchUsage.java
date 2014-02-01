@@ -15,6 +15,8 @@ import cadenza.core.Patch;
  * @author Matt Putnam
  */
 public class GhostNotePatchUsage extends PatchUsage {
+	private static final long serialVersionUID = 1L;
+	
 	/** The map of notes to play when a note is pressed */
 	public Map<Integer, List<Integer>> ghosts;
 

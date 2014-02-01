@@ -8,6 +8,8 @@ import cadenza.core.Location;
 import common.midi.MidiUtilities;
 
 public class NoteOffPredicate implements TriggerPredicate {
+	private static final long serialVersionUID = 1L;
+	
 	private final Location _location;
 
 	public NoteOffPredicate(Location location) {
