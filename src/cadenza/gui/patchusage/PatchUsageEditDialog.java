@@ -125,7 +125,7 @@ public class PatchUsageEditDialog extends OKCancelDialog {
 		_tabbedPane.setBorder(BorderFactory.createTitledBorder("Patch Type"));
 		
 		final Box box = Box.createVerticalBox();
-		box.add(SwingUtils.buildCenteredRow(_patchSelector, _volumeField));
+		box.add(SwingUtils.buildCenteredRow(_patchSelector, new JLabel("Volume: "), _volumeField));
 		box.add(_locationSelector);
 		box.add(_pluginPanel);
 		box.add(_tabbedPane);

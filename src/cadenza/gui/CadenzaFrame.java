@@ -70,6 +70,7 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 	
 	private final CadenzaData _data;
 	private final CadenzaController _controller;
+	private final MIDIInputControlCenter _inputControlCenter;
 	
 	private PatchEditor _patchEditor;
 	private CueListEditor _cueListEditor;
@@ -94,6 +95,7 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 		
 		_data = data;
 		_controller = new CadenzaController(data);
+		_inputControlCenter = new MIDIInputControlCenter();
 		
 		_data.synthesizers.addListener(new Dirtyer<Synthesizer>());
 		_data.globalTriggers.addListener(new Dirtyer<Trigger>());
@@ -121,7 +123,7 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 	@Override
 	public void send(MidiMessage message, long timestamp) {
 		_controller.send(message);
-		MIDIInputControlCenter.getInstance().send(message);
+		_inputControlCenter.send(message);
 		InputMonitor.getInstance().send(message);
 	}
 	

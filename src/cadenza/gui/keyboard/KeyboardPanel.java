@@ -7,13 +7,17 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.geom.AffineTransform;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 
 import cadenza.core.Keyboard;
 import cadenza.core.Note;
@@ -35,6 +39,9 @@ import common.swing.GraphicsUtils;
 public final class KeyboardPanel extends JPanel {
 	public static final Color HIGHLIGHT_COLOR = new Color(22, 136, 220);
 	public static final Color LIGHT_HIGHLIGHT_COLOR = new Color(176, 217, 247);
+	
+	private static final Border FOCUSED = BorderFactory.createLineBorder(Color.BLUE, 2);
+	private static final Border UNFOCUSED = BorderFactory.createEmptyBorder(2, 2, 2, 2);
 	
 	/** Length of white key */
 	static final int WHITE_HEIGHT = 80;
@@ -125,6 +132,20 @@ public final class KeyboardPanel extends JPanel {
 		
 		_size = calcSize();
 		initMaps();
+		
+		setFocusable(true);
+		
+		addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				setBorder(FOCUSED);
+			}
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				setBorder(UNFOCUSED);
+			}
+		});
 	}
 	
 	private Dimension calcSize() {
