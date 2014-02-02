@@ -195,6 +195,11 @@ public class MultipleKeyboardPanel extends JPanel {
 			final PanelNotePair p = (PanelNotePair) obj;
 			return panel == p.panel && note.equals(p.note);
 		}
+		
+		@Override
+		public int hashCode() {
+			return 31*panel.hashCode() + note.hashCode();
+		}
 	}
 	
 	private PanelNotePair findHit(MouseEvent e) {
