@@ -1,6 +1,7 @@
 package cadenza.gui.common;
 
 import cadenza.control.midiinput.AcceptsKeyboardInput;
+
 import common.swing.NonNegativeIntField;
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
@@ -13,6 +14,7 @@ public class VolumeField extends NonNegativeIntField implements AcceptsKeyboardI
 		SwingUtils.freezeSize(this);
 	}
 	
+	@Override
 	public void verify() throws VerificationException {
 		if (getText().isEmpty())
 			throw new VerificationException("Volume must be 0-127", this);
