@@ -1,0 +1,78 @@
+How To Configure Synthesizer and Expansion Card Configuration Files
+===================================================================
+
+A synthesizer needs two files to make it work with Cadenza:  The config file
+located in resources/synthconfigs, and the delegate located in
+resources/delegates.  Expansions are specified in resources/expansionconfigs,
+in subfolders by card type.  Look at the packaged files for help.
+
+
+Config File
+===========
+
+Each synthesizer needs a config file put in resources/synthconfigs.  The name
+of the file is irrelevant.
+
+The first line of the file is the name of the synthesizer.  This is the name
+that will be displayed in the application, and must match the delegate name
+exactly.
+
+The second line defines the names of the expansion card slots and the type for
+each.  The format is [slot name]=[type], with entries separated by commas.  The
+slot name must match the entries in the delegate file, and the type must match
+a subfolder in resources/expansionconfigs.  Available cards will automatically
+be drawn from the appropriate folder in resources/expansionconfigs.
+
+The remaining lines specify the bank names and patches within each.  Each bank
+is given by a line starting with a #, and the patches in that bank are listed
+on subsequent lines, with each starting with the patch number.  For a GM bank,
+simply list "#GM" or "#GM2", and the patches will be automatically loaded.
+The GM patch specification lives in resources/GM and shouldn't be modified.
+
+
+Delegate File
+=============
+
+Each synthesizer needs a delegate file put in resources/delegates.  The name of
+the file is irrelevant.
+
+The first line of the file is the name of the synthesizer, and must match the
+name in the config file.
+
+Each remaining line describes to Cadenza how to select the various banks and
+expansion cards on the synthesizer.  The format for each line is:
+
+TO SELECT BANK [bank/expansion name] PATCH [patch range] SEND [command1] THEN [command2] ...
+
+Each command must have one of the following formats:
+
+CC#[control number (0-127)] VALUE=[control value (0-127)]
+Example: CC#0 VALUE=80
+
+PC VALUE=[program change value or range]
+Example: PC VALUE=0-127
+
+SYSEX VALUE=[[byte1],[byte2],...]
+Example: SYSEX VALUE=[0xF0,0,0,0x1C,5,0xF7]
+
+Example of a full command:
+
+TO SELECT BANK User PATCH 1-128 SEND CC#0 VALUE=80 THEN CC#32 VALUE=0 THEN PC VALUE=0-127
+
+Take careful note of where spaces are allowed.  Spaces separate the tokens, but
+are not allowed inside of a single token.
+
+
+Expansion Config File
+=====================
+
+Each expansion card needs a delegate file put into a subfolder of
+resources/expansionconfigs.  The name of the subfolder must match the type that
+is used in the synth config file, but the name of the individual file is
+irrelevant.
+
+The first line of the file is the name of the expansion card.  This is the name
+that will be shown in the application.
+
+The remaining lines give the patches that are on the card, preceded by the
+patch number.
