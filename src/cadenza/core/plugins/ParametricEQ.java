@@ -1,5 +1,6 @@
 package cadenza.core.plugins;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,7 +13,9 @@ import common.Utils;
 public class ParametricEQ implements Plugin {
 	private static final long serialVersionUID = 1L;
 	
-	public static class Band {
+	public static class Band implements Serializable {
+		private static final long serialVersionUID = 1L;
+		
 		private int _frequency;
 		private double _gain;
 		private double _quality;
