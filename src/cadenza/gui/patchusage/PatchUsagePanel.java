@@ -190,6 +190,7 @@ public class PatchUsagePanel extends JPanel implements AcceptsKeyboardInput {
 			setLayout(null);
 			final JLabel label = new JLabel(patchUsage.patch.name, JLabel.CENTER);
 			label.setBounds(0, 0, width, height);
+			label.setForeground(patchUsage.patch.getTextColor());
 			add(label);
 			
 			final JButton deleteButton = new JButton(new DeleteIcon(10));

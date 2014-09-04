@@ -33,7 +33,6 @@ import cadenza.gui.patch.PatchPickerDialog;
 
 import common.collection.ListAdapter;
 import common.collection.ListEvent;
-import common.swing.ColorUtils;
 import common.swing.SwingUtils;
 import common.swing.table.ListTableModel;
 
@@ -212,9 +211,9 @@ public class PatchEditor extends JPanel {
 				}
 				else {
 					if (column == 0) {
-						final Color bg = _data.patches.get(row).getDisplayColor();
-						label.setBackground(bg);
-						label.setForeground(ColorUtils.getBrightness(bg) > 0.5 ? Color.BLACK : Color.WHITE);
+					  final Patch patch = _data.patches.get(row);
+						label.setBackground(patch.getDisplayColor());
+						label.setForeground(patch.getTextColor());
 					}
 					else {
 						label.setForeground(Color.BLACK);
