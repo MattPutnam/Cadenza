@@ -98,7 +98,7 @@ public class Patch implements Comparable<Patch>, Serializable {
 	
 	public void setDisplayColor(Color color) {
 		_displayColor = color;
-		_foregroundColor = ColorUtils.getBrightness(color) > 0.5 ? Color.BLACK : Color.WHITE;
+		_foregroundColor = ColorUtils.getLuminance(color) > 0.5 ? Color.BLACK : Color.WHITE;
 	}
 	
 	public Color getDisplayColor() {
