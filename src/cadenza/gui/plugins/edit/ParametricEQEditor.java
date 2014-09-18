@@ -2,6 +2,7 @@ package cadenza.gui.plugins.edit;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -286,6 +287,7 @@ public class ParametricEQEditor extends PluginEditor {
 					refreshBands();
 				}
 			});
+			setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		}
 	}
 	

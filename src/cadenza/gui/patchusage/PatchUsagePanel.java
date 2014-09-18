@@ -2,6 +2,7 @@ package cadenza.gui.patchusage;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -202,6 +203,7 @@ public class PatchUsagePanel extends JPanel implements AcceptsKeyboardInput {
 				}
 			});
 			deleteButton.setBounds(width-12, 2, 10, 10);
+			deleteButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			add(deleteButton);
 			
 			setBackground(patchUsage.patch.getDisplayColor());
