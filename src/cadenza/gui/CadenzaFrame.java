@@ -139,7 +139,7 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 	@Override
 	public void updateMode(Mode mode) {
 		if (mode == Mode.PERFORM)
-			_patchEditor.setSelectedPatch(null);
+			_patchEditor.setSelectedPatches(null);
 		else
 			_cueListEditor.setSelectedCue(-1);
 	}
@@ -150,8 +150,8 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 	}
 	
 	@Override
-	public void updatePreviewPatch(Patch patch) {
-		_patchEditor.setSelectedPatch(patch);
+	public void updatePreviewPatches(List<Patch> patches) {
+		_patchEditor.setSelectedPatches(patches);
 	}
 	
 	@Override

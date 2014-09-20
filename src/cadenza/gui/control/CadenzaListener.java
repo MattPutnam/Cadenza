@@ -1,5 +1,7 @@
 package cadenza.gui.control;
 
+import java.util.List;
+
 import cadenza.control.CadenzaController.Mode;
 import cadenza.core.Patch;
 
@@ -20,10 +22,10 @@ public interface CadenzaListener {
 	
 	/**
 	 * Notification that the controller is in preview mode and that
-	 * the preview patch has changed
+	 * the preview patches have changed
 	 * @param patch the preview patch
 	 */
-	public void updatePreviewPatch(Patch patch);
+	public void updatePreviewPatches(List<Patch> patches);
 	
 	/**
 	 * Notification that an exception has been thrown

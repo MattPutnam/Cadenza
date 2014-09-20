@@ -79,11 +79,8 @@ public final class CadenzaController {
 	// end Perform mode fields
 	///////////////////////////////////////////////////////////////////////////
 	// Preview mode fields
-	/** The channel to use for patch preview */
-	private int _previewChannel = 1;
-	
 	/** The currently assigned preview patch */
-	private Patch _previewPatch = null;
+	private List<Patch> _previewPatches = null;
 	
 	public CadenzaController(CadenzaData data) {
 		_data = data;
@@ -113,10 +110,12 @@ public final class CadenzaController {
 				} catch (InvalidMidiDataException e) {
 					notifyListeners(e);
 				}
-			} else if (_mode == Mode.PREVIEW && _previewPatch != null) {
-				Debug.println("In preview mode with a valid patch, sending program change");
+			} else if (_mode == Mode.PREVIEW && _previewPatches != null) {
+				Debug.println("In preview mode with valid patches, sending program change");
 				try {
-					PatchChangeDelegate.performPatchChange(_midiOut, _previewPatch, _previewChannel);
+				  int i = 0;
+				  for (Patch patch : _previewPatches)
+				    PatchChangeDelegate.performPatchChange(_midiOut, patch, i++);
 				} catch (InvalidMidiDataException e) {
 					notifyListeners(e);
 				}
@@ -134,12 +133,6 @@ public final class CadenzaController {
 			
 			PluginMonitor.getInstance().setPlugins(_mode == Mode.PERFORM ? _currentGlobalCuePlugins : null);
 		}
-	}
-	
-	public synchronized void setPreviewChannel(int previewChannel) {
-		_previewChannel = previewChannel;
-		
-		Debug.println("Preview channel set to " + previewChannel);
 	}
 	
 	public synchronized boolean isValid() {
@@ -534,17 +527,17 @@ public final class CadenzaController {
 		}
 	}
 	
-	public synchronized void setPatch(Patch p) {
+	public synchronized void setPatches(List<Patch> patches) {
 		ensureMode(Mode.PREVIEW);
 		
-		_previewPatch = p;
+		_previewPatches = patches;
 		if (_valid) {
 			try {
-				PatchChangeDelegate.performPatchChange(_midiOut, _previewPatch, _previewChannel-1);
-				Debug.println("Preview Patch set to " + p.toString());
-				for (final CadenzaListener listener : _listeners) {
-					listener.updatePreviewPatch(_previewPatch);
-				}
+			  int i = 0;
+			  for (final Patch patch : _previewPatches)
+			    PatchChangeDelegate.performPatchChange(_midiOut, patch, i++);
+				Debug.println("Preview Patch set to " + patches.toString());
+				// don't notify, this method is called from a notify so we get an infinite loop
 			} catch (InvalidMidiDataException e) {
 				notifyListeners(e);
 			}
@@ -554,8 +547,10 @@ public final class CadenzaController {
 	private void send_preview(ShortMessage sm) {
 		try {
 			final ShortMessage newSM = new ShortMessage();
-			newSM.setMessage(sm.getCommand(), _previewChannel-1, sm.getData1(), sm.getData2());
-			_midiOut.send(newSM, -1);
+			for (int i = 0; i < _previewPatches.size(); ++i) {
+  			newSM.setMessage(sm.getCommand(), i, sm.getData1(), sm.getData2());
+  			_midiOut.send(newSM, -1);
+			}
 			
 			Debug.println("Preview MIDI message sent: " + MidiUtilities.toString(newSM));
 		} catch (InvalidMidiDataException e) {
@@ -569,7 +564,7 @@ public final class CadenzaController {
 		if (_mode == Mode.PERFORM) {
 			listener.updatePerformanceLocation(_position);
 		} else if (_mode == Mode.PREVIEW) {
-			listener.updatePreviewPatch(_previewPatch);
+			listener.updatePreviewPatches(_previewPatches);
 		}
 	}
 	

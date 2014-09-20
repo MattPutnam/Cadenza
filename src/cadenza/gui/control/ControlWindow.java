@@ -206,8 +206,8 @@ public class ControlWindow extends JFrame implements CadenzaListener, MetronomeL
 	}
 	
 	@Override
-	public void updatePreviewPatch(Patch patch) {
-		updateDisplay_preview(patch);
+	public void updatePreviewPatches(List<Patch> patches) {
+		updateDisplay_preview(patches);
 	}
 	
 	private void updateDisplay_perform(int position) {
@@ -218,7 +218,7 @@ public class ControlWindow extends JFrame implements CadenzaListener, MetronomeL
 		_mainLabel.setText(buildPatchDisplay(cue));
 	}
 	
-	private String buildSongDisplay(Cue cue, Cue nextCue) {
+	private static String buildSongDisplay(Cue cue, Cue nextCue) {
 		final StringBuilder sb = new StringBuilder();
 		sb.append(cue.song.toString()).append("<br>");
 		
@@ -259,9 +259,9 @@ public class ControlWindow extends JFrame implements CadenzaListener, MetronomeL
 		return wrapHTML(sb.toString());
 	}
 	
-	private void updateDisplay_preview(Patch patch) {
+	private void updateDisplay_preview(List<Patch> patches) {
 		_topLabel.setText(wrapHTML("Preview Mode"));
-		_mainLabel.setText(wrapHTML("Previewing:<br>" + patch.toString()));
+		_mainLabel.setText(wrapHTML("Previewing:<br>" + Utils.mkString(patches, "<br>")));
 	}
 	
 	private static String wrapHTML(String str) {

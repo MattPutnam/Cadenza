@@ -210,12 +210,13 @@ public class CueListEditor extends JPanel {
 			accessTable().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 				@Override
 				public void valueChanged(ListSelectionEvent _) {
+				  CueTableEntry entry = null;
 					final boolean oneCue = accessTable().getSelectedRowCount() == 1 &&
-							   _entries.get(accessTable().getSelectedRow()).isCue();
+							   (entry = _entries.get(accessTable().getSelectedRow())).isCue();
 					cloneButton.setEnabled(oneCue);
 					if (oneCue) {
 						_controller.setMode(Mode.PERFORM);
-						_controller.goTo(_table.getSelectedRows().get(0).cue);
+						_controller.goTo(entry.cue);
 					}
 				}
 			});

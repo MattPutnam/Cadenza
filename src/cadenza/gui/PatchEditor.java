@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -47,6 +48,8 @@ public class PatchEditor extends JPanel {
 	
 	private PatchTable _table;
 	
+	private volatile boolean _listenerEnabled = true;
+	
 	public PatchEditor(Component parent, CadenzaData data, CadenzaController controller) {
 		super();
 		_parent = parent;
@@ -55,14 +58,19 @@ public class PatchEditor extends JPanel {
 		init();
 	}
 	
-	public void setSelectedPatch(Patch patch) {
-		if (patch == null) {
+	public void setSelectedPatches(List<Patch> patches) {
+		if (patches == null) {
+		  _listenerEnabled = false;
 			_table.accessTable().clearSelection();
+			_listenerEnabled = true;
 			return;
 		}
 		
-		final int row = _data.patches.indexOf(patch);
-		_table.accessTable().setRowSelectionInterval(row, row);
+		final ListSelectionModel model = _table.accessTable().getSelectionModel();
+		for (final Patch p : patches) {
+		  final int row = _data.patches.indexOf(p);
+		  model.addSelectionInterval(row, row);
+		}
 	}
 	
 	private void init() {
@@ -81,13 +89,14 @@ public class PatchEditor extends JPanel {
 
 		_table.accessTable().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
-			public void valueChanged(ListSelectionEvent _) {
+			public void valueChanged(ListSelectionEvent e) {
+			  if (e.getValueIsAdjusting() || !_listenerEnabled) return;
+			  
 				final boolean one = _table.accessTable().getSelectedRowCount() == 1;
 				replaceButton.setEnabled(one);
-				if (one) {
-					_controller.setMode(Mode.PREVIEW);
-					_controller.setPatch(_table.getSelectedRows().get(0));
-				}
+				
+				_controller.setMode(Mode.PREVIEW);
+				_controller.setPatches(_table.getSelectedRows());
 			}
 		});
 		
