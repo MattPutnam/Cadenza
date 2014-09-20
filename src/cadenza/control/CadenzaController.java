@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -82,6 +83,8 @@ public final class CadenzaController {
 	/** The currently assigned preview patch */
 	private List<Patch> _previewPatches = null;
 	
+	private Map<Patch, Integer> _previewChannels;
+	
 	public CadenzaController(CadenzaData data) {
 		_data = data;
 		_listeners = new LinkedList<>();
@@ -89,6 +92,8 @@ public final class CadenzaController {
 		
 		_currentAssignments = new HashMap<>();
 		_currentNotes = new HashMap<>();
+		
+		_previewChannels = new IdentityHashMap<>();
 		
 		updateKeyboardChannelMap();
 	}
@@ -531,12 +536,24 @@ public final class CadenzaController {
 		ensureMode(Mode.PREVIEW);
 		
 		_previewPatches = patches;
+		_previewChannels.clear();
 		if (_valid) {
 			try {
-			  int i = 0;
-			  for (final Patch patch : _previewPatches)
-			    PatchChangeDelegate.performPatchChange(_midiOut, patch, i++);
-				Debug.println("Preview Patch set to " + patches.toString());
+			  final Map<Synthesizer, Integer> _synthIndexes = new IdentityHashMap<>();
+			  for (final Synthesizer synth : _data.synthesizers)
+			    _synthIndexes.put(synth, Integer.valueOf(0));
+			  
+			  for (final Patch patch : _previewPatches) {
+			    final Synthesizer synth = patch.getSynthesizer();
+			    final int index = _synthIndexes.get(synth).intValue();
+			    _synthIndexes.put(synth, Integer.valueOf(index+1));
+			    
+			    final int channel = synth.getChannels().get(index).intValue()-1;
+			    PatchChangeDelegate.performPatchChange(_midiOut, patch, channel);
+			    _previewChannels.put(patch, Integer.valueOf(channel));
+			  }
+			  
+				Debug.println("Preview Patches set to " + patches.toString());
 				// don't notify, this method is called from a notify so we get an infinite loop
 			} catch (InvalidMidiDataException e) {
 				notifyListeners(e);
@@ -546,13 +563,10 @@ public final class CadenzaController {
 	
 	private void send_preview(ShortMessage sm) {
 		try {
-			final ShortMessage newSM = new ShortMessage();
-			for (int i = 0; i < _previewPatches.size(); ++i) {
-  			newSM.setMessage(sm.getCommand(), i, sm.getData1(), sm.getData2());
-  			_midiOut.send(newSM, -1);
-			}
-			
-			Debug.println("Preview MIDI message sent: " + MidiUtilities.toString(newSM));
+		  for (final Integer channel : _previewChannels.values()) {
+		    sm.setMessage(sm.getCommand(), channel.intValue(), sm.getData1(), sm.getData2());
+		    _midiOut.send(sm, -1);
+		  }
 		} catch (InvalidMidiDataException e) {
 			notifyListeners(e);
 		}
