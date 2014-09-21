@@ -75,6 +75,7 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 	
 	private PatchEditor _patchEditor;
 	private CueListEditor _cueListEditor;
+	private PreviewMixer _previewMixer;
 	private GlobalsToolbar _globalsToolbar;
 	
 	private JMenu _inputMenu;
@@ -146,12 +147,13 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 	
 	@Override
 	public void updatePerformanceLocation(int position) {
+	  // this can get set from the Control Window so we need to sync the cue list
 		_cueListEditor.setSelectedCue(position);
 	}
 	
 	@Override
 	public void updatePreviewPatches(List<Patch> patches) {
-		_patchEditor.setSelectedPatches(patches);
+		// ignore--this can only get set via the UI so no syncing needed
 	}
 	
 	@Override
@@ -162,11 +164,16 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 	private void init() {
 		_patchEditor = new PatchEditor(this, _data, _controller);
 		_cueListEditor = new CueListEditor(this, _data, _controller);
+		_previewMixer = new PreviewMixer(_controller, _data);
 		_globalsToolbar = new GlobalsToolbar(this, _data);
 		
 		final JPanel panel = new JPanel(new BorderLayout());
 		
-		final JSplitPane splitMain = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, _cueListEditor, _patchEditor);
+		final JSplitPane splitEast = new JSplitPane(JSplitPane.VERTICAL_SPLIT, _patchEditor, _previewMixer);
+		splitEast.setDividerLocation(600);
+		splitEast.setBorder(null);
+		
+		final JSplitPane splitMain = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, _cueListEditor, splitEast);
 		splitMain.setDividerLocation(900);
 		splitMain.setBorder(null);
 		
@@ -190,7 +197,12 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 			}
 		});
 		
+	  _controller.setMode(Mode.PERFORM);
+	  if (!_data.cues.isEmpty())
+	    _cueListEditor.setSelectedCue(0);
+		
 		_controller.addCadenzaListener(this);
+		_controller.addCadenzaListener(_previewMixer);
 	}
 	
 	private void createMenuBar() {

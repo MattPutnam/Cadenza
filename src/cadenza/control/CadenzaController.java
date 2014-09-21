@@ -93,7 +93,7 @@ public final class CadenzaController {
 		_currentAssignments = new HashMap<>();
 		_currentNotes = new HashMap<>();
 		
-		_previewChannels = new IdentityHashMap<>();
+		_previewChannels = new HashMap<>();
 		
 		updateKeyboardChannelMap();
 	}
@@ -253,6 +253,21 @@ public final class CadenzaController {
 		ensureMode(Mode.PERFORM);
 		
 		sendCC(cc, value, _currentAssignments.get(patch).intValue());
+	}
+	
+	public synchronized void setPreviewVolume(int volume, Patch patch) {
+	  ensureMode(Mode.PREVIEW);
+	  
+	  if (!_valid)
+      return;
+    
+    final ShortMessage sm = new ShortMessage();
+    try {
+      sm.setMessage(ShortMessage.CONTROL_CHANGE, _previewChannels.get(patch).intValue(), 7, volume);
+      _midiOut.send(sm, -1);
+    } catch (InvalidMidiDataException e) {
+      notifyListeners(e);
+    }
 	}
 	
 	public synchronized void sendNoteOn(int midiNumber, int velocity, int channel) {
@@ -533,7 +548,7 @@ public final class CadenzaController {
 	}
 	
 	public synchronized void setPatches(List<Patch> patches) {
-		ensureMode(Mode.PREVIEW);
+	  ensureMode(Mode.PREVIEW);
 		
 		_previewPatches = patches;
 		_previewChannels.clear();
@@ -559,6 +574,9 @@ public final class CadenzaController {
 				notifyListeners(e);
 			}
 		}
+		
+		for (final CadenzaListener listener : _listeners)
+		  listener.updatePreviewPatches(patches);
 	}
 	
 	private void send_preview(ShortMessage sm) {

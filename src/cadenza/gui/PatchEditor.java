@@ -69,7 +69,9 @@ public class PatchEditor extends JPanel {
 		final ListSelectionModel model = _table.accessTable().getSelectionModel();
 		for (final Patch p : patches) {
 		  final int row = _data.patches.indexOf(p);
+		  _listenerEnabled = false;
 		  model.addSelectionInterval(row, row);
+		  _listenerEnabled = true;
 		}
 	}
 	
@@ -106,7 +108,18 @@ public class PatchEditor extends JPanel {
 		_data.patches.addListener(new ListAdapter<Patch>() {
 			@Override
 			public void anyChange(ListEvent<Patch> _) {
-				_table.accessTableModel().setList(_data.patches);
+			  // save selection...
+			  final List<Patch> selected = _table.getSelectedRows();
+				
+			  // because this blasts it...
+			  _table.accessTableModel().setList(_data.patches);
+				
+			  // and reselect:
+			  final ListSelectionModel selectionModel = _table.accessTable().getSelectionModel();
+			  for (final Patch p : selected) {
+			    final int i = _data.patches.indexOf(p);
+			    selectionModel.addSelectionInterval(i, i);
+			  }
 			}
 		});
 	}
