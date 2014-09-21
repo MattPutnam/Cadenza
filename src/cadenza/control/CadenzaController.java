@@ -117,13 +117,7 @@ public final class CadenzaController {
 				}
 			} else if (_mode == Mode.PREVIEW && _previewPatches != null) {
 				Debug.println("In preview mode with valid patches, sending program change");
-				try {
-				  int i = 0;
-				  for (Patch patch : _previewPatches)
-				    PatchChangeDelegate.performPatchChange(_midiOut, patch, i++);
-				} catch (InvalidMidiDataException e) {
-					notifyListeners(e);
-				}
+				setPatches(_previewPatches);
 			}
 		}
 	}
