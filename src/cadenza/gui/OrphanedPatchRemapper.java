@@ -36,7 +36,7 @@ public class OrphanedPatchRemapper extends OKCancelDialog {
 	private static final String MESSAGE = "The following patches were left " +
 			"orphaned by the synthesizer edit process.\nDouble-click each row to select a new patch.";
 	private static final int MAX_SUGGESTIONS = 8;
-	private static final int DISTANCE_THRESHOLD = 8;
+	private static final int DISTANCE_THRESHOLD = 3;
 	
 	private final CadenzaData _data;
 	private final List<Patch> _orphans;

@@ -152,7 +152,7 @@ public class InputMonitor extends JFrame {
 	  }
 	}
 	
-	private static class MIDIEventRenderer extends DefaultListCellRenderer {
+	public static class MIDIEventRenderer extends DefaultListCellRenderer {
 	  final JLabel _left;
 	  final JLabel _right;
 	  final JPanel _panel;
