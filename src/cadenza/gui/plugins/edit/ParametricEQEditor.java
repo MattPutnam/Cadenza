@@ -31,11 +31,10 @@ import javax.swing.event.ChangeListener;
 
 import cadenza.core.plugins.ParametricEQ;
 import cadenza.core.plugins.ParametricEQ.Band;
-import cadenza.gui.common.MidiValueField;
 import cadenza.gui.plugins.view.ParametricEQView;
 
 import common.swing.DoubleField;
-import common.swing.NonNegativeDoubleField;
+import common.swing.IntField;
 import common.swing.SimpleGrid;
 import common.swing.SwingUtils;
 import common.swing.icon.DeleteIcon;
@@ -81,13 +80,13 @@ public class ParametricEQEditor extends PluginEditor {
 		private final Band _band;
 		
 		private final JSlider _frequencySlider;
-		private final MidiValueField _frequencyField;
+		private final IntField _frequencyField;
 		
 		private final JSlider _gainSlider;
 		private final DoubleField _gainField;
 		
 		private final JSlider _qualitySlider;
-		private final NonNegativeDoubleField _qualityField;
+		private final DoubleField _qualityField;
 		
 		private final JCheckBox _highShelfCheckBox;
 		private final JCheckBox _lowShelfCheckBox;
@@ -97,7 +96,7 @@ public class ParametricEQEditor extends PluginEditor {
 			_band = band;
 			
 			_frequencySlider = new JSlider(JSlider.VERTICAL, 0, 127, band.getFrequency());
-			_frequencyField = new MidiValueField(band.getFrequency());
+			_frequencyField = new IntField(band.getFrequency(), 0, 127);
 			_frequencyField.setColumns(3);
 			
 			_gainSlider = new JSlider(JSlider.VERTICAL, -10000, 10000, (int) (1000*band.getGain()));
@@ -105,7 +104,7 @@ public class ParametricEQEditor extends PluginEditor {
 			_gainField.setColumns(3);
 			
 			_qualitySlider = new JSlider(JSlider.VERTICAL, 200, 10000, (int) (1000*band.getQuality()));
-			_qualityField = new NonNegativeDoubleField(band.getQuality());
+			_qualityField = new DoubleField(band.getQuality(), 0.0, Double.POSITIVE_INFINITY);
 			_qualityField.setColumns(3);
 			
 			_highShelfCheckBox = new JCheckBox("High Shelf");

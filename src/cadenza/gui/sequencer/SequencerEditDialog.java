@@ -19,7 +19,7 @@ import cadenza.core.sequencer.Sequencer;
 import cadenza.core.sequencer.Sequencer.NoteChangeBehavior;
 import cadenza.gui.common.ScaleSelector;
 
-import common.swing.NonNegativeIntField;
+import common.swing.IntField;
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
@@ -36,7 +36,7 @@ public class SequencerEditDialog extends OKCancelDialog {
 	
 	private SequencerGridEditPanel _gridPanel;
 	
-	private NonNegativeIntField _columnsToAddField;
+	private IntField _columnsToAddField;
 	
 	public SequencerEditDialog(Component parent, Sequencer sequencer) {
 		super(parent);
@@ -61,7 +61,7 @@ public class SequencerEditDialog extends OKCancelDialog {
 			_noteChangeCombo.setSelectedItem(_initial.getNoteChangeBehavior());
 		}
 		
-		_columnsToAddField = new NonNegativeIntField(1);
+		_columnsToAddField = new IntField(1, 1, Integer.MAX_VALUE);
 		_columnsToAddField.setColumns(3);
 		SwingUtils.freezeSize(_columnsToAddField);
 		

@@ -16,7 +16,7 @@ import javax.swing.SwingUtilities;
 import cadenza.core.metronome.Metronome;
 import cadenza.core.metronome.MetronomeListener;
 
-import common.swing.NonNegativeIntField;
+import common.swing.IntField;
 import common.swing.SwingUtils;
 
 @SuppressWarnings("serial")
@@ -32,14 +32,14 @@ public class MetronomeView extends JFrame implements MetronomeListener {
 	}
 	
 	private final JPanel _clickDisplay;
-	private final NonNegativeIntField _bpmField;
+	private final IntField _bpmField;
 	
 	private MetronomeView() {
 		_clickDisplay = new JPanel();
 		_clickDisplay.setMinimumSize(new Dimension(24, 24));
 		_clickDisplay.setBackground(METRONOME_OFF);
 		
-		_bpmField = new NonNegativeIntField(Metronome.getInstance().getBPM());
+		_bpmField = new IntField(Metronome.getInstance().getBPM(), 1, 500);
 		_bpmField.setColumns(4);
 		_bpmField.addActionListener(new ActionListener() {
 			@Override

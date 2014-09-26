@@ -19,7 +19,7 @@ import cadenza.control.MidiSolutionsMessageSender;
 
 import common.midi.MidiUtilities;
 import common.swing.CardPanel;
-import common.swing.NonNegativeIntField;
+import common.swing.IntField;
 import common.swing.SwingUtils;
 import common.swing.dialog.Dialog;
 
@@ -191,10 +191,10 @@ public class ProgramMidiSolutionsFrame extends JFrame {
 		final Box deviceParametersPanel = Box.createHorizontalBox();
 		{
 			final JCheckBox echoCheckBox = new JCheckBox("Echo MIDI in", true);
-			final NonNegativeIntField curveAmountField = buildIntField();
+			final IntField curveAmountField = buildIntField();
 			final JCheckBox curveUpCheckBox = new JCheckBox("Curve upwards", true);
-			final NonNegativeIntField nrBottomField = buildIntField();
-			final NonNegativeIntField nrTopField = buildIntField();
+			final IntField nrBottomField = buildIntField();
+			final IntField nrTopField = buildIntField();
 			
 			final JButton sendButton = new JButton("Send");
 			sendButton.addActionListener(new ActionListener() {
@@ -272,8 +272,8 @@ public class ProgramMidiSolutionsFrame extends JFrame {
 		return box;
 	}
 	
-	private static NonNegativeIntField buildIntField() {
-		final NonNegativeIntField result = new NonNegativeIntField();
+	private static IntField buildIntField() {
+		final IntField result = new IntField(0, 0, 127);
 		result.setColumns(4);
 		SwingUtils.freezeSize(result);
 		return result;

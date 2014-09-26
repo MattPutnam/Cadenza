@@ -40,7 +40,7 @@ import cadenza.gui.patchusage.editor.GhostNotePatchUsageEditor;
 import cadenza.gui.patchusage.editor.SequencerPatchUsageEditor;
 import cadenza.gui.plugins.edit.PluginChainViewerEditor;
 
-import common.swing.NonNegativeIntField;
+import common.swing.IntField;
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
@@ -274,15 +274,6 @@ public class PatchUsageEditDialog extends OKCancelDialog {
 		}
 		
 		@Override
-		public void verify() throws VerificationException {
-			if (_limitVolumeCheckBox.isSelected()) {
-				_volumeLimitField.verify();
-				if (_aboveRadioButton.isSelected())
-					_volumeReductionField.verify();
-			}
-		}
-		
-		@Override
 		public SimplePatchUsage getPatchUsage(Patch patch, Location location, int volume) {
 			return new SimplePatchUsage(patch, location, volume,
 					_transpositionEditor.getTransposition(),
@@ -346,12 +337,12 @@ public class PatchUsageEditDialog extends OKCancelDialog {
 	private class ArpeggiatorPatchUsagePane extends PatchUsageEditPane<ArpeggiatorPatchUsage> {
 		private final JComboBox<Pattern> _patternCombo;
 		private final JComboBox<Subdivision> _subdivisionCombo;
-		private final NonNegativeIntField _minNotesField;
+		private final IntField _minNotesField;
 		
 		public ArpeggiatorPatchUsagePane() {
 			_patternCombo = new JComboBox<>(Pattern.values());
 			_subdivisionCombo = new JComboBox<>(Subdivision.values());
-			_minNotesField = new NonNegativeIntField(3);
+			_minNotesField = new IntField(3, 2, Integer.MAX_VALUE);
 			_minNotesField.setColumns(4);
 			
 			add(_patternCombo);

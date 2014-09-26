@@ -18,7 +18,7 @@ import cadenza.core.trigger.actions.TriggerAction;
 import cadenza.core.trigger.predicates.TriggerPredicate;
 import cadenza.gui.common.CadenzaTable;
 
-import common.swing.NonNegativeIntField;
+import common.swing.IntField;
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
@@ -39,7 +39,7 @@ public class TriggerEditDialog extends OKCancelDialog {
 	private List<TriggerAction> _actions;
 	private ActionTable _actionTable;
 	
-	private NonNegativeIntField _safetyDelayField;
+	private IntField _safetyDelayField;
 	
 	public TriggerEditDialog(Component parent, Trigger trigger, CadenzaData data) {
 		super(parent);
@@ -64,7 +64,7 @@ public class TriggerEditDialog extends OKCancelDialog {
 		_actions = new ArrayList<>(_trigger.actions);
 		_actionTable = new ActionTable();
 		
-		_safetyDelayField = new NonNegativeIntField(_trigger.safetyDelayMillis);
+		_safetyDelayField = new IntField(_trigger.safetyDelayMillis, 0, Integer.MAX_VALUE);
 		_safetyDelayField.setColumns(8);
 		SwingUtils.freezeWidth(_safetyDelayField);
 		final Box safetyPanel = Box.createHorizontalBox();

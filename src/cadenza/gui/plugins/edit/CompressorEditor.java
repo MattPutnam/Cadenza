@@ -17,8 +17,8 @@ import javax.swing.event.ChangeListener;
 import cadenza.core.plugins.Compressor;
 import cadenza.gui.plugins.view.CompressorView;
 
-import common.swing.NonNegativeDoubleField;
-import common.swing.NonNegativeIntField;
+import common.swing.DoubleField;
+import common.swing.IntField;
 import common.swing.SimpleGrid;
 import common.swing.SwingUtils;
 
@@ -33,8 +33,8 @@ public class CompressorEditor extends PluginEditor {
 	private final JSlider _thresholdSlider;
 	private final JSlider _ratioSlider;
 	
-	private final NonNegativeIntField _thresholdField;
-	private final NonNegativeDoubleField _ratioField;
+	private final IntField _thresholdField;
+	private final DoubleField _ratioField;
 	
 	public CompressorEditor(Compressor initial) {
 		super();
@@ -44,9 +44,9 @@ public class CompressorEditor extends PluginEditor {
 		_thresholdSlider = new JSlider(0, 127, initial.getThreshold());
 		_ratioSlider = new JSlider(0, RATIO_SLIDER_STEPS, calculateSliderValueFromRatio(initial.getRatio()));
 		
-		_thresholdField = new NonNegativeIntField(initial.getThreshold());
+		_thresholdField = new IntField(initial.getThreshold(), 0, 127);
 		_thresholdField.setColumns(5);
-		_ratioField = new NonNegativeDoubleField();
+		_ratioField = new DoubleField(1.0, 1.0, Double.POSITIVE_INFINITY);
 		_ratioField.setText(RATIO_FORMAT.format(initial.getRatio()));
 		_ratioField.setColumns(5);
 		

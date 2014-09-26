@@ -20,7 +20,7 @@ import cadenza.core.trigger.actions.TriggerAction;
 import cadenza.core.trigger.actions.WaitAction;
 import cadenza.gui.song.SongPanel;
 
-import common.swing.NonNegativeIntField;
+import common.swing.IntField;
 import common.swing.SimpleGrid;
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
@@ -177,13 +177,13 @@ public class TriggerActionEditDialog extends OKCancelDialog {
 	}
 	
 	private class WaitPane extends ActionPane<WaitAction> {
-		private NonNegativeIntField _field;
+		private IntField _field;
 		
 		private JRadioButton _millisButton;
 		private JRadioButton _beatsButton;
 		
 		public WaitPane() {
-			_field = new NonNegativeIntField();
+			_field = new IntField(1, 0, Integer.MAX_VALUE);
 			_field.setColumns(6);
 			
 			_millisButton = new JRadioButton("milliseconds");
@@ -209,11 +209,6 @@ public class TriggerActionEditDialog extends OKCancelDialog {
 		}
 		
 		@Override
-		public void verify() throws VerificationException {
-			_field.verify();
-		}
-		
-		@Override
 		public WaitAction createAction() {
 			return new WaitAction(_field.getInt(), _millisButton.isSelected());
 		}
@@ -236,7 +231,7 @@ public class TriggerActionEditDialog extends OKCancelDialog {
 		private JRadioButton _setBPMButton;
 		private JRadioButton _tapButton;
 		
-		private NonNegativeIntField _bpmField;
+		private IntField _bpmField;
 		
 		public MetronomePane() {
 			_startButton = new JRadioButton("Start");
@@ -245,7 +240,7 @@ public class TriggerActionEditDialog extends OKCancelDialog {
 			_tapButton = new JRadioButton("Tempo Tap");
 			SwingUtils.groupAndSelectFirst(_startButton, _stopButton, _setBPMButton, _tapButton);
 			
-			_bpmField = new NonNegativeIntField();
+			_bpmField = new IntField(120, 1, 500);
 			_bpmField.setColumns(6);
 			
 			add(new SimpleGrid(new JComponent[][] {
@@ -264,12 +259,6 @@ public class TriggerActionEditDialog extends OKCancelDialog {
 				case SET_BPM: _setBPMButton.setSelected(true); _bpmField.setInt(initial.getBPM()); break;
 				case TAP:     _tapButton.setSelected(true);
 			}
-		}
-		
-		@Override
-		public void verify() throws VerificationException {
-			if (_setBPMButton.isSelected())
-				_bpmField.verify();
 		}
 		
 		@Override

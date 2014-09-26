@@ -39,7 +39,7 @@ import cadenza.core.patchusage.PatchUsage;
 import cadenza.gui.common.CadenzaTable;
 import cadenza.gui.common.HelpButton;
 
-import common.swing.NonNegativeIntField;
+import common.swing.IntField;
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
@@ -244,7 +244,7 @@ public class KeyboardListEditor extends JPanel implements CustomWizardComponent 
 			private final Keyboard _keyboard;
 			
 			private final JTextField _nameField;
-			private final NonNegativeIntField _channelField;
+			private final IntField _channelField;
 			private final SingleKeyboardPanel _keyboardPanel;
 			
 			private Location _selectedFullRange;
@@ -259,7 +259,7 @@ public class KeyboardListEditor extends JPanel implements CustomWizardComponent 
 				_keyboardPanel = new SingleKeyboardPanel(new Note(0), new Note(127));
 				
 				_nameField = new JTextField(keyboard.name);
-				_channelField = new NonNegativeIntField(keyboard.channel);
+				_channelField = new IntField(keyboard.channel, 1, Integer.MAX_VALUE);
 				SwingUtils.freezeWidth(_channelField, 50);
 				_selectedFullRange = Location.range(keyboard, keyboard.low, keyboard.high);
 				_selectedSoundingRange = Location.range(keyboard, keyboard.soundingLow, keyboard.soundingHigh);

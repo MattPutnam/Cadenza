@@ -2,26 +2,15 @@ package cadenza.gui.common;
 
 import cadenza.control.midiinput.AcceptsKeyboardInput;
 
-import common.swing.NonNegativeIntField;
+import common.swing.IntField;
 import common.swing.SwingUtils;
-import common.swing.VerificationException;
 
 @SuppressWarnings("serial")
-public class VolumeField extends NonNegativeIntField implements AcceptsKeyboardInput {
+public class VolumeField extends IntField implements AcceptsKeyboardInput {
 	public VolumeField(int volume) {
-		super(volume);
+		super(volume, 0, 127);
 		setColumns(3);
 		SwingUtils.freezeSize(this);
-	}
-	
-	@Override
-	public void verify() throws VerificationException {
-		if (getText().isEmpty())
-			throw new VerificationException("Volume must be 0-127", this);
-		
-		final int val = getVolume();
-		if (val < 0 || val > 127)
-			throw new VerificationException("Volume must be 0-127", this);
 	}
 	
 	public void setVolume(int volume) {

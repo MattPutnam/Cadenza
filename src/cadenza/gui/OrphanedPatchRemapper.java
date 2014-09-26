@@ -46,7 +46,6 @@ public class OrphanedPatchRemapper extends OKCancelDialog {
 	
 	private JList<Patch> _remappingList;
 	
-	
 	public OrphanedPatchRemapper(Component parent, CadenzaData data,
 			List<Patch> orphans, List<Synthesizer> synthesizers) {
 		super(parent);
