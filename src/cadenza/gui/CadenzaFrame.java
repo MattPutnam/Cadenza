@@ -24,7 +24,6 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSplitPane;
 import javax.swing.event.ChangeEvent;
@@ -50,7 +49,11 @@ import cadenza.core.plugins.Plugin;
 import cadenza.core.trigger.Trigger;
 import cadenza.gui.control.CadenzaListener;
 import cadenza.gui.control.ControlWindow;
+import cadenza.gui.controlmap.ControlMapPanel;
+import cadenza.gui.keyboard.KeyboardListEditor;
+import cadenza.gui.plugins.edit.PluginChainViewerEditor;
 import cadenza.gui.synthesizer.SynthesizerListEditor;
+import cadenza.gui.trigger.TriggerPanel;
 
 import common.collection.ListAdapter;
 import common.collection.ListEvent;
@@ -76,7 +79,6 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 	private PatchEditor _patchEditor;
 	private CueListEditor _cueListEditor;
 	private PreviewMixer _previewMixer;
-	private GlobalsToolbar _globalsToolbar;
 	
 	private JMenu _inputMenu;
 	private JMenu _outputMenu;
@@ -158,16 +160,13 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 	
 	@Override
 	public void handleException(Exception e) {
-		_globalsToolbar.showError(e);
+		Dialog.error(this, e.getMessage());
 	}
 	
 	private void init() {
 		_patchEditor = new PatchEditor(this, _data, _controller);
 		_cueListEditor = new CueListEditor(this, _data, _controller);
 		_previewMixer = new PreviewMixer(_controller, _data);
-		_globalsToolbar = new GlobalsToolbar(this, _data);
-		
-		final JPanel panel = new JPanel(new BorderLayout());
 		
 		final JSplitPane splitEast = new JSplitPane(JSplitPane.VERTICAL_SPLIT, _patchEditor, _previewMixer);
 		splitEast.setDividerLocation(600);
@@ -177,11 +176,8 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 		splitMain.setDividerLocation(900);
 		splitMain.setBorder(null);
 		
-		panel.add(splitMain, BorderLayout.CENTER);
-		panel.add(_globalsToolbar, BorderLayout.NORTH);
-		
 		setLayout(new BorderLayout());
-		add(panel, BorderLayout.CENTER);
+		add(splitMain, BorderLayout.CENTER);
 		
 		createMenuBar();
 		
@@ -240,6 +236,52 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 		
 		setupMenu.addSeparator();
 		setupMenu.add(SwingUtils.menuItem("Configure Synthesizers", 'Y', 'Y', new ConfigureSynthesizersAction()));
+		setupMenu.add(SwingUtils.menuItem("Configure Keyboards", 'K', 'K', new ActionListener() {
+		  @Override
+		  public void actionPerformed(ActionEvent e) {
+		    final KeyboardListEditor panel = new KeyboardListEditor(_data);
+	      if (OKCancelDialog.showInDialog(CadenzaFrame.this, "Edit Keyboards", panel)) {
+	        panel.doRemap();
+	      }
+		  }
+		}));
+		setupMenu.add(SwingUtils.menuItem("Configure Global Triggers", 'T', 'T', new ActionListener() {
+		  @Override
+		  public void actionPerformed(ActionEvent e) {
+        final TriggerPanel panel = new TriggerPanel(_data, _data);
+        if (OKCancelDialog.showInDialog(CadenzaFrame.this, "Edit Global Triggers", panel)) {
+          _data.globalTriggers.clear();
+          _data.globalTriggers.addAll(panel.getTriggers());
+        }
+		  }
+		}));
+		setupMenu.add(SwingUtils.menuItem("Configure Global Control Overrides", 'L', 'L', new ActionListener() {
+		  @Override
+		  public void actionPerformed(ActionEvent e) {
+		    final ControlMapPanel panel = new ControlMapPanel(_data);
+	      if (OKCancelDialog.showInDialog(CadenzaFrame.this, "Edit Global Control Overrides", panel)) {
+	        final List<ControlMapEntry> controls = panel.getMapping();
+	        if (!controls.equals(_data.globalControlMap)) {
+	          _data.globalControlMap.clear();
+	          _data.globalControlMap.addAll(controls);
+	        }
+	      }
+		  }
+		}));
+		setupMenu.add(SwingUtils.menuItem("Configure Global Plugins", 'U', 'U', new ActionListener() {
+		  @Override
+		  public void actionPerformed(ActionEvent e) {
+		    final PluginChainViewerEditor panel = new PluginChainViewerEditor(_data.globalPlugins, true);
+	      if (OKCancelDialog.showInDialog(CadenzaFrame.this, "Edit Global Plugins", panel)) {
+	        final List<Plugin> plugins = panel.getPlugins();
+	        if (!plugins.equals(_data.globalPlugins)) {
+	          _data.globalPlugins.clear();
+	          _data.globalPlugins.addAll(panel.getPlugins());
+	        }
+	      }
+		  }
+		}));
+		
 		setupMenu.addSeparator();
 		setupMenu.add(SwingUtils.menuItem("Program MIDI Solutions device...", 'G', 'G', new ProgramMidiSolutionsAction()));
 		
