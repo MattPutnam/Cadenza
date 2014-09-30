@@ -28,6 +28,7 @@ import cadenza.gui.patch.PatchPickerDialog;
 import cadenza.synths.Synthesizers;
 
 import common.Utils;
+import common.swing.BlockingTask;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
 
@@ -53,7 +54,14 @@ public class OrphanedPatchRemapper extends OKCancelDialog {
 		_orphans = orphans;
 		_synthesizers = synthesizers;
 		_remapping = new HashMap<>();
-		_suggestions = buildSuggestions();
+		_suggestions = new HashMap<>();
+		
+		new BlockingTask(this, new Runnable() {
+		  @Override
+		  public void run() {
+		    _suggestions.putAll(buildSuggestions());
+		  }
+		}).start();
 	}
 	
 	private Map<Patch, List<Patch>> buildSuggestions() {
@@ -84,7 +92,7 @@ public class OrphanedPatchRemapper extends OKCancelDialog {
 
 	@Override
 	protected JComponent buildContent() {
-		_remappingList = new JList<>(_orphans.toArray(new Patch[_orphans.size()]));
+	  _remappingList = new JList<>(_orphans.toArray(new Patch[_orphans.size()]));
 		_remappingList.setCellRenderer(new RemapRenderer());
 		_remappingList.addMouseListener(new MouseAdapter() {
 			@Override
