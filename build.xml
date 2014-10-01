@@ -1,73 +1,73 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="make-zips">
-	<property name="src" location="src"/>
-	<property name="bin" location="bin"/>
-	<property name="importdir" location="lib/import"/>
-	<property name="exportdir" location="lib/export/cadenza"/>
-	
-	<property name="resources" value="resources"/>
-	<property name="documentation" value="documentation"/>
-	
-	<path id="import.path.ref">
-		<fileset dir="${importdir}" includes="*.jar"/>
-	</path>
+  <property name="src" location="src"/>
+  <property name="bin" location="bin"/>
+  <property name="importdir" location="lib/import"/>
+  <property name="exportdir" location="lib/export/cadenza"/>
+  
+  <property name="resources" value="resources"/>
+  <property name="documentation" value="documentation"/>
+  
+  <path id="import.path.ref">
+    <fileset dir="${importdir}" includes="*.jar"/>
+  </path>
 
-	<target name="clean">
-		<delete dir="${bin}"/>
-	</target>
+  <target name="clean">
+    <delete dir="${bin}"/>
+  </target>
 
-	<target name="compile" depends="clean">
-		<mkdir dir="${bin}"/>
-		<javac srcdir="${src}"
-			   classpathref="import.path.ref"
-			   destdir="${bin}"
-			   includeAntRuntime="false"
-			   source="1.7"
-			   target="1.7"
-		/>
-	</target>
+  <target name="compile" depends="clean">
+    <mkdir dir="${bin}"/>
+    <javac srcdir="${src}"
+           classpathref="import.path.ref"
+           destdir="${bin}"
+           includeAntRuntime="false"
+           source="1.7"
+           target="1.7"
+    />
+  </target>
 
-	<target name="make-zips" depends="compile">
-		<!-- Make Mac OS X zip -->
-		<delete dir="${exportdir}"/>
-		<jar destfile="${exportdir}/Cadenza.jar">
-			<manifest>
-				<attribute name="Main-Class" value="cadenza.gui.CadenzaLauncher_MacOSX"/>
-			</manifest>
-			<fileset dir="${bin}">
-				<exclude name="**/*Windows_Linux*"/>
-			</fileset>
-			<zipgroupfileset dir="${importdir}" includes="*.jar"/>
-		</jar>
-		<copy todir="${exportdir}/${resources}">
-			<fileset dir="${resources}">
-				<exclude name="recentfiles.txt"/>
-			</fileset>
-		</copy>
-		<copy todir="${exportdir}/${documentation}">
-			<fileset dir="${documentation}"/>
-		</copy>
-		<zip destfile="Cadenza_MacOSX.zip" basedir="${exportdir}"/>
-		
-		<!--Make Windows/Linux zip -->
-		<delete dir="${exportdir}"/>
-		<jar destfile="${exportdir}/Cadenza.jar">
-			<manifest>
-				<attribute name="Main-Class" value="cadenza.gui.CadenzaLauncher_Windows_Linux"/>
-			</manifest>
-			<fileset dir="${bin}">
-				<exclude name="**/*MacOSX*"/>
-			</fileset>
-			<zipgroupfileset dir="${importdir}" includes="*.jar"/>
-		</jar>
-		<copy todir="${exportdir}/${resources}">
-			<fileset dir="${resources}">
-				<exclude name="recentfiles.txt"/>
-			</fileset>
-		</copy>
-		<copy todir="${exportdir}/${documentation}">
-			<fileset dir="${documentation}"/>
-		</copy>
-		<zip destfile="Cadenza_Windows_Linux.zip" basedir="${exportdir}"/>
-	</target>
+  <target name="make-zips" depends="compile">
+    <!-- Make Mac OS X zip -->
+    <delete dir="${exportdir}"/>
+    <jar destfile="${exportdir}/Cadenza.jar">
+      <manifest>
+        <attribute name="Main-Class" value="cadenza.gui.CadenzaLauncher_MacOSX"/>
+      </manifest>
+      <fileset dir="${bin}">
+        <exclude name="**/*Windows_Linux*"/>
+      </fileset>
+      <zipgroupfileset dir="${importdir}" includes="*.jar"/>
+    </jar>
+    <copy todir="${exportdir}/${resources}">
+      <fileset dir="${resources}">
+        <exclude name="recentfiles.txt"/>
+      </fileset>
+    </copy>
+    <copy todir="${exportdir}/${documentation}">
+      <fileset dir="${documentation}"/>
+    </copy>
+    <zip destfile="Cadenza_MacOSX.zip" basedir="${exportdir}"/>
+    
+    <!--Make Windows/Linux zip -->
+    <delete dir="${exportdir}"/>
+    <jar destfile="${exportdir}/Cadenza.jar">
+      <manifest>
+        <attribute name="Main-Class" value="cadenza.gui.CadenzaLauncher_Windows_Linux"/>
+      </manifest>
+      <fileset dir="${bin}">
+        <exclude name="**/*MacOSX*"/>
+      </fileset>
+      <zipgroupfileset dir="${importdir}" includes="*.jar"/>
+    </jar>
+    <copy todir="${exportdir}/${resources}">
+      <fileset dir="${resources}">
+        <exclude name="recentfiles.txt"/>
+      </fileset>
+    </copy>
+    <copy todir="${exportdir}/${documentation}">
+      <fileset dir="${documentation}"/>
+    </copy>
+    <zip destfile="Cadenza_Windows_Linux.zip" basedir="${exportdir}"/>
+  </target>
 </project>

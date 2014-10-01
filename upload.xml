@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project>
+  <property file="upload.properties"/>
+  
+  <property name="upload.location" value="/public_html/assets/app/v${cadenza-version}"/>
+
+  <target name="upload-latest">
+    <!-- Make the remote directory (no-op if already exists) -->
+    <ftp action    = "mkdir"
+         server    = "${ftp-server}"
+         userid    = "${ftp-username}"
+         password  = "${ftp-password}"
+         remotedir = "${upload.location}"/>
+    <!-- Upload -->
+    <ftp server    = "${ftp-server}"
+         remotedir = "${upload.location}/"
+         userid    = "${ftp-username}"
+         password  = "${ftp-password}">
+      <fileset dir="">
+        <include name="Cadenza*.zip"/>
+      </fileset>
+    </ftp>
+  </target>
+</project>
