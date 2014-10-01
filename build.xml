@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="make-zips">
+  <property file="upload.properties"/>
+  
   <property name="src" location="src"/>
   <property name="bin" location="bin"/>
   <property name="importdir" location="lib/import"/>
   <property name="exportdir" location="lib/export/cadenza"/>
+  
+  <property name="upload.location" value="/public_html/assets/app/v${cadenza-version}"/>
   
   <property name="resources" value="resources"/>
   <property name="documentation" value="documentation"/>
@@ -69,5 +73,23 @@
       <fileset dir="${documentation}"/>
     </copy>
     <zip destfile="Cadenza_Windows_Linux.zip" basedir="${exportdir}"/>
+  </target>
+  
+  <target name="upload-latest">
+    <!-- Make the remote directory (no-op if already exists) -->
+    <ftp action    = "mkdir"
+         server    = "${ftp-server}"
+         userid    = "${ftp-username}"
+         password  = "${ftp-password}"
+         remotedir = "${upload.location}"/>
+    <!-- Upload -->
+    <ftp server    = "${ftp-server}"
+         remotedir = "${upload.location}/"
+         userid    = "${ftp-username}"
+         password  = "${ftp-password}">
+      <fileset dir="">
+        <include name="Cadenza*.zip"/>
+      </fileset>
+    </ftp>
   </target>
 </project>
