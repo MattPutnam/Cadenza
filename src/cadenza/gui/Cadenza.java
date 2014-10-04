@@ -1,6 +1,7 @@
 package cadenza.gui;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.io.BufferedWriter;
@@ -83,6 +84,7 @@ public class Cadenza extends JFrame {
 		
 		final JComboBox<File> result = new JComboBox<>(list.toArray(new File[list.size()]));
 		result.setRenderer(new FileRenderer());
+		result.setPreferredSize(new Dimension(200, 12));
 		return result;
 	}
 	
@@ -92,14 +94,11 @@ public class Cadenza extends JFrame {
 				int index, boolean isSelected, boolean cellHasFocus) {
 			final JLabel label = (JLabel) super.getListCellRendererComponent(list,
 					value, index, isSelected, cellHasFocus);
-			if (value instanceof String)
-			{
-				label.setText((String) value);
-			}
-			else if (value instanceof File)
-			{
-				label.setText(((File) value).getName());
-			}
+      if (value instanceof String) {
+        label.setText((String) value);
+      } else if (value instanceof File) {
+        label.setText(((File) value).getName());
+      }
 			return label;
 		}
 	}
@@ -256,7 +255,6 @@ public class Cadenza extends JFrame {
 		});
 		
 		dialog.pack();
-		dialog.setSize(700, 500); // TODO: figure out problem with sizing and remove
 		dialog.setLocationRelativeTo(parent);
 		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		dialog.setVisible(true);
@@ -364,7 +362,8 @@ public class Cadenza extends JFrame {
 					firstLine = IOUtils.getLineArray(file, 1)[0];
 				} catch (final IOException ioe) {
 					ioe.printStackTrace();
-					firstLine = "";
+					Dialog.error(Cadenza.this, "Exception trying to read the given file", "Error during import");
+					return;
 				}
 				
 				final String[] existingExpansions = getExpansionFolders();
