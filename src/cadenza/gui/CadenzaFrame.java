@@ -33,9 +33,9 @@ import javax.swing.event.DocumentListener;
 
 import org.apache.commons.lang3.SystemUtils;
 
-import cadenza.control.CadenzaController;
-import cadenza.control.CadenzaController.Mode;
 import cadenza.control.MidiSolutionsMessageSender;
+import cadenza.control.PerformanceController;
+import cadenza.control.PreviewController;
 import cadenza.control.midiinput.MIDIInputControlCenter;
 import cadenza.core.CadenzaData;
 import cadenza.core.ControlMapEntry;
@@ -65,6 +65,8 @@ import common.swing.dialog.OKCancelDialog;
 
 @SuppressWarnings("serial")
 public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
+  public static enum Mode { PERFORM, PREVIEW }
+  
 	private static final String MAC_OSX_MIDI_BUG_INFO =
 			"There is a bug in the Mac OS X Java implementation that prevents the system\n" +
 			"from refreshing the list of available MIDI devices once that list has been\n" +
@@ -73,7 +75,8 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 			"drivers are installed, and start Cadenza again.";
 	
 	private final CadenzaData _data;
-	private final CadenzaController _controller;
+	private final PerformanceController _performanceController;
+	private final PreviewController _previewController;
 	private final MIDIInputControlCenter _inputControlCenter;
 	
 	private PatchEditor _patchEditor;
@@ -98,7 +101,8 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 		super();
 		
 		_data = data;
-		_controller = new CadenzaController(data);
+		_performanceController = new PerformanceController(_data);
+		_previewController = new PreviewController(_data);
 		_inputControlCenter = new MIDIInputControlCenter();
 		
 		_data.synthesizers.addListener(new Dirtyer<Synthesizer>());
@@ -113,7 +117,7 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 		_data.keyboards.addListener(new ListAdapter<Keyboard>() {
 			@Override
 			public void anyChange(ListEvent<Keyboard> event) {
-				_controller.updateKeyboardChannelMap();
+				_performanceController.updateKeyboardChannelMap();
 			}
 		});
 		
@@ -126,7 +130,7 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 	
 	@Override
 	public void send(MidiMessage message, long timestamp) {
-		_controller.send(message);
+		_performanceController.send(message);
 		_inputControlCenter.send(message);
 		InputMonitor.getInstance().send(message);
 	}
@@ -164,9 +168,9 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 	}
 	
 	private void init() {
-		_patchEditor = new PatchEditor(this, _data, _controller);
-		_cueListEditor = new CueListEditor(this, _data, _controller);
-		_previewMixer = new PreviewMixer(_controller, _data);
+		_patchEditor = new PatchEditor(this, _data, _previewController);
+		_cueListEditor = new CueListEditor(this, _data, _performanceController);
+		_previewMixer = new PreviewMixer(_previewController, _data);
 		
 		final JSplitPane splitEast = new JSplitPane(JSplitPane.VERTICAL_SPLIT, _patchEditor, _previewMixer);
 		splitEast.setDividerLocation(600);
@@ -193,12 +197,13 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 			}
 		});
 		
-	  _controller.setMode(Mode.PERFORM);
 	  if (!_data.cues.isEmpty())
 	    _cueListEditor.setSelectedCue(0);
 		
-		_controller.addCadenzaListener(this);
-		_controller.addCadenzaListener(_previewMixer);
+		_performanceController.addCadenzaListener(this);
+		
+		_previewController.addCadenzaListener(this);
+		_previewController.addCadenzaListener(_previewMixer);
 	}
 	
 	private void createMenuBar() {
@@ -402,9 +407,9 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 	private class ShowControlWindowAction extends AbstractAction {
 		@Override
 		public void actionPerformed(ActionEvent _) {
-			if (_controller.isValid()) {
-				final ControlWindow window = new ControlWindow(_controller, _data);
-				_controller.addCadenzaListener(window);
+			if (_inDevice != null && _outDevice != null) {
+				final ControlWindow window = new ControlWindow(_performanceController, _data);
+				_performanceController.addCadenzaListener(window);
 				Metronome.getInstance().addMetronomeListener(window);
 				window.setSize(1600, 1000);
 				window.setVisible(true);
@@ -486,7 +491,8 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 			_outDevice = MidiSystem.getMidiDevice(info);
 			_outDevice.open();
 			final Receiver receiver = _outDevice.getReceiver();
-			_controller.setOutput(receiver);
+			_performanceController.setReceiver(receiver);
+			_previewController.setReceiver(receiver);
 			if (_msmSender == null)
 				_msmSender = new MidiSolutionsMessageSender(receiver);
 			else

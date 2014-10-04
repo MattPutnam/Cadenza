@@ -2,8 +2,8 @@ package cadenza.core.trigger.actions;
 
 import java.io.Serializable;
 
-import cadenza.control.CadenzaController;
+import cadenza.control.PerformanceController;
 
 public interface TriggerAction extends Serializable {
-	public void takeAction(CadenzaController controller);
+	public void takeAction(PerformanceController controller);
 }

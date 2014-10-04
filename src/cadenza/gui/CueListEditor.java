@@ -27,8 +27,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
-import cadenza.control.CadenzaController;
-import cadenza.control.CadenzaController.Mode;
+import cadenza.control.PerformanceController;
 import cadenza.core.CadenzaData;
 import cadenza.core.Cue;
 import cadenza.core.Keyboard;
@@ -52,12 +51,12 @@ public class CueListEditor extends JPanel {
 	
 	private final Component _parent;
 	private final CadenzaData _data;
-	private final CadenzaController _controller;
+	private final PerformanceController _controller;
 	
 	private final CueTable _table;
 	private final List<CueTableEntry> _entries;
 	
-	public CueListEditor(Component parent, CadenzaData data, CadenzaController controller) {
+	public CueListEditor(Component parent, CadenzaData data, PerformanceController controller) {
 		super();
 		_parent = parent;
 		_data = data;
@@ -215,7 +214,6 @@ public class CueListEditor extends JPanel {
 							   (entry = _entries.get(accessTable().getSelectedRow())).isCue();
 					cloneButton.setEnabled(oneCue);
 					if (oneCue) {
-						_controller.setMode(Mode.PERFORM);
 						_controller.goTo(entry.cue);
 					}
 				}

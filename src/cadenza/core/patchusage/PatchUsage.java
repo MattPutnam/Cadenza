@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cadenza.control.CadenzaController;
+import cadenza.control.PerformanceController;
 import cadenza.core.Location;
 import cadenza.core.Patch;
 import cadenza.core.Synthesizer;
@@ -135,14 +135,14 @@ public abstract class PatchUsage implements Serializable {
 	 * Default implementation does nothing, override to perform any needed setup.
 	 * @param controller the controller
 	 */
-	public void prepare(CadenzaController controller) {}
+	public void prepare(PerformanceController controller) {}
 	
 	/**
 	 * Called by the CadenzaController when the PatchUsage is left.
 	 * Default implementation does nothing, override to perform any needed cleanup.
 	 * @param controller the controller
 	 */
-	public void cleanup(CadenzaController controller) {}
+	public void cleanup(PerformanceController controller) {}
 	
 	/**
 	 * Called by the CadenzaController when a note from this PatchUsage

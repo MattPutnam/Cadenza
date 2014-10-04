@@ -1,6 +1,6 @@
 package cadenza.core.patchusage;
 
-import cadenza.control.CadenzaController;
+import cadenza.control.PerformanceController;
 import cadenza.core.Location;
 import cadenza.core.Patch;
 
@@ -40,7 +40,7 @@ public class SimplePatchUsage extends PatchUsage {
 	public final int volumeReduction;
 	
 	private transient int _currentNote;
-	private transient CadenzaController _controller;
+	private transient PerformanceController _controller;
 	private transient int _channel;
 
 	public SimplePatchUsage(Patch patch, Location location, int volume,
@@ -55,7 +55,7 @@ public class SimplePatchUsage extends PatchUsage {
 	}
 	
 	@Override
-	public void prepare(CadenzaController controller) {
+	public void prepare(PerformanceController controller) {
 		_controller = controller;
 		_channel = _controller.getCurrentlyAssignedChannel(this);
 	}

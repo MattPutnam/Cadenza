@@ -1,6 +1,6 @@
 package cadenza.core.trigger.actions;
 
-import cadenza.control.CadenzaController;
+import cadenza.control.PerformanceController;
 import cadenza.core.Song;
 
 /**
@@ -20,7 +20,7 @@ public class GotoAction implements TriggerAction {
 	}
 
 	@Override
-	public void takeAction(CadenzaController controller) {
+	public void takeAction(PerformanceController controller) {
 		controller.goTo(_song, _measure);
 	}
 	

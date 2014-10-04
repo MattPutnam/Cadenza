@@ -2,8 +2,8 @@ package cadenza.gui.control;
 
 import java.util.List;
 
-import cadenza.control.CadenzaController.Mode;
 import cadenza.core.Patch;
+import cadenza.gui.CadenzaFrame.Mode;
 
 
 public interface CadenzaListener {

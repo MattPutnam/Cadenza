@@ -21,10 +21,10 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import cadenza.control.CadenzaController;
-import cadenza.control.CadenzaController.Mode;
+import cadenza.control.PreviewController;
 import cadenza.core.CadenzaData;
 import cadenza.core.Patch;
+import cadenza.gui.CadenzaFrame.Mode;
 import cadenza.gui.control.CadenzaListener;
 
 import common.swing.IntField;
@@ -32,7 +32,7 @@ import common.swing.SwingUtils;
 
 @SuppressWarnings("serial")
 public class PreviewMixer extends JPanel implements CadenzaListener {
-  private final CadenzaController _controller;
+  private final PreviewController _controller;
   private final CadenzaData _data;
   
   private CardLayout _cardLayout;
@@ -42,7 +42,7 @@ public class PreviewMixer extends JPanel implements CadenzaListener {
   
   private Box _mixerBox;
   
-  public PreviewMixer(CadenzaController controller, CadenzaData data) {
+  public PreviewMixer(PreviewController controller, CadenzaData data) {
     _controller = controller;
     _data = data;
     
@@ -108,7 +108,7 @@ public class PreviewMixer extends JPanel implements CadenzaListener {
         textField.setText(String.valueOf(value));
         modifying[0] = false;
         
-        _controller.setPreviewVolume(value, patch);
+        _controller.setVolume(value, patch);
       }
     });
     textField.getDocument().addDocumentListener(new DocumentListener() {
@@ -138,7 +138,7 @@ public class PreviewMixer extends JPanel implements CadenzaListener {
         slider.setValue(value);
         modifying[0] = false;
         
-        _controller.setPreviewVolume(value, patch);
+        _controller.setVolume(value, patch);
       }
     });
     

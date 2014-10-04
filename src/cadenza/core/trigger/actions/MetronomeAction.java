@@ -1,6 +1,6 @@
 package cadenza.core.trigger.actions;
 
-import cadenza.control.CadenzaController;
+import cadenza.control.PerformanceController;
 import cadenza.core.metronome.Metronome;
 import cadenza.core.metronome.TempoTapper;
 
@@ -25,7 +25,7 @@ public class MetronomeAction implements TriggerAction {
 	}
 
 	@Override
-	public void takeAction(CadenzaController controller) {
+	public void takeAction(PerformanceController controller) {
 		switch (_type) {
 			case START:   Metronome.getInstance().start();      break;
 			case STOP:    Metronome.getInstance().stop();       break;

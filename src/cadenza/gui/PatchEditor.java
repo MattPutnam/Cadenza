@@ -21,8 +21,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
-import cadenza.control.CadenzaController;
-import cadenza.control.CadenzaController.Mode;
+import cadenza.control.PreviewController;
 import cadenza.core.CadenzaData;
 import cadenza.core.Cue;
 import cadenza.core.Patch;
@@ -44,13 +43,13 @@ public class PatchEditor extends JPanel {
 	
 	private final Component _parent;
 	private final CadenzaData _data;
-	private final CadenzaController _controller;
+	private final PreviewController _controller;
 	
 	private PatchTable _table;
 	
 	private volatile boolean _listenerEnabled = true;
 	
-	public PatchEditor(Component parent, CadenzaData data, CadenzaController controller) {
+	public PatchEditor(Component parent, CadenzaData data, PreviewController controller) {
 		super();
 		_parent = parent;
 		_data = data;
@@ -97,7 +96,6 @@ public class PatchEditor extends JPanel {
 				final boolean one = _table.accessTable().getSelectedRowCount() == 1;
 				replaceButton.setEnabled(one);
 				
-				_controller.setMode(Mode.PREVIEW);
 				_controller.setPatches(_table.getSelectedRows());
 			}
 		});

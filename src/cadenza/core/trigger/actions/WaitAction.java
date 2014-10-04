@@ -1,6 +1,6 @@
 package cadenza.core.trigger.actions;
 
-import cadenza.control.CadenzaController;
+import cadenza.control.PerformanceController;
 import cadenza.core.metronome.Metronome;
 import cadenza.core.metronome.MetronomeAdapter;
 
@@ -18,7 +18,7 @@ public class WaitAction implements TriggerAction {
 	}
 
 	@Override
-	public void takeAction(CadenzaController controller) {
+	public void takeAction(PerformanceController controller) {
 		if (_isMillis) {
 			try {
 				Thread.sleep(_num);

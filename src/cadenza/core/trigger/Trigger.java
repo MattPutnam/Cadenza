@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.sound.midi.MidiMessage;
 
-import cadenza.control.CadenzaController;
+import cadenza.control.PerformanceController;
 import cadenza.core.trigger.actions.TriggerAction;
 import cadenza.core.trigger.predicates.TriggerPredicate;
 
@@ -37,7 +37,7 @@ public class Trigger implements Serializable {
 		_remainingPredicates = new ArrayList<>(predicates);
 	}
 
-	public void receive(MidiMessage message, CadenzaController controller) {
+	public void receive(MidiMessage message, PerformanceController controller) {
 		if (AND) {
 			if (inorder) {
 				if (predicates.get(_orderIndex).receive(message)) {
@@ -78,7 +78,7 @@ public class Trigger implements Serializable {
 		_remainingPredicates.addAll(predicates);
 	}
 	
-	private void trigger(final CadenzaController controller) {
+	private void trigger(final PerformanceController controller) {
 		if (safetyDelayMillis > 0 && System.currentTimeMillis() < _lastTriggered + safetyDelayMillis) {
 			return;
 		}

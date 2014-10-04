@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import cadenza.control.CadenzaController;
+import cadenza.control.PerformanceController;
 import cadenza.core.Location;
 import cadenza.core.Patch;
 import cadenza.core.metronome.Metronome;
@@ -61,7 +61,7 @@ public class ArpeggiatorPatchUsage extends PatchUsage implements MetronomeListen
 	public final int minSize;
 	
 	private transient volatile List<Integer> _currentNotes;
-	private transient CadenzaController _controller;
+	private transient PerformanceController _controller;
 	private transient int _channel;
 	private transient volatile int _index = -1;
 	private transient volatile int _currentlyPlayingNote = -1;
@@ -100,7 +100,7 @@ public class ArpeggiatorPatchUsage extends PatchUsage implements MetronomeListen
 	}
 	
 	@Override
-	public void prepare(CadenzaController controller) {
+	public void prepare(PerformanceController controller) {
 		_currentNotes = new ArrayList<>();
 		Metronome.getInstance().addMetronomeListener(this);
 		_controller = controller;
@@ -110,7 +110,7 @@ public class ArpeggiatorPatchUsage extends PatchUsage implements MetronomeListen
 	}
 	
 	@Override
-	public void cleanup(CadenzaController controller) {
+	public void cleanup(PerformanceController controller) {
 		Metronome.getInstance().removeMetronomeListener(this);
 		_currentNotes.clear();
 		if (_currentlyPlayingNote != -1)

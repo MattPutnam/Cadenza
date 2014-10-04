@@ -2,7 +2,7 @@ package cadenza.core.patchusage;
 
 import java.util.List;
 
-import cadenza.control.CadenzaController;
+import cadenza.control.PerformanceController;
 import cadenza.core.Location;
 import cadenza.core.Patch;
 import cadenza.core.metronome.Metronome;
@@ -15,7 +15,7 @@ public class SequencerPatchUsage extends PatchUsage implements MetronomeListener
 	
 	public final Sequencer sequencer;
 	
-	private transient CadenzaController _controller;
+	private transient PerformanceController _controller;
 	private transient int _channel;
 	private transient boolean _turnOffMetronomeOnExit;
 	
@@ -55,7 +55,7 @@ public class SequencerPatchUsage extends PatchUsage implements MetronomeListener
 	}
 	
 	@Override
-	public void prepare(CadenzaController controller) {
+	public void prepare(PerformanceController controller) {
 		Metronome.getInstance().addMetronomeListener(this);
 		_controller = controller;
 		_channel = _controller.getCurrentlyAssignedChannel(this);
@@ -67,7 +67,7 @@ public class SequencerPatchUsage extends PatchUsage implements MetronomeListener
 	}
 	
 	@Override
-	public void cleanup(CadenzaController controller) {
+	public void cleanup(PerformanceController controller) {
 		Metronome.getInstance().removeMetronomeListener(this);
 		sendNotesOff();
 		if (_turnOffMetronomeOnExit)

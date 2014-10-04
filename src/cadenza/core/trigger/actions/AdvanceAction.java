@@ -1,6 +1,6 @@
 package cadenza.core.trigger.actions;
 
-import cadenza.control.CadenzaController;
+import cadenza.control.PerformanceController;
 
 /**
  * Action to send control to the next Cue
@@ -11,7 +11,7 @@ public class AdvanceAction implements TriggerAction {
 	private static final long serialVersionUID = 1L;
 	
 	@Override
-	public void takeAction(CadenzaController controller) {
+	public void takeAction(PerformanceController controller) {
 		controller.advance();
 	}
 	

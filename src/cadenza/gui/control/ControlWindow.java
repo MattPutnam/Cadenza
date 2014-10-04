@@ -20,8 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import cadenza.control.CadenzaController;
-import cadenza.control.CadenzaController.Mode;
+import cadenza.control.PerformanceController;
 import cadenza.core.CadenzaData;
 import cadenza.core.Cue;
 import cadenza.core.Keyboard;
@@ -29,6 +28,7 @@ import cadenza.core.Patch;
 import cadenza.core.metronome.Metronome;
 import cadenza.core.metronome.MetronomeListener;
 import cadenza.core.patchusage.PatchUsage;
+import cadenza.gui.CadenzaFrame.Mode;
 import cadenza.gui.song.SongPanel;
 
 import common.Utils;
@@ -50,10 +50,10 @@ public class ControlWindow extends JFrame implements CadenzaListener, MetronomeL
 	private JLabel _metronomeLabel;
 	private JPanel _metronomeArea;
 	
-	private final CadenzaController _controller;
+	private final PerformanceController _controller;
 	private final CadenzaData _data;
 	
-	public ControlWindow(CadenzaController controller, CadenzaData data) {
+	public ControlWindow(PerformanceController controller, CadenzaData data) {
 		super();
 		_controller = controller;
 		_data = data;

@@ -1,12 +1,12 @@
 package cadenza.core.trigger.actions;
 
-import cadenza.control.CadenzaController;
+import cadenza.control.PerformanceController;
 
 public class PanicAction implements TriggerAction {
 	private static final long serialVersionUID = 1L;
 	
 	@Override
-	public void takeAction(CadenzaController controller) {
+	public void takeAction(PerformanceController controller) {
 		controller.allNotesOff();
 	}
 	
