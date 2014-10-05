@@ -2,6 +2,9 @@
 <project default="make-zips">
   <property file="upload.properties"/>
   
+  <loadfile property="cadenza-version"
+    srcfile="resources/version.txt"/>
+  
   <property name="src" location="src"/>
   <property name="bin" location="bin"/>
   <property name="importdir" location="lib/import"/>

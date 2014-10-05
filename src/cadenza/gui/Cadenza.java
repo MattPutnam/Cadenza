@@ -252,6 +252,7 @@ public class Cadenza extends JFrame {
 		});
 		
 		dialog.pack();
+		dialog.setSize(700, 500);
 		dialog.setLocationRelativeTo(parent);
 		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		dialog.setVisible(true);
