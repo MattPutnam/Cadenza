@@ -3,26 +3,16 @@ package cadenza.gui.control;
 import java.util.List;
 
 import cadenza.core.Patch;
-import cadenza.gui.CadenzaFrame.Mode;
-
 
 public interface CadenzaListener {
 	/**
-	 * Notification that the mode has changed
-	 * @param mode the new Mode
-	 */
-	public void updateMode(Mode mode);
-	
-	/**
-	 * Notification that the controller is in performance mode and that it
-	 * is at the given cue number
+	 * Notification that Cadenza is now performing at the given location
 	 * @param position the cue number
 	 */
 	public void updatePerformanceLocation(int position);
 	
 	/**
-	 * Notification that the controller is in preview mode and that
-	 * the preview patches have changed
+	 * Notification that Cadenza is now previewing the given patches
 	 * @param patch the preview patch
 	 */
 	public void updatePreviewPatches(List<Patch> patches);

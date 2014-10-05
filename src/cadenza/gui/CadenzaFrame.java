@@ -8,6 +8,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +48,6 @@ import cadenza.core.Synthesizer;
 import cadenza.core.metronome.Metronome;
 import cadenza.core.plugins.Plugin;
 import cadenza.core.trigger.Trigger;
-import cadenza.gui.control.CadenzaListener;
 import cadenza.gui.control.ControlWindow;
 import cadenza.gui.controlmap.ControlMapPanel;
 import cadenza.gui.keyboard.KeyboardListEditor;
@@ -64,15 +64,17 @@ import common.swing.dialog.Dialog;
 import common.swing.dialog.OKCancelDialog;
 
 @SuppressWarnings("serial")
-public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
+public class CadenzaFrame extends JFrame implements Receiver {
+  private static final String MAC_OSX_MIDI_BUG_INFO =
+      "There is a bug in the Mac OS X Java implementation that prevents the system\n" +
+      "from refreshing the list of available MIDI devices once that list has been\n" +
+      "retrieved once during the application's run.  If the device you're looking\n" +
+      "for is not in the list, quit Cadenza, ensure that it is plugged in and any\n" +
+      "drivers are installed, and start Cadenza again.";
+  
   public static enum Mode { PERFORM, PREVIEW }
   
-	private static final String MAC_OSX_MIDI_BUG_INFO =
-			"There is a bug in the Mac OS X Java implementation that prevents the system\n" +
-			"from refreshing the list of available MIDI devices once that list has been\n" +
-			"retrieved once during the application's run.  If the device you're looking\n" +
-			"for is not in the list, quit Cadenza, ensure that it is plugged in and any\n" +
-			"drivers are installed, and start Cadenza again.";
+  private Mode _mode;
 	
 	private final CadenzaData _data;
 	private final PerformanceController _performanceController;
@@ -82,6 +84,8 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 	private PatchEditor _patchEditor;
 	private CueListEditor _cueListEditor;
 	private PreviewMixer _previewMixer;
+	
+	private ControlWindow _controlWindow;
 	
 	private JMenu _inputMenu;
 	private JMenu _outputMenu;
@@ -101,7 +105,7 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 		super();
 		
 		_data = data;
-		_performanceController = new PerformanceController(_data);
+		_performanceController = new PerformanceController(_data, this);
 		_previewController = new PreviewController(_data);
 		_inputControlCenter = new MIDIInputControlCenter();
 		
@@ -128,9 +132,34 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 		_data.patches.add(patch);
 	}
 	
+	public void notifyPerformLocationChanged(int cueIndex, boolean notifyCueListEditor) {
+	  _patchEditor.clearSelection();
+	  _previewMixer.goPerformMode();
+	  if (_controlWindow != null)
+	    _controlWindow.updatePerformanceLocation(cueIndex);
+	  if (notifyCueListEditor)
+	    _cueListEditor.setSelectedCue(cueIndex);
+	  
+	  _mode = Mode.PERFORM;
+	}
+	
+	public void notifyPreviewPatchesChanged(List<Patch> previewPatches) {
+	  // this can only be triggered from the PatchSelectionEditor, no need to notify it
+	  _previewMixer.updatePreviewPatches(previewPatches);
+	  if (_controlWindow != null)
+	    _controlWindow.updatePreviewPatches(previewPatches);
+	  _cueListEditor.clearSelection();
+	  
+	  _mode = Mode.PREVIEW;
+	}
+	
 	@Override
 	public void send(MidiMessage message, long timestamp) {
-		_performanceController.send(message);
+	  if (_mode == Mode.PERFORM)
+	    _performanceController.send(message);
+	  else if (_mode == Mode.PREVIEW)
+	    _previewController.send(message);
+	  
 		_inputControlCenter.send(message);
 		InputMonitor.getInstance().send(message);
 	}
@@ -143,33 +172,10 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 			_outDevice.close();
 	}
 	
-	@Override
-	public void updateMode(Mode mode) {
-		if (mode == Mode.PERFORM)
-			_patchEditor.setSelectedPatches(null);
-		else
-			_cueListEditor.setSelectedCue(-1);
-	}
-	
-	@Override
-	public void updatePerformanceLocation(int position) {
-	  // this can get set from the Control Window so we need to sync the cue list
-		_cueListEditor.setSelectedCue(position);
-	}
-	
-	@Override
-	public void updatePreviewPatches(List<Patch> patches) {
-		// ignore--this can only get set via the UI so no syncing needed
-	}
-	
-	@Override
-	public void handleException(Exception e) {
-		Dialog.error(this, e.getMessage());
-	}
-	
 	private void init() {
+	  _cueListEditor = new CueListEditor(this, _data, _performanceController);
+	  
 		_patchEditor = new PatchEditor(this, _data, _previewController);
-		_cueListEditor = new CueListEditor(this, _data, _performanceController);
 		_previewMixer = new PreviewMixer(_previewController, _data);
 		
 		final JSplitPane splitEast = new JSplitPane(JSplitPane.VERTICAL_SPLIT, _patchEditor, _previewMixer);
@@ -198,12 +204,9 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 		});
 		
 	  if (!_data.cues.isEmpty())
-	    _cueListEditor.setSelectedCue(0);
-		
-		_performanceController.addCadenzaListener(this);
-		
-		_previewController.addCadenzaListener(this);
-		_previewController.addCadenzaListener(_previewMixer);
+	    notifyPerformLocationChanged(0, true);
+	  else if (!_data.patches.isEmpty())
+	    notifyPreviewPatchesChanged(Collections.singletonList(_data.patches.get(0)));
 	}
 	
 	private void createMenuBar() {
@@ -407,16 +410,25 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 	private class ShowControlWindowAction extends AbstractAction {
 		@Override
 		public void actionPerformed(ActionEvent _) {
-			if (_inDevice != null && _outDevice != null) {
-				final ControlWindow window = new ControlWindow(_performanceController, _data);
-				_performanceController.addCadenzaListener(window);
-				Metronome.getInstance().addMetronomeListener(window);
-				window.setSize(1600, 1000);
-				window.setVisible(true);
-			} else {
-				Dialog.error(CadenzaFrame.this, "MIDI I/O is not set.  " +
-						"Go to the Setup menu and select the MIDI Input/Output devices.");
-			}
+		  if (_inDevice == null || _outDevice == null) {
+		    Dialog.error(CadenzaFrame.this, "MIDI I/O is not set.  " +
+            "Go to the Setup menu and select the MIDI Input/Output devices.");
+		    return;
+		  }
+		  
+		  if (_controlWindow == null) {
+		    _controlWindow = new ControlWindow(_performanceController, _data);
+        Metronome.getInstance().addMetronomeListener(_controlWindow);
+        _controlWindow.setSize(1600, 1000);
+        SwingUtils.goInvisibleOnClose(_controlWindow);
+        
+        if (_mode == Mode.PERFORM && _data.cues.size() > 0)
+          _controlWindow.updatePerformanceLocation(_performanceController.getCurrentCueIndex());
+        else if (_mode == Mode.PREVIEW && _data.patches.size() > 0)
+          _controlWindow.updatePreviewPatches(_previewController.getCurrentPreviewPatches());
+		  }
+		  
+		  _controlWindow.setVisible(true);
 		}
 	}
 	
@@ -506,7 +518,7 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 	private void makeDirty() {
 		_dirty = true;
 		getRootPane().putClientProperty("Window.documentModified", Boolean.TRUE);
-		setTitle("Cadenza - " + (_associatedSave == null ? "[unsaved]" : _associatedSave.getName()));
+		setTitle("Cadenza - " + (_associatedSave == null ? "[unsaved]" : _associatedSave.getName() + " - modified"));
 	}
 	
 	void makeClean() {
@@ -522,8 +534,7 @@ public class CadenzaFrame extends JFrame implements Receiver, CadenzaListener {
 	
 	private boolean safeClose(boolean allowCancel) {
 		if (_dirty) {
-			int result = JOptionPane.showConfirmDialog(this, "Warning: This " +
-					"file has unsaved changes.  Save before closing?",
+			int result = JOptionPane.showConfirmDialog(this, "Warning: This file has unsaved changes.  Save before closing?",
 					"Unsaved Changes", allowCancel ? JOptionPane.YES_NO_CANCEL_OPTION : JOptionPane.YES_NO_OPTION);
 			if (result == JOptionPane.CANCEL_OPTION) {
 				return false;

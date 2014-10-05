@@ -41,37 +41,20 @@ public class PatchEditor extends JPanel {
 	private static final Color ODD_BACKGROUND = new Color(200, 210, 255);
 	private static final Color EVEN_BACKGROUND = Color.WHITE;
 	
-	private final Component _parent;
+	private final CadenzaFrame _cadenzaFrame;
 	private final CadenzaData _data;
 	private final PreviewController _controller;
 	
 	private PatchTable _table;
 	
-	private volatile boolean _listenerEnabled = true;
+	private volatile boolean _disableListSelectionListener = false;
 	
-	public PatchEditor(Component parent, CadenzaData data, PreviewController controller) {
+	public PatchEditor(CadenzaFrame cadenzaFrame, CadenzaData data, PreviewController controller) {
 		super();
-		_parent = parent;
+		_cadenzaFrame = cadenzaFrame;
 		_data = data;
 		_controller = controller;
 		init();
-	}
-	
-	public void setSelectedPatches(List<Patch> patches) {
-		if (patches == null) {
-		  _listenerEnabled = false;
-			_table.accessTable().clearSelection();
-			_listenerEnabled = true;
-			return;
-		}
-		
-		final ListSelectionModel model = _table.accessTable().getSelectionModel();
-		for (final Patch p : patches) {
-		  final int row = _data.patches.indexOf(p);
-		  _listenerEnabled = false;
-		  model.addSelectionInterval(row, row);
-		  _listenerEnabled = true;
-		}
 	}
 	
 	private void init() {
@@ -91,12 +74,14 @@ public class PatchEditor extends JPanel {
 		_table.accessTable().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-			  if (e.getValueIsAdjusting() || !_listenerEnabled) return;
+			  if (_disableListSelectionListener || e.getValueIsAdjusting()) return;
 			  
 				final boolean one = _table.accessTable().getSelectedRowCount() == 1;
 				replaceButton.setEnabled(one);
 				
-				_controller.setPatches(_table.getSelectedRows());
+				final List<Patch> selected = _table.getSelectedRows();
+				_controller.setPatches(selected);
+				_cadenzaFrame.notifyPreviewPatchesChanged(selected);
 			}
 		});
 		
@@ -120,6 +105,12 @@ public class PatchEditor extends JPanel {
 			  }
 			}
 		});
+	}
+	
+	public synchronized void clearSelection() {
+	  _disableListSelectionListener = true;
+	  _table.accessTable().getSelectionModel().clearSelection();
+	  _disableListSelectionListener = false;
 	}
 	
 	private class PatchTable extends CadenzaTable<Patch> {
@@ -158,7 +149,7 @@ public class PatchEditor extends JPanel {
 		
 		@Override
 		protected void takeActionOnAdd() {
-			final PatchEditDialog dialog = new PatchEditDialog(_parent, _data.synthesizers, null, _data.patches);
+			final PatchEditDialog dialog = new PatchEditDialog(_cadenzaFrame, _data.synthesizers, null, _data.patches);
 			dialog.showDialog();
 			if (dialog.okPressed()) {
 				_data.patches.add(dialog.getPatch());
@@ -168,7 +159,7 @@ public class PatchEditor extends JPanel {
 		
 		@Override
 		protected void takeActionOnEdit(Patch patch) {
-			final PatchEditDialog dialog = new PatchEditDialog(_parent, _data.synthesizers, patch, _data.patches);
+			final PatchEditDialog dialog = new PatchEditDialog(_cadenzaFrame, _data.synthesizers, patch, _data.patches);
 			dialog.showDialog();
 			if (dialog.okPressed()) {
 				final Patch edit = dialog.getPatch();
@@ -177,7 +168,7 @@ public class PatchEditor extends JPanel {
 				}
 				
 				if (patch.defaultVolume != edit.defaultVolume) {
-					int result = JOptionPane.showConfirmDialog(_parent,
+					int result = JOptionPane.showConfirmDialog(_cadenzaFrame,
 							"Persist change to default volume?",
 							"Choose", JOptionPane.YES_NO_OPTION);
 					if (result == JOptionPane.OK_OPTION) {
@@ -253,7 +244,7 @@ public class PatchEditor extends JPanel {
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			final PatchPickerDialog dialog = new PatchPickerDialog(_parent, _data.synthesizers);
+			final PatchPickerDialog dialog = new PatchPickerDialog(_cadenzaFrame, _data.synthesizers);
 			dialog.showDialog();
 			if (dialog.okPressed()) {
 				_data.patches.add(dialog.getSelectedPatch());
@@ -270,7 +261,7 @@ public class PatchEditor extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			final Patch patch = _data.patches.get(_table.accessTable().getSelectedRow());
-			final SinglePatchSelectionDialog dialog = new SinglePatchSelectionDialog(_parent, patch, _data.patches, _data.synthesizers);
+			final SinglePatchSelectionDialog dialog = new SinglePatchSelectionDialog(_cadenzaFrame, patch, _data.patches, _data.synthesizers);
 			dialog.showDialog();
 			if (dialog.okPressed()) {
 				final Patch replacement = dialog.getSelectedPatch();

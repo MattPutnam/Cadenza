@@ -28,20 +28,18 @@ import cadenza.core.Patch;
 import cadenza.core.metronome.Metronome;
 import cadenza.core.metronome.MetronomeListener;
 import cadenza.core.patchusage.PatchUsage;
-import cadenza.gui.CadenzaFrame.Mode;
 import cadenza.gui.song.SongPanel;
 
 import common.Utils;
 import common.swing.SwingUtils;
 
 @SuppressWarnings("serial")
-public class ControlWindow extends JFrame implements CadenzaListener, MetronomeListener {
+public class ControlWindow extends JFrame implements MetronomeListener {
 	private static final Color BG = Color.BLACK;
 	private static final Color FG = Color.WHITE;
 	
 	private JLabel _topLabel;
 	private JLabel _mainLabel;
-	private JLabel _errorLabel;
 	
 	private SongPanel _songPanel;
 	private JTextField _measureField;
@@ -64,7 +62,6 @@ public class ControlWindow extends JFrame implements CadenzaListener, MetronomeL
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
-				_controller.removeCadenzaListener(ControlWindow.this);
 				Metronome.getInstance().removeMetronomeListener(ControlWindow.this);
 			}
 		});
@@ -77,14 +74,10 @@ public class ControlWindow extends JFrame implements CadenzaListener, MetronomeL
 		_mainLabel = new JLabel("Initializing...", JLabel.CENTER);
 		_mainLabel.setForeground(FG);
 		
-		_errorLabel = new JLabel("", JLabel.CENTER);
-		_errorLabel.setForeground(Color.RED);
-		
 		final JPanel main = new JPanel(new BorderLayout());
 		main.setBackground(BG);
 		main.add(_topLabel, BorderLayout.NORTH);
 		main.add(_mainLabel, BorderLayout.CENTER);
-		main.add(_errorLabel, BorderLayout.SOUTH);
 		
 		final JLabel gotoLabel = new JLabel("Go to ");
 		gotoLabel.setForeground(FG);
@@ -129,7 +122,6 @@ public class ControlWindow extends JFrame implements CadenzaListener, MetronomeL
 		
 		final JPanel south = new JPanel(new BorderLayout());
 		south.add(toolbar, BorderLayout.NORTH);
-		south.add(_errorLabel, BorderLayout.SOUTH);
 		
 		setLayout(new BorderLayout());
 		add(main, BorderLayout.CENTER);
@@ -193,19 +185,10 @@ public class ControlWindow extends JFrame implements CadenzaListener, MetronomeL
 		}
 	}
 	
-	@Override
-	public void updateMode(Mode mode) {
-		final boolean enabled = mode == Mode.PERFORM;
-		for (final Component c : _toolbarComponents)
-			c.setEnabled(enabled);
-	}
-	
-	@Override
 	public void updatePerformanceLocation(int position) {
 		updateDisplay_perform(position);
 	}
 	
-	@Override
 	public void updatePreviewPatches(List<Patch> patches) {
 		updateDisplay_preview(patches);
 	}
@@ -214,8 +197,18 @@ public class ControlWindow extends JFrame implements CadenzaListener, MetronomeL
 		final Cue cue = _data.cues.get(position);
 		final Cue nextCue = position == _data.cues.size()-1 ? null : _data.cues.get(position+1);
 		
-		_topLabel.setText(buildSongDisplay(cue, nextCue));
-		_mainLabel.setText(buildPatchDisplay(cue));
+		final String songDisplay = buildSongDisplay(cue, nextCue);
+		final String patchDisplay = buildPatchDisplay(cue);
+		SwingUtils.doInSwing(new Runnable() {
+		  @Override
+		  public void run() {
+		    for (final Component c : _toolbarComponents)
+		      c.setEnabled(true);
+		    
+		    _topLabel.setText(songDisplay);
+		    _mainLabel.setText(patchDisplay);
+		  }
+		}, false);
 	}
 	
 	private static String buildSongDisplay(Cue cue, Cue nextCue) {
@@ -260,8 +253,19 @@ public class ControlWindow extends JFrame implements CadenzaListener, MetronomeL
 	}
 	
 	private void updateDisplay_preview(List<Patch> patches) {
-		_topLabel.setText(wrapHTML("Preview Mode"));
-		_mainLabel.setText(wrapHTML("Previewing:<br>" + Utils.mkString(patches, "<br>")));
+	  final String topText = wrapHTML("Preview Mode");
+	  final String mainText = wrapHTML("Previewing:<br>" + Utils.mkString(patches, "<br>"));
+	  
+	  SwingUtils.doInSwing(new Runnable() {
+	    @Override
+	    public void run() {
+	      for (final Component c : _toolbarComponents)
+          c.setEnabled(false);
+	      
+	      _topLabel.setText(topText);
+	      _mainLabel.setText(mainText);
+	    }
+	  }, false);
 	}
 	
 	private static String wrapHTML(String str) {
@@ -277,11 +281,6 @@ public class ControlWindow extends JFrame implements CadenzaListener, MetronomeL
 		public void actionPerformed(ActionEvent e) {
 			_controller.goTo(_songPanel.getSelectedSong(), _measureField.getText());
 		}
-	}
-
-	@Override
-	public void handleException(Exception e) {
-		_errorLabel.setText("Error: " + e.getMessage());
 	}
 	
 	@Override

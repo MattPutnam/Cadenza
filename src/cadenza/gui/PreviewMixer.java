@@ -25,13 +25,12 @@ import cadenza.control.PreviewController;
 import cadenza.core.CadenzaData;
 import cadenza.core.Patch;
 import cadenza.gui.CadenzaFrame.Mode;
-import cadenza.gui.control.CadenzaListener;
 
 import common.swing.IntField;
 import common.swing.SwingUtils;
 
 @SuppressWarnings("serial")
-public class PreviewMixer extends JPanel implements CadenzaListener {
+public class PreviewMixer extends JPanel {
   private final PreviewController _controller;
   private final CadenzaData _data;
   
@@ -66,16 +65,12 @@ public class PreviewMixer extends JPanel implements CadenzaListener {
     add(_previewModePane, Mode.PREVIEW.name());
   }
 
-  @Override
-  public void updateMode(Mode mode) {
-    _cardLayout.show(this, mode.name());
-  }
-
-  @Override
   public void updatePreviewPatches(final List<Patch> patches) {
     SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {
+        _cardLayout.show(PreviewMixer.this, Mode.PREVIEW.name());
+        
         _mixerBox.removeAll();
         _mixerBox.add(Box.createHorizontalGlue());
         for (final Patch patch : patches) {
@@ -84,6 +79,15 @@ public class PreviewMixer extends JPanel implements CadenzaListener {
         _mixerBox.add(Box.createHorizontalGlue());
         _previewModePane.revalidate();
         _previewModePane.repaint();
+      }
+    });
+  }
+  
+  public void goPerformMode() {
+    SwingUtilities.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        _cardLayout.show(PreviewMixer.this, Mode.PERFORM.name());
       }
     });
   }
@@ -177,15 +181,5 @@ public class PreviewMixer extends JPanel implements CadenzaListener {
     SwingUtils.freezeWidth(panel, 100);
     
     return panel;
-  }
-  
-  @Override
-  public void updatePerformanceLocation(int position) {
-    // ignore
-  }
-
-  @Override
-  public void handleException(Exception e) {
-    // ignore
   }
 }

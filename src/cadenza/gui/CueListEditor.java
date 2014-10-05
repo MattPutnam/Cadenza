@@ -49,16 +49,18 @@ import common.swing.table.ListTableModel;
 public class CueListEditor extends JPanel {
 	private static final Color SONG_BACKGROUND = new Color(200, 210, 255);
 	
-	private final Component _parent;
+	private final CadenzaFrame _cadenzaFrame;
 	private final CadenzaData _data;
 	private final PerformanceController _controller;
 	
 	private final CueTable _table;
 	private final List<CueTableEntry> _entries;
 	
-	public CueListEditor(Component parent, CadenzaData data, PerformanceController controller) {
+	private volatile boolean _disableListSelectionListener = false;
+	
+	public CueListEditor(CadenzaFrame cadenzaFrame, CadenzaData data, PerformanceController controller) {
 		super();
-		_parent = parent;
+		_cadenzaFrame = cadenzaFrame;
 		_data = data;
 		_controller = controller;
 		
@@ -97,6 +99,12 @@ public class CueListEditor extends JPanel {
 		}
 	}
 	
+	public void clearSelection() {
+	  _disableListSelectionListener = true;
+    _table.accessTable().getSelectionModel().clearSelection();
+    _disableListSelectionListener = false;
+	}
+	
 	private class CloneCueAction extends AbstractAction {
 		public CloneCueAction() {
 			super();
@@ -114,7 +122,7 @@ public class CueListEditor extends JPanel {
 			for (final Trigger trigger : selected.triggers) {
 				cloned.triggers.add(trigger);
 			}
-			final CueEditDialog dialog = new CueEditDialog(_parent, cloned, _data);
+			final CueEditDialog dialog = new CueEditDialog(_cadenzaFrame, cloned, _data);
 			dialog.showDialog();
 			if (dialog.okPressed()) {
 				_data.cues.add(cloned);
@@ -208,13 +216,16 @@ public class CueListEditor extends JPanel {
 			
 			accessTable().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 				@Override
-				public void valueChanged(ListSelectionEvent _) {
+				public void valueChanged(ListSelectionEvent e) {
+				  if (_disableListSelectionListener || e.getValueIsAdjusting()) return;
+				  
 				  CueTableEntry entry = null;
 					final boolean oneCue = accessTable().getSelectedRowCount() == 1 &&
 							   (entry = _entries.get(accessTable().getSelectedRow())).isCue();
 					cloneButton.setEnabled(oneCue);
 					if (oneCue) {
 						_controller.goTo(entry.cue);
+						_cadenzaFrame.notifyPerformLocationChanged(_data.cues.indexOf(entry.cue), false);
 					}
 				}
 			});
@@ -317,7 +328,7 @@ public class CueListEditor extends JPanel {
 		@Override
 		protected void takeActionOnAdd() {
 			final Cue newCue = new Cue(null, "");
-			final CueEditDialog dialog = new CueEditDialog(_parent, newCue, _data);
+			final CueEditDialog dialog = new CueEditDialog(_cadenzaFrame, newCue, _data);
 			dialog.showDialog();
 			if (dialog.okPressed()) {
 				_data.cues.add(newCue);
@@ -333,7 +344,7 @@ public class CueListEditor extends JPanel {
 		protected void takeActionOnEdit(CueTableEntry cueTableEntry) {
 			if (cueTableEntry.isCue()) {
 				final Cue cue = cueTableEntry.cue;
-				final CueEditDialog dialog = new CueEditDialog(_parent, cue, _data);
+				final CueEditDialog dialog = new CueEditDialog(_cadenzaFrame, cue, _data);
 				dialog.showDialog();
 				if (dialog.okPressed()) {
 					if (_data.songs.contains(cue.song)) {
@@ -346,7 +357,7 @@ public class CueListEditor extends JPanel {
 				}
 			} else {
 				final Song song = cueTableEntry.song;
-				final SongEditDialog dialog = new SongEditDialog(_parent, song);
+				final SongEditDialog dialog = new SongEditDialog(_cadenzaFrame, song);
 				dialog.showDialog();
 				if (dialog.okPressed()) {
 					rebuildEntries();

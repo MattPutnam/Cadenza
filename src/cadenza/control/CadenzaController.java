@@ -1,14 +1,9 @@
 package cadenza.control;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.Receiver;
 
 import cadenza.core.CadenzaData;
-import cadenza.core.Patch;
-import cadenza.gui.control.CadenzaListener;
 
 /**
  * Interface defining operations for a controller that receives raw MIDI
@@ -19,13 +14,11 @@ import cadenza.gui.control.CadenzaListener;
  */
 public abstract class CadenzaController {
   private final CadenzaData _data;
-  private final List<CadenzaListener> _listeners;
   
   private Receiver _receiver;
   
   public CadenzaController(CadenzaData data) {
     _data = data;
-    _listeners = new LinkedList<>();
   }
   
   protected final CadenzaData getData() {
@@ -61,38 +54,4 @@ public abstract class CadenzaController {
    * @param message the message being received
    */
   public abstract void send(MidiMessage message);
-  
-  public synchronized final void addCadenzaListener(CadenzaListener listener) {
-    _listeners.add(listener);
-    initializeListener(listener);
-  }
-  
-  /**
-   * Called by {@link #addCadenzaListener(CadenzaListener)} after the listener is added.
-   * Subclasses should use this to re-send setup information.
-   * @param listener the listener that was just added
-   */
-  protected abstract void initializeListener(CadenzaListener listener);
-  
-  public synchronized final void removeCadenzaListener(CadenzaListener listener) {
-    _listeners.remove(listener);
-  }
-  
-  protected synchronized final void notifyListeners(Exception e) {
-    for (final CadenzaListener listener : _listeners) {
-      listener.handleException(e);
-    }
-  }
-  
-  protected synchronized final void notifyListeners(List<Patch> patches) {
-    for (final CadenzaListener listener : _listeners) {
-      listener.updatePreviewPatches(patches);
-    }
-  }
-  
-  protected synchronized final void notifyListeners(int position) {
-    for (final CadenzaListener listener : _listeners) {
-      listener.updatePerformanceLocation(position);
-    }
-  }
 }

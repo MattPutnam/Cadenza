@@ -24,14 +24,16 @@ import cadenza.core.patchusage.PatchUsage;
 import cadenza.core.plugins.Plugin;
 import cadenza.core.trigger.Trigger;
 import cadenza.delegate.PatchChangeDelegate;
+import cadenza.gui.CadenzaFrame;
 import cadenza.gui.PluginMonitor;
-import cadenza.gui.control.CadenzaListener;
 
 import common.Debug;
 import common.midi.MidiUtilities;
 import common.tuple.Pair;
 
 public final class PerformanceController extends CadenzaController {
+  private final CadenzaFrame _cadenzaFrame;
+  
   /**
    *  Maps channel numbers to the keyboards they originate from<br>
    *  Derivative of {@link CadenzaData#keyboardInputChannels}
@@ -59,13 +61,18 @@ public final class PerformanceController extends CadenzaController {
   /** The cue number, in perform mode */
   private int _position = -1;
   
-  public PerformanceController(CadenzaData data) {
+  public PerformanceController(CadenzaData data, CadenzaFrame cadenzaFrame) {
     super(data);
+    _cadenzaFrame = cadenzaFrame;
     
     _currentAssignments = new HashMap<>();
     _currentNotes = new HashMap<>();
     
     updateKeyboardChannelMap();
+  }
+  
+  public int getCurrentCueIndex() {
+    return _position;
   }
   
   @Override
@@ -74,7 +81,7 @@ public final class PerformanceController extends CadenzaController {
       try {
         updatePosition(-1, getData().cues.indexOf(_currentCue));
       } catch (InvalidMidiDataException e) {
-        notifyListeners(e);
+        e.printStackTrace();
       }
     }
   }
@@ -102,7 +109,7 @@ public final class PerformanceController extends CadenzaController {
       try {
         updatePosition(oldIndex, _position);
       } catch (InvalidMidiDataException e) {
-        notifyListeners(e);
+        e.printStackTrace();
       }
     }
     updatePerformanceLocation();
@@ -116,7 +123,7 @@ public final class PerformanceController extends CadenzaController {
       try {
         updatePosition(oldIndex, _position);
       } catch (InvalidMidiDataException e) {
-        notifyListeners(e);
+        e.printStackTrace();
       }
     }
     updatePerformanceLocation();
@@ -146,7 +153,7 @@ public final class PerformanceController extends CadenzaController {
       try {
         updatePosition(oldPosition, newPosition);
       } catch (InvalidMidiDataException e) {
-        notifyListeners(e);
+        e.printStackTrace();
       }
     }
     
@@ -162,7 +169,7 @@ public final class PerformanceController extends CadenzaController {
       sm.setMessage(ShortMessage.CONTROL_CHANGE, channel, cc, value);
       getReceiver().send(sm, -1);
     } catch (InvalidMidiDataException e) {
-      notifyListeners(e);
+      e.printStackTrace();
     }
   }
   
@@ -179,7 +186,7 @@ public final class PerformanceController extends CadenzaController {
       sm.setMessage(ShortMessage.NOTE_ON, channel, midiNumber, velocity);
       getReceiver().send(sm, -1);
     } catch (InvalidMidiDataException e) {
-      notifyListeners(e);
+      e.printStackTrace();
     }
   }
   
@@ -196,7 +203,7 @@ public final class PerformanceController extends CadenzaController {
       sm.setMessage(ShortMessage.NOTE_OFF, channel, midiNumber, 0);
       getReceiver().send(sm, -1);
     } catch (InvalidMidiDataException e) {
-      notifyListeners(e);
+      e.printStackTrace();
     }
   }
   
@@ -259,8 +266,9 @@ public final class PerformanceController extends CadenzaController {
     for (final PatchUsage pu : unassigned) {
       final List<Integer> available = availableChannels.get(pu.patch.getSynthesizer());
       if (available.isEmpty()) {
-        notifyListeners(new RuntimeException("Not enough channels assigned to "
-            + pu.patch.getSynthesizer().getName() + ", patch '" + pu.patch.name + "' not assigned."));
+        // TODO notify of error
+        System.err.println("Not enough channels assigned to "
+            + pu.patch.getSynthesizer().getName() + ", patch '" + pu.patch.name + "' not assigned.");
         continue;
       }
       
@@ -419,13 +427,8 @@ public final class PerformanceController extends CadenzaController {
     }
   }
   
-  @Override
-  protected void initializeListener(CadenzaListener listener) {
-    listener.updatePerformanceLocation(_position);
-  }
-  
   private void updatePerformanceLocation() {
-    notifyListeners(_position);
+    _cadenzaFrame.notifyPerformLocationChanged(_position, true);
   }
 
   public synchronized void restart() {
@@ -434,7 +437,7 @@ public final class PerformanceController extends CadenzaController {
     try {
       updatePosition(-1, 0);
     } catch (InvalidMidiDataException e) {
-      notifyListeners(e);
+      e.printStackTrace();
     }
     updatePerformanceLocation();
   }
