@@ -210,9 +210,6 @@ public class Cadenza extends JFrame {
 					hideHome();
 					temp.setVisible(true);
 				} catch (Exception ex) {
-					Dialog.error(Cadenza.this, "Unable to read file " +
-							"because it is from an earlier version of Cadenza " +
-							"which is incompatible with this version.");
 					ex.printStackTrace();
 				}
 			}
@@ -287,7 +284,7 @@ public class Cadenza extends JFrame {
 	}
 	
 	static CadenzaData loadFile(File file) throws Exception {
-		return CadenzaData.readFromXML(file);
+		return CadenzaData.readFromFile(file);
 	}
 	
 	private static File getRecents() throws IOException {

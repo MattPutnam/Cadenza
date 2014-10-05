@@ -578,7 +578,7 @@ public class CadenzaFrame extends JFrame implements Receiver {
 	}
 	
 	private void save() {
-		CadenzaData.writeToXML(_associatedSave.getAbsolutePath(), _data);
+		CadenzaData.writeToFile(_associatedSave.getAbsolutePath(), _data);
 		makeClean();
 		Cadenza.notifyRecent(_associatedSave);
 	}
@@ -591,7 +591,7 @@ public class CadenzaFrame extends JFrame implements Receiver {
 			}
 			_lastPath = selected;
 			
-			CadenzaData.writeToXML(selected.getAbsolutePath(), _data);
+			CadenzaData.writeToFile(selected.getAbsolutePath(), _data);
 			_associatedSave = selected;
 			makeClean();
 			Cadenza.notifyRecent(selected);

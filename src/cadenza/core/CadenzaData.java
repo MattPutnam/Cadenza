@@ -4,11 +4,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.List;
 
+import cadenza.Version;
 import cadenza.core.patchusage.PatchUsage;
 import cadenza.core.plugins.Plugin;
 import cadenza.core.sequencer.Sequencer;
@@ -16,6 +18,7 @@ import cadenza.core.trigger.Trigger;
 import cadenza.gui.trigger.HasTriggers;
 
 import common.collection.NotifyingList;
+import common.swing.dialog.Dialog;
 
 /**
  * All of the data that represents a Cadenza file.  Cadenza saves are
@@ -73,8 +76,8 @@ public class CadenzaData implements Serializable, HasTriggers, ControlMapProvide
 		savedOutputDeviceName = null;
 	}
 	
-	public static void writeToXML(String filename, CadenzaData data) {
-		FileOutputStream fout;
+	public static void writeToFile(String filename, CadenzaData data) {
+	  FileOutputStream fout;
 		try {
 			fout = new FileOutputStream(new File(filename));
 		} catch (FileNotFoundException e) {
@@ -84,14 +87,21 @@ public class CadenzaData implements Serializable, HasTriggers, ControlMapProvide
 		}
 		
 		try (ObjectOutputStream oos = new ObjectOutputStream(fout)) {
+		  oos.writeUTF(Version.getVersion());
 			oos.writeObject(data);
 		} catch (Exception e) {
 			System.err.println("Exception while writing to file:");
 			e.printStackTrace();
 		}
+		
+		try {
+      fout.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
 	}
 	
-	public static CadenzaData readFromXML(File file) {
+	public static CadenzaData readFromFile(File file) throws Exception {
 		FileInputStream fin;
 		try {
 			fin = new FileInputStream(file);
@@ -102,12 +112,27 @@ public class CadenzaData implements Serializable, HasTriggers, ControlMapProvide
 		}
 		
 		try (ObjectInputStream ois = new ObjectInputStream(fin)) {
+		  final String thatVersion = ois.readUTF();
+		  final String thisVersion = Version.getVersion();
+		  if (!thisVersion.equals(thatVersion)) {
+		    Dialog.error(null, "This file was created in version " + thatVersion +
+		        ", which is incompatible with this version (" + thisVersion +
+		        ").  To open this file, go to http://www.cadenzasoftware.com and download version "
+		        + thatVersion + ".");
+		    throw new RuntimeException("Version mismatch: this is " + thisVersion + ", other is " + thatVersion);
+		  }
+		  
 			final CadenzaData data = (CadenzaData) ois.readObject();
 			return data;
 		} catch (Exception e) {
 			System.err.println("Exception while reading from file:");
-			e.printStackTrace();
-			return null;
+			throw e;
+		} finally {
+		  try {
+        fin.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
 		}
 	}
 
