@@ -91,6 +91,7 @@ public class CueListEditor extends JPanel {
 			if (entry.isCue()) {
 				if (index == 0) {
 					_table.accessTable().setRowSelectionInterval(row, row);
+					_controller.notifyReceiver();
 					return;
 				} else {
 					index--;
@@ -217,13 +218,13 @@ public class CueListEditor extends JPanel {
 			accessTable().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 				@Override
 				public void valueChanged(ListSelectionEvent e) {
-				  if (_disableListSelectionListener || e.getValueIsAdjusting()) return;
+				  if (e.getValueIsAdjusting()) return;
 				  
 				  CueTableEntry entry = null;
 					final boolean oneCue = accessTable().getSelectedRowCount() == 1 &&
 							   (entry = _entries.get(accessTable().getSelectedRow())).isCue();
 					cloneButton.setEnabled(oneCue);
-					if (oneCue) {
+					if (oneCue && !_disableListSelectionListener) {
 						_controller.goTo(entry.cue);
 						_cadenzaFrame.notifyPerformLocationChanged(_data.cues.indexOf(entry.cue), false);
 					}

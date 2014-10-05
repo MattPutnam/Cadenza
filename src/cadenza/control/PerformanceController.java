@@ -76,7 +76,7 @@ public final class PerformanceController extends CadenzaController {
   }
   
   @Override
-  protected void notifyReceiver() {
+  public void notifyReceiver() {
     if (_currentCue != null) {
       try {
         updatePosition(-1, getData().cues.indexOf(_currentCue));

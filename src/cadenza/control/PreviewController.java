@@ -100,7 +100,8 @@ public class PreviewController extends CadenzaController {
 
   @Override
   protected void notifyReceiver() {
-    setPatches(_previewPatches);
+    if (_previewPatches != null && _previewPatches.size() > 0)
+      setPatches(_previewPatches);
   }
   
 }
