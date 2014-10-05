@@ -8,7 +8,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -202,11 +201,6 @@ public class CadenzaFrame extends JFrame implements Receiver {
 				closeWindow();
 			}
 		});
-		
-	  if (!_data.cues.isEmpty())
-	    notifyPerformLocationChanged(0, true);
-	  else if (!_data.patches.isEmpty())
-	    notifyPreviewPatchesChanged(Collections.singletonList(_data.patches.get(0)));
 	}
 	
 	private void createMenuBar() {
