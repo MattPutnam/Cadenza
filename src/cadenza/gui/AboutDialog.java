@@ -13,6 +13,8 @@ import javax.swing.Box;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 
+import cadenza.Version;
+
 @SuppressWarnings("serial")
 public class AboutDialog extends JDialog {
 	private static final String WEBSITE = "http://www.cadenzasoftware.com";
@@ -26,7 +28,7 @@ public class AboutDialog extends JDialog {
 		final JLabel title = new JLabel("Cadenza", JLabel.CENTER);
 		title.setFont(TITLE_FONT);
 		
-		final JLabel version = new JLabel("Version 1.0.0", JLabel.CENTER);
+		final JLabel version = new JLabel("Version " + Version.getVersion(), JLabel.CENTER);
 		version.setFont(NORMAL_FONT);
 		
 		final JLabel URL = new JLabel("<html><a href='dummyval'>" + WEBSITE + "</a></html>");
@@ -35,15 +37,15 @@ public class AboutDialog extends JDialog {
 		URL.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent _) {
-				Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-			    if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
-			        try {
-			            desktop.browse(new URI(WEBSITE));
-			        } catch (Exception e) {
-			            e.printStackTrace();
-			        }
-			    }
-			}
+        Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+        if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+          try {
+            desktop.browse(new URI(WEBSITE));
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+        }
+      }
 		});
 		
 		final Box box = Box.createVerticalBox();
