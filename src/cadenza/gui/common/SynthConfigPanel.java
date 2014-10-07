@@ -92,7 +92,7 @@ public class SynthConfigPanel extends JPanel {
 		_otherSynthesizers = new ArrayList<>(synthesizers);
 		_otherSynthesizers.remove(initial);
 		_mainCombo = new DeviceCombo(initial == null ? null : initial.getName());
-		_channelField = new JTextField(initial == null ? "" : Utils.makeRangeString(initial.getChannels()));
+		_channelField = new JTextField(initial == null ? buildInitialChannels() : Utils.makeRangeString(initial.getChannels()));
 		init(initial == null ? null : initial.getExpansions());
 	}
 	
@@ -128,6 +128,17 @@ public class SynthConfigPanel extends JPanel {
 		
 		add(top, BorderLayout.NORTH);
 		add(_cardPanel, BorderLayout.CENTER);
+	}
+	
+	private String buildInitialChannels() {
+	  final List<Integer> possibleChannels = new ArrayList<>(16);
+	  for (int i = 1; i <= 16; ++i)
+	    possibleChannels.add(Integer.valueOf(i));
+	  
+	  for (final Synthesizer other : _otherSynthesizers)
+	    possibleChannels.removeAll(other.getChannels());
+	  
+	  return Utils.makeRangeString(possibleChannels);
 	}
 	
 	private static JLabel createChannelHintLabel() {
