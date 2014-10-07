@@ -1,6 +1,7 @@
 package cadenza.gui.common;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -9,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.swing.Box;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -26,6 +29,16 @@ import common.tuple.Pair;
 @SuppressWarnings("serial")
 public class SynthConfigPanel extends JPanel {
 	private static final String NONE = "[none]";
+	private static final String HELP_TEXT = "<html>"
+	    + "List the channels to be used by this synthesizer, as a<br>"
+	    + "comma-separated list (with hyphens for a range, e.g.<br>"
+	    + "\"1-3, 5\" specifies channels 1, 2, 3, and 5)<br>"
+	    + "<br>"
+	    + "You will need at least as many channels as you plan<br>"
+	    + "to have simultaneous patches.  You may specify more<br>"
+	    + "channels than needed; this will allow Cadenza to load<br>"
+	    + "the next patches in unused channels, allowing you to<br>"
+	    + "hold over notes into the next cue.</html>";
 	
 	private final List<Synthesizer> _otherSynthesizers;
 	
@@ -97,17 +110,30 @@ public class SynthConfigPanel extends JPanel {
 		
 		setLayout(new BorderLayout());
 		
+		final Box channelBox = Box.createHorizontalBox();
+		channelBox.add(_channelField);
+		channelBox.add(createChannelHintLabel());
+		channelBox.add(Box.createHorizontalStrut(8));
+		channelBox.add(new HelpButton(HELP_TEXT));
+		channelBox.add(Box.createHorizontalStrut(8));
+		
 		final JPanel top = new SimpleGrid(new JComponent[][]
 		{
-			{ new JLabel("Synthesizer: "), _mainCombo },
-			{ new JLabel("Channels: "), _channelField }
-		});
+			{ new JLabel(" Synthesizer: "), _mainCombo },
+			{ new JLabel(" Channels: "), channelBox }
+		}, Alignment.CENTER, Alignment.LEADING);
 		
 		_cardPanel = new JPanel();
 		_cardPanel.add(getCardPanel(_mainCombo.getDevice(), selectedExps), BorderLayout.WEST);
 		
 		add(top, BorderLayout.NORTH);
 		add(_cardPanel, BorderLayout.CENTER);
+	}
+	
+	private static JLabel createChannelHintLabel() {
+	  final JLabel result = new JLabel("Ex: 1-4, 9-12");
+	  result.setFont(result.getFont().deriveFont(Font.ITALIC));
+	  return result;
 	}
 	
 	private List<Integer> buildList() {
