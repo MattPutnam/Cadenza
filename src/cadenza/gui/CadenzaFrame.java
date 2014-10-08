@@ -212,6 +212,8 @@ public class CadenzaFrame extends JFrame implements Receiver {
 		fileMenu.add(SwingUtils.menuItem("Save As...", 'S', InputEvent.SHIFT_MASK, 'A', new SaveAsFileAction()));
 		if (!SystemUtils.IS_OS_MAC_OSX) {
 			fileMenu.addSeparator();
+			fileMenu.add(SwingUtils.menuItem("Preferences", 'E', 'E', new PreferencesAction()));
+			fileMenu.addSeparator();
 			fileMenu.add(SwingUtils.menuItem("Quit", 'Q', 'Q', new QuitAction()));
 		}
 		
@@ -604,6 +606,16 @@ public class CadenzaFrame extends JFrame implements Receiver {
 		Cadenza.showHome();
 		dispose();
 		close();
+	}
+	
+	private class PreferencesAction extends AbstractAction {
+	  @Override
+	  public void actionPerformed(ActionEvent e) {
+      final PreferencesDialog dialog = new PreferencesDialog(CadenzaFrame.this);
+      dialog.showDialog();
+      if (dialog.okPressed())
+        dialog.commitPreferences();
+	  }
 	}
 	
 	private class QuitAction extends AbstractAction {

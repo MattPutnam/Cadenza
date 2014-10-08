@@ -1,10 +1,8 @@
 package cadenza.gui.keyboard;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -13,15 +11,11 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.AbstractCellEditor;
-import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
@@ -34,13 +28,10 @@ import cadenza.core.CadenzaData;
 import cadenza.core.Cue;
 import cadenza.core.Keyboard;
 import cadenza.core.Location;
-import cadenza.core.Note;
 import cadenza.core.patchusage.PatchUsage;
 import cadenza.gui.common.CadenzaTable;
 import cadenza.gui.common.HelpButton;
 
-import common.swing.IntField;
-import common.swing.SwingUtils;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
 import common.swing.table.ListTableModel;
@@ -241,96 +232,22 @@ public class KeyboardListEditor extends JPanel implements CustomWizardComponent 
 		}
 		
 		private class KeyboardEditDialog extends OKCancelDialog {
-			private final Keyboard _keyboard;
-			
-			private final JTextField _nameField;
-			private final IntField _channelField;
-			private final SingleKeyboardPanel _keyboardPanel;
-			
-			private Location _selectedFullRange;
-			private Location _selectedSoundingRange;
-			
-			private JPanel _rangeArea;
+			private final KeyboardEditPanel _panel;
 			
 			public KeyboardEditDialog(Keyboard keyboard) {
 				super(KeyboardListEditor.this);
 				
-				_keyboard = keyboard;
-				_keyboardPanel = new SingleKeyboardPanel(new Note(0), new Note(127));
-				
-				_nameField = new JTextField(keyboard.name);
-				_channelField = new IntField(keyboard.channel, 1, Integer.MAX_VALUE);
-				SwingUtils.freezeWidth(_channelField, 50);
-				_selectedFullRange = Location.range(keyboard, keyboard.low, keyboard.high);
-				_selectedSoundingRange = Location.range(keyboard, keyboard.soundingLow, keyboard.soundingHigh);
+				_panel = new KeyboardEditPanel(keyboard);
+			}
+			
+			@Override
+			protected JComponent buildContent() {
+			  return _panel;
 			}
 			
 			@Override
 			protected void initialize() {
 				setResizable(false);
-			}
-			
-			@Override
-			protected JComponent buildContent() {
-				final JComboBox<String> combo = new JComboBox<>(new String[] { "Specify Range", "Specify Sounding Range" });
-				
-				_rangeArea = new JPanel();
-				_rangeArea.setLayout(null);
-				SwingUtils.freezeSize(_rangeArea, _keyboardPanel.getSize().width, 50);
-				
-				_keyboardPanel.addKeyboardListener(new KeyboardAdapter() {
-					@Override
-					public void keyDragged(Note startNote, Note endNote) {
-						if (combo.getSelectedIndex() == 0) {
-							_selectedFullRange = Location.range(_keyboard, startNote, endNote);
-							combo.setSelectedIndex(1);
-							rebuildLabels();
-						} else {
-							_selectedSoundingRange = Location.range(_keyboard, startNote, endNote);
-							combo.setSelectedIndex(0);
-							rebuildLabels();
-						}
-					}
-				});
-				rebuildLabels();
-				
-				final Box content = Box.createVerticalBox();
-				content.add(SwingUtils.buildRow(new JLabel("Name: "), _nameField, new JLabel("  Input channel: "), _channelField));
-				content.add(combo);
-				content.add(_keyboardPanel);
-				content.add(_rangeArea);
-				
-				return content;
-			}
-			
-			private void rebuildLabels() {
-				_rangeArea.removeAll();
-				Rectangle r1 = _keyboardPanel.accessKeyboardPanel().getKeyPosition(_selectedFullRange.getLowerOfRange());
-				Rectangle r2 = _keyboardPanel.accessKeyboardPanel().getKeyPosition(_selectedFullRange.getUpperOfRange());
-				int width = r2.x+r2.width-r1.x;
-				final RangePanel fullPanel = new RangePanel("Physical Range", width);
-				fullPanel.setBounds(r1.x, 1, width, 24);
-				r1 = _keyboardPanel.accessKeyboardPanel().getKeyPosition(_selectedSoundingRange.getLowerOfRange());
-				r2 = _keyboardPanel.accessKeyboardPanel().getKeyPosition(_selectedSoundingRange.getUpperOfRange());
-				width = r2.x+r2.width-r1.x;
-				final RangePanel soundingPanel = new RangePanel("Sounding Range", width);
-				soundingPanel.setBounds(r1.x, 26, width, 24);
-				
-				_rangeArea.add(fullPanel);
-				_rangeArea.add(soundingPanel);
-				
-				final KeyboardPanel kp = _keyboardPanel.accessKeyboardPanel();
-				kp.unlabelAll();
-				kp.labelNote(Note.A0);
-				kp.labelNote(Note.C4);
-				kp.labelNote(Note.C8);
-				kp.labelNote(_selectedFullRange.getLowerOfRange());
-				kp.labelNote(_selectedFullRange.getUpperOfRange());
-				kp.labelNote(_selectedSoundingRange.getLowerOfRange());
-				kp.labelNote(_selectedSoundingRange.getUpperOfRange());
-				
-				revalidate();
-				repaint();
 			}
 			
 			@Override
@@ -340,43 +257,12 @@ public class KeyboardListEditor extends JPanel implements CustomWizardComponent 
 			
 			@Override
 			protected void verify() throws VerificationException {
-				final String name = _nameField.getText().trim();
-				if (name.isEmpty())
-					throw new VerificationException("Please specify a name", _nameField);
-				for (final Keyboard keyboard : _keyboards) {
-					if (keyboard != _keyboard && name.equals(keyboard.name))
-						throw new VerificationException("A keyboard with this name already exists", _nameField);
-				}
-				
-				if (_channelField.getText().isEmpty())
-					throw new VerificationException("Please enter a channel", _channelField);
+				_panel.verify(_keyboards);
 			}
-			
-			public Keyboard getKeyboard() {
-				// swap channel if conflicting
-				final int ch = _channelField.getInt();
-				for (final Keyboard keyboard : _keyboards) {
-					if (keyboard != _keyboard && keyboard.channel == ch) {
-						keyboard.channel = _keyboard.channel;
-						break;
-					}
-				}
-				
-				return new Keyboard(_selectedFullRange.getLowerOfRange(), _selectedFullRange.getUpperOfRange(),
-						_selectedSoundingRange.getLowerOfRange(), _selectedSoundingRange.getUpperOfRange(),
-						_nameField.getText().trim(), _keyboard.isMain, ch);
-			}
-			
-			private class RangePanel extends JPanel {
-				public RangePanel(String text, int width) {
-					super(null);
-					setBackground(Color.WHITE);
-					setBorder(BorderFactory.createLineBorder(Color.BLACK));
-					final JLabel label = new JLabel(text, JLabel.CENTER);
-					label.setBounds(0, 0, width, 24);
-					add(label);
-				}
-			}
+      
+      public Keyboard getKeyboard() {
+        return _panel.getKeyboard();
+      }
 		}
 	}
 	

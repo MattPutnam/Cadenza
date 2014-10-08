@@ -217,4 +217,5 @@ public class Location implements Serializable {
 	public static Location range(Keyboard keyboard, Note lower, Note upper) {
 		return new Location(keyboard, RangeType.NOTE_RANGE, null, lower, upper);
 	}
+	
 }
