@@ -96,7 +96,12 @@ public class PreferencesDialog extends OKCancelDialog {
       @Override
       public void run() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(PREFERENCES_FILE))) {
+          final Keyboard keyboard = _keyboardEditPanel.getKeyboard();
           
+          writer.write("keyboard.name = " + keyboard.name); writer.newLine();
+          writer.write("keyboard.channel = " + keyboard.channel); writer.newLine();
+          writer.write("keyboard.range = " + keyboard.low + "-" + keyboard.high); writer.newLine();
+          writer.write("keyboard.soundingrange = " + keyboard.soundingLow + "-" + keyboard.soundingHigh); writer.newLine();
         } catch (IOException e) {
           System.err.println("Exception while trying to write preferences file:");
           e.printStackTrace();
