@@ -68,7 +68,7 @@ XpA=SR-JV80, XpB=SR-JV80, XpC=SR-JV80, XpD=SR-JV80, XpE=SRX, XpF=SRX, XpG=SRX, X
 65 Dirty Wurlie
 66 XV Crystal
 67 Velvet Organ
-68 LA Sax’s
+68 LA Sax's
 69 Harmonica XV
 70 LegatoBamboo
 71 Modular Life
@@ -1008,9 +1008,9 @@ XpA=SR-JV80, XpB=SR-JV80, XpC=SR-JV80, XpD=SR-JV80, XpE=SRX, XpF=SRX, XpG=SRX, X
 102 Pretty Ugly
 103 Con Sequence
 104 BermudaShort
-105 Saw n’ 202
+105 Saw n' 202
 106 Technoheadz
-107 Boss’d Synth
+107 Boss'd Synth
 108 Cross Fire
 109 Techno Cave
 110 Generator
