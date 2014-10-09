@@ -13,7 +13,7 @@ SRX-98 Analog Essentials
 12 C-Piano
 13 Retro Flt
 14 UnisonSaws
-15 90’s EP
+15 90's EP
 16 SawBrs2006
 17 LoFi Ambi
 18 Saw Lead
@@ -73,7 +73,7 @@ SRX-98 Analog Essentials
 72 StrMachine
 73 Saw/SquPad
 74 Power Saws
-75 70’s EP
+75 70's EP
 76 Reso Lead
 77 Phase Saws
 78 Explosion
