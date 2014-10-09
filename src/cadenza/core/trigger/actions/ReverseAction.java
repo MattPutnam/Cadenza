@@ -8,16 +8,16 @@ import cadenza.control.PerformanceController;
  * @author Matt Putnam
  */
 public class ReverseAction implements TriggerAction {
-	private static final long serialVersionUID = 1L;
-	
-	@Override
-	public void takeAction(PerformanceController controller) {
-		controller.reverse();
-	}
-	
-	@Override
-	public String toString() {
-		return "reverse cue";
-	}
+  private static final long serialVersionUID = 1L;
+  
+  @Override
+  public void takeAction(PerformanceController controller) {
+    controller.reverse();
+  }
+  
+  @Override
+  public String toString() {
+    return "reverse cue";
+  }
 
 }

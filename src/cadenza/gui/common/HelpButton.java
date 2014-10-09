@@ -10,15 +10,15 @@ import cadenza.gui.ImageStore;
 
 @SuppressWarnings("serial")
 public class HelpButton extends JButton {
-	public HelpButton(final String message) {
-		super(ImageStore.HELP);
-		
-		setBorder(null);
-		addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent _) {
-				new BalloonTip(HelpButton.this, message);
-			}
-		});
-	}
+  public HelpButton(final String message) {
+    super(ImageStore.HELP);
+    
+    setBorder(null);
+    addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent _) {
+        new BalloonTip(HelpButton.this, message);
+      }
+    });
+  }
 }

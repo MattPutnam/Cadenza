@@ -21,52 +21,52 @@ import common.collection.buffer.FixedSizeDoubleBuffer;
  * @author Matt Putnam
  */
 public class TempoTapper extends MetronomeAdapter {
-	private static final int MILLIS_IN_MINUTE = 1000*60;
-	private static final int BUFFER_SIZE = 10;
-	private static final int NEW_TEMPO_THRESHOLD = 250;
-	private static final int CLICK_SAFETY_DELAY = 250;
-	
-	private static final TempoTapper INSTANCE = new TempoTapper();
-	public static TempoTapper getInstance() {
-		return INSTANCE;
-	}
-	
-	private double _runningMean;
-	
-	private long _lastTap;
-	private long _lastClick;
-	private final FixedSizeDoubleBuffer _buffer;
-	
-	private TempoTapper() {
-		_buffer = new FixedSizeDoubleBuffer(BUFFER_SIZE);
-		Metronome.getInstance().addMetronomeListener(this);
-	}
-	
-	public synchronized void tap() {
-		final long now = System.currentTimeMillis();
-		final int diff = (int) (now - _lastTap);
-		_lastTap = now;
-		
-		if (Math.abs(diff - _runningMean) > NEW_TEMPO_THRESHOLD) {
-		  // this will also handle long delays
-		  _buffer.clear();
-		}
-		_buffer.add(diff);
-		
-		_runningMean = StatUtils.mean(_buffer.getValues());
-		final int bpm = (int) (MILLIS_IN_MINUTE / _runningMean);
-		if (bpm > 1) {
-  		Metronome.getInstance().setBPM(bpm);
-  		if (now - _lastClick > CLICK_SAFETY_DELAY) {
-  			Metronome.getInstance().restart();
-  		}
-		}
-	}
-	
-	@Override
-	public void metronomeClicked(int subdivision) {
-		if (subdivision == 0) {
-			_lastClick = System.currentTimeMillis();
-		}
-	}
+  private static final int MILLIS_IN_MINUTE = 1000*60;
+  private static final int BUFFER_SIZE = 10;
+  private static final int NEW_TEMPO_THRESHOLD = 250;
+  private static final int CLICK_SAFETY_DELAY = 250;
+  
+  private static final TempoTapper INSTANCE = new TempoTapper();
+  public static TempoTapper getInstance() {
+    return INSTANCE;
+  }
+  
+  private double _runningMean;
+  
+  private long _lastTap;
+  private long _lastClick;
+  private final FixedSizeDoubleBuffer _buffer;
+  
+  private TempoTapper() {
+    _buffer = new FixedSizeDoubleBuffer(BUFFER_SIZE);
+    Metronome.getInstance().addMetronomeListener(this);
+  }
+  
+  public synchronized void tap() {
+    final long now = System.currentTimeMillis();
+    final int diff = (int) (now - _lastTap);
+    _lastTap = now;
+    
+    if (Math.abs(diff - _runningMean) > NEW_TEMPO_THRESHOLD) {
+      // this will also handle long delays
+      _buffer.clear();
+    }
+    _buffer.add(diff);
+    
+    _runningMean = StatUtils.mean(_buffer.getValues());
+    final int bpm = (int) (MILLIS_IN_MINUTE / _runningMean);
+    if (bpm > 1) {
+      Metronome.getInstance().setBPM(bpm);
+      if (now - _lastClick > CLICK_SAFETY_DELAY) {
+        Metronome.getInstance().restart();
+      }
+    }
+  }
+  
+  @Override
+  public void metronomeClicked(int subdivision) {
+    if (subdivision == 0) {
+      _lastClick = System.currentTimeMillis();
+    }
+  }
 }

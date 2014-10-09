@@ -11,13 +11,13 @@ import cadenza.core.patchusage.PatchUsage;
  * @author Matt Putnam
  */
 public interface ControlMapProvider {
-	/**
-	 * @return the control mapping to use to populate the UI
-	 */
-	public List<ControlMapEntry> getControlMap();
-	
-	/**
-	 * @return the list of available PatchUsages
-	 */
-	public List<PatchUsage> getPatchUsages();
+  /**
+   * @return the control mapping to use to populate the UI
+   */
+  public List<ControlMapEntry> getControlMap();
+  
+  /**
+   * @return the list of available PatchUsages
+   */
+  public List<PatchUsage> getPatchUsages();
 }

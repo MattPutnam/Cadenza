@@ -11,10 +11,10 @@ import javax.sound.midi.MidiMessage;
  * @author Matt Putnam
  */
 public interface TriggerPredicate extends Serializable {
-	/**
-	 * Receives a MidiMessage and determines if the Trigger is to be triggered
-	 * @param message - the message received
-	 * @return true iff the condition has been met
-	 */
-	public boolean receive(MidiMessage message);
+  /**
+   * Receives a MidiMessage and determines if the Trigger is to be triggered
+   * @param message - the message received
+   * @return true iff the condition has been met
+   */
+  public boolean receive(MidiMessage message);
 }

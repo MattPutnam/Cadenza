@@ -6,14 +6,14 @@ package cadenza.gui;
  * @author Matt Putnam
  */
 public interface CadenzaDelegate {
-	/**
-	 * Called after the home window is shown.
-	 */
-	public void doAfterShowHome();
-	
-	/**
-	 * Called after a CadenzaFrame is created
-	 * @param frame
-	 */
-	public void setupFrame(CadenzaFrame frame);
+  /**
+   * Called after the home window is shown.
+   */
+  public void doAfterShowHome();
+  
+  /**
+   * Called after a CadenzaFrame is created
+   * @param frame
+   */
+  public void setupFrame(CadenzaFrame frame);
 }

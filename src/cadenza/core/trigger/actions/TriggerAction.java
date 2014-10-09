@@ -5,5 +5,5 @@ import java.io.Serializable;
 import cadenza.control.PerformanceController;
 
 public interface TriggerAction extends Serializable {
-	public void takeAction(PerformanceController controller);
+  public void takeAction(PerformanceController controller);
 }

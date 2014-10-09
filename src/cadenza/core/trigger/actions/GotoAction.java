@@ -9,32 +9,32 @@ import cadenza.core.Song;
  * @author Matt Putnam
  */
 public class GotoAction implements TriggerAction {
-	private static final long serialVersionUID = 1L;
-	
-	private final Song _song;
-	private final String _measure;
-	
-	public GotoAction(Song song, String measure) {
-		_song = song;
-		_measure = measure;
-	}
+  private static final long serialVersionUID = 1L;
+  
+  private final Song _song;
+  private final String _measure;
+  
+  public GotoAction(Song song, String measure) {
+    _song = song;
+    _measure = measure;
+  }
 
-	@Override
-	public void takeAction(PerformanceController controller) {
-		controller.goTo(_song, _measure);
-	}
-	
-	@Override
-	public String toString() {
-		return "go to " + _song + " m. " + _measure;
-	}
-	
-	public Song getSong() {
-		return _song;
-	}
-	
-	public String getMeasure() {
-		return _measure;
-	}
+  @Override
+  public void takeAction(PerformanceController controller) {
+    controller.goTo(_song, _measure);
+  }
+  
+  @Override
+  public String toString() {
+    return "go to " + _song + " m. " + _measure;
+  }
+  
+  public Song getSong() {
+    return _song;
+  }
+  
+  public String getMeasure() {
+    return _measure;
+  }
 
 }

@@ -13,28 +13,28 @@ import com.apple.eawt.PreferencesHandler;
 
 public class CadenzaLauncher_MacOSX {
 private static final String APP_ID = "cadenzasoftware.cadenza";
-	
-	public static void main(String[] args) throws Exception {
-		System.setProperty("apple.laf.useScreenMenuBar", "true");
-		System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Cadenza");
-		
-		try {
-			JUnique.acquireLock(APP_ID);
-		} catch (AlreadyLockedException e) {
-			System.err.println("An instance of Cadenza is already running");
-			System.exit(-1);
-		}
-		
-		final Application app = Application.getApplication();
-		
-		app.setAboutHandler(new AboutHandler() {
-			@Override
-			public void handleAbout(AboutEvent _) {
-				new AboutDialog();
-			}
-		});
-		
-		app.setPreferencesHandler(new PreferencesHandler() {
+  
+  public static void main(String[] args) throws Exception {
+    System.setProperty("apple.laf.useScreenMenuBar", "true");
+    System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Cadenza");
+    
+    try {
+      JUnique.acquireLock(APP_ID);
+    } catch (AlreadyLockedException e) {
+      System.err.println("An instance of Cadenza is already running");
+      System.exit(-1);
+    }
+    
+    final Application app = Application.getApplication();
+    
+    app.setAboutHandler(new AboutHandler() {
+      @Override
+      public void handleAbout(AboutEvent _) {
+        new AboutDialog();
+      }
+    });
+    
+    app.setPreferencesHandler(new PreferencesHandler() {
       @Override
       public void handlePreferences(PreferencesEvent e) {
         final Component parent = (e.getSource() instanceof Component) ? (Component) e.getSource() : null;
@@ -44,8 +44,8 @@ private static final String APP_ID = "cadenzasoftware.cadenza";
           dialog.commitPreferences();
       }
     });
-		
-		Cadenza.setDelegate(new MacOSXDelegate());
-		Cadenza.showHome();
-	}
+    
+    Cadenza.setDelegate(new MacOSXDelegate());
+    Cadenza.showHome();
+  }
 }
