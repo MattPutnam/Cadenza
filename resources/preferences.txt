@@ -2,3 +2,6 @@ keyboard.name = Keyboard
 keyboard.channel = 1
 keyboard.range = A0-C8
 keyboard.soundingrange = A0-C8
+synthesizer.synth = Roland JV-1080
+synthesizer.channels = 1-16
+synthesizer.expansions = 

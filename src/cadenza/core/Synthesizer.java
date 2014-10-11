@@ -3,6 +3,7 @@ package cadenza.core;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,8 @@ import common.Utils;
 
 public class Synthesizer implements Serializable {
   private static final long serialVersionUID = 1L;
+  
+  private static final String EXP_STRING_MAP_ARROW = " -> ";
   
   public static final Synthesizer TEMP = new Synthesizer("TEMP", new ArrayList<String>(),
       new HashMap<String, String>(), new ArrayList<Integer>());
@@ -40,7 +43,7 @@ public class Synthesizer implements Serializable {
     final List<String> tokens = new LinkedList<>();
     for (final Map.Entry<String, String> expansion : _expansions.entrySet()) {
       if (expansion.getValue() != null)
-        tokens.add(expansion.getKey() + " -> " + expansion.getValue());
+        tokens.add(expansion.getKey() + EXP_STRING_MAP_ARROW + expansion.getValue());
     }
     _expansionString = Utils.mkString(tokens);
   }
@@ -64,6 +67,18 @@ public class Synthesizer implements Serializable {
   
   public String getExpansionString() {
     return _expansionString;
+  }
+  
+  public static Map<String, String> parseExpansions(String string) {
+    final Map<String, String> result = new LinkedHashMap<>();
+    
+    for (final String token : string.split("\\s*,\\s*")) {
+      if (token.isEmpty()) continue;
+      final int index = token.indexOf(EXP_STRING_MAP_ARROW);
+      result.put(token.substring(0, index).trim(), token.substring(index + EXP_STRING_MAP_ARROW.length()).trim());
+    }
+    
+    return result;
   }
   
   public List<Integer> getChannels() {

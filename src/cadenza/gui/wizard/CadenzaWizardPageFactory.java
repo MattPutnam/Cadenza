@@ -17,7 +17,7 @@ public class CadenzaWizardPageFactory implements PageFactory {
     _data = data;
     _pages = new WizardPage[] {
       new KeyboardWizardPage(_data, preferences),
-      new SynthesizerWizardPage(_data),
+      new SynthesizerWizardPage(_data, preferences),
       new GlobalTriggerWizardPage(_data),
       new GlobalControlMapWizardPage(_data)
     };

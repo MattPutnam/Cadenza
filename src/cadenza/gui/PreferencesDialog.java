@@ -3,6 +3,7 @@ package cadenza.gui;
 import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -10,6 +11,8 @@ import java.util.Map;
 import javax.swing.JComponent;
 
 import cadenza.core.Keyboard;
+import cadenza.core.Synthesizer;
+import cadenza.gui.common.SynthConfigPanel;
 import cadenza.gui.keyboard.KeyboardEditPanel;
 import cadenza.preferences.Preferences;
 
@@ -27,6 +30,7 @@ public class PreferencesDialog extends OKCancelDialog {
   private Map<String, String> _preferences;
   
   private KeyboardEditPanel _keyboardEditPanel;
+  private SynthConfigPanel _synthConfigPanel;
 
   public PreferencesDialog(Component parent) {
     super(parent);
@@ -35,10 +39,13 @@ public class PreferencesDialog extends OKCancelDialog {
   @Override
   protected JComponent buildContent() {
     _keyboardEditPanel = new KeyboardEditPanel(new Keyboard(1));
+    _synthConfigPanel = new SynthConfigPanel(new ArrayList<Synthesizer>(0), null);
     
     loadPreferences();
     
-    return new CardPanel(Arrays.<Component>asList(_keyboardEditPanel), Arrays.asList("Keyboard"));
+    return new CardPanel(
+        Arrays.<Component>asList(SwingUtils.hugNorth(_keyboardEditPanel), _synthConfigPanel),
+        Arrays.asList("Default Keyboard", "Default Synthesizer"));
   }
   
   private void loadPreferences() {
@@ -55,11 +62,13 @@ public class PreferencesDialog extends OKCancelDialog {
         }
         
         final Keyboard kbd = Preferences.buildDefaultKeyboard(_preferences);
+        final Synthesizer synth = Preferences.buildDefaultSynthesizer(_preferences);
         
         SwingUtils.doInSwing(new Runnable() {
           @Override
           public void run() {
             _keyboardEditPanel.match(kbd);
+            _synthConfigPanel.match(synth);
           }
         }, true);
       }
@@ -71,6 +80,7 @@ public class PreferencesDialog extends OKCancelDialog {
       @Override
       public void run() {
         Preferences.commitDefaultKeyboard(_preferences, _keyboardEditPanel.getKeyboard());
+        Preferences.commitDefaultSynthesizer(_preferences, _synthConfigPanel.getSynthesizer());
         
         try {
           Preferences.writePreferences(_preferences);
@@ -90,7 +100,8 @@ public class PreferencesDialog extends OKCancelDialog {
 
   @Override
   protected void verify() throws VerificationException {
-    // no-op
+    _keyboardEditPanel.verify();
+    _synthConfigPanel.verify();
   }
   
 }

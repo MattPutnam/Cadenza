@@ -1,6 +1,7 @@
 package cadenza.gui.common;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -128,6 +129,8 @@ public class SynthConfigPanel extends JPanel {
     
     add(top, BorderLayout.NORTH);
     add(_cardPanel, BorderLayout.CENTER);
+    
+    setPreferredSize(new Dimension(500, 500));
   }
   
   private String buildInitialChannels() {
@@ -196,6 +199,14 @@ public class SynthConfigPanel extends JPanel {
     
     final String synthname = _mainCombo.getDevice();
     return new Synthesizer(synthname, Synthesizers.getBanksForSynth(synthname), map, buildList());
+  }
+  
+  public void match(Synthesizer other) {
+    _mainCombo.setSelectedItem(other.getName());
+    _channelField.setText(Utils.makeRangeString(other.getChannels()));
+    for (final Map.Entry<String, String> entry : other.getExpansions().entrySet()) {
+      _combos.get(entry.getKey()).setSelectedItem(entry.getValue());
+    }
   }
   
 }

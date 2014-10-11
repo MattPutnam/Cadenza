@@ -4,11 +4,16 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import cadenza.core.Keyboard;
 import cadenza.core.Note;
+import cadenza.core.Synthesizer;
+import cadenza.synths.Synthesizers;
 
+import common.Utils;
 import common.io.PropertiesFileReader;
 import common.midi.MidiUtilities;
 import common.swing.SwingUtils;
@@ -30,6 +35,12 @@ public class Preferences {
       private static String RANGE          = "keyboard.range";
       private static String SOUNDING_RANGE = "keyboard.soundingrange";
     }
+    
+    private static class Synthesizer {
+      private static String SYNTH      = "synthesizer.synth";
+      private static String CHANNELS   = "synthesizer.channels";
+      private static String EXPANSIONS = "synthesizer.expansions";
+    }
   }
   
   /**
@@ -47,7 +58,7 @@ public class Preferences {
   /**
    * Reads the default Keyboard from the preferences file.  This is an IO operation
    * and cannot be called from the Swing Event thread.
-   * @return the default keyboard from the preferences file
+   * @return the default Keyboard from the preferences file
    * @throws Exception If any IO exception occurs
    */
   public static Keyboard readDefaultKeyboard() throws Exception {
@@ -57,28 +68,28 @@ public class Preferences {
   /**
    * Builds the default Keyboard from the given preferences map.  This is not
    * an IO operation and can be called from anywhere.
-   * @param loadedMap the pre-loaded preferences map
-   * @return the default Keyboard from the given preferences map.
+   * @param loadedPrefs the pre-loaded preferences map
+   * @return the default Keyboard from the given preferences map
    */
-  public static Keyboard buildDefaultKeyboard(Map<String, String> loadedMap) {
+  public static Keyboard buildDefaultKeyboard(Map<String, String> loadedPrefs) {
     final Keyboard kbd = new Keyboard(1);
     
-    final String keyboardName = loadedMap.get(Keys.Keyboard.NAME);
+    final String keyboardName = loadedPrefs.get(Keys.Keyboard.NAME);
     if (keyboardName != null)
       kbd.name = keyboardName;
     
-    final String keyboardChannel = loadedMap.get(Keys.Keyboard.CHANNEL);
+    final String keyboardChannel = loadedPrefs.get(Keys.Keyboard.CHANNEL);
     if (keyboardChannel != null)
       kbd.channel = Integer.parseInt(keyboardChannel);
     
-    final String fullRange = loadedMap.get(Keys.Keyboard.RANGE);
+    final String fullRange = loadedPrefs.get(Keys.Keyboard.RANGE);
     if (fullRange != null) {
       final Note[] notes = parse(fullRange);
       kbd.low = notes[0];
       kbd.high = notes[1];
     }
     
-    final String soundingRange = loadedMap.get(Keys.Keyboard.SOUNDING_RANGE);
+    final String soundingRange = loadedPrefs.get(Keys.Keyboard.SOUNDING_RANGE);
     if (soundingRange != null) {
       final Note[] notes = parse(soundingRange);
       kbd.soundingLow = notes[0];
@@ -89,16 +100,57 @@ public class Preferences {
   }
   
   /**
+   * Reads the default Synthesizer from the preferences file.  This is an IO
+   * operation and cannot be called from the Swing Event thread.
+   * @return the default Synthesizer from the preferences file.
+   * @throws Exception If any IO exception occurs
+   */
+  public static Synthesizer readDefaultSynthesizer() throws Exception {
+    return buildDefaultSynthesizer(readAllPreferences());
+  }
+  
+  /**
+   * Builds the default Synthesizer from the given preferences map.  This is
+   * not an IO operation and can be called from anywhere.
+   * @param loadedPrefs the pre-loaded preferences map
+   * @return the default Synthesizer from the given preferences map
+   */
+  public static Synthesizer buildDefaultSynthesizer(Map<String, String> loadedPrefs) {
+    final String synthname = loadedPrefs.get(Keys.Synthesizer.SYNTH);
+    if (synthname == null) return null;
+    
+    final String channelString = loadedPrefs.get(Keys.Synthesizer.CHANNELS);
+    final List<Integer> channels = channelString == null ? new ArrayList<Integer>(0) : Utils.parseRangeString(channelString);
+    
+    final String expansionsString = loadedPrefs.get(Keys.Synthesizer.EXPANSIONS);
+    final Map<String, String> expansions = Synthesizer.parseExpansions(expansionsString);
+    
+    return new Synthesizer(synthname, Synthesizers.getBanksForSynth(synthname), expansions, channels);
+  }
+  
+  /**
    * Commits the given keyboard to the given preferences map.  This is not an
-   * IO operation can can be called from anywhere.
+   * IO operation and can be called from anywhere.
    * @param preferences the loaded preferences map
-   * @param keyboard the keyboard to commit to <tt>preferences</tt>
+   * @param keyboard the Keyboard to commit to <tt>preferences</tt>
    */
   public static void commitDefaultKeyboard(Map<String, String> preferences, Keyboard keyboard) {
     preferences.put(Keys.Keyboard.NAME,           keyboard.name);
     preferences.put(Keys.Keyboard.CHANNEL,        String.valueOf(keyboard.channel));
     preferences.put(Keys.Keyboard.RANGE,          keyboard.low + "-" + keyboard.high);
     preferences.put(Keys.Keyboard.SOUNDING_RANGE, keyboard.soundingLow + "-" + keyboard.soundingHigh);
+  }
+  
+  /**
+   * Commits the given synth to the given preferences map.  This is not an IO
+   * operation and can be called from anywhere.
+   * @param preferences the loaded preferences map
+   * @param synth the Synthesizer to commit to <tt>preferences</tt>
+   */
+  public static void commitDefaultSynthesizer(Map<String, String> preferences, Synthesizer synth) {
+    preferences.put(Keys.Synthesizer.SYNTH,      synth.getName());
+    preferences.put(Keys.Synthesizer.CHANNELS,   Utils.makeRangeString(synth.getChannels()));
+    preferences.put(Keys.Synthesizer.EXPANSIONS, synth.getExpansionString());
   }
   
   /**
