@@ -16,7 +16,6 @@ import cadenza.core.Keyboard;
 import cadenza.core.Location;
 import cadenza.core.Note;
 
-import common.midi.MidiUtilities;
 import common.swing.IntField;
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
@@ -150,30 +149,14 @@ public class KeyboardEditPanel extends JPanel {
       add(label);
     }
   }
-
-  public void setKeyboardName(String keyboardName) {
-    _nameField.setText(keyboardName);
-  }
-
-  public void setChannel(int channel) {
-    _channelField.setInt(channel);
-  }
-
-  public void setRange(String range) {
-    final Note[] notes = parse(range);
-    _selectedFullRange = Location.range(_keyboard, notes[0], notes[1]);
-    rebuildLabels();
-  }
-
-  public void setSoundingRange(String range) {
-    final Note[] notes = parse(range);
-    _selectedSoundingRange = Location.range(_keyboard, notes[0], notes[1]);
-    rebuildLabels();
-  }
   
-  private static Note[] parse(String range) {
-    final int hyphenIndex = range.indexOf("-");
-    return new Note[] { new Note(MidiUtilities.noteNameToNumber(range.substring(0, hyphenIndex).trim())),
-                        new Note(MidiUtilities.noteNameToNumber(range.substring(hyphenIndex +1).trim()))};
+  public void match(Keyboard keyboard) {
+    SwingUtils.throwIfNotEventThread();
+    
+    _nameField.setText(keyboard.name);
+    _channelField.setInt(keyboard.channel);
+    _selectedFullRange = Location.range(_keyboard, keyboard.low, keyboard.high);
+    _selectedSoundingRange = Location.range(_keyboard, keyboard.soundingLow, keyboard.soundingHigh);
+    rebuildLabels();
   }
 }
