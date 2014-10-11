@@ -33,15 +33,25 @@ public class Preferences {
   }
   
   /**
+   * Reads all of the preferences from the preferences file.  This is an IO
+   * operation and cannot be called from the Swing Event thread.
+   * @return all of the preferences from the preferences file
+   * @throws Exception If any IO exception occurs
+   */
+  public static Map<String, String> readAllPreferences() throws Exception {
+    SwingUtils.throwIfEventThread();
+    
+    return PropertiesFileReader.readAll(PREFERENCES_FILE);
+  }
+  
+  /**
    * Reads the default Keyboard from the preferences file.  This is an IO operation
    * and cannot be called from the Swing Event thread.
    * @return the default keyboard from the preferences file
    * @throws Exception If any IO exception occurs
    */
   public static Keyboard readDefaultKeyboard() throws Exception {
-    SwingUtils.throwIfEventThread();
-    
-    return buildDefaultKeyboard(PropertiesFileReader.readAll(PREFERENCES_FILE));
+    return buildDefaultKeyboard(readAllPreferences());
   }
   
   /**

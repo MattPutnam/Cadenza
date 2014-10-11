@@ -2,6 +2,7 @@ package cadenza.gui.wizard;
 
 import java.awt.BorderLayout;
 import java.util.List;
+import java.util.Map;
 
 import org.ciscavate.cjwizard.WizardPage;
 import org.ciscavate.cjwizard.WizardSettings;
@@ -9,6 +10,7 @@ import org.ciscavate.cjwizard.WizardSettings;
 import cadenza.core.CadenzaData;
 import cadenza.core.Keyboard;
 import cadenza.gui.keyboard.KeyboardListEditor;
+import cadenza.preferences.Preferences;
 
 @SuppressWarnings("serial")
 public class KeyboardWizardPage extends WizardPage {
@@ -17,11 +19,11 @@ public class KeyboardWizardPage extends WizardPage {
   private final CadenzaData _data;
   private final KeyboardListEditor _keyboardListEditor;
   
-  public KeyboardWizardPage(CadenzaData data) {
+  public KeyboardWizardPage(CadenzaData data, Map<String, String> preferences) {
     super("Keyboards", "Set up the keyboards used in this performance");
     _data = data;
     
-    final Keyboard keyboard = new Keyboard(1);
+    final Keyboard keyboard = Preferences.buildDefaultKeyboard(preferences);
     keyboard.isMain = true;
     _data.keyboards.add(keyboard);
     

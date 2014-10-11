@@ -1,6 +1,7 @@
 package cadenza.gui.wizard;
 
 import java.util.List;
+import java.util.Map;
 
 import org.ciscavate.cjwizard.PageFactory;
 import org.ciscavate.cjwizard.WizardPage;
@@ -12,10 +13,10 @@ public class CadenzaWizardPageFactory implements PageFactory {
   private final CadenzaData _data;
   private final WizardPage[] _pages;
   
-  public CadenzaWizardPageFactory(CadenzaData data) {
+  public CadenzaWizardPageFactory(CadenzaData data, Map<String, String> preferences) {
     _data = data;
     _pages = new WizardPage[] {
-      new KeyboardWizardPage(_data),
+      new KeyboardWizardPage(_data, preferences),
       new SynthesizerWizardPage(_data),
       new GlobalTriggerWizardPage(_data),
       new GlobalControlMapWizardPage(_data)
