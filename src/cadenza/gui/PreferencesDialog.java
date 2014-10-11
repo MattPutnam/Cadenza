@@ -1,10 +1,8 @@
 package cadenza.gui;
 
 import java.awt.Component;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
@@ -16,11 +14,13 @@ import javax.swing.JComponent;
 import cadenza.core.Keyboard;
 import cadenza.gui.keyboard.KeyboardEditPanel;
 
+import common.io.PropertiesFileReader;
 import common.swing.BlockingTask;
 import common.swing.CardPanel;
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
+import common.tuple.Pair;
 
 @SuppressWarnings("serial")
 public class PreferencesDialog extends OKCancelDialog {
@@ -47,22 +47,12 @@ public class PreferencesDialog extends OKCancelDialog {
       public void run() {
         final Map<String, String> prefMap = new HashMap<>();
         
-        try (BufferedReader reader = new BufferedReader(new FileReader(PREFERENCES_FILE))) {
-          String line;
-          while ((line = reader.readLine()) != null) {
-            line = line.trim();
-            if (line.isEmpty() || line.startsWith("#")) continue;
-            
-            final int equalsIndex = line.indexOf("=");
-            if (equalsIndex == -1) {
-              System.err.println("Unable to parse preferences line: " + line);
-              continue;
-            }
-            
-            prefMap.put(line.substring(0, equalsIndex).trim().toLowerCase(),
-                        line.substring(equalsIndex+1).trim());
+        try (PropertiesFileReader reader = new PropertiesFileReader(PREFERENCES_FILE)) {
+          while (reader.hasNext()) {
+            final Pair<String, String> entry = reader.next();
+            prefMap.put(entry._1().toLowerCase(), entry._2());
           }
-        } catch (IOException e) {
+        } catch (Exception e) {
           System.err.println("Exception while trying to read preferences file:");
           e.printStackTrace();
         }
