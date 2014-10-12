@@ -43,7 +43,7 @@ public class SynthConfigPanel extends JPanel {
   
   private final List<Synthesizer> _otherSynthesizers;
   
-  private DeviceCombo _mainCombo;
+  private SynthCombo _mainCombo;
   private JTextField _channelField;
   private JPanel _cardPanel;
   private Map<String, JComboBox<String>> _combos;
@@ -92,7 +92,7 @@ public class SynthConfigPanel extends JPanel {
     super();
     _otherSynthesizers = new ArrayList<>(synthesizers);
     _otherSynthesizers.remove(initial);
-    _mainCombo = new DeviceCombo(initial == null ? null : initial.getName());
+    _mainCombo = new SynthCombo(initial == null ? null : initial.getName());
     _channelField = new JTextField(initial == null ? buildInitialChannels() : Utils.makeRangeString(initial.getChannels()));
     init(initial == null ? null : initial.getExpansions());
   }
@@ -101,7 +101,7 @@ public class SynthConfigPanel extends JPanel {
     _mainCombo.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        final String device = _mainCombo.getDevice();
+        final String device = _mainCombo.getSynth();
         _cardPanel.removeAll();
         _cardPanel.add(getCardPanel(device, selectedExps), BorderLayout.WEST);
         _cardPanel.revalidate();
@@ -125,7 +125,7 @@ public class SynthConfigPanel extends JPanel {
     }, Alignment.CENTER, Alignment.LEADING);
     
     _cardPanel = new JPanel();
-    _cardPanel.add(getCardPanel(_mainCombo.getDevice(), selectedExps), BorderLayout.WEST);
+    _cardPanel.add(getCardPanel(_mainCombo.getSynth(), selectedExps), BorderLayout.WEST);
     
     add(top, BorderLayout.NORTH);
     add(_cardPanel, BorderLayout.CENTER);
@@ -197,7 +197,7 @@ public class SynthConfigPanel extends JPanel {
       }
     }
     
-    final String synthname = _mainCombo.getDevice();
+    final String synthname = _mainCombo.getSynth();
     return new Synthesizer(synthname, Synthesizers.getBanksForSynth(synthname), map, buildList());
   }
   
