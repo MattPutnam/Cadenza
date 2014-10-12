@@ -5,6 +5,8 @@ import it.sauronsoftware.junique.JUnique;
 
 import java.awt.Component;
 
+import cadenza.gui.preferences.PreferencesDialog;
+
 import com.apple.eawt.AboutHandler;
 import com.apple.eawt.AppEvent.AboutEvent;
 import com.apple.eawt.AppEvent.PreferencesEvent;

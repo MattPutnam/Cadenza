@@ -51,9 +51,9 @@ import cadenza.gui.control.ControlWindow;
 import cadenza.gui.controlmap.ControlMapPanel;
 import cadenza.gui.keyboard.KeyboardListEditor;
 import cadenza.gui.plugins.edit.PluginChainViewerEditor;
+import cadenza.gui.preferences.PreferencesDialog;
 import cadenza.gui.synthesizer.SynthesizerListEditor;
 import cadenza.gui.trigger.TriggerPanel;
-
 import common.collection.ListAdapter;
 import common.collection.ListEvent;
 import common.io.IOUtils;

@@ -1,4 +1,4 @@
-package cadenza.gui;
+package cadenza.gui.preferences;
 
 import java.awt.Component;
 import java.io.File;
