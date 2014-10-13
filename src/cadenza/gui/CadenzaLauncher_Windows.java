@@ -6,7 +6,7 @@ import it.sauronsoftware.junique.JUnique;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-public class CadenzaLauncher_Windows_Linux {
+public class CadenzaLauncher_Windows {
   private static final String APP_ID = "cadenzasoftware.cadenza";
   
   public static void main(String[] args) throws Exception {
