@@ -25,8 +25,8 @@
     <fileset dir="${importdir}" includes="*.jar"/>
   </path>
   
-  <!-- <taskdef name="jarbundler" classname="net.sourceforge.jarbundler.JarBundler"/> -->
-  <!-- <taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask"/> -->
+  <taskdef name="jarbundler" classname="net.sourceforge.jarbundler.JarBundler"/>
+  <taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask"/>
 
   <target name="clean">
     <delete dir="${bin}"/>
@@ -76,10 +76,13 @@
   </target>
   
   <target name="make-executables" depends="make-jars, prepare-export">
-    <!-- <jarbundler dir="${exportdir}"
+    <jarbundler dir="${exportdir}"
                 name="Cadenza"
+                shortname="Cadenza"
                 mainclass="cadenza.gui.CadenzaLauncher_MacOSX"
-                jar="${exportdir}/${macosx.jarname}"/> -->
+                jvmversion="1.7+"
+                icon="${build}/appicon.ico"
+                jar="${exportdir}/${macosx.jarname}"/>
     
     <!-- <launch4j>
       <config jar="lib/export/Cadenza_Windows.jar"
