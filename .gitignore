@@ -1,5 +1,6 @@
 bin/
 lib/export
 resources/recentfiles.txt
+resources/preferences.txt
 upload.properties
 .*

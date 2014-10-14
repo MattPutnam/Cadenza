@@ -44,11 +44,17 @@
   
   <target name="prepare-export">
     <delete dir="${exportdir}"/>
+    
     <copy todir="${exportdir}/${resources}">
       <fileset dir="${resources}">
         <exclude name="recentfiles.txt"/>
+        <exclude name="preferences.txt"/>
       </fileset>
     </copy>
+    
+    <move file="${exportdir}/${resources}/preferences.default"
+        tofile="${exportdir}/${resources}/preferences.txt"/>
+    
     <copy todir="${exportdir}/${documentation}">
       <fileset dir="${documentation}"/>
     </copy>
