@@ -31,6 +31,7 @@ public class PreferencesDialog extends OKCancelDialog {
   
   private KeyboardEditPanel _keyboardEditPanel;
   private SynthConfigPanel _synthConfigPanel;
+  private DefaultMIDIPortsPanel _midiPortsPanel;
 
   public PreferencesDialog(Component parent) {
     super(parent);
@@ -40,12 +41,13 @@ public class PreferencesDialog extends OKCancelDialog {
   protected JComponent buildContent() {
     _keyboardEditPanel = new KeyboardEditPanel(new Keyboard(1));
     _synthConfigPanel = new SynthConfigPanel(new ArrayList<Synthesizer>(0), null);
+    _midiPortsPanel = new DefaultMIDIPortsPanel();
     
     loadPreferences();
     
     return new CardPanel(
-        Arrays.<Component>asList(SwingUtils.hugNorth(_keyboardEditPanel), _synthConfigPanel),
-        Arrays.asList("Default Keyboard", "Default Synthesizer"));
+        Arrays.<Component>asList(SwingUtils.hugNorth(_keyboardEditPanel), _synthConfigPanel, _midiPortsPanel),
+        Arrays.asList("Default Keyboard", "Default Synthesizer", "Default MIDI Ports"));
   }
   
   private void loadPreferences() {
@@ -63,12 +65,14 @@ public class PreferencesDialog extends OKCancelDialog {
         
         final Keyboard kbd = Preferences.buildDefaultKeyboard(_preferences);
         final Synthesizer synth = Preferences.buildDefaultSynthesizer(_preferences);
+        final String[] midiPorts = Preferences.buildDefaultMIDIPorts(_preferences);
         
         SwingUtils.doInSwing(new Runnable() {
           @Override
           public void run() {
             _keyboardEditPanel.match(kbd);
             _synthConfigPanel.match(synth);
+            _midiPortsPanel.match(midiPorts);
           }
         }, true);
       }
@@ -81,6 +85,7 @@ public class PreferencesDialog extends OKCancelDialog {
       public void run() {
         Preferences.commitDefaultKeyboard(_preferences, _keyboardEditPanel.getKeyboard());
         Preferences.commitDefaultSynthesizer(_preferences, _synthConfigPanel.getSynthesizer());
+        Preferences.commitDefaultMIDIPorts(_preferences, _midiPortsPanel.getSelectedPorts());
         
         try {
           Preferences.writePreferences(_preferences);

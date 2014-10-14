@@ -256,7 +256,12 @@ public class Cadenza extends JFrame {
                 for (final WizardPage page : path)
                   page.updateSettings(settings);
                 
+                final String[] midiIO = Preferences.buildDefaultMIDIPorts(preferences);
+                newData.savedInputDeviceName = midiIO[0];
+                newData.savedOutputDeviceName = midiIO[1];
+                
                 final CadenzaFrame temp = new CadenzaFrame(newData);
+                
                 if (_delegate != null)
                   _delegate.setupFrame(temp);
                 

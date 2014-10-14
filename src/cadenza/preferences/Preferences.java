@@ -41,7 +41,15 @@ public class Preferences {
       private static String CHANNELS   = "synthesizer.channels";
       private static String EXPANSIONS = "synthesizer.expansions";
     }
+    
+    private static class Midiport {
+      private static String INPUT  = "midiport.input";
+      private static String OUTPUT = "midiport.output";
+    }
   }
+  
+  /////////////////////////////////////////////////////////////////////////////
+  // Read block
   
   /**
    * Reads all of the preferences from the preferences file.  This is an IO
@@ -129,6 +137,31 @@ public class Preferences {
   }
   
   /**
+   * Reads the default MIDI I/O ports from the preferences file.  This is an IO
+   * operation and cannot be called from the Swing Event thread.
+   * @return the default MIDI I/O ports from the preferences file.  The first
+   * item is the input port, the second is the output port
+   * @throws Exception If any IO exception occurs
+   */
+  public static String[] readDefaultMIDIPorts() throws Exception {
+    return buildDefaultMIDIPorts(readAllPreferences());
+  }
+  
+  /**
+   * Returns the default MIDI I/O ports from the preferences file.  This is not
+   * an IO operation and can be called from anywhere.
+   * @param loadedPrefs the pre-loaded preferences map
+   * @return the default MIDI I/O ports from the given preferences map.  The
+   * first item is the input port, the second is the output port
+   */
+  public static String[] buildDefaultMIDIPorts(Map<String, String> loadedPrefs) {
+    return new String[] {loadedPrefs.get(Keys.Midiport.INPUT), loadedPrefs.get(Keys.Midiport.OUTPUT)};
+  }
+  
+  /////////////////////////////////////////////////////////////////////////////
+  // Write block
+  
+  /**
    * Commits the given keyboard to the given preferences map.  This is not an
    * IO operation and can be called from anywhere.
    * @param preferences the loaded preferences map
@@ -151,6 +184,18 @@ public class Preferences {
     preferences.put(Keys.Synthesizer.SYNTH,      synth.getName());
     preferences.put(Keys.Synthesizer.CHANNELS,   Utils.makeRangeString(synth.getChannels()));
     preferences.put(Keys.Synthesizer.EXPANSIONS, synth.getExpansionString());
+  }
+  
+  /**
+   * Commits the given MIDI I/O ports to the given preferences map.  This is
+   * not an IO operation and can be called from anywhere.
+   * @param preferences the loaded preferences map
+   * @param ports the MIDI I/O ports to commit to <tt>preferences</tt>.  The
+   * first should be the input port, the second should be the output pot.
+   */
+  public static void commitDefaultMIDIPorts(Map<String, String> preferences, String[] ports) {
+    preferences.put(Keys.Midiport.INPUT,  ports[0]);
+    preferences.put(Keys.Midiport.OUTPUT, ports[1]);
   }
   
   /**
