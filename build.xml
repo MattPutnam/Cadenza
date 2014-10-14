@@ -30,7 +30,6 @@
 
   <target name="clean">
     <delete dir="${bin}"/>
-    <delete dir="${exportdir}"/>
   </target>
 
   <target name="compile" depends="clean">
@@ -44,6 +43,7 @@
   </target>
   
   <target name="prepare-export">
+    <delete dir="${exportdir}"/>
     <copy todir="${exportdir}/${resources}">
       <fileset dir="${resources}">
         <exclude name="recentfiles.txt"/>
@@ -75,7 +75,7 @@
     </jar>
   </target>
   
-  <target name="make-executables" depends="make-jars, prepare-export">
+  <target name="make-executables" depends="prepare-export, make-jars">
     <jarbundler dir="${exportdir}"
                 name="Cadenza"
                 shortname="Cadenza"
