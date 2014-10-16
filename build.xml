@@ -87,7 +87,7 @@
                 shortname="Cadenza"
                 mainclass="cadenza.gui.CadenzaLauncher_MacOSX"
                 jvmversion="1.7+"
-                icon="${build}/appicon.ico"
+                icon="${build}/icon.icns"
                 jar="${exportdir}/${macosx.jarname}"/>
     
     <!-- <launch4j>
