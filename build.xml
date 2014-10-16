@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="make-zips">
   <property file="upload.properties"/>
-  
+
   <loadfile property="cadenza.version"
     srcfile="resources/version.txt"/>
-  
+
   <property name="macosx.jarname" value="Cadenza_MacOSX.jar"/>
   <property name="macosx.zipname" value="Cadenza_MacOSX.zip"/>
   <property name="windows.jarname" value="Cadenza_Windows.jar"/>
   <property name="windows.zipname" value="Cadenza_Windows.zip"/>
-  
+
   <property name="src" location="src"/>
   <property name="bin" location="bin"/>
-  <property name="build" location="build"/>
+  <property name="build" location="lib/build"/>
   <property name="importdir" location="lib/import"/>
   <property name="exportdir" location="lib/export"/>
-  
+
   <property name="upload.location" value="/public_html/assets/app/v${cadenza.version}"/>
-  
+
   <property name="resources" value="resources"/>
   <property name="documentation" value="documentation"/>
-  
+
   <path id="import.path.ref">
     <fileset dir="${importdir}" includes="*.jar"/>
   </path>
-  
+
   <taskdef name="jarbundler" classname="net.sourceforge.jarbundler.JarBundler"/>
   <taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask"/>
+  <path id="jwrapper.jar.path">
+    <fileset dir="${build}">
+      <include name="jwrapper*.jar"/>
+    </fileset>
+  </path>
+  <property name="JWrapperJAR" refid="jwrapper.jar.path"/>
 
   <target name="clean">
     <delete dir="${bin}"/>
@@ -41,25 +47,25 @@
            source="1.7"
            target="1.7"/>
   </target>
-  
+
   <target name="prepare-export">
     <delete dir="${exportdir}"/>
-    
+
     <copy todir="${exportdir}/${resources}">
       <fileset dir="${resources}">
         <exclude name="recentfiles.txt"/>
         <exclude name="preferences.txt"/>
       </fileset>
     </copy>
-    
+
     <move file="${exportdir}/${resources}/preferences.default"
         tofile="${exportdir}/${resources}/preferences.txt"/>
-    
+
     <copy todir="${exportdir}/${documentation}">
       <fileset dir="${documentation}"/>
     </copy>
   </target>
-  
+
   <target name="make-jars" depends="compile">
     <jar destfile="${exportdir}/${macosx.jarname}">
       <manifest>
@@ -80,16 +86,21 @@
       <zipgroupfileset dir="${importdir}" includes="*.jar"/>
     </jar>
   </target>
-  
+
   <target name="make-executables" depends="prepare-export, make-jars">
-    <jarbundler dir="${exportdir}"
+    <java jar="${JWrapperJAR}" failonerror="true" fork="true">
+      <jvmarg value="-Xmx512m"/>
+      <arg value="${build}/jwrapper.xml"/>
+    </java>
+    
+    <!-- <jarbundler dir="${exportdir}"
                 name="Cadenza"
                 shortname="Cadenza"
                 mainclass="cadenza.gui.CadenzaLauncher_MacOSX"
                 jvmversion="1.7+"
                 icon="${build}/icon.icns"
-                jar="${exportdir}/${macosx.jarname}"/>
-    
+                jar="${exportdir}/${macosx.jarname}"/> -->
+
     <!-- <launch4j>
       <config jar="lib/export/Cadenza_Windows.jar"
               headerType="gui"
@@ -103,15 +114,15 @@
   </target>
 
   <target name="make-zips" depends="make-executables">
-    <move file="${exportdir}/${macosx.jarname}" tofile="${exportdir}/Cadenza.jar"/>
+    <!-- <move file="${exportdir}/${macosx.jarname}" tofile="${exportdir}/Cadenza.jar"/>
     <zip destfile="${macosx.zipname}" basedir="${exportdir}" excludes="${windows.jarname}"/>
     <delete file="${exportdir}/Cadenza.jar"/>
-    
+
     <move file="${exportdir}/${windows.jarname}" tofile="${exportdir}/Cadenza.jar"/>
     <zip destfile="${windows.zipname}" basedir="${exportdir}"/>
-    <delete file="${exportdir}/Cadenza.jar"/>
+    <delete file="${exportdir}/Cadenza.jar"/> -->
   </target>
-  
+
   <target name="upload-latest">
     <!-- Make the remote directory (no-op if already exists) -->
     <ftp action    = "mkdir"

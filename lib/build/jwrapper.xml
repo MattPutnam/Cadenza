@@ -1,0 +1,24 @@
+<JWrapper>
+  <BundleName>Cadenza</BundleName>
+  <App>
+    <Name>Cadenza</Name>
+    <LogoPNG>appicon.png</LogoPNG>
+    <MainClass>cadenza.gui.CadenzaLauncher_MacOSX</MainClass>
+  </App>
+
+  <SupportedLanguages>en</SupportedLanguages>
+  <WindowsElevation>None</WindowsElevation>
+  <InstallType>CurrentUser</InstallType>
+  <SplashPNG>appicon.png</SplashPNG>
+  <BundleLogoPNG>appicon.png</BundleLogoPNG>
+
+  <Windows32JRE>JRE-1.7/win32/jre1.7.0_05</Windows32JRE>
+  <Windows64JRE>JRE-1.7/win32/jre1.7.0_05</Windows64JRE>
+  <Linux32JRE>JRE-1.7/linux/jre1.7.0_13</Linux32JRE>
+  <Linux64JRE>JRE-1.7/linuxx64/jre1.7.0_13</Linux64JRE>
+  <Mac64JRE>JRE-1.7/macos64/jre1.7.0_45</Mac64JRE>
+
+  <File classpath='yes'>../export/Cadenza_MacOSX.jar</File>
+  <File classpath='no' path='../export/documentation'>documentation</File>
+  <File classpath='no' path='../export/resources'>resources</File>
+</JWrapper>

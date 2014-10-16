@@ -4,3 +4,10 @@ resources/recentfiles.txt
 resources/preferences.txt
 upload.properties
 .*
+LastExtractedJWrapperVersion
+gu_version
+jwrapper/
+jwrapperlib/
+lib/build/JRE*
+utils/
+wrappers/
