@@ -15,8 +15,8 @@
   <property name="build" location="lib/build"/>
   <property name="importdir" location="lib/import"/>
   <property name="exportdir" location="lib/export"/>
-  <property name="macosx-exportdir" location="${exportdir}/macosx"/>
-  <property name="windows-exportdir" location="${exportdir}/windows"/>
+  <property name="macosx.exportdir" location="${exportdir}/macosx"/>
+  <property name="windows.exportdir" location="${exportdir}/windows"/>
 
   <property name="upload.location" value="/public_html/assets/app/v${cadenza.version}"/>
 
@@ -48,39 +48,39 @@
     <delete dir="${exportdir}"/>
     
     <!-- Mac OS X -->
-    <copy todir="${macosx-exportdir}/${resources}">
+    <copy todir="${macosx.exportdir}/${resources}">
       <fileset dir="${resources}">
         <exclude name="recentfiles.txt"/>
         <exclude name="preferences.txt"/>
       </fileset>
     </copy>
 
-    <move file="${macosx-exportdir}/${resources}/preferences.default"
-        tofile="${macosx-exportdir}/${resources}/preferences.txt"/>
+    <move file="${macosx.exportdir}/${resources}/preferences.default"
+        tofile="${macosx.exportdir}/${resources}/preferences.txt"/>
 
-    <copy todir="${macosx-exportdir}/${documentation}">
+    <copy todir="${macosx.exportdir}/${documentation}">
       <fileset dir="${documentation}"/>
     </copy>
     
     <!-- Windows -->
-    <copy todir="${windows-exportdir}/${resources}">
+    <copy todir="${windows.exportdir}/${resources}">
           <fileset dir="${resources}">
             <exclude name="recentfiles.txt"/>
             <exclude name="preferences.txt"/>
           </fileset>
         </copy>
 
-        <move file="${windows-exportdir}/${resources}/preferences.default"
-            tofile="${windows-exportdir}/${resources}/preferences.txt"/>
+        <move file="${windows.exportdir}/${resources}/preferences.default"
+            tofile="${windows.exportdir}/${resources}/preferences.txt"/>
 
-        <copy todir="${windows-exportdir}/${documentation}">
+        <copy todir="${windows.exportdir}/${documentation}">
           <fileset dir="${documentation}"/>
         </copy>
   </target>
 
   <target name="make-jars" depends="compile">
     <!-- Mac OS X -->
-    <jar destfile="${macosx-exportdir}/${macosx.jarname}">
+    <jar destfile="${macosx.exportdir}/${macosx.jarname}">
       <manifest>
         <attribute name="Main-Class" value="cadenza.gui.CadenzaLauncher_MacOSX"/>
       </manifest>
@@ -91,7 +91,7 @@
     </jar>
     
     <!-- Windows -->
-    <jar destfile="${windows-exportdir}/${windows.jarname}">
+    <jar destfile="${windows.exportdir}/${windows.jarname}">
       <manifest>
         <attribute name="Main-Class" value="cadenza.gui.CadenzaLauncher_Windows"/>
       </manifest>
@@ -103,16 +103,16 @@
   </target>
 
   <target name="make-executables" depends="prepare-export, make-jars">
-    <jarbundler dir="${macosx-exportdir}"
+    <jarbundler dir="${macosx.exportdir}"
                 name="Cadenza"
                 shortname="Cadenza"
                 mainclass="cadenza.gui.CadenzaLauncher_MacOSX"
                 jvmversion="1.7+"
                 icon="${build}/icon.icns"
-                jar="${macosx-exportdir}/${macosx.jarname}"/>
+                jar="${macosx.exportdir}/${macosx.jarname}"/>
 
-    <launch4j>
-      <config jar="${windows-exportdir}/${windows.jarname}"
+    <!-- <launch4j>
+      <config jar="${windows.exportdir}/${windows.jarname}"
               headerType="gui"
               errTitle="Cadenza"
               outfile="Cadenza.exe"
@@ -120,17 +120,12 @@
               restartOnCrash="true">
         <jre minVersion="1.7.0"/>
       </config>
-	</launch4j>
+	</launch4j> -->
   </target>
 
   <target name="make-zips" depends="make-executables">
-    <!-- <move file="${exportdir}/${macosx.jarname}" tofile="${exportdir}/Cadenza.jar"/>
-    <zip destfile="${macosx.zipname}" basedir="${exportdir}" excludes="${windows.jarname}"/>
-    <delete file="${exportdir}/Cadenza.jar"/>
-
-    <move file="${exportdir}/${windows.jarname}" tofile="${exportdir}/Cadenza.jar"/>
-    <zip destfile="${windows.zipname}" basedir="${exportdir}"/>
-    <delete file="${exportdir}/Cadenza.jar"/> -->
+    <zip destfile="${macosx.zipname}" basedir="${macosx.exportdir}" excludes="Cadenza.app"/>
+    <zip destfile="${windows.zipname}" basedir="${windows.exportdir}"/>
   </target>
 
   <target name="upload-latest">
