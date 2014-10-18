@@ -5,9 +5,9 @@
   <loadfile property="cadenza.version"
     srcfile="resources/version.txt"/>
 
-  <property name="macosx.jarname" value="Cadenza_MacOSX.jar"/>
+  <property name="macosx.jarname" value="Cadenza.jar"/>
   <property name="macosx.zipname" value="Cadenza_MacOSX.zip"/>
-  <property name="windows.jarname" value="Cadenza_Windows.jar"/>
+  <property name="windows.jarname" value="Cadenza.jar"/>
   <property name="windows.zipname" value="Cadenza_Windows.zip"/>
 
   <property name="src" location="src"/>
@@ -15,6 +15,8 @@
   <property name="build" location="lib/build"/>
   <property name="importdir" location="lib/import"/>
   <property name="exportdir" location="lib/export"/>
+  <property name="macosx-exportdir" location="${exportdir}/macosx"/>
+  <property name="windows-exportdir" location="${exportdir}/windows"/>
 
   <property name="upload.location" value="/public_html/assets/app/v${cadenza.version}"/>
 
@@ -27,13 +29,7 @@
 
   <taskdef name="jarbundler" classname="net.sourceforge.jarbundler.JarBundler"/>
   <taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask"/>
-  <path id="jwrapper.jar.path">
-    <fileset dir="${build}">
-      <include name="jwrapper*.jar"/>
-    </fileset>
-  </path>
-  <property name="JWrapperJAR" refid="jwrapper.jar.path"/>
-
+  
   <target name="clean">
     <delete dir="${bin}"/>
   </target>
@@ -50,24 +46,41 @@
 
   <target name="prepare-export">
     <delete dir="${exportdir}"/>
-
-    <copy todir="${exportdir}/${resources}">
+    
+    <!-- Mac OS X -->
+    <copy todir="${macosx-exportdir}/${resources}">
       <fileset dir="${resources}">
         <exclude name="recentfiles.txt"/>
         <exclude name="preferences.txt"/>
       </fileset>
     </copy>
 
-    <move file="${exportdir}/${resources}/preferences.default"
-        tofile="${exportdir}/${resources}/preferences.txt"/>
+    <move file="${macosx-exportdir}/${resources}/preferences.default"
+        tofile="${macosx-exportdir}/${resources}/preferences.txt"/>
 
-    <copy todir="${exportdir}/${documentation}">
+    <copy todir="${macosx-exportdir}/${documentation}">
       <fileset dir="${documentation}"/>
     </copy>
+    
+    <!-- Windows -->
+    <copy todir="${windows-exportdir}/${resources}">
+          <fileset dir="${resources}">
+            <exclude name="recentfiles.txt"/>
+            <exclude name="preferences.txt"/>
+          </fileset>
+        </copy>
+
+        <move file="${windows-exportdir}/${resources}/preferences.default"
+            tofile="${windows-exportdir}/${resources}/preferences.txt"/>
+
+        <copy todir="${windows-exportdir}/${documentation}">
+          <fileset dir="${documentation}"/>
+        </copy>
   </target>
 
   <target name="make-jars" depends="compile">
-    <jar destfile="${exportdir}/${macosx.jarname}">
+    <!-- Mac OS X -->
+    <jar destfile="${macosx-exportdir}/${macosx.jarname}">
       <manifest>
         <attribute name="Main-Class" value="cadenza.gui.CadenzaLauncher_MacOSX"/>
       </manifest>
@@ -76,7 +89,9 @@
       </fileset>
       <zipgroupfileset dir="${importdir}" includes="*.jar"/>
     </jar>
-    <jar destfile="${exportdir}/${windows.jarname}">
+    
+    <!-- Windows -->
+    <jar destfile="${windows-exportdir}/${windows.jarname}">
       <manifest>
         <attribute name="Main-Class" value="cadenza.gui.CadenzaLauncher_Windows"/>
       </manifest>
@@ -88,21 +103,16 @@
   </target>
 
   <target name="make-executables" depends="prepare-export, make-jars">
-    <java jar="${JWrapperJAR}" failonerror="true" fork="true">
-      <jvmarg value="-Xmx512m"/>
-      <arg value="${build}/jwrapper.xml"/>
-    </java>
-    
-    <!-- <jarbundler dir="${exportdir}"
+    <jarbundler dir="${macosx-exportdir}"
                 name="Cadenza"
                 shortname="Cadenza"
                 mainclass="cadenza.gui.CadenzaLauncher_MacOSX"
                 jvmversion="1.7+"
                 icon="${build}/icon.icns"
-                jar="${exportdir}/${macosx.jarname}"/> -->
+                jar="${macosx-exportdir}/${macosx.jarname}"/>
 
-    <!-- <launch4j>
-      <config jar="lib/export/Cadenza_Windows.jar"
+    <launch4j>
+      <config jar="${windows-exportdir}/${windows.jarname}"
               headerType="gui"
               errTitle="Cadenza"
               outfile="Cadenza.exe"
@@ -110,7 +120,7 @@
               restartOnCrash="true">
         <jre minVersion="1.7.0"/>
       </config>
-	</launch4j> -->
+	</launch4j>
   </target>
 
   <target name="make-zips" depends="make-executables">
