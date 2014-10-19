@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +47,7 @@ import common.collection.ListAdapter;
 import common.collection.ListEvent;
 import common.swing.SwingUtils;
 import common.swing.table.ListTableModel;
+import common.tuple.Pair;
 
 @SuppressWarnings("serial")
 public class CueListEditor extends JPanel {
@@ -267,9 +269,9 @@ public class CueListEditor extends JPanel {
             sb.append("</html>");
             label.setText(sb.toString());
             
-            final String warning = getWarning(cue);
-            label.setIcon(warning == null ? null : ImageStore.WARNING);
-            label.setToolTipText(warning == null ? sb.toString() : warning);
+            final Pair<Boolean, String> warning = getWarning(cue);
+            label.setIcon(warning == null ? null : warning._1().booleanValue() ? ImageStore.ERROR : ImageStore.WARNING);
+            label.setToolTipText(warning == null ? sb.toString() : warning._2());
           } else {
             label.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
             label.setToolTipText(null);
@@ -279,20 +281,38 @@ public class CueListEditor extends JPanel {
         return label;
       }
       
-      private String getWarning(Cue cue) {
+      private Pair<Boolean, String> getWarning(Cue cue) {
+        final List<String> messages = new LinkedList<>();
+        
         final Map<Synthesizer, Integer> counts = new IdentityHashMap<>();
         for (final PatchUsage pu : cue.patches) {
           final Synthesizer synth = pu.patch.getSynthesizer();
           final Integer integer = counts.get(synth);
-          final int i = integer == null ? 1 : integer.intValue()+1;
           
-          if (i > synth.getChannels().size())
-            return "There are more patches used than synth '" + synth.getName() + "' has allocated channels";
-          
-          counts.put(synth, Integer.valueOf(i));
+          counts.put(synth, Integer.valueOf(integer == null ? 1 : integer.intValue()+1));
         }
         
-        return null;
+        boolean isError = false;
+        for (final Map.Entry<Synthesizer, Integer> entry : counts.entrySet()) {
+          final Synthesizer synth = entry.getKey();
+          final int count = entry.getValue().intValue();
+          final int max = synth.getChannels().size();
+          
+          if (count > max) {
+            isError = true;
+            messages.add("This cue uses more patches (" + count + ") on synth " +
+                synth.getName() + " than are allocated.");
+          }
+          else if (2*count > max) {
+            messages.add("This cue uses more patches (" + count + ") on synth " +
+                synth.getName() + " than can be swapped in free space.");
+          }
+        }
+        
+        if (messages.isEmpty())
+          return null;
+        else
+          return Pair.make(Boolean.valueOf(isError), Utils.mkString(messages, "<html>", "<br>", "</html>"));
       }
     }
     

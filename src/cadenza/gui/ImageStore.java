@@ -26,6 +26,7 @@ public class ImageStore {
   
   public static final ImageIcon HELP;
   public static final ImageIcon WARNING;
+  public static final ImageIcon ERROR;
   public static final ImageIcon SEARCH;
   public static final ImageIcon USB;
 
@@ -49,6 +50,7 @@ public class ImageStore {
     
     HELP = getImageIcon("cdisc_help.png", "help");
     WARNING = getImageIcon("cdisc_warning.png", "warning");
+    ERROR = getImageIcon("cdisc_error.png", "error");
     SEARCH = getImageIcon("cdisc_search.png", "search");
     USB = getImageIcon("cdisc_iousb.png", "USB I/O");
   }
