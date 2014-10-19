@@ -64,18 +64,18 @@
     
     <!-- Windows -->
     <copy todir="${windows.exportdir}/${resources}">
-          <fileset dir="${resources}">
-            <exclude name="recentfiles.txt"/>
-            <exclude name="preferences.txt"/>
-          </fileset>
-        </copy>
+      <fileset dir="${resources}">
+        <exclude name="recentfiles.txt"/>
+        <exclude name="preferences.txt"/>
+      </fileset>
+    </copy>
 
-        <move file="${windows.exportdir}/${resources}/preferences.default"
-            tofile="${windows.exportdir}/${resources}/preferences.txt"/>
+    <move file="${windows.exportdir}/${resources}/preferences.default"
+        tofile="${windows.exportdir}/${resources}/preferences.txt"/>
 
-        <copy todir="${windows.exportdir}/${documentation}">
-          <fileset dir="${documentation}"/>
-        </copy>
+    <copy todir="${windows.exportdir}/${documentation}">
+      <fileset dir="${documentation}"/>
+    </copy>
   </target>
 
   <target name="make-jars" depends="compile">
@@ -131,17 +131,18 @@
   <target name="upload-latest">
     <!-- Make the remote directory (no-op if already exists) -->
     <ftp action    = "mkdir"
-         server    = "${ftp-server}"
-         userid    = "${ftp-username}"
-         password  = "${ftp-password}"
+         server    = "${ftp.server}"
+         userid    = "${ftp.username}"
+         password  = "${ftp.password}"
          remotedir = "${upload.location}"/>
     <!-- Upload -->
-    <ftp server    = "${ftp-server}"
+    <ftp server    = "${ftp.server}"
          remotedir = "${upload.location}/"
-         userid    = "${ftp-username}"
-         password  = "${ftp-password}">
+         userid    = "${ftp.username}"
+         password  = "${ftp.password}">
       <fileset dir="">
-        <include name="Cadenza*.zip"/>
+        <include name="${macosx.zipname}"/>
+        <include name="${windows.zipname}"/>
       </fileset>
     </ftp>
   </target>
