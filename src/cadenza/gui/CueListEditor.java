@@ -9,6 +9,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,7 @@ import cadenza.core.Cue;
 import cadenza.core.Keyboard;
 import cadenza.core.Patch;
 import cadenza.core.Song;
+import cadenza.core.Synthesizer;
 import cadenza.core.patchusage.PatchUsage;
 import cadenza.core.trigger.Trigger;
 import cadenza.gui.common.CadenzaTable;
@@ -239,12 +241,13 @@ public class CueListEditor extends JPanel {
           int row, int column) {
         final JLabel label = (JLabel) super.getTableCellRendererComponent(
             table, value, isSelected, hasFocus, row, column);
+        
         if (_entries.get(row).isSong()) {
           label.setHorizontalAlignment(SwingConstants.CENTER);
           label.setBackground(isSelected ? table.getSelectionBackground() : SONG_BACKGROUND);
           label.setToolTipText(null);
-        }
-        else {
+          label.setIcon(null);
+        } else {
           label.setHorizontalAlignment(SwingConstants.LEFT);
           if (column == Col.PATCHES) {
             final StringBuilder sb = new StringBuilder("<html>");
@@ -263,13 +266,33 @@ public class CueListEditor extends JPanel {
             }
             sb.append("</html>");
             label.setText(sb.toString());
-            label.setToolTipText(sb.toString());
+            
+            final String warning = getWarning(cue);
+            label.setIcon(warning == null ? null : ImageStore.WARNING);
+            label.setToolTipText(warning == null ? sb.toString() : warning);
           } else {
             label.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
             label.setToolTipText(null);
+            label.setIcon(null);
           }
         }
         return label;
+      }
+      
+      private String getWarning(Cue cue) {
+        final Map<Synthesizer, Integer> counts = new IdentityHashMap<>();
+        for (final PatchUsage pu : cue.patches) {
+          final Synthesizer synth = pu.patch.getSynthesizer();
+          final Integer integer = counts.get(synth);
+          final int i = integer == null ? 1 : integer.intValue()+1;
+          
+          if (i > synth.getChannels().size())
+            return "There are more patches used than synth '" + synth.getName() + "' has allocated channels";
+          
+          counts.put(synth, Integer.valueOf(i));
+        }
+        
+        return null;
       }
     }
     
