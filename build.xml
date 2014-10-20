@@ -27,8 +27,8 @@
     <fileset dir="${importdir}" includes="*.jar"/>
   </path>
 
-  <taskdef name="jarbundler" classname="net.sourceforge.jarbundler.JarBundler"/>
-  <taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask"/>
+  <taskdef name="jarbundler" classname="net.sourceforge.jarbundler.JarBundler" classpath="${build}/jarbundler-2.3.1.jar"/>
+  <taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${build}/launch4j/launch4j.jar"/>
   
   <target name="clean">
     <delete dir="${bin}"/>
