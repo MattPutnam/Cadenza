@@ -1,0 +1,2 @@
+Roland FP-1
+TO SELECT BANK [default] PATCH 1-17 SEND PC VALUE=1-17

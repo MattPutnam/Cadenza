@@ -1,0 +1,20 @@
+Roland FP-1
+
+#[default]
+1  Piano 1
+2  Piano 2
+3  Piano 1
+4  Honky Tonk
+5  E. Piano
+6  E. Piano
+7  Strings
+8  Syn Strings
+9  Piano 1 & E. Piano
+10 Piano 1 & Strings
+11 Piano 1 & Syn Strings
+12 Piano 2 & E. Piano
+13 Piano 2 & Strings
+14 Piano 2 & Syn Strings
+15 E. Piano & Strings
+16 E. Piano & Syn Strings
+17 Strings & Syn Strings
