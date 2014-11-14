@@ -190,7 +190,7 @@ public class CueListEditor extends JPanel {
     
     @Override
     public int compareTo(CueTableEntry other) {
-      final int val = getSongNumber().compareTo(other.getSongNumber());
+      final int val = Comparators.NUMERO_ALPHA.compare(getSongNumber(), other.getSongNumber());
       if (val != 0)
         return val;
       
