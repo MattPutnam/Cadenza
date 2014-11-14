@@ -42,6 +42,7 @@ import cadenza.gui.common.CadenzaTable;
 import cadenza.gui.cue.CueEditDialog;
 import cadenza.gui.song.SongEditDialog;
 
+import common.Comparators;
 import common.Utils;
 import common.collection.ListAdapter;
 import common.collection.ListEvent;
@@ -200,7 +201,7 @@ public class CueListEditor extends JPanel {
       else if (other.isSong())
         return 1;
       else
-        return cue.measureNumber.compareTo(other.cue.measureNumber);
+        return Comparators.NUMERO_ALPHA.compare(cue.measureNumber, other.cue.measureNumber);
     }
   }
   
@@ -376,6 +377,8 @@ public class CueListEditor extends JPanel {
       dialog.showDialog();
       if (dialog.okPressed()) {
         _data.cues.add(newCue);
+        Collections.sort(_data.cues);
+        
         if (!_data.songs.contains(newCue.song)) {
           _data.songs.add(newCue.song);
         }
@@ -391,6 +394,8 @@ public class CueListEditor extends JPanel {
         final CueEditDialog dialog = new CueEditDialog(_cadenzaFrame, cue, _data);
         dialog.showDialog();
         if (dialog.okPressed()) {
+          Collections.sort(_data.cues);
+          
           if (_data.songs.contains(cue.song)) {
             rebuildEntries();
           } else {
