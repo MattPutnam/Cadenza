@@ -54,6 +54,7 @@ import cadenza.gui.plugins.edit.PluginChainViewerEditor;
 import cadenza.gui.preferences.PreferencesDialog;
 import cadenza.gui.synthesizer.SynthesizerListEditor;
 import cadenza.gui.trigger.TriggerPanel;
+
 import common.collection.ListAdapter;
 import common.collection.ListEvent;
 import common.io.IOUtils;
@@ -366,12 +367,17 @@ public class CadenzaFrame extends JFrame implements Receiver {
             if (newSynth.getBanks().contains(patch.bank) ||
               newSynth.getExpansions().keySet().contains(patch.bank)) {
               auto.put(patch, newSynth);
+              patch.setSynthesizer(newSynth);
               continue patch;
             }
           }
           
           orphaned.add(patch);
         }
+        
+        // repaint cue list to update warnings
+        _cueListEditor.revalidate();
+        _cueListEditor.repaint();
         
         if (orphaned.isEmpty()) {
           _data.synthesizers.clear();

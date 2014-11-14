@@ -428,7 +428,7 @@ public final class PerformanceController extends CadenzaController {
   }
   
   private void updatePerformanceLocation() {
-    _cadenzaFrame.notifyPerformLocationChanged(_position, false);
+    _cadenzaFrame.notifyPerformLocationChanged(_position, true);
   }
 
   public synchronized void restart() {
