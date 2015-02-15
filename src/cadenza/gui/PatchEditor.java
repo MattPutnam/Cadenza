@@ -90,7 +90,7 @@ public class PatchEditor extends JPanel {
     
     _data.patches.addListener(new ListAdapter<Patch>() {
       @Override
-      public void anyChange(ListEvent<Patch> _) {
+      public void anyChange(ListEvent<Patch> e) {
         // save selection...
         final List<Patch> selected = _table.getSelectedRows();
         

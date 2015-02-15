@@ -84,12 +84,7 @@ public class PatchUsageEditDialog extends OKCancelDialog {
       _pluginPanel = new PluginChainViewerEditor(_startingPatchUsage.plugins, true);
     }
     
-    _patchSelector.accessCombo().addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent _) {
-        _volumeField.setVolume(_patchSelector.getSelectedPatch().defaultVolume);
-      }
-    });
+    _patchSelector.accessCombo().addActionListener(e -> _volumeField.setVolume(_patchSelector.getSelectedPatch().defaultVolume));
     _locationSelector.setBorder(BorderFactory.createTitledBorder("Location"));
     _pluginPanel.setBorder(BorderFactory.createTitledBorder("Plugins"));
     

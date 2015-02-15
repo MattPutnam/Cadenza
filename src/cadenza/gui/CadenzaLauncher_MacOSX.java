@@ -7,11 +7,7 @@ import java.awt.Component;
 
 import cadenza.gui.preferences.PreferencesDialog;
 
-import com.apple.eawt.AboutHandler;
-import com.apple.eawt.AppEvent.AboutEvent;
-import com.apple.eawt.AppEvent.PreferencesEvent;
 import com.apple.eawt.Application;
-import com.apple.eawt.PreferencesHandler;
 
 public class CadenzaLauncher_MacOSX {
 private static final String APP_ID = "cadenzasoftware.cadenza";
@@ -29,22 +25,14 @@ private static final String APP_ID = "cadenzasoftware.cadenza";
     
     final Application app = Application.getApplication();
     
-    app.setAboutHandler(new AboutHandler() {
-      @Override
-      public void handleAbout(AboutEvent _) {
-        new AboutDialog();
-      }
-    });
+    app.setAboutHandler(e -> new AboutDialog());
     
-    app.setPreferencesHandler(new PreferencesHandler() {
-      @Override
-      public void handlePreferences(PreferencesEvent e) {
-        final Component parent = (e.getSource() instanceof Component) ? (Component) e.getSource() : null;
-        final PreferencesDialog dialog = new PreferencesDialog(parent);
-        dialog.showDialog();
-        if (dialog.okPressed())
-          dialog.commitPreferences();
-      }
+    app.setPreferencesHandler(e -> {
+    	final Component parent = (e.getSource() instanceof Component) ? (Component) e.getSource() : null;
+      final PreferencesDialog dialog = new PreferencesDialog(parent);
+      dialog.showDialog();
+      if (dialog.okPressed())
+        dialog.commitPreferences();
     });
     
     Cadenza.setDelegate(new MacOSXDelegate());

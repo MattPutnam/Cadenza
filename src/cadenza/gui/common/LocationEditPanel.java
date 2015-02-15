@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -71,15 +70,12 @@ public class LocationEditPanel extends JPanel {
         skp.addKeyboardListener(updater);
         _keyboardPanels.add(skp);
       }
-      _keyboardSelector.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent _) {
-          keyboardPanel.removeAll();
-          keyboardPanel.add(_keyboardPanels.get(_keyboardSelector.getSelectedIndex()));
-          keyboardPanel.revalidate();
-          updateRangeDisplay();
-          repaint();
-        }
+      _keyboardSelector.addActionListener(e -> {
+        keyboardPanel.removeAll();
+        keyboardPanel.add(_keyboardPanels.get(_keyboardSelector.getSelectedIndex()));
+        keyboardPanel.revalidate();
+        updateRangeDisplay();
+        repaint();
       });
       keyboardPanel.add(_keyboardPanels.get(_keyboardSelector.getSelectedIndex()));
       keyboardPanel.setMinimumSize(new Dimension(maxWidth, keyboardPanel.getMinimumSize().height));
@@ -204,7 +200,7 @@ public class LocationEditPanel extends JPanel {
     }
     
     @Override
-    public void actionPerformed(ActionEvent _) {
+    public void actionPerformed(ActionEvent e) {
       setSelectedLocation(Location.wholeKeyboard(getSelectedKeyboard()));
     }
   }

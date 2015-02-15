@@ -128,7 +128,7 @@ public class Preferences {
     if (synthname == null) return null;
     
     final String channelString = loadedPrefs.get(Keys.Synthesizer.CHANNELS);
-    final List<Integer> channels = channelString == null ? new ArrayList<Integer>(0) : Utils.parseRangeString(channelString);
+    final List<Integer> channels = channelString == null ? new ArrayList<>(0) : Utils.parseRangeString(channelString);
     
     final String expansionsString = loadedPrefs.get(Keys.Synthesizer.EXPANSIONS);
     final Map<String, String> expansions = Synthesizer.parseExpansions(expansionsString);

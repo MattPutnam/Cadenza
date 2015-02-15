@@ -142,7 +142,7 @@ public class PluginChainViewerEditor extends JPanel {
       if (_allowEdit) {
         addMouseListener(new MouseAdapter() {
           @Override
-          public void mouseClicked(MouseEvent _) {
+          public void mouseClicked(MouseEvent e) {
             final AddPluginDialog dialog = new AddPluginDialog();
             dialog.showDialog();
             if (dialog.okPressed()) {
@@ -219,7 +219,7 @@ public class PluginChainViewerEditor extends JPanel {
     }
     
     @Override
-    public void actionPerformed(ActionEvent _) {
+    public void actionPerformed(ActionEvent e) {
       final PluginEditor editor = _pluginView.createEditor();
       if (OKCancelDialog.showInDialog(PluginChainViewerEditor.this, "", editor)) {
         _plugins.set(_index, editor.getPlugin());
@@ -239,7 +239,7 @@ public class PluginChainViewerEditor extends JPanel {
     }
     
     @Override
-    public void actionPerformed(ActionEvent _) {
+    public void actionPerformed(ActionEvent e) {
       if (Dialog.confirm(PluginChainViewerEditor.this, "Are you sure you want to delete this plugin?")) {
         _plugins.remove(_index);
         refreshPluginViews();

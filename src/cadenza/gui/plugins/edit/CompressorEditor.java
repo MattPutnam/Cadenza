@@ -1,7 +1,5 @@
 package cadenza.gui.plugins.edit;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.text.DecimalFormat;
@@ -11,8 +9,6 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import cadenza.core.plugins.Compressor;
 import cadenza.gui.plugins.view.CompressorView;
@@ -70,50 +66,34 @@ public class CompressorEditor extends PluginEditor {
   }
   
   private void addListeners() {
-    _thresholdSlider.addChangeListener(new ChangeListener() {
-      @Override
-      public void stateChanged(ChangeEvent _) {
-        updateThreshold(_thresholdSlider.getValue());
+    _thresholdSlider.addChangeListener(e -> updateThreshold(_thresholdSlider.getValue()));
+    _thresholdField.addActionListener(e -> {
+      int fieldVal = _thresholdField.getInt();
+      if (fieldVal > 127) {
+        fieldVal = 127;
+        _thresholdField.setText("127");
       }
-    });
-    _thresholdField.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent _) {
-        int fieldVal = _thresholdField.getInt();
-        if (fieldVal > 127) {
-          fieldVal = 127;
-          _thresholdField.setText("127");
-        }
-        updateThreshold(fieldVal);
-      }
+      updateThreshold(fieldVal);
     });
     _thresholdField.addFocusListener(new FocusAdapter() {
       @Override
-      public void focusLost(FocusEvent _) {
+      public void focusLost(FocusEvent e) {
         updateThreshold(_thresholdField.getInt());
       }
     });
     
-    _ratioSlider.addChangeListener(new ChangeListener() {
-      @Override
-      public void stateChanged(ChangeEvent _) {
-        updateRatio(_ratioSlider.getValue());
+    _ratioSlider.addChangeListener(e -> updateRatio(_ratioSlider.getValue()));
+    _ratioField.addActionListener(e -> {
+      double fieldVal = _ratioField.getDouble();
+      if (fieldVal < 1.0) {
+        fieldVal = 1.0;
+        _ratioField.setText("1.0");
       }
-    });
-    _ratioField.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent _) {
-        double fieldVal = _ratioField.getDouble();
-        if (fieldVal < 1.0) {
-          fieldVal = 1.0;
-          _ratioField.setText("1.0");
-        }
-        updateRatio(fieldVal);
-      }
+      updateRatio(fieldVal);
     });
     _ratioField.addFocusListener(new FocusAdapter() {
       @Override
-      public void focusLost(FocusEvent _) {
+      public void focusLost(FocusEvent e) {
         double fieldVal = _ratioField.getDouble();
         if (fieldVal < 1.0) {
           fieldVal = 1.0;

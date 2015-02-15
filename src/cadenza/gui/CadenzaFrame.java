@@ -399,7 +399,7 @@ public class CadenzaFrame extends JFrame implements Receiver {
   
   private class ProgramMidiSolutionsAction extends AbstractAction {
     @Override
-    public void actionPerformed(ActionEvent _) {
+    public void actionPerformed(ActionEvent e) {
       if (_msmSender == null || !_msmSender.isValid()) {
         Dialog.error(CadenzaFrame.this, "Output connection is not set");
         return;
@@ -411,7 +411,7 @@ public class CadenzaFrame extends JFrame implements Receiver {
   
   private class ShowControlWindowAction extends AbstractAction {
     @Override
-    public void actionPerformed(ActionEvent _) {
+    public void actionPerformed(ActionEvent e) {
       if (_inDevice == null || _outDevice == null) {
         Dialog.error(CadenzaFrame.this, "MIDI I/O is not set.  " +
             "Go to the Setup menu and select the MIDI Input/Output devices.");
@@ -443,7 +443,7 @@ public class CadenzaFrame extends JFrame implements Receiver {
   
   private class ShowPluginMonitorAction extends AbstractAction {
     @Override
-    public void actionPerformed(ActionEvent _) {
+    public void actionPerformed(ActionEvent e) {
       PluginMonitor.getInstance().setVisible(true);
     }
   }

@@ -160,7 +160,7 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider 
   
   @Override
   public List<ControlMapEntry> getControlMap() {
-    return _controlPanel == null ? new ArrayList<ControlMapEntry>() : _controlPanel.getMapping();
+    return _controlPanel == null ? new ArrayList<>() : _controlPanel.getMapping();
   };
   
   @Override

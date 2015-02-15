@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.ArrayList;
@@ -26,8 +25,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import cadenza.core.plugins.ParametricEQ;
 import cadenza.core.plugins.ParametricEQ.Band;
@@ -127,33 +124,27 @@ public class ParametricEQEditor extends PluginEditor {
     }
     
     private void addListeners() {
-      _frequencySlider.addChangeListener(new ChangeListener() {
-        @Override
-        public void stateChanged(ChangeEvent _) {
-          final int freq = _frequencySlider.getValue();
-          _frequencyField.setText(String.valueOf(freq));
-          _band.setFrequency(freq);
-          _peq.update();
-          _peqView.repaint();
-        }
+      _frequencySlider.addChangeListener(e -> {
+        final int freq = _frequencySlider.getValue();
+        _frequencyField.setText(String.valueOf(freq));
+        _band.setFrequency(freq);
+        _peq.update();
+        _peqView.repaint();
       });
-      _frequencyField.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent _) {
-          int freq = _frequencyField.getInt();
-          if (freq > 127) {
-            freq = 127;
-            _frequencyField.setText("127");
-          }
-          _frequencySlider.setValue(freq);
-          _band.setFrequency(freq);
-          _peq.update();
-          _peqView.repaint();
+      _frequencyField.addActionListener(e -> {
+        int freq = _frequencyField.getInt();
+        if (freq > 127) {
+          freq = 127;
+          _frequencyField.setText("127");
         }
+        _frequencySlider.setValue(freq);
+        _band.setFrequency(freq);
+        _peq.update();
+        _peqView.repaint();
       });
       _frequencyField.addFocusListener(new FocusAdapter() {
         @Override
-        public void focusLost(FocusEvent _) {
+        public void focusLost(FocusEvent e) {
           int freq = _frequencyField.getInt();
           if (freq > 127) {
             freq = 127;
@@ -166,36 +157,30 @@ public class ParametricEQEditor extends PluginEditor {
         }
       });
       
-      _gainSlider.addChangeListener(new ChangeListener() {
-        @Override
-        public void stateChanged(ChangeEvent _) {
-          final double gain = _gainSlider.getValue() / 1000.0;
-          _gainField.setText(String.valueOf(gain));
-          _band.setGain(gain);
-          _peq.update();
-          _peqView.repaint();
-        }
+      _gainSlider.addChangeListener(e -> {
+        final double gain = _gainSlider.getValue() / 1000.0;
+        _gainField.setText(String.valueOf(gain));
+        _band.setGain(gain);
+        _peq.update();
+        _peqView.repaint();
       });
-      _gainField.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent _) {
-          double gain = _gainField.getDouble();
-          if (gain < -10.0) {
-            gain = -10.0;
-            _gainField.setText("-10.0");
-          } else if (gain > 10.0) {
-            gain = 10.0;
-            _gainField.setText("10.0");
-          }
-          _gainSlider.setValue((int) (gain * 1000));
-          _band.setGain(gain);
-          _peq.update();
-          _peqView.repaint();
+      _gainField.addActionListener(e -> {
+        double gain = _gainField.getDouble();
+        if (gain < -10.0) {
+          gain = -10.0;
+          _gainField.setText("-10.0");
+        } else if (gain > 10.0) {
+          gain = 10.0;
+          _gainField.setText("10.0");
         }
+        _gainSlider.setValue((int) (gain * 1000));
+        _band.setGain(gain);
+        _peq.update();
+        _peqView.repaint();
       });
       _gainField.addFocusListener(new FocusAdapter() {
         @Override
-        public void focusLost(FocusEvent _) {
+        public void focusLost(FocusEvent e) {
           double gain = _gainField.getDouble();
           if (gain < -10.0) {
             gain = -10.0;
@@ -211,33 +196,27 @@ public class ParametricEQEditor extends PluginEditor {
         }
       });
       
-      _qualitySlider.addChangeListener(new ChangeListener() {
-        @Override
-        public void stateChanged(ChangeEvent _) {
-          double quality = _qualitySlider.getValue() / 1000.0;
-          _qualityField.setText(String.valueOf(quality));
-          _band.setQuality(quality);
-          _peq.update();
-          _peqView.repaint();
-        }
+      _qualitySlider.addChangeListener(e -> {
+        double quality = _qualitySlider.getValue() / 1000.0;
+        _qualityField.setText(String.valueOf(quality));
+        _band.setQuality(quality);
+        _peq.update();
+        _peqView.repaint();
       });
-      _qualityField.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent _) {
-          double quality = _qualityField.getDouble();
-          if (quality > 10.0) {
-            quality = 10.0;
-            _qualityField.setText("10.0");
-          }
-          _qualitySlider.setValue((int) (quality*1000));
-          _band.setQuality(quality);
-          _peq.update();
-          _peqView.repaint();
+      _qualityField.addActionListener(e -> {
+        double quality = _qualityField.getDouble();
+        if (quality > 10.0) {
+          quality = 10.0;
+          _qualityField.setText("10.0");
         }
+        _qualitySlider.setValue((int) (quality*1000));
+        _band.setQuality(quality);
+        _peq.update();
+        _peqView.repaint();
       });
       _qualityField.addFocusListener(new FocusAdapter() {
         @Override
-        public void focusLost(FocusEvent _) {
+        public void focusLost(FocusEvent e) {
           double quality = _qualityField.getDouble();
           if (quality > 10.0) {
             quality = 10.0;
@@ -250,27 +229,21 @@ public class ParametricEQEditor extends PluginEditor {
         }
       });
       
-      _highShelfCheckBox.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent _) {
-          final boolean isSelected = _highShelfCheckBox.isSelected();
-          if (isSelected)
-            _lowShelfCheckBox.setSelected(false);
-          _band.setHighShelf(isSelected);
-          _peq.update();
-          _peqView.repaint();
-        }
+      _highShelfCheckBox.addActionListener(e -> {
+        final boolean isSelected = _highShelfCheckBox.isSelected();
+        if (isSelected)
+          _lowShelfCheckBox.setSelected(false);
+        _band.setHighShelf(isSelected);
+        _peq.update();
+        _peqView.repaint();
       });
-      _lowShelfCheckBox.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent _) {
-          final boolean isSelected = _lowShelfCheckBox.isSelected();
-          if (isSelected)
-            _highShelfCheckBox.setSelected(false);
-          _band.setLowShelf(isSelected);
-          _peq.update();
-          _peqView.repaint();
-        }
+      _lowShelfCheckBox.addActionListener(e -> {
+        final boolean isSelected = _lowShelfCheckBox.isSelected();
+        if (isSelected)
+          _highShelfCheckBox.setSelected(false);
+        _band.setLowShelf(isSelected);
+        _peq.update();
+        _peqView.repaint();
       });
     }
   }
@@ -279,12 +252,9 @@ public class ParametricEQEditor extends PluginEditor {
     public DeleteButton(final Band band) {
       super(new DeleteIcon(10));
       setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
-      addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent _) {
-          _bands.remove(band);
-          refreshBands();
-        }
+      addActionListener(e -> {
+        _bands.remove(band);
+        refreshBands();
       });
       setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
@@ -296,7 +266,7 @@ public class ParametricEQEditor extends PluginEditor {
     }
     
     @Override
-    public void actionPerformed(ActionEvent _) {
+    public void actionPerformed(ActionEvent e) {
       _bands.add(new Band(64, 3.0, 1.0));
       refreshBands();
     }
@@ -308,7 +278,7 @@ public class ParametricEQEditor extends PluginEditor {
     }
     
     @Override
-    public void actionPerformed(ActionEvent _) {
+    public void actionPerformed(ActionEvent e) {
       Collections.sort(_bands, COMPARATOR);
       refreshBands();
     }

@@ -47,7 +47,7 @@ public class ProgramMidiSolutionsFrame extends JFrame {
     return result;
   }
 
-  private List<String> buildMainNames() {
+  private static List<String> buildMainNames() {
     final List<String> result = new ArrayList<>(2);
     result.add("Footswitch Controller");
     result.add("Relay");
@@ -176,7 +176,7 @@ public class ProgramMidiSolutionsFrame extends JFrame {
     return result;
   }
   
-  private List<String> buildFootswitchNames() {
+  private static List<String> buildFootswitchNames() {
     return Arrays.asList("Note On", "Control Change", "Midi Start", "MIDI Stop",
         "MIDI Start on press, MIDI Stop on release", "Pitch Bend", "Program Change",
         "Bank/Program Change", "Program Change Capture", "Program Change INC",
@@ -197,19 +197,16 @@ public class ProgramMidiSolutionsFrame extends JFrame {
       final IntField nrTopField = buildIntField();
       
       final JButton sendButton = new JButton("Send");
-      sendButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent _) {
-          try {
-            _sender.sendPedalDeviceParametersMessage(
-                extractBoolean(echoCheckBox),
-                curveAmountField.getInt(),
-                extractBoolean(curveUpCheckBox),
-                nrBottomField.getInt(),
-                nrTopField.getInt());
-          } catch (Throwable t) {
-            Dialog.error(deviceParametersPanel, t.getLocalizedMessage());
-          }
+      sendButton.addActionListener(e -> {
+        try {
+          _sender.sendPedalDeviceParametersMessage(
+              extractBoolean(echoCheckBox),
+              curveAmountField.getInt(),
+              extractBoolean(curveUpCheckBox),
+              nrBottomField.getInt(),
+              nrTopField.getInt());
+        } catch (Throwable t) {
+          Dialog.error(deviceParametersPanel, t.getLocalizedMessage());
         }
       });
       
@@ -236,7 +233,7 @@ public class ProgramMidiSolutionsFrame extends JFrame {
     return result;
   }
   
-  private List<String> buildPedalNames() {
+  private static List<String> buildPedalNames() {
     return Arrays.asList("Device Settings");
   }
   

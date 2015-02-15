@@ -91,7 +91,7 @@ public class InputMonitor extends JFrame {
     }
     
     @Override
-    public void actionPerformed(ActionEvent _) {
+    public void actionPerformed(ActionEvent e) {
       _listData.clear();
       _jList.setListData(_listData);
     }
@@ -185,7 +185,7 @@ public class InputMonitor extends JFrame {
       return _panel;
     }
     
-    private void copyProperties(JLabel source, JLabel target) {
+    private static void copyProperties(JLabel source, JLabel target) {
       target.setBackground(source.getBackground());
       target.setForeground(source.getForeground());
       target.setBorder(source.getBorder());

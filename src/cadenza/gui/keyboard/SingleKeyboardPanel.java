@@ -124,7 +124,7 @@ public final class SingleKeyboardPanel extends JPanel {
     }
   }
   
-  private boolean eq(Note n1, Note n2) {
+  private static boolean eq(Note n1, Note n2) {
     if (n1 == null && n2 == null)
       return true;
     else if (n1 == null || n2 == null)

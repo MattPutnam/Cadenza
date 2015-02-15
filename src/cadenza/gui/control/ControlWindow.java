@@ -134,7 +134,7 @@ public class ControlWindow extends JFrame implements MetronomeListener {
     }
     
     @Override
-    public void actionPerformed(ActionEvent _) {
+    public void actionPerformed(ActionEvent e) {
       _controller.advance();
     }
   }
@@ -145,7 +145,7 @@ public class ControlWindow extends JFrame implements MetronomeListener {
     }
     
     @Override
-    public void actionPerformed(ActionEvent _) {
+    public void actionPerformed(ActionEvent e) {
       _controller.reverse();
     }
   }

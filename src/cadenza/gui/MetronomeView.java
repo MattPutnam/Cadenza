@@ -78,7 +78,7 @@ public class MetronomeView extends JFrame implements MetronomeListener {
     }
     
     @Override
-    public void actionPerformed(ActionEvent _) {
+    public void actionPerformed(ActionEvent e) {
       Metronome.getInstance().start();
     }
   }
@@ -89,7 +89,7 @@ public class MetronomeView extends JFrame implements MetronomeListener {
     }
     
     @Override
-    public void actionPerformed(ActionEvent _) {
+    public void actionPerformed(ActionEvent e) {
       Metronome.getInstance().stop();
     }
   }

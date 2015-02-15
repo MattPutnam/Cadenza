@@ -50,7 +50,7 @@ public class SongPanel extends JPanel {
     }
     
     @Override
-    public void actionPerformed(ActionEvent _) {
+    public void actionPerformed(ActionEvent e) {
       final Song newSong = new Song("", "");
       final SongEditDialog dialog = new SongEditDialog(SongPanel.this, newSong);
       dialog.showDialog();

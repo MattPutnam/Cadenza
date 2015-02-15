@@ -36,13 +36,13 @@ public class AboutDialog extends JDialog {
     URL.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     URL.addMouseListener(new MouseAdapter() {
       @Override
-      public void mouseClicked(MouseEvent _) {
+      public void mouseClicked(MouseEvent e) {
         Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
         if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
           try {
             desktop.browse(new URI(WEBSITE));
-          } catch (Exception e) {
-            e.printStackTrace();
+          } catch (Exception ex) {
+            ex.printStackTrace();
           }
         }
       }

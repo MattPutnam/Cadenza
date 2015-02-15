@@ -5,8 +5,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import cadenza.core.plugins.GraphicEQ;
 import cadenza.gui.plugins.view.GraphicEQView;
@@ -41,13 +39,10 @@ public class GraphicEQEditor extends PluginEditor {
       labels[i] = new JLabel(MidiUtilities.noteNumberToName(i));
       
       final int num = i;
-      slider.addChangeListener(new ChangeListener() {
-        @Override
-        public void stateChanged(ChangeEvent _) {
-          _geq.setLevel(num, slider.getValue());
-          _geqView.repaint();
-          repaint();
-        }
+      slider.addChangeListener(e -> {
+        _geq.setLevel(num, slider.getValue());
+        _geqView.repaint();
+        repaint();
       });
     }
     
