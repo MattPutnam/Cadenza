@@ -56,12 +56,7 @@ public class OrphanedPatchRemapper extends OKCancelDialog {
     _remapping = new HashMap<>();
     _suggestions = new HashMap<>();
     
-    new BlockingTask(this, new Runnable() {
-      @Override
-      public void run() {
-        _suggestions.putAll(buildSuggestions());
-      }
-    }).start();
+    new BlockingTask(this, () -> _suggestions.putAll(buildSuggestions())).start();
   }
   
   private Map<Patch, List<Patch>> buildSuggestions() {

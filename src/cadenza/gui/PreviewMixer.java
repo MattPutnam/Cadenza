@@ -3,8 +3,6 @@ package cadenza.gui;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -16,8 +14,6 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -66,30 +62,22 @@ public class PreviewMixer extends JPanel {
   }
 
   public void updatePreviewPatches(final List<Patch> patches) {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        _cardLayout.show(PreviewMixer.this, Mode.PREVIEW.name());
-        
-        _mixerBox.removeAll();
-        _mixerBox.add(Box.createHorizontalGlue());
-        for (final Patch patch : patches) {
-          _mixerBox.add(createChannel(patch));
-        }
-        _mixerBox.add(Box.createHorizontalGlue());
-        _previewModePane.revalidate();
-        _previewModePane.repaint();
+    SwingUtilities.invokeLater(() -> {
+      _cardLayout.show(PreviewMixer.this, Mode.PREVIEW.name());
+      
+      _mixerBox.removeAll();
+      _mixerBox.add(Box.createHorizontalGlue());
+      for (final Patch patch : patches) {
+        _mixerBox.add(createChannel(patch));
       }
+      _mixerBox.add(Box.createHorizontalGlue());
+      _previewModePane.revalidate();
+      _previewModePane.repaint();
     });
   }
   
   public void goPerformMode() {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        _cardLayout.show(PreviewMixer.this, Mode.PERFORM.name());
-      }
-    });
+    SwingUtilities.invokeLater(() -> _cardLayout.show(PreviewMixer.this, Mode.PERFORM.name()));
   }
   
   private JComponent createChannel(final Patch patch) {
@@ -102,18 +90,15 @@ public class PreviewMixer extends JPanel {
     final IntField textField = new IntField(patch.defaultVolume, 0, 127);
     
     final boolean[] modifying = {false};
-    slider.addChangeListener(new ChangeListener() {
-      @Override
-      public void stateChanged(ChangeEvent e) {
-        if (modifying[0]) return;
-        
-        final int value = slider.getValue();
-        modifying[0] = true;
-        textField.setText(String.valueOf(value));
-        modifying[0] = false;
-        
-        _controller.setVolume(value, patch);
-      }
+    slider.addChangeListener(e -> {
+      if (modifying[0]) return;
+      
+      final int value = slider.getValue();
+      modifying[0] = true;
+      textField.setText(String.valueOf(value));
+      modifying[0] = false;
+      
+      _controller.setVolume(value, patch);
     });
     textField.getDocument().addDocumentListener(new DocumentListener() {
       @Override
@@ -148,21 +133,13 @@ public class PreviewMixer extends JPanel {
     
     final JButton resetButton = new JButton("Reset");
     resetButton.setToolTipText("Reset to the default volume");
-    resetButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        textField.setInt(patch.defaultVolume);
-      }
-    });
+    resetButton.addActionListener(e -> textField.setInt(patch.defaultVolume));
     
     final JButton setButton = new JButton("Set");
     setButton.setToolTipText("Set the selected volume as the default");
-    setButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        patch.defaultVolume = textField.getInt();
-        _data.patches.notifyChange(patch);
-      }
+    setButton.addActionListener(e -> {
+      patch.defaultVolume = textField.getInt();
+      _data.patches.notifyChange(patch);
     });
     
     final Box subSouth = Box.createVerticalBox();

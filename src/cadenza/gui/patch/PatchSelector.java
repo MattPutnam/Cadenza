@@ -1,7 +1,5 @@
 package cadenza.gui.patch;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Collections;
 import java.util.List;
 
@@ -26,17 +24,14 @@ public class PatchSelector extends JPanel {
     _patchList.setRenderer(new PatchRenderer());
     
     final JButton pickNewPatchButton = new JButton("Select New Patch");
-    pickNewPatchButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        final PatchPickerDialog dialog = new PatchPickerDialog(PatchSelector.this, synthesizer);
-        dialog.showDialog();
-        if (dialog.okPressed()) {
-          patches.add(dialog.getSelectedPatch());
-          Collections.sort(patches);
-          _patchList.insertItemAt(dialog.getSelectedPatch(), 0);
-          _patchList.setSelectedIndex(0);
-        }
+    pickNewPatchButton.addActionListener(e -> {
+      final PatchPickerDialog dialog = new PatchPickerDialog(PatchSelector.this, synthesizer);
+      dialog.showDialog();
+      if (dialog.okPressed()) {
+        patches.add(dialog.getSelectedPatch());
+        Collections.sort(patches);
+        _patchList.insertItemAt(dialog.getSelectedPatch(), 0);
+        _patchList.setSelectedIndex(0);
       }
     });
     

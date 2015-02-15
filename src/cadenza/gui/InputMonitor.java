@@ -72,12 +72,9 @@ public class InputMonitor extends JFrame {
   }
   
   public synchronized void send(final MidiMessage mm) {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        _listData.add(new MidiEvent(mm));
-        _jList.setListData(_listData);
-      }
+    SwingUtilities.invokeLater(() -> {
+      _listData.add(new MidiEvent(mm));
+      _jList.setListData(_listData);
     });
   }
   

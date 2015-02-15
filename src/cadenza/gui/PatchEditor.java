@@ -16,8 +16,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
@@ -71,18 +69,15 @@ public class PatchEditor extends JPanel {
     tcm.getColumn(3).setPreferredWidth(100);
     tcm.getColumn(4).setPreferredWidth(200);
 
-    _table.accessTable().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-      @Override
-      public void valueChanged(ListSelectionEvent e) {
-        if (_disableListSelectionListener || e.getValueIsAdjusting()) return;
-        
-        final boolean one = _table.accessTable().getSelectedRowCount() == 1;
-        replaceButton.setEnabled(one);
-        
-        final List<Patch> selected = _table.getSelectedRows();
-        _controller.setPatches(selected);
-        _cadenzaFrame.notifyPreviewPatchesChanged(selected);
-      }
+    _table.accessTable().getSelectionModel().addListSelectionListener(e -> {
+      if (_disableListSelectionListener || e.getValueIsAdjusting()) return;
+      
+      final boolean one = _table.accessTable().getSelectedRowCount() == 1;
+      replaceButton.setEnabled(one);
+      
+      final List<Patch> selected = _table.getSelectedRows();
+      _controller.setPatches(selected);
+      _cadenzaFrame.notifyPreviewPatchesChanged(selected);
     });
     
     setLayout(new BorderLayout());

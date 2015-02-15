@@ -2,7 +2,6 @@ package cadenza.gui;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -213,9 +212,20 @@ public class CadenzaFrame extends JFrame implements Receiver {
     fileMenu.add(SwingUtils.menuItem("Save As...", 'S', InputEvent.SHIFT_MASK, 'A', new SaveAsFileAction()));
     if (!SystemUtils.IS_OS_MAC_OSX) {
       fileMenu.addSeparator();
-      fileMenu.add(SwingUtils.menuItem("Preferences", 'E', 'E', new PreferencesAction()));
+      fileMenu.add(SwingUtils.menuItem("Preferences", 'E', 'E', e -> {
+        final PreferencesDialog dialog = new PreferencesDialog(CadenzaFrame.this);
+        dialog.showDialog();
+        if (dialog.okPressed())
+          dialog.commitPreferences();
+      }));
       fileMenu.addSeparator();
-      fileMenu.add(SwingUtils.menuItem("Quit", 'Q', 'Q', new QuitAction()));
+      fileMenu.add(SwingUtils.menuItem("Quit", 'Q', 'Q', e -> {
+        final int result = JOptionPane.showConfirmDialog(CadenzaFrame.this,
+            "Are you sure you want to quit?", "Quit", JOptionPane.YES_NO_OPTION);
+        if (result == JOptionPane.YES_OPTION) {
+          safeClose(false);
+        }
+      }));
     }
     
     ///////////////////////////////////////////////////////////////////////
@@ -228,61 +238,46 @@ public class CadenzaFrame extends JFrame implements Receiver {
     _outputMenu = new JMenu("Output:");
     setupMenu.add(_outputMenu);
     
-    setupMenu.add(SwingUtils.menuItem("Rescan...", 'C', 'R', new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        if (SystemUtils.IS_OS_MAC_OSX)
-          Dialog.info(CadenzaFrame.this, MAC_OSX_MIDI_BUG_INFO);
-        
-        new RescanTask();
-      }
+    setupMenu.add(SwingUtils.menuItem("Rescan...", 'C', 'R', e -> {
+      if (SystemUtils.IS_OS_MAC_OSX)
+        Dialog.info(CadenzaFrame.this, MAC_OSX_MIDI_BUG_INFO);
+
+      new RescanTask();
     }));
     new RescanTask();
     
     setupMenu.addSeparator();
     setupMenu.add(SwingUtils.menuItem("Configure Synthesizers", 'Y', 'Y', new ConfigureSynthesizersAction()));
-    setupMenu.add(SwingUtils.menuItem("Configure Keyboards", 'K', 'K', new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        final KeyboardListEditor panel = new KeyboardListEditor(_data);
-        if (OKCancelDialog.showInDialog(CadenzaFrame.this, "Edit Keyboards", panel)) {
-          panel.doRemap();
+    setupMenu.add(SwingUtils.menuItem("Configure Keyboards", 'K', 'K', e -> {
+      final KeyboardListEditor panel = new KeyboardListEditor(_data);
+      if (OKCancelDialog.showInDialog(CadenzaFrame.this, "Edit Keyboards", panel)) {
+        panel.doRemap();
+      }
+    }));
+    setupMenu.add(SwingUtils.menuItem("Configure Global Triggers", 'T', 'T', e -> {
+      final TriggerPanel panel = new TriggerPanel(_data, _data);
+      if (OKCancelDialog.showInDialog(CadenzaFrame.this, "Edit Global Triggers", panel)) {
+        _data.globalTriggers.clear();
+        _data.globalTriggers.addAll(panel.getTriggers());
+      }
+    }));
+    setupMenu.add(SwingUtils.menuItem("Configure Global Control Overrides", 'L', 'L', e -> {
+      final ControlMapPanel panel = new ControlMapPanel(_data);
+      if (OKCancelDialog.showInDialog(CadenzaFrame.this, "Edit Global Control Overrides", panel)) {
+        final List<ControlMapEntry> controls = panel.getMapping();
+        if (!controls.equals(_data.globalControlMap)) {
+          _data.globalControlMap.clear();
+          _data.globalControlMap.addAll(controls);
         }
       }
     }));
-    setupMenu.add(SwingUtils.menuItem("Configure Global Triggers", 'T', 'T', new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        final TriggerPanel panel = new TriggerPanel(_data, _data);
-        if (OKCancelDialog.showInDialog(CadenzaFrame.this, "Edit Global Triggers", panel)) {
-          _data.globalTriggers.clear();
-          _data.globalTriggers.addAll(panel.getTriggers());
-        }
-      }
-    }));
-    setupMenu.add(SwingUtils.menuItem("Configure Global Control Overrides", 'L', 'L', new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        final ControlMapPanel panel = new ControlMapPanel(_data);
-        if (OKCancelDialog.showInDialog(CadenzaFrame.this, "Edit Global Control Overrides", panel)) {
-          final List<ControlMapEntry> controls = panel.getMapping();
-          if (!controls.equals(_data.globalControlMap)) {
-            _data.globalControlMap.clear();
-            _data.globalControlMap.addAll(controls);
-          }
-        }
-      }
-    }));
-    setupMenu.add(SwingUtils.menuItem("Configure Global Plugins", 'U', 'U', new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        final PluginChainViewerEditor panel = new PluginChainViewerEditor(_data.globalPlugins, true);
-        if (OKCancelDialog.showInDialog(CadenzaFrame.this, "Edit Global Plugins", panel)) {
-          final List<Plugin> plugins = panel.getPlugins();
-          if (!plugins.equals(_data.globalPlugins)) {
-            _data.globalPlugins.clear();
-            _data.globalPlugins.addAll(panel.getPlugins());
-          }
+    setupMenu.add(SwingUtils.menuItem("Configure Global Plugins", 'U', 'U', e -> {
+      final PluginChainViewerEditor panel = new PluginChainViewerEditor(_data.globalPlugins, true);
+      if (OKCancelDialog.showInDialog(CadenzaFrame.this, "Edit Global Plugins", panel)) {
+        final List<Plugin> plugins = panel.getPlugins();
+        if (!plugins.equals(_data.globalPlugins)) {
+          _data.globalPlugins.clear();
+          _data.globalPlugins.addAll(panel.getPlugins());
         }
       }
     }));
@@ -612,27 +607,6 @@ public class CadenzaFrame extends JFrame implements Receiver {
     Cadenza.showHome();
     dispose();
     close();
-  }
-  
-  private class PreferencesAction extends AbstractAction {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      final PreferencesDialog dialog = new PreferencesDialog(CadenzaFrame.this);
-      dialog.showDialog();
-      if (dialog.okPressed())
-        dialog.commitPreferences();
-    }
-  }
-  
-  private class QuitAction extends AbstractAction {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      final int result = JOptionPane.showConfirmDialog(CadenzaFrame.this,
-          "Are you sure you want to quit?", "Quit", JOptionPane.YES_NO_OPTION);
-      if (result == JOptionPane.YES_OPTION) {
-        safeClose(false);
-      }
-    }
   }
   
   private class Dirtyer<T> extends ListAdapter<T> implements DocumentListener, ChangeListener {

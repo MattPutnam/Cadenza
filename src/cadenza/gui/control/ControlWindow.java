@@ -199,15 +199,12 @@ public class ControlWindow extends JFrame implements MetronomeListener {
     
     final String songDisplay = buildSongDisplay(cue, nextCue);
     final String patchDisplay = buildPatchDisplay(cue);
-    SwingUtils.doInSwing(new Runnable() {
-      @Override
-      public void run() {
-        for (final Component c : _toolbarComponents)
-          c.setEnabled(true);
-        
-        _topLabel.setText(songDisplay);
-        _mainLabel.setText(patchDisplay);
-      }
+    SwingUtils.doInSwing(() -> {
+      for (final Component c : _toolbarComponents)
+        c.setEnabled(true);
+      
+      _topLabel.setText(songDisplay);
+      _mainLabel.setText(patchDisplay);
     }, false);
   }
   
@@ -256,15 +253,12 @@ public class ControlWindow extends JFrame implements MetronomeListener {
     final String topText = wrapHTML("Preview Mode");
     final String mainText = wrapHTML("Previewing:<br>" + Utils.mkString(patches, "<br>"));
     
-    SwingUtils.doInSwing(new Runnable() {
-      @Override
-      public void run() {
-        for (final Component c : _toolbarComponents)
-          c.setEnabled(false);
-        
-        _topLabel.setText(topText);
-        _mainLabel.setText(mainText);
-      }
+    SwingUtils.doInSwing(() -> {
+      for (final Component c : _toolbarComponents)
+        c.setEnabled(false);
+      
+      _topLabel.setText(topText);
+      _mainLabel.setText(mainText);
     }, false);
   }
   
@@ -292,12 +286,7 @@ public class ControlWindow extends JFrame implements MetronomeListener {
   public void metronomeClicked(int subdivision) {
     if (subdivision == 0) {
       _metronomeArea.setBackground(Color.GREEN);
-      SwingUtils.doDelayedInSwing(new Runnable() {
-        @Override
-        public void run() {
-          _metronomeArea.setBackground(BG);
-        }
-      }, 100);
+      SwingUtils.doDelayedInSwing(() -> _metronomeArea.setBackground(BG), 100);
     }
   }
   

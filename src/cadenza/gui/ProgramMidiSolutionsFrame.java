@@ -1,8 +1,6 @@
 package cadenza.gui;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -253,14 +251,11 @@ public class ProgramMidiSolutionsFrame extends JFrame {
       box.add(field);
     }
     final JButton sendButton = new JButton("Send");
-    sendButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        try {
-          action.onClick(inputFields, _sender);
-        } catch (Throwable t) {
-          Dialog.error(box, t.getLocalizedMessage());
-        }
+    sendButton.addActionListener(e -> {
+      try {
+        action.onClick(inputFields, _sender);
+      } catch (Throwable t) {
+        Dialog.error(box, t.getLocalizedMessage());
       }
     });
     box.add(sendButton);

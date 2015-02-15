@@ -14,8 +14,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.DocumentEvent;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import cadenza.core.Patch;
 import cadenza.core.Synthesizer;
@@ -62,19 +60,9 @@ public class PatchPickerDialog extends OKCancelDialog {
       _suggestionList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
       _suggestionList.setCellRenderer(new PatchRenderer());
       
-      _resultList.addListSelectionListener(new ListSelectionListener() {
-        @Override
-        public void valueChanged(ListSelectionEvent e) {
-          _suggestionList.clearSelection();
-        }
-      });
+      _resultList.addListSelectionListener(e -> _suggestionList.clearSelection());
       
-      _suggestionList.addListSelectionListener(new ListSelectionListener() {
-        @Override
-        public void valueChanged(ListSelectionEvent e) {
-          _resultList.clearSelection();
-        }
-      });
+      _suggestionList.addListSelectionListener(e -> _resultList.clearSelection());
     }
     
     _nameField = new JTextField(16);

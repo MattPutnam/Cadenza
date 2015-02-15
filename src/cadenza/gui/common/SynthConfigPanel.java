@@ -3,8 +3,6 @@ package cadenza.gui.common;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -98,15 +96,12 @@ public class SynthConfigPanel extends JPanel {
   }
   
   private void init(final Map<String, String> selectedExps) {
-    _mainCombo.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        final String device = _mainCombo.getSynth();
-        _cardPanel.removeAll();
-        _cardPanel.add(getCardPanel(device, selectedExps), BorderLayout.WEST);
-        _cardPanel.revalidate();
-        _cardPanel.repaint();
-      }
+    _mainCombo.addActionListener(e -> {
+      final String device = _mainCombo.getSynth();
+      _cardPanel.removeAll();
+      _cardPanel.add(getCardPanel(device, selectedExps), BorderLayout.WEST);
+      _cardPanel.revalidate();
+      _cardPanel.repaint();
     });
     
     setLayout(new BorderLayout());

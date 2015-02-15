@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.Box;
@@ -41,12 +40,7 @@ public class MetronomeView extends JFrame implements MetronomeListener {
     
     _bpmField = new IntField(Metronome.getInstance().getBPM(), 1, 500);
     _bpmField.setColumns(4);
-    _bpmField.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        Metronome.getInstance().setBPM(_bpmField.getInt());
-      }
-    });
+    _bpmField.addActionListener(e -> Metronome.getInstance().setBPM(_bpmField.getInt()));
     SwingUtils.freezeWidth(_bpmField);
     
     final JButton startButton = new JButton(new StartAction());
@@ -96,50 +90,27 @@ public class MetronomeView extends JFrame implements MetronomeListener {
 
   @Override
   public void bpmSet(final int bpm) {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        _bpmField.setInt(bpm);
-      }
-    });
+    SwingUtilities.invokeLater(() -> _bpmField.setInt(bpm));
   }
   
   @Override
   public void metronomeStarted() {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        _clickDisplay.setBackground(CLICK_OFF);
-      }
-    });
+    SwingUtilities.invokeLater(() -> _clickDisplay.setBackground(CLICK_OFF));
   }
 
   @Override
   public void metronomeClicked(int subdivision) {
     if (subdivision == 0) {
-      SwingUtilities.invokeLater(new Runnable() {
-        @Override
-        public void run() {
-          _clickDisplay.setBackground(CLICK_ON);
-          SwingUtils.doDelayedInSwing(new Runnable() {
-            @Override
-            public void run() {
-              _clickDisplay.setBackground(CLICK_OFF);
-            }
-          }, CLICK_LENGTH);
-        }
+      SwingUtilities.invokeLater(() -> {
+        _clickDisplay.setBackground(CLICK_ON);
+        SwingUtils.doDelayedInSwing(() -> _clickDisplay.setBackground(CLICK_OFF), CLICK_LENGTH);
       });
     }
   }
   
   @Override
   public void metronomeStopped() {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        _clickDisplay.setBackground(METRONOME_OFF);
-      }
-    });
+    SwingUtilities.invokeLater(() -> _clickDisplay.setBackground(METRONOME_OFF));
   }
 
 }

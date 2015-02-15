@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.IdentityHashMap;
 import java.util.Map;
@@ -95,7 +94,14 @@ public class CustomScalePatchUsageEditor extends JPanel {
     _harmonics = new JComboBox<>(Scale.Diatonic.ALL_HARMONIC.toArray(new Scale[0]));
     _wholes = new JComboBox<>(Scale.WholeTone.ALL.toArray(new Scale[0]));
     
-    final ScaleAction action = new ScaleAction();
+    final ActionListener action = e -> {
+      final JComboBox<?> combo = (JComboBox<?>) e.getSource();
+      _selectedScale = (Scale) combo.getSelectedItem();
+      _map.clear();
+      _map.putAll(_selectedScale.buildMapFromNaturals());
+      revalidate();
+      repaint();
+    };
     _majors.addActionListener(action);
     _minors.addActionListener(action);
     _harmonics.addActionListener(action);
@@ -110,18 +116,6 @@ public class CustomScalePatchUsageEditor extends JPanel {
     result.add(SwingUtils.hugNorth(scales), BorderLayout.CENTER);
     
     return result;
-  }
-  
-  private class ScaleAction implements ActionListener {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      final JComboBox<?> combo = (JComboBox<?>) e.getSource();
-      _selectedScale = (Scale) combo.getSelectedItem();
-      _map.clear();
-      _map.putAll(_selectedScale.buildMapFromNaturals());
-      revalidate();
-      repaint();
-    }
   }
   
   private class KeyboardArea extends MultipleKeyboardPanel {

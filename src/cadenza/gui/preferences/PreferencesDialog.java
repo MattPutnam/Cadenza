@@ -51,49 +51,40 @@ public class PreferencesDialog extends OKCancelDialog {
   }
   
   private void loadPreferences() {
-    new BlockingTask(this, new Runnable() {
-      @Override
-      public void run() {
-        _preferences = new LinkedHashMap<>();
-        try {
-          _preferences.putAll(PropertiesFileReader.readAll(PREFERENCES_FILE));
-        } catch (Exception e) {
-          System.err.println("Exception while trying to read preferences file:");
-          e.printStackTrace();
-          return;
-        }
-        
-        final Keyboard kbd = Preferences.buildDefaultKeyboard(_preferences);
-        final Synthesizer synth = Preferences.buildDefaultSynthesizer(_preferences);
-        final String[] midiPorts = Preferences.buildDefaultMIDIPorts(_preferences);
-        
-        SwingUtils.doInSwing(new Runnable() {
-          @Override
-          public void run() {
-            _keyboardEditPanel.match(kbd);
-            _synthConfigPanel.match(synth);
-            _midiPortsPanel.match(midiPorts);
-          }
-        }, true);
+    new BlockingTask(this, () -> {
+      _preferences = new LinkedHashMap<>();
+      try {
+        _preferences.putAll(PropertiesFileReader.readAll(PREFERENCES_FILE));
+      } catch (Exception e) {
+        System.err.println("Exception while trying to read preferences file:");
+        e.printStackTrace();
+        return;
       }
+      
+      final Keyboard kbd = Preferences.buildDefaultKeyboard(_preferences);
+      final Synthesizer synth = Preferences.buildDefaultSynthesizer(_preferences);
+      final String[] midiPorts = Preferences.buildDefaultMIDIPorts(_preferences);
+      
+      SwingUtils.doInSwing(() -> {
+        _keyboardEditPanel.match(kbd);
+        _synthConfigPanel.match(synth);
+        _midiPortsPanel.match(midiPorts);
+      }, true);
     }).start();
   }
   
   public void commitPreferences() {
-    new Thread(new Runnable() {
-      @Override
-      public void run() {
-        Preferences.commitDefaultKeyboard(_preferences, _keyboardEditPanel.getKeyboard());
-        Preferences.commitDefaultSynthesizer(_preferences, _synthConfigPanel.getSynthesizer());
-        Preferences.commitDefaultMIDIPorts(_preferences, _midiPortsPanel.getSelectedPorts());
-        
-        try {
-          Preferences.writePreferences(_preferences);
-        } catch (IOException e) {
-          System.err.println("Exception trying to commit preferences:");
-          e.printStackTrace();
-          // TODO: better error reporting
-        }
+    new Thread(() -> {
+      Preferences.commitDefaultKeyboard(_preferences, _keyboardEditPanel.getKeyboard());
+      Preferences.commitDefaultSynthesizer(_preferences, _synthConfigPanel.getSynthesizer());
+      Preferences.commitDefaultMIDIPorts(_preferences, _midiPortsPanel.getSelectedPorts());
+      
+      try {
+        Preferences.writePreferences(_preferences);
+      } catch (IOException e) {
+        System.err.println("Exception trying to commit preferences:");
+        e.printStackTrace();
+        // TODO: better error reporting
       }
     }).start();
   }

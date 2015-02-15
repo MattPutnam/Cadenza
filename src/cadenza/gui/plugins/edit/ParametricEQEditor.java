@@ -1,15 +1,12 @@
 package cadenza.gui.plugins.edit;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -20,7 +17,6 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -279,25 +275,8 @@ public class ParametricEQEditor extends PluginEditor {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-      Collections.sort(_bands, COMPARATOR);
+      Collections.sort(_bands, (b1, b2) -> b1.getFrequency() - b2.getFrequency());
       refreshBands();
     }
-  }
-  
-  private static final BandComparator COMPARATOR = new BandComparator();
-  private static class BandComparator implements Comparator<Band> {
-    @Override
-    public int compare(Band b1, Band b2) {
-      return b1.getFrequency() - b2.getFrequency();
-    }
-  }
-  
-  public static void main(String[] args) {
-    final JFrame frame = new JFrame();
-    final JPanel panel = new JPanel(new BorderLayout());
-    panel.add(new ParametricEQEditor(new ParametricEQ(new ArrayList<Band>())), BorderLayout.CENTER);
-    frame.add(panel);
-    frame.pack();
-    frame.setVisible(true);
   }
 }

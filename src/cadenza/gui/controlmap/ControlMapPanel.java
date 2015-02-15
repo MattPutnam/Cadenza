@@ -107,13 +107,7 @@ public class ControlMapPanel extends JPanel implements CustomWizardComponent {
     return _selectedMapping;
   }
   
-  private static final ControlEntryComparator COMPARATOR = new ControlEntryComparator();
-  private static class ControlEntryComparator implements Comparator<ControlMapEntry> {
-    @Override
-    public int compare(ControlMapEntry cme1, ControlMapEntry cme2) {
-      return cme1.sourceCC - cme2.sourceCC;
-    }
-  }
+  private static final Comparator<ControlMapEntry> COMPARATOR = (cme1, cme2) -> cme1.sourceCC - cme2.sourceCC;
 
   @Override
   public Object getValue() {

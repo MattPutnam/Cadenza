@@ -3,7 +3,6 @@ package cadenza.gui.patchusage;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
@@ -214,12 +213,7 @@ public class PatchUsageEditDialog extends OKCancelDialog {
       _volumeLimitField = new VolumeField(120);
       _volumeReductionField = new VolumeField(0);
       
-      final ActionListener listener = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-          updateEnabledStates();
-        }
-      };
+      final ActionListener listener = e -> updateEnabledStates();
       _limitVolumeCheckBox.addActionListener(listener);
       _belowRadioButton.addActionListener(listener);
       _aboveRadioButton.addActionListener(listener);

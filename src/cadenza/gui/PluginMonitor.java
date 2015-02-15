@@ -38,24 +38,18 @@ public class PluginMonitor extends JFrame {
   
   public synchronized void setPlugins(List<Plugin> plugins) {
     _plugins = (plugins == null) ? Collections.<Plugin>emptyList() : plugins;
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        _viewer.setPlugins(_plugins);
-        _viewer.clearInputValues();
-      }
+    SwingUtilities.invokeLater(() -> {
+      _viewer.setPlugins(_plugins);
+      _viewer.clearInputValues();
     });
   }
   
   public synchronized void notePlayed(final int midiNum, final int velocity) {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        int v = velocity;
-        for (int i = 0; i < _plugins.size(); ++i) {
-          _viewer.showInputValue(i, midiNum, v);
-          v = _plugins.get(i).process(midiNum, v);
-        }
+    SwingUtilities.invokeLater(() -> {
+      int v = velocity;
+      for (int i = 0; i < _plugins.size(); ++i) {
+        _viewer.showInputValue(i, midiNum, v);
+        v = _plugins.get(i).process(midiNum, v);
       }
     });
   }

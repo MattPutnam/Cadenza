@@ -1,6 +1,5 @@
 package cadenza.gui.common;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.Box;
@@ -43,12 +42,8 @@ public class ScaleSelector extends JPanel {
     _diminishedScales = new JComboBox<>(Scale.Diminished.ALL.toArray(new Scale[0]));
     _wholeToneScales = new JComboBox<>(Scale.WholeTone.ALL.toArray(new Scale[0]));
     
-    final ActionListener scaleSelector = new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
+    final ActionListener scaleSelector = e ->
         _selectedScale = (Scale) ((JComboBox<?>) e.getSource()).getSelectedItem();
-      }
-    };
     _majorScales.addActionListener(scaleSelector);
     _minorScales.addActionListener(scaleSelector);
     _harmonicScales.addActionListener(scaleSelector);
@@ -58,19 +53,16 @@ public class ScaleSelector extends JPanel {
     _diminishedScales.addActionListener(scaleSelector);
     _wholeToneScales.addActionListener(scaleSelector);
     
-    final ActionListener comboEnabler = new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        final boolean enabled = e.getSource() == _scaleRadioButton;
-        _majorScales.setEnabled(enabled);
-        _minorScales.setEnabled(enabled);
-        _harmonicScales.setEnabled(enabled);
-        _modalScales.setEnabled(enabled);
-        _bluesScales.setEnabled(enabled);
-        _pentatonicScales.setEnabled(enabled);
-        _diminishedScales.setEnabled(enabled);
-        _wholeToneScales.setEnabled(enabled);
-      }
+    final ActionListener comboEnabler = e -> {
+      final boolean enabled = e.getSource() == _scaleRadioButton;
+      _majorScales.setEnabled(enabled);
+      _minorScales.setEnabled(enabled);
+      _harmonicScales.setEnabled(enabled);
+      _modalScales.setEnabled(enabled);
+      _bluesScales.setEnabled(enabled);
+      _pentatonicScales.setEnabled(enabled);
+      _diminishedScales.setEnabled(enabled);
+      _wholeToneScales.setEnabled(enabled);
     };
     _chromaticRadioButton.addActionListener(comboEnabler);
     _scaleRadioButton.addActionListener(comboEnabler);

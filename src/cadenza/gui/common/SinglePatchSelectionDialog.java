@@ -3,7 +3,6 @@ package cadenza.gui.common;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,12 +61,7 @@ public class SinglePatchSelectionDialog extends OKCancelDialog {
       _radioButtons.add(patchButton);
       patchButtons.add(patchButton);
       
-      patchButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-          _selectedPatch = patch;
-        }
-      });
+      patchButton.addActionListener(e -> _selectedPatch = patch);
     }
     
     final JScrollPane scrollPane = new JScrollPane(patchButtons);

@@ -5,7 +5,6 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -195,12 +194,9 @@ public class PatchUsagePanel extends JPanel implements AcceptsKeyboardInput {
       add(label);
       
       final JButton deleteButton = new JButton(new DeleteIcon(10));
-      deleteButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent arg0) {
-          _patchUsages.remove(_patchUsage);
-          refreshDisplay();
-        }
+      deleteButton.addActionListener(e -> {
+        _patchUsages.remove(_patchUsage);
+        refreshDisplay();
       });
       deleteButton.setBounds(width-12, 2, 10, 10);
       deleteButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

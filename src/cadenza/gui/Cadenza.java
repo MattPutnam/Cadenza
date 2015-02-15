@@ -222,70 +222,64 @@ public class Cadenza extends JFrame {
   }
   
   private static void showWizard(final JFrame parent) {
-    new BlockingTask(parent, new Runnable() {
-      @Override
-      public void run() {
-        final Map<String, String> preferences = new LinkedHashMap<>();
-        
-        try {
-          preferences.putAll(Preferences.readAllPreferences());
-        } catch (Exception e) {
-          System.err.println("Exception reading preferences file:");
-          e.printStackTrace();
-          // TODO: better error report
-        }
-        
-        final CadenzaData newData = new CadenzaData();
-        final CadenzaWizardPageFactory pageFactory = new CadenzaWizardPageFactory(newData, preferences);
-        final WizardContainer wizard = new WizardContainer(pageFactory, new OverviewPageTemplate(pageFactory));
-        
-        SwingUtils.doInSwing(new Runnable() {
-          @Override
-          public void run() {
-            final JDialog dialog = new JDialog();
-            dialog.getContentPane().add(wizard);
-            
-            wizard.addWizardListener(new WizardListener() {
-              @Override
-              public void onPageChanged(WizardPage newPage, List<WizardPage> path) {
-                dialog.setTitle(newPage.getTitle());
-              }
-          
-              @Override
-              public void onFinished(List<WizardPage> path, WizardSettings settings) {
-                for (final WizardPage page : path)
-                  page.updateSettings(settings);
-                
-                final String[] midiIO = Preferences.buildDefaultMIDIPorts(preferences);
-                newData.savedInputDeviceName = midiIO[0];
-                newData.savedOutputDeviceName = midiIO[1];
-                
-                final CadenzaFrame temp = new CadenzaFrame(newData);
-                
-                if (_delegate != null)
-                  _delegate.setupFrame(temp);
-                
-                dialog.dispose();
-                temp.setVisible(true);
-              }
-          
-              @Override
-              public void onCanceled(List<WizardPage> path, WizardSettings settings) {
-                showHome();
-                dialog.dispose();
-              }
-            });
-            
-            dialog.pack();
-            dialog.setSize(700, 500);
-            dialog.setLocationRelativeTo(parent);
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            
-            hideHome();
-            dialog.setVisible(true);
-          }
-        }, false);
+    new BlockingTask(parent, () -> {
+      final Map<String, String> preferences = new LinkedHashMap<>();
+      
+      try {
+        preferences.putAll(Preferences.readAllPreferences());
+      } catch (Exception e) {
+        System.err.println("Exception reading preferences file:");
+        e.printStackTrace();
+        // TODO: better error report
       }
+      
+      final CadenzaData newData = new CadenzaData();
+      final CadenzaWizardPageFactory pageFactory = new CadenzaWizardPageFactory(newData, preferences);
+      final WizardContainer wizard = new WizardContainer(pageFactory, new OverviewPageTemplate(pageFactory));
+      
+      SwingUtils.doInSwing(() -> {
+        final JDialog dialog = new JDialog();
+        dialog.getContentPane().add(wizard);
+        
+        wizard.addWizardListener(new WizardListener() {
+          @Override
+          public void onPageChanged(WizardPage newPage, List<WizardPage> path) {
+            dialog.setTitle(newPage.getTitle());
+          }
+      
+          @Override
+          public void onFinished(List<WizardPage> path, WizardSettings settings) {
+            for (final WizardPage page : path)
+              page.updateSettings(settings);
+            
+            final String[] midiIO = Preferences.buildDefaultMIDIPorts(preferences);
+            newData.savedInputDeviceName = midiIO[0];
+            newData.savedOutputDeviceName = midiIO[1];
+            
+            final CadenzaFrame temp = new CadenzaFrame(newData);
+            
+            if (_delegate != null)
+              _delegate.setupFrame(temp);
+            
+            dialog.dispose();
+            temp.setVisible(true);
+          }
+      
+          @Override
+          public void onCanceled(List<WizardPage> path, WizardSettings settings) {
+            showHome();
+            dialog.dispose();
+          }
+        });
+        
+        dialog.pack();
+        dialog.setSize(700, 500);
+        dialog.setLocationRelativeTo(parent);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        
+        hideHome();
+        dialog.setVisible(true);
+      }, false);
     }).start();
   }
   
