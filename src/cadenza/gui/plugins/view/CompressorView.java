@@ -3,10 +3,9 @@ package cadenza.gui.plugins.view;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.AffineTransform;
 import java.text.DecimalFormat;
+import java.util.Optional;
 
 import cadenza.core.plugins.Compressor;
 import cadenza.gui.plugins.edit.CompressorEditor;
@@ -14,6 +13,7 @@ import cadenza.gui.plugins.edit.PluginEditor;
 
 import common.swing.GraphicsUtils;
 import common.swing.SwingUtils;
+import common.swing.Tooltip;
 
 @SuppressWarnings("serial")
 public class CompressorView extends PluginView {
@@ -27,7 +27,18 @@ public class CompressorView extends PluginView {
     _compressor = compressor;
     
     SwingUtils.freezeSize(this, SIZE, SIZE);
-    addMouseMotionListener(new ToolTipGenerator());
+    Tooltip.registerTooltip(this, e -> {
+      final int x = e.getPoint().x;
+      if (x >= MARGIN && x < SIZE-MARGIN) {
+        final int velocity = x - MARGIN;
+        final int output = _compressor.process(0, velocity);
+        return Optional.of("<html>Threshold=" + _compressor.getThreshold() + " / Ratio=" +
+            FORMAT.format(_compressor.getRatio()) +
+            "<br>Input=" + velocity + " / Output=" + output);
+      } else {
+        return Optional.empty();
+      }
+    });
   }
   
   @Override
@@ -70,20 +81,6 @@ public class CompressorView extends PluginView {
   @Override
   public PluginEditor createEditor() {
     return new CompressorEditor(_compressor);
-  }
-  
-  private class ToolTipGenerator extends MouseMotionAdapter {
-    @Override
-    public void mouseMoved(MouseEvent e) {
-      final int x = e.getPoint().x;
-      if (x >= MARGIN && x < SIZE-MARGIN) {
-        final int velocity = x - MARGIN;
-        final int output = _compressor.process(0, velocity);
-        setToolTipText("<html>Threshold=" + _compressor.getThreshold() + " / Ratio=" +
-            FORMAT.format(_compressor.getRatio()) +
-            "<br>Input=" + velocity + " / Output=" + output);
-      }
-    }
   }
 }
 

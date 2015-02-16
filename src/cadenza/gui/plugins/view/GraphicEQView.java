@@ -3,9 +3,8 @@ package cadenza.gui.plugins.view;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.AffineTransform;
+import java.util.Optional;
 
 import cadenza.core.Note;
 import cadenza.core.plugins.GraphicEQ;
@@ -14,6 +13,7 @@ import cadenza.gui.plugins.edit.PluginEditor;
 
 import common.swing.GraphicsUtils;
 import common.swing.SwingUtils;
+import common.swing.Tooltip;
 
 @SuppressWarnings("serial")
 public class GraphicEQView extends PluginView {
@@ -31,7 +31,15 @@ public class GraphicEQView extends PluginView {
     _geq = geq;
     
     SwingUtils.freezeSize(this, WIDTH, HEIGHT);
-    addMouseMotionListener(new ToolTipGenerator());
+    Tooltip.registerTooltip(this, e -> {
+      final int midiNum = (e.getPoint().x - MARGIN) / BAND_WIDTH;
+      if (0 <= midiNum && midiNum <= 127) {
+        final int gain = _geq.process(midiNum, 0);
+        return Optional.of(new Note(midiNum).toString() + ": " + (gain >= 0 ? "+" : "") + gain);
+      } else {
+        return Optional.empty();
+      }
+    });
   }
   
   @Override
@@ -98,17 +106,5 @@ public class GraphicEQView extends PluginView {
   @Override
   public PluginEditor createEditor() {
     return new GraphicEQEditor(_geq);
-  }
-  
-  private class ToolTipGenerator extends MouseMotionAdapter {
-    @Override
-    public void mouseMoved(MouseEvent e) {
-      final int midiNum = (e.getPoint().x - MARGIN) / BAND_WIDTH;
-      if (0 <= midiNum && midiNum <= 127) {
-        final int gain = _geq.process(midiNum, 0);
-        final String text = new Note(midiNum).toString() + ": " + (gain >= 0 ? "+" : "") + gain;
-        setToolTipText(text);
-      }
-    }
   }
 }

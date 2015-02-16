@@ -40,8 +40,10 @@
            classpathref="import.path.ref"
            destdir="${bin}"
            includeAntRuntime="false"
-           source="1.7"
-           target="1.7"/>
+           source="1.8"
+           target="1.8">
+      <compilerarg value="-XDignore.symbol.file"/>
+    </javac>
   </target>
 
   <target name="prepare-export">
@@ -107,7 +109,7 @@
                 name="Cadenza"
                 shortname="Cadenza"
                 mainclass="cadenza.gui.CadenzaLauncher_MacOSX"
-                jvmversion="1.7+"
+                jvmversion="1.8+"
                 icon="${build}/icon.icns"
                 jar="${macosx.exportdir}/${macosx.jarname}"/>
 
@@ -118,7 +120,7 @@
               outfile="Cadenza.exe"
               icon="${build}/appicon.ico"
               restartOnCrash="true">
-        <jre minVersion="1.7.0"/>
+        <jre minVersion="1.8.0"/>
       </config>
 	</launch4j> -->
   </target>
