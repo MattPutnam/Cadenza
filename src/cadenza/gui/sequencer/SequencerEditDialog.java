@@ -2,11 +2,8 @@ package cadenza.gui.sequencer;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
 import javax.swing.Box;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -71,12 +68,12 @@ public class SequencerEditDialog extends OKCancelDialog {
         new JLabel(" On note change: "), _noteChangeCombo);
     
     final Box east = Box.createVerticalBox();
-    east.add(SwingUtils.buildLeftAlignedRow(new JButton(new AddColumnsAction()), _columnsToAddField));
-    east.add(SwingUtils.hugWest(new JButton(new TrimColumnsAction())));
+    east.add(SwingUtils.buildLeftAlignedRow(SwingUtils.button("Add columns: ", e -> _gridPanel.addColumns(_columnsToAddField.getInt())), _columnsToAddField));
+    east.add(SwingUtils.hugWest(SwingUtils.button("Trim unused columns", e -> _gridPanel.trimColumns())));
     east.add(Box.createVerticalStrut(24));
-    east.add(SwingUtils.hugWest(new JButton(new AddTopAction())));
-    east.add(SwingUtils.hugWest(new JButton(new AddBottomAction())));
-    east.add(SwingUtils.hugWest(new JButton(new TrimRowsAction())));
+    east.add(SwingUtils.hugWest(SwingUtils.button("Add row to top", e -> _gridPanel.addRowToTop())));
+    east.add(SwingUtils.hugWest(SwingUtils.button("Add row to bottom", e -> _gridPanel.addRowToBottom())));
+    east.add(SwingUtils.hugWest(SwingUtils.button("Trim unused rows", e -> _gridPanel.trimUnusedRows())));
     
     final JPanel content = new JPanel(new BorderLayout());
     content.add(SwingUtils.hugNorth(_scaleSelector), BorderLayout.WEST);
@@ -119,62 +116,5 @@ public class SequencerEditDialog extends OKCancelDialog {
     
     if (!found)
       throw new VerificationException("Please select at least one note to play");
-  }
-  
-  private class AddColumnsAction extends AbstractAction {
-    public AddColumnsAction() {
-      super("Add columns: ");
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      final int col = _columnsToAddField.getInt();
-      if (col > 0)
-        _gridPanel.addColumns(col);
-    }
-  }
-  
-  private class TrimColumnsAction extends AbstractAction {
-    public TrimColumnsAction() {
-      super("Trim unused columns");
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      _gridPanel.trimColumns();
-    }
-  }
-  
-  private class AddTopAction extends AbstractAction {
-    public AddTopAction() {
-      super("Add row to top");
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      _gridPanel.addRowToTop();
-    }
-  }
-  
-  private class AddBottomAction extends AbstractAction {
-    public AddBottomAction() {
-      super("Add row to bottom");
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      _gridPanel.addRowToBottom();
-    }
-  }
-  
-  private class TrimRowsAction extends AbstractAction {
-    public TrimRowsAction() {
-      super("Trim unused rows");
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      _gridPanel.trimUnusedRows();
-    }
   }
 }

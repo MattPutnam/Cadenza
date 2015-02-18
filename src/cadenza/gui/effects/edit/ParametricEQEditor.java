@@ -3,13 +3,11 @@ package cadenza.gui.effects.edit;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.Collections;
 import java.util.List;
 
-import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -25,6 +23,7 @@ import javax.swing.JSlider;
 import cadenza.core.effects.ParametricEQ;
 import cadenza.core.effects.ParametricEQ.Band;
 import cadenza.gui.effects.view.ParametricEQView;
+
 import common.swing.DoubleField;
 import common.swing.IntField;
 import common.swing.SimpleGrid;
@@ -50,7 +49,14 @@ public class ParametricEQEditor extends EffectEditor {
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     add(_peqView);
     add(new JScrollPane(_bandPanel, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
-    add(SwingUtils.buildRow(new JButton(new AddAction()), new JButton(new SortAction())));
+    add(SwingUtils.buildRow(SwingUtils.button("Add New Band", e -> {
+                              _bands.add(new Band(64, 3.0, 1.0));
+                              refreshBands();
+                            }),
+                            SwingUtils.button("Sort Bands", e -> {
+                              Collections.sort(_bands, (b1, b2) -> b1.getFrequency() - b2.getFrequency());
+                              refreshBands();
+                            })));
   }
   
   @Override
@@ -252,30 +258,6 @@ public class ParametricEQEditor extends EffectEditor {
         refreshBands();
       });
       setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    }
-  }
-  
-  private class AddAction extends AbstractAction {
-    public AddAction() {
-      super("Add New Band");
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      _bands.add(new Band(64, 3.0, 1.0));
-      refreshBands();
-    }
-  }
-  
-  private class SortAction extends AbstractAction {
-    public SortAction() {
-      super("Sort Bands");
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      Collections.sort(_bands, (b1, b2) -> b1.getFrequency() - b2.getFrequency());
-      refreshBands();
     }
   }
 }

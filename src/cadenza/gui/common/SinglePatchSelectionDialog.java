@@ -18,7 +18,7 @@ import javax.swing.JScrollPane;
 import cadenza.core.Patch;
 import cadenza.core.Synthesizer;
 import cadenza.gui.patch.PatchPickerDialog;
-
+import common.swing.SwingUtils;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
 
@@ -66,7 +66,14 @@ public class SinglePatchSelectionDialog extends OKCancelDialog {
     
     final JScrollPane scrollPane = new JScrollPane(patchButtons);
     
-    _pickNewButton = new JButton(new PickNewAction());
+    _pickNewButton = SwingUtils.button("Pick new patch...", e -> {
+      final PatchPickerDialog dialog = new PatchPickerDialog(_parent, _synthesizers);
+      dialog.showDialog();
+      if (dialog.okPressed()) {
+        _selectedPatch = dialog.getSelectedPatch();
+        pressOK();
+      }
+    });
     
     final JPanel panel = new JPanel();
     panel.add(scrollPane, BorderLayout.CENTER);
@@ -93,23 +100,6 @@ public class SinglePatchSelectionDialog extends OKCancelDialog {
   
   public Patch getSelectedPatch() {
     return _selectedPatch;
-  }
-  
-  private class PickNewAction extends AbstractAction {
-    public PickNewAction() {
-      super("Pick new patch...");
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent ae) {
-      final PatchPickerDialog dialog = new PatchPickerDialog(_parent, _synthesizers);
-      dialog.showDialog();
-      if (dialog.okPressed()) {
-        _selectedPatch = dialog.getSelectedPatch();
-        pressOK();
-      }
-    }
-    
   }
   
 }

@@ -11,12 +11,12 @@ public interface MetronomeListener {
    * Notification that the Metronome's BPM has been set
    * @param bpm the BPM value that has been set
    */
-  public void bpmSet(int bpm);
+  public default void bpmSet(int bpm) {}
   
   /**
    * Notification that the metronome has started
    */
-  public void metronomeStarted();
+  public default void metronomeStarted() {}
   
   /**
    * Notification that the metronome has clicked
@@ -27,5 +27,5 @@ public interface MetronomeListener {
   /**
    * Notification that the metronome has stopped
    */
-  public void metronomeStopped();
+  public default void metronomeStopped() {}
 }

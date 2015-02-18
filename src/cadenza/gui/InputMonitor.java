@@ -2,7 +2,6 @@ package cadenza.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.LinkedHashSet;
@@ -10,7 +9,6 @@ import java.util.Set;
 import java.util.Vector;
 
 import javax.sound.midi.MidiMessage;
-import javax.swing.AbstractAction;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,8 +17,6 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import common.midi.MidiUtilities;
 import common.swing.SwingUtils;
@@ -43,20 +39,20 @@ public class InputMonitor extends JFrame {
     
     _savedEvents = new LinkedHashSet<>();
     
-    final JButton saveButton = new JButton(new SaveAction());
+    final JButton saveButton = SwingUtils.button("Save selected", e ->
+        _savedEvents.addAll(_jList.getSelectedValuesList()));
     
     final JPanel subBottom = new JPanel(new BorderLayout());
-    subBottom.add(new JButton(new ClearAction()), BorderLayout.WEST);
+    subBottom.add(SwingUtils.button("Clear", e -> {
+      _listData.clear();
+      _jList.setListData(_listData);
+    }), BorderLayout.WEST);
     subBottom.add(saveButton, BorderLayout.EAST);
     
     _jList.setCellRenderer(new MIDIEventRenderer());
-    _jList.addListSelectionListener(new ListSelectionListener() {
-      @Override
-      public void valueChanged(ListSelectionEvent e) {
-        if (e.getValueIsAdjusting()) return;
-        
+    _jList.addListSelectionListener(e -> {
+      if (!e.getValueIsAdjusting())
         saveButton.setEnabled(_jList.getSelectedIndex() != -1);
-      }
     });
     saveButton.setEnabled(false);
     
@@ -80,29 +76,6 @@ public class InputMonitor extends JFrame {
   
   public Set<MidiEvent> accessSavedEvents() {
     return _savedEvents;
-  }
-  
-  private class ClearAction extends AbstractAction {
-    public ClearAction() {
-      super("Clear");
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      _listData.clear();
-      _jList.setListData(_listData);
-    }
-  }
-  
-  private class SaveAction extends AbstractAction {
-    public SaveAction() {
-      super("Save selected");
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      _savedEvents.addAll(_jList.getSelectedValuesList());
-    }
   }
   
   public static class MidiEvent {

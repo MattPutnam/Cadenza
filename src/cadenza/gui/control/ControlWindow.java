@@ -3,7 +3,7 @@ package cadenza.gui.control;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -11,10 +11,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -68,6 +66,8 @@ public class ControlWindow extends JFrame implements MetronomeListener {
   }
   
   private void buildContent() {  
+    final ActionListener gotoAction = e -> _controller.goTo(_songPanel.getSelectedSong(), _measureField.getText());
+    
     _topLabel = new JLabel("", JLabel.CENTER);
     _topLabel.setForeground(FG);
     
@@ -89,7 +89,7 @@ public class ControlWindow extends JFrame implements MetronomeListener {
     _songPanel.setForeground(FG);
     SwingUtils.freezeWidth(_songPanel);
     _measureField = new JTextField(8);
-    _measureField.addActionListener(new GotoAction());
+    _measureField.addActionListener(gotoAction);
     SwingUtils.freezeWidth(_measureField);
     
     _metronomeLabel = new JLabel("Metronome: ");
@@ -99,17 +99,17 @@ public class ControlWindow extends JFrame implements MetronomeListener {
     SwingUtils.freezeWidth(_metronomeArea, 24);
     
     _toolbarComponents = new LinkedList<>();
-    _toolbarComponents.add(new JButton(new AdvanceAction()));
-    _toolbarComponents.add(new JButton(new ReverseAction()));
+    _toolbarComponents.add(SwingUtils.button("Advance", e -> _controller.advance()));
+    _toolbarComponents.add(SwingUtils.button("Reverse", e -> _controller.reverse()));
     _toolbarComponents.add(gotoLabel);
     _toolbarComponents.add(_songPanel);
     _toolbarComponents.add(measureLabel);
     _toolbarComponents.add(_measureField);
-    _toolbarComponents.add(new JButton(new GotoAction()));
-    _toolbarComponents.add(new JButton(new RestartAction()));
+    _toolbarComponents.add(SwingUtils.button("Go", gotoAction));
+    _toolbarComponents.add(SwingUtils.button("Restart", e -> _controller.restart()));
     _toolbarComponents.add(Box.createHorizontalGlue());
-    _toolbarComponents.add(new JButton(new PanicAction()));
-    _toolbarComponents.add(new JButton(new CloseAction()));
+    _toolbarComponents.add(SwingUtils.button("Panic", e -> _controller.allNotesOff()));
+    _toolbarComponents.add(SwingUtils.button("Close", e -> ControlWindow.this.dispose()));
     _toolbarComponents.add(Box.createHorizontalGlue());
     _toolbarComponents.add(_metronomeLabel);
     _toolbarComponents.add(_metronomeArea);
@@ -126,63 +126,6 @@ public class ControlWindow extends JFrame implements MetronomeListener {
     setLayout(new BorderLayout());
     add(main, BorderLayout.CENTER);
     add(south, BorderLayout.SOUTH);
-  }
-  
-  private final class AdvanceAction extends AbstractAction {
-    public AdvanceAction() {
-      super("Advance");
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      _controller.advance();
-    }
-  }
-  
-  private final class ReverseAction extends AbstractAction {
-    public ReverseAction() {
-      super("Reverse");
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      _controller.reverse();
-    }
-  }
-  
-  private final class CloseAction extends AbstractAction {
-    public CloseAction() {
-      super("Close");
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      ControlWindow.this.dispose();
-    }
-  }
-  
-  private final class PanicAction extends AbstractAction {
-    public PanicAction() {
-      super("Panic");
-      putValue(SHORT_DESCRIPTION, "Turn all notes off");
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      _controller.allNotesOff();
-    }
-  }
-  
-  private final class RestartAction extends AbstractAction {
-    public RestartAction() {
-      super("Restart");
-      putValue(SHORT_DESCRIPTION, "Reset to top of performance");
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      _controller.restart();
-    }
   }
   
   public void updatePerformanceLocation(int position) {
@@ -264,17 +207,6 @@ public class ControlWindow extends JFrame implements MetronomeListener {
   
   private static String wrapHTML(String str) {
     return "<html><h1 style='font-size:200%;text-align:center'>" + str + "</h1></html>";
-  }
-  
-  private class GotoAction extends AbstractAction {
-    public GotoAction() {
-      super("Go");
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      _controller.goTo(_songPanel.getSelectedSong(), _measureField.getText());
-    }
   }
   
   @Override

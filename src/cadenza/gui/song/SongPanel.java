@@ -2,11 +2,9 @@ package cadenza.gui.song;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
 import java.util.Collections;
 import java.util.List;
 
-import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -31,7 +29,17 @@ public class SongPanel extends JPanel {
     
     _songCombo = new JComboBox<>(_songs.toArray(new Song[_songs.size()]));
     _label = new JLabel("Song: ");
-    final JButton addButton = new JButton(new AddSongAction());
+    final JButton addButton = SwingUtils.button("Add new song", e -> {
+      final Song newSong = new Song("", "");
+      final SongEditDialog dialog = new SongEditDialog(SongPanel.this, newSong);
+      dialog.showDialog();
+      if (dialog.okPressed()) {
+        _songs.add(newSong);
+        Collections.sort(_songs);
+        _songCombo.setModel(new DefaultComboBoxModel<>(_songs.toArray(new Song[_songs.size()])));
+        _songCombo.setSelectedItem(newSong);
+      }
+    });
     
     final Box box = Box.createHorizontalBox();
     box.add(_label);
@@ -42,25 +50,6 @@ public class SongPanel extends JPanel {
     setLayout(new BorderLayout());
     add(box, BorderLayout.CENTER);
     SwingUtils.freezeHeight(this, box.getPreferredSize().height);
-  }
-  
-  private class AddSongAction extends AbstractAction {
-    public AddSongAction() {
-      super("Add new song");
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      final Song newSong = new Song("", "");
-      final SongEditDialog dialog = new SongEditDialog(SongPanel.this, newSong);
-      dialog.showDialog();
-      if (dialog.okPressed()) {
-        _songs.add(newSong);
-        Collections.sort(_songs);
-        _songCombo.setModel(new DefaultComboBoxModel<>(_songs.toArray(new Song[_songs.size()])));
-        _songCombo.setSelectedItem(newSong);
-      }
-    }
   }
   
   public void setSelectedSong(Song song) {

@@ -3,9 +3,7 @@ package cadenza.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -43,8 +41,8 @@ public class MetronomeView extends JFrame implements MetronomeListener {
     _bpmField.addActionListener(e -> Metronome.getInstance().setBPM(_bpmField.getInt()));
     SwingUtils.freezeWidth(_bpmField);
     
-    final JButton startButton = new JButton(new StartAction());
-    final JButton stopButton = new JButton(new StopAction());
+    final JButton startButton = SwingUtils.button("Start", e -> Metronome.getInstance().start());
+    final JButton stopButton = SwingUtils.button("Stop", e -> Metronome.getInstance().stop());
     
     final Box south = Box.createHorizontalBox();
     south.add(Box.createHorizontalGlue());
@@ -64,28 +62,6 @@ public class MetronomeView extends JFrame implements MetronomeListener {
     setAlwaysOnTop(true);
     SwingUtils.goInvisibleOnClose(this);
     Metronome.getInstance().addMetronomeListener(this);
-  }
-  
-  private class StartAction extends AbstractAction {
-    public StartAction() {
-      super("Start");
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      Metronome.getInstance().start();
-    }
-  }
-  
-  private class StopAction extends AbstractAction {
-    public StopAction() {
-      super("Stop");
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      Metronome.getInstance().stop();
-    }
   }
 
   @Override

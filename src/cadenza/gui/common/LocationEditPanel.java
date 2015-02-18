@@ -3,12 +3,10 @@ package cadenza.gui.common;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -87,7 +85,7 @@ public class LocationEditPanel extends JPanel {
     _rangePanel = new JPanel(null);
     setSelectedLocation(initialLocation == null ? Location.wholeKeyboard(getSelectedKeyboard()) : initialLocation);
     
-    _resetButton = new JButton(new ResetAction());
+    _resetButton = SwingUtils.button("Use Entire Keyboard", e -> setSelectedLocation(Location.wholeKeyboard(getSelectedKeyboard())));
     
     components.add(_rangePanel);
     components.add(_resetButton);
@@ -191,17 +189,6 @@ public class LocationEditPanel extends JPanel {
       }
       
       setSelectedLocation(Location.range(getSelectedKeyboard(), low, high));
-    }
-  }
-  
-  private class ResetAction extends AbstractAction {
-    public ResetAction() {
-      super("Use Entire Keyboard");
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      setSelectedLocation(Location.wholeKeyboard(getSelectedKeyboard()));
     }
   }
 }
