@@ -206,9 +206,11 @@ public class CadenzaFrame extends JFrame implements Receiver {
     ///////////////////////////////////////////////////////////////////////
     // File menu:
     final JMenu fileMenu = SwingUtils.menu("File", 'F');
-    fileMenu.add(SwingUtils.menuItem("Close", 'W', 'C', new CloseFileAction()));
-    fileMenu.add(SwingUtils.menuItem("Save", 'S', 'S', new SaveFileAction()));
-    fileMenu.add(SwingUtils.menuItem("Save As...", 'S', InputEvent.SHIFT_MASK, 'A', new SaveAsFileAction()));
+    fileMenu.add(SwingUtils.menuItem("Close", 'W', 'C', e -> safeClose(true)));
+    fileMenu.add(SwingUtils.menuItem("Save", 'S', 'S', e -> {
+      if (_associatedSave == null) saveAs(); else save();
+    }));
+    fileMenu.add(SwingUtils.menuItem("Save As...", 'S', InputEvent.SHIFT_MASK, 'A', e -> saveAs()));
     if (!SystemUtils.IS_OS_MAC_OSX) {
       fileMenu.addSeparator();
       fileMenu.add(SwingUtils.menuItem("Preferences", 'E', 'E', e -> {
@@ -288,10 +290,10 @@ public class CadenzaFrame extends JFrame implements Receiver {
     // Control menu:
     final JMenu controlMenu = SwingUtils.menu("Control", 'O');
     controlMenu.add(SwingUtils.menuItem("Show Control Window", 'O', 'O', new ShowControlWindowAction()));
-    controlMenu.add(SwingUtils.menuItem("Show Metronome", 'M', 'M', new ShowMetronomeAction()));
+    controlMenu.add(SwingUtils.menuItem("Show Metronome", 'M', 'M', e -> MetronomeView.getInstance().setVisible(true)));
     controlMenu.addSeparator();
-    controlMenu.add(SwingUtils.menuItem("Show Effects Monitor", 'X', 'X', new ShowEffectsMonitorAction()));
-    controlMenu.add(SwingUtils.menuItem("Show Input Monitor", 'I', 'I', new ShowInputMonitorAction()));
+    controlMenu.add(SwingUtils.menuItem("Show Effects Monitor", 'X', 'X', e -> EffectMonitor.getInstance().setVisible(true)));
+    controlMenu.add(SwingUtils.menuItem("Show Input Monitor", 'I', 'I', e -> InputMonitor.getInstance().setVisible(true)));
     
     final JMenuBar menuBar = new JMenuBar();
     menuBar.add(fileMenu);
@@ -428,27 +430,6 @@ public class CadenzaFrame extends JFrame implements Receiver {
     }
   }
   
-  private class ShowMetronomeAction extends AbstractAction {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      MetronomeView.getInstance().setVisible(true);
-    }
-  }
-  
-  private class ShowEffectsMonitorAction extends AbstractAction {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      EffectMonitor.getInstance().setVisible(true);
-    }
-  }
-  
-  private class ShowInputMonitorAction extends AbstractAction {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      InputMonitor.getInstance().setVisible(true);
-    }
-  }
-  
   private class MidiPortAction extends AbstractAction {
     private final Info _info;
     private final boolean _isInput;
@@ -552,31 +533,6 @@ public class CadenzaFrame extends JFrame implements Receiver {
     
     closeWindow();
     return true;
-  }
-  
-  private class CloseFileAction extends AbstractAction {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      safeClose(true);
-    }
-  }
-  
-  private class SaveFileAction extends AbstractAction {
-    @Override
-    public void actionPerformed(ActionEvent ae) {
-      if (_associatedSave == null) {
-        saveAs();
-      } else {
-        save();
-      }
-    }
-  }
-  
-  private class SaveAsFileAction extends AbstractAction {
-    @Override
-    public void actionPerformed(ActionEvent ae) {
-      saveAs();
-    }
   }
   
   private void save() {
