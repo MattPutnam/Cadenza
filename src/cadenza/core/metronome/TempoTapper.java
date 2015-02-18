@@ -20,7 +20,7 @@ import common.collection.buffer.FixedSizeDoubleBuffer;
  * 
  * @author Matt Putnam
  */
-public class TempoTapper extends MetronomeAdapter {
+public class TempoTapper implements MetronomeListener {
   private static final int MILLIS_IN_MINUTE = 1000*60;
   private static final int BUFFER_SIZE = 10;
   private static final int NEW_TEMPO_THRESHOLD = 250;

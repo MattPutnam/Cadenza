@@ -2,7 +2,7 @@ package cadenza.core.trigger.actions;
 
 import cadenza.control.PerformanceController;
 import cadenza.core.metronome.Metronome;
-import cadenza.core.metronome.MetronomeAdapter;
+import cadenza.core.metronome.MetronomeListener;
 
 public class WaitAction implements TriggerAction {
   private static final long serialVersionUID = 1L;
@@ -27,19 +27,14 @@ public class WaitAction implements TriggerAction {
       }
     } else if (Metronome.getInstance().isRunning()) {
       _beatCounter = 0;
-      final ClickCounter clickCounter = new ClickCounter();
+      final MetronomeListener clickCounter = subdivision -> {
+        if (subdivision == 0)
+          ++_beatCounter;
+      };
       Metronome.getInstance().addMetronomeListener(clickCounter);
       while (_beatCounter < _num)
         Thread.yield();
       Metronome.getInstance().removeMetronomeListener(clickCounter);
-    }
-  }
-  
-  private class ClickCounter extends MetronomeAdapter {
-    @Override
-    public void metronomeClicked(int subdivision) {
-      if (subdivision == 0)
-        ++_beatCounter;
     }
   }
   
