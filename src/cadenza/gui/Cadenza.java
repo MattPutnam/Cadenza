@@ -115,8 +115,8 @@ public class Cadenza extends JFrame {
     
     final JLabel createEditLabel = new JLabel("Create/Edit Cadenza Files");
     createEditLabel.setBorder(BorderFactory.createEmptyBorder(8, 0, 8, 0));
-    final JButton newButton = new JButton(new NewAction());
-    final JButton openButton = new JButton(new OpenAction());
+    final JButton newButton = SwingUtils.button("New File...", e -> showWizard(Cadenza.this));
+    final JButton openButton = SwingUtils.button("Open File...", e -> showOpenFileDialog(Cadenza.this));
     final JButton openRecentButton = new JButton(new OpenRecentAction());
     
     final JLabel importLabel = new JLabel("Import Configurations");
@@ -172,28 +172,6 @@ public class Cadenza extends JFrame {
     setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     setLocationRelativeTo(null);
     setResizable(false);
-  }
-  
-  private class NewAction extends AbstractAction {
-    public NewAction() {
-      super("New File...");
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      showWizard(Cadenza.this);
-    }
-  }
-  
-  private class OpenAction extends AbstractAction {
-    public OpenAction() {
-      super("Open File...");
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      showOpenFileDialog(Cadenza.this);
-    }
   }
   
   private class OpenRecentAction extends AbstractAction {
