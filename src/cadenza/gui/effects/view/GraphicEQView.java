@@ -1,4 +1,4 @@
-package cadenza.gui.plugins.view;
+package cadenza.gui.effects.view;
 
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -7,17 +7,15 @@ import java.awt.geom.AffineTransform;
 import java.util.Optional;
 
 import cadenza.core.Note;
-import cadenza.core.plugins.ParametricEQ;
-import cadenza.gui.plugins.edit.ParametricEQEditor;
-import cadenza.gui.plugins.edit.PluginEditor;
-
+import cadenza.core.effects.GraphicEQ;
+import cadenza.gui.effects.edit.EffectEditor;
+import cadenza.gui.effects.edit.GraphicEQEditor;
 import common.swing.GraphicsUtils;
 import common.swing.SwingUtils;
 import common.swing.Tooltip;
 
-
 @SuppressWarnings("serial")
-public class ParametricEQView extends PluginView {
+public class GraphicEQView extends EffectView {
   private static final int BAND_WIDTH = 3;
   private static final int THROW_HEIGHT = 64;
   
@@ -25,17 +23,17 @@ public class ParametricEQView extends PluginView {
   private static final int HEIGHT = 2*THROW_HEIGHT + 2*MARGIN;
   private static final int MID_HEIGHT = THROW_HEIGHT + MARGIN;
   
-  private final ParametricEQ _peq;
+  private final GraphicEQ _geq;
   
-  public ParametricEQView(ParametricEQ peq) {
+  public GraphicEQView(GraphicEQ geq) {
     super();
-    _peq = peq;
+    _geq = geq;
     
     SwingUtils.freezeSize(this, WIDTH, HEIGHT);
     Tooltip.registerTooltip(this, e -> {
       final int midiNum = (e.getPoint().x - MARGIN) / BAND_WIDTH;
       if (0 <= midiNum && midiNum <= 127) {
-        final int gain = _peq.process(midiNum, 0);
+        final int gain = _geq.process(midiNum, 0);
         return Optional.of(new Note(midiNum).toString() + ": " + (gain >= 0 ? "+" : "") + gain);
       } else {
         return Optional.empty();
@@ -53,31 +51,25 @@ public class ParametricEQView extends PluginView {
     
     g2d.setColor(DATA);
     final double scalingFactor = -((double) THROW_HEIGHT) / max;
-    final double[] fineLevels = _peq.getFineLevels();
     int x = MARGIN;
     int h;
-    final int[] xPoints = new int[128];
-    final int[] yPoints = new int[128];
     for (int i = 0; i < 128; ++i) {
-      h = (int) (fineLevels[i] * scalingFactor);
-      xPoints[i] = x;
-      yPoints[i] = MID_HEIGHT + h;
+      h = (int) (_geq.getLevels()[i] * scalingFactor);
+      if (i == _midiNum && h != 0) {
+        if (h > 0) {
+          g2d.setColor(INPUT);
+          g2d.fillRect(x, MID_HEIGHT+h, BAND_WIDTH, h);
+        } else {
+          g2d.setColor(INPUT_GR);
+          g2d.fillRect(x, MID_HEIGHT, BAND_WIDTH, -h);
+        }
+        g2d.setColor(DATA);
+      }
+      
+      g2d.drawLine(x, MID_HEIGHT, x, MID_HEIGHT+h);
+      g2d.drawLine(x, MID_HEIGHT+h, x+BAND_WIDTH, MID_HEIGHT+h);
+      g2d.drawLine(x+BAND_WIDTH, MID_HEIGHT+h, x+BAND_WIDTH, MID_HEIGHT);
       x += BAND_WIDTH;
-    }
-    g2d.drawPolyline(xPoints, yPoints, 128);
-    
-    // draw ticks for A0, C4, and C8
-    for (Note note : new Note[] { Note.A0, Note.C4, Note.C8 }) {
-      int midiNum = note.getMidiNumber();
-      x = MARGIN+midiNum*BAND_WIDTH;
-      g2d.drawLine(x, MID_HEIGHT-3, x, MID_HEIGHT+3);
-    }
-    
-    if (_midiNum != -1) {
-      double fine = _peq.getFineLevels()[_midiNum];
-      g2d.setColor(fine > 0.0 ? INPUT : INPUT_GR);
-      x = MARGIN + _midiNum*BAND_WIDTH;
-      g2d.drawLine(x, MID_HEIGHT, x, MID_HEIGHT+(int)(fine*scalingFactor));
     }
     
     g2d.setColor(AXES);
@@ -85,7 +77,7 @@ public class ParametricEQView extends PluginView {
     g2d.drawLine(MARGIN, MID_HEIGHT, WIDTH-MARGIN, MID_HEIGHT);
     
     g2d.setFont(AXIS_FONT);
-    final FontMetrics metrics = g.getFontMetrics();
+    final FontMetrics metrics = g2d.getFontMetrics();
     int width = (int) metrics.getStringBounds(AXIS_LABEL_INPUT_MIDINUM, g2d).getWidth();
     g2d.drawString(AXIS_LABEL_INPUT_MIDINUM, WIDTH-MARGIN-width, HEIGHT-3);
     
@@ -105,13 +97,13 @@ public class ParametricEQView extends PluginView {
   
   private int findMax() {
     int max = 3;
-    for (int i = 0; i < 128; ++i)
-      max = Math.max(max, (int) Math.ceil(Math.abs(_peq.getFineLevels()[i])));
+    for (int i : _geq.getLevels())
+      max = Math.max(max, Math.abs(i));
     return max;
   }
   
   @Override
-  public PluginEditor createEditor() {
-    return new ParametricEQEditor(_peq);
+  public EffectEditor createEditor() {
+    return new GraphicEQEditor(_geq);
   }
 }

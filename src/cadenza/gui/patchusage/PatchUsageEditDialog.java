@@ -20,6 +20,7 @@ import javax.swing.JTabbedPane;
 import cadenza.core.CadenzaData;
 import cadenza.core.Location;
 import cadenza.core.Patch;
+import cadenza.core.effects.Effect;
 import cadenza.core.metronome.Metronome.Subdivision;
 import cadenza.core.patchusage.ArpeggiatorPatchUsage;
 import cadenza.core.patchusage.ArpeggiatorPatchUsage.Pattern;
@@ -28,17 +29,15 @@ import cadenza.core.patchusage.GhostNotePatchUsage;
 import cadenza.core.patchusage.PatchUsage;
 import cadenza.core.patchusage.SequencerPatchUsage;
 import cadenza.core.patchusage.SimplePatchUsage;
-import cadenza.core.plugins.Plugin;
 import cadenza.gui.common.LocationEditPanel;
 import cadenza.gui.common.LocationListener;
 import cadenza.gui.common.TranspositionEditor;
 import cadenza.gui.common.VolumeField;
+import cadenza.gui.effects.edit.EffectChainViewerEditor;
 import cadenza.gui.patch.PatchSelector;
 import cadenza.gui.patchusage.editor.CustomScalePatchUsageEditor;
 import cadenza.gui.patchusage.editor.GhostNotePatchUsageEditor;
 import cadenza.gui.patchusage.editor.SequencerPatchUsageEditor;
-import cadenza.gui.plugins.edit.PluginChainViewerEditor;
-
 import common.swing.IntField;
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
@@ -52,7 +51,7 @@ public class PatchUsageEditDialog extends OKCancelDialog {
   private PatchSelector _patchSelector;
   private VolumeField _volumeField;
   private LocationEditPanel _locationSelector;
-  private PluginChainViewerEditor _pluginPanel;
+  private EffectChainViewerEditor _effectPanel;
   
   private JTabbedPane _tabbedPane;
   private SimplePatchUsagePane _simplePane;
@@ -75,17 +74,17 @@ public class PatchUsageEditDialog extends OKCancelDialog {
       _patchSelector = new PatchSelector(_data.patches, _data.synthesizers, null);
       _volumeField = new VolumeField(100);
       _locationSelector = new LocationEditPanel(_data.keyboards, null);
-      _pluginPanel = new PluginChainViewerEditor(new ArrayList<Plugin>(), true);
+      _effectPanel = new EffectChainViewerEditor(new ArrayList<Effect>(), true);
     } else {
       _patchSelector = new PatchSelector(_data.patches, _data.synthesizers, _startingPatchUsage.patch);
       _volumeField = new VolumeField(_startingPatchUsage.volume);
       _locationSelector = new LocationEditPanel(_data.keyboards, _startingPatchUsage.location);
-      _pluginPanel = new PluginChainViewerEditor(_startingPatchUsage.plugins, true);
+      _effectPanel = new EffectChainViewerEditor(_startingPatchUsage.effects, true);
     }
     
     _patchSelector.accessCombo().addActionListener(e -> _volumeField.setVolume(_patchSelector.getSelectedPatch().defaultVolume));
     _locationSelector.setBorder(BorderFactory.createTitledBorder("Location"));
-    _pluginPanel.setBorder(BorderFactory.createTitledBorder("Plugins"));
+    _effectPanel.setBorder(BorderFactory.createTitledBorder("Effects"));
     
     _tabbedPane = new JTabbedPane();
     _simplePane = new SimplePatchUsagePane();
@@ -122,7 +121,7 @@ public class PatchUsageEditDialog extends OKCancelDialog {
     final Box box = Box.createVerticalBox();
     box.add(SwingUtils.buildCenteredRow(_patchSelector, new JLabel("Volume: "), _volumeField));
     box.add(_locationSelector);
-    box.add(_pluginPanel);
+    box.add(_effectPanel);
     box.add(_tabbedPane);
     return box;
   }
@@ -161,7 +160,7 @@ public class PatchUsageEditDialog extends OKCancelDialog {
       default: throw new IllegalStateException("Unknown Tab!");
     }
     
-    newPatchUsage.plugins = _pluginPanel.getPlugins();
+    newPatchUsage.effects = _effectPanel.getEffects();
     return newPatchUsage;
   }
   

@@ -152,10 +152,10 @@ public class CueListEditor extends JPanel {
     public static final int PATCHES = 1;
     public static final int TRIGGERS = 2;
     public static final int CONTROL_MAP = 3;
-    public static final int PLUGINS = 4;
+    public static final int EFFECTS = 4;
     
     public static String[] COLUMNS = {
-      "Measure", "Patches", "Triggers", "Control Map", "Plugins"
+      "Measure", "Patches", "Triggers", "Control Map", "Effects"
     };
   }
   
@@ -216,7 +216,7 @@ public class CueListEditor extends JPanel {
       tcm.getColumn(Col.PATCHES)    .setPreferredWidth(400);
       tcm.getColumn(Col.TRIGGERS)   .setPreferredWidth(25);
       tcm.getColumn(Col.CONTROL_MAP).setPreferredWidth(50);
-      tcm.getColumn(Col.PLUGINS)    .setPreferredWidth(25);
+      tcm.getColumn(Col.EFFECTS)    .setPreferredWidth(25);
       
       accessTable().setDefaultRenderer(Object.class, new CueTableRenderer());
       
@@ -359,7 +359,7 @@ public class CueListEditor extends JPanel {
               case Col.PATCHES:     return row; // Renderer handles this
               case Col.TRIGGERS:    return Utils.countItems(row.cue.triggers, "trigger");
               case Col.CONTROL_MAP: return Utils.countItems(row.cue.getControlMap(), "mapped control");
-              case Col.PLUGINS:     return Utils.countItems(row.cue.plugins, "plugin");
+              case Col.EFFECTS:     return Utils.countItems(row.cue.effects, "effects");
               default: throw new IllegalStateException("Unknown Column!");
             }
           } else {

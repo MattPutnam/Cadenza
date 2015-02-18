@@ -22,11 +22,10 @@ import cadenza.core.ControlMapProvider;
 import cadenza.core.Cue;
 import cadenza.core.patchusage.PatchUsage;
 import cadenza.gui.controlmap.ControlMapPanel;
+import cadenza.gui.effects.edit.EffectChainViewerEditor;
 import cadenza.gui.patchusage.PatchUsagePanel;
-import cadenza.gui.plugins.edit.PluginChainViewerEditor;
 import cadenza.gui.song.SongPanel;
 import cadenza.gui.trigger.TriggerPanel;
-
 import common.collection.NotifyingList;
 import common.swing.CollapsiblePanel;
 import common.swing.CollapsiblePanel.Orientation;
@@ -46,11 +45,11 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider 
   private PatchUsagePanel _patchUsagePanel;
   private TriggerPanel _triggerPanel;
   private ControlMapPanel _controlPanel;
-  private PluginChainViewerEditor _pluginsPanel;
+  private EffectChainViewerEditor _effectsPanel;
   
   private JCheckBox _disableGlobalTriggersCheckBox;
   private JCheckBox _disableGlobalControlCheckBox;
-  private JCheckBox _disableGlobalPluginsCheckBox;
+  private JCheckBox _disableGlobalEffectsCheckBox;
   
   public CueEditDialog(Component parent, Cue cue, CadenzaData data) {
     super(parent);
@@ -76,11 +75,11 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider 
     _patchUsagePanel = new PatchUsagePanel(_cue, _data);
     _triggerPanel = new TriggerPanel(_cue, _data);
     _controlPanel = new ControlMapPanel(_cue == null ? this : _cue);
-    _pluginsPanel = new PluginChainViewerEditor(_cue.plugins, true);
+    _effectsPanel = new EffectChainViewerEditor(_cue.effects, true);
     
     _disableGlobalTriggersCheckBox = new JCheckBox("Disable global triggers", _cue.disableGlobalTriggers);
     _disableGlobalControlCheckBox = new JCheckBox("Disable global control map", _cue.disableGlobalControlMap);
-    _disableGlobalPluginsCheckBox = new JCheckBox("Disable global plugins", _cue.disableGlobalPlugins);
+    _disableGlobalEffectsCheckBox = new JCheckBox("Disable global effects", _cue.disableGlobalEffects);
     
     _measureField.addFocusListener(new FocusAdapter() {
       @Override
@@ -99,8 +98,8 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider 
     cp.add(_controlPanel, BorderLayout.CENTER);
     
     final JPanel pp = new JPanel(new BorderLayout());
-    pp.add(_disableGlobalPluginsCheckBox, BorderLayout.NORTH);
-    pp.add(_pluginsPanel, BorderLayout.CENTER);
+    pp.add(_disableGlobalEffectsCheckBox, BorderLayout.NORTH);
+    pp.add(_effectsPanel, BorderLayout.CENTER);
     
     final CollapsiblePanel collapsePatches = new CollapsiblePanel(
         _patchUsagePanel, Orientation.VERTICAL, "Patches", null);
@@ -108,12 +107,12 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider 
         tp, Orientation.VERTICAL, "Triggers", null);
     final CollapsiblePanel collapseControl = new CollapsiblePanel(
         cp, Orientation.VERTICAL, "Control Overrides", null);
-    final CollapsiblePanel collapsePlugins = new CollapsiblePanel(
-        pp, Orientation.VERTICAL, "Plugins", null);
+    final CollapsiblePanel collapseEffects = new CollapsiblePanel(
+        pp, Orientation.VERTICAL, "Effects", null);
     
     collapseTrigger.setExpanded(!_cue.triggers.isEmpty() || _cue.disableGlobalTriggers);
     collapseControl.setExpanded(!_cue.getControlMap().isEmpty() || _cue.disableGlobalControlMap);
-    collapsePlugins.setExpanded(!_cue.plugins.isEmpty() || _cue.disableGlobalPlugins);
+    collapseEffects.setExpanded(!_cue.effects.isEmpty() || _cue.disableGlobalEffects);
     
     final Box measure = Box.createHorizontalBox();
     measure.add(new JLabel("Measure: "));
@@ -130,7 +129,7 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider 
     result.add(collapsePatches);
     result.add(collapseTrigger);
     result.add(collapseControl);
-    result.add(collapsePlugins);
+    result.add(collapseEffects);
     
     return result;
   }
@@ -154,8 +153,8 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider 
     _cue.disableGlobalTriggers = _disableGlobalTriggersCheckBox.isSelected();
     _cue.setControlMap(_controlPanel.getMapping());
     _cue.disableGlobalControlMap = _disableGlobalControlCheckBox.isSelected();
-    _cue.plugins = _pluginsPanel.getPlugins();
-    _cue.disableGlobalPlugins = _disableGlobalPluginsCheckBox.isSelected();
+    _cue.effects = _effectsPanel.getEffects();
+    _cue.disableGlobalEffects = _disableGlobalEffectsCheckBox.isSelected();
   }
   
   @Override

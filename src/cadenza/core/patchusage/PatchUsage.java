@@ -10,8 +10,7 @@ import cadenza.control.PerformanceController;
 import cadenza.core.Location;
 import cadenza.core.Patch;
 import cadenza.core.Synthesizer;
-import cadenza.core.plugins.Plugin;
-
+import cadenza.core.effects.Effect;
 import common.swing.ColorUtils;
 
 /**
@@ -32,8 +31,8 @@ public abstract class PatchUsage implements Serializable {
   /** The volume to play the patch */
   public int volume;
   
-  /** A list of plugins to use for this patch only.  Comes before cue and global plugins */
-  public List<Plugin> plugins = new ArrayList<>();
+  /** A list of effects to use for this patch only.  Comes before cue and global effects */
+  public List<Effect> effects = new ArrayList<>();
   
   /**
    * The mapping of control change number -> control value that
@@ -59,7 +58,7 @@ public abstract class PatchUsage implements Serializable {
    * Returns an array of [note, velocity] pairs that should be played given an
    * input note and velocity
    * @param midiNumber - the note number of the input note
-   * @param velocity - the velocity of the input note, before plugins
+   * @param velocity - the velocity of the input note, before effects
    * @return an array of [note, velocity] pairs to be played
    */
   public abstract int[][] getNotes(int midiNumber, int velocity);

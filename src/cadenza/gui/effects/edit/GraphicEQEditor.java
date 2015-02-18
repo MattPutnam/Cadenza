@@ -1,4 +1,4 @@
-package cadenza.gui.plugins.edit;
+package cadenza.gui.effects.edit;
 
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
@@ -6,15 +6,14 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 
-import cadenza.core.plugins.GraphicEQ;
-import cadenza.gui.plugins.view.GraphicEQView;
-
+import cadenza.core.effects.GraphicEQ;
+import cadenza.gui.effects.view.GraphicEQView;
 import common.midi.MidiUtilities;
 import common.swing.SimpleGrid;
 import common.swing.SwingUtils;
 
 @SuppressWarnings("serial")
-public class GraphicEQEditor extends PluginEditor {
+public class GraphicEQEditor extends EffectEditor {
   private static final int SLIDER_MAX = 10;
   
   private final GraphicEQ _geq;
@@ -56,7 +55,7 @@ public class GraphicEQEditor extends PluginEditor {
   }
   
   @Override
-  public GraphicEQ getPlugin() {
+  public GraphicEQ getEffect() {
     return _geq;
   }
 }

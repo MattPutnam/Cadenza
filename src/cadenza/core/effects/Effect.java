@@ -1,16 +1,16 @@
-package cadenza.core.plugins;
+package cadenza.core.effects;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
 
-import cadenza.gui.plugins.view.PluginView;
+import cadenza.gui.effects.view.EffectView;
 
 /**
- * Interface for MIDI-level "plugins" that operate on MIDI values
+ * Interface for MIDI-level "effects" that operate on MIDI values
  * 
  * @author Matt Putnam
  */
-public interface Plugin extends Serializable {
+public interface Effect extends Serializable {
   public static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.00");
   
   /**
@@ -22,12 +22,12 @@ public interface Plugin extends Serializable {
   public int process(int midiNumber, int velocity);
   
   /**
-   * @return a PluginView for this Plugin
+   * @return an EffectView for this Effect
    */
-  public PluginView createView();
+  public EffectView createView();
   
   /**
-   * @return a copy of this Plugin
+   * @return a copy of this Effect
    */
-  public Plugin copy();
+  public Effect copy();
 }

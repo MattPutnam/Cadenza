@@ -1,4 +1,4 @@
-package cadenza.gui.plugins.edit;
+package cadenza.gui.effects.edit;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -22,10 +22,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 
-import cadenza.core.plugins.ParametricEQ;
-import cadenza.core.plugins.ParametricEQ.Band;
-import cadenza.gui.plugins.view.ParametricEQView;
-
+import cadenza.core.effects.ParametricEQ;
+import cadenza.core.effects.ParametricEQ.Band;
+import cadenza.gui.effects.view.ParametricEQView;
 import common.swing.DoubleField;
 import common.swing.IntField;
 import common.swing.SimpleGrid;
@@ -33,7 +32,7 @@ import common.swing.SwingUtils;
 import common.swing.icon.DeleteIcon;
 
 @SuppressWarnings("serial")
-public class ParametricEQEditor extends PluginEditor {
+public class ParametricEQEditor extends EffectEditor {
   private final List<Band> _bands;
   private final ParametricEQ _peq;
   private final ParametricEQView _peqView;
@@ -55,7 +54,7 @@ public class ParametricEQEditor extends PluginEditor {
   }
   
   @Override
-  public ParametricEQ getPlugin() {
+  public ParametricEQ getEffect() {
     return _peq;
   }
   

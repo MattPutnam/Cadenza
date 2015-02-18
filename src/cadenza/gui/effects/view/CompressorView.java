@@ -1,4 +1,4 @@
-package cadenza.gui.plugins.view;
+package cadenza.gui.effects.view;
 
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -7,16 +7,15 @@ import java.awt.geom.AffineTransform;
 import java.text.DecimalFormat;
 import java.util.Optional;
 
-import cadenza.core.plugins.Compressor;
-import cadenza.gui.plugins.edit.CompressorEditor;
-import cadenza.gui.plugins.edit.PluginEditor;
-
+import cadenza.core.effects.Compressor;
+import cadenza.gui.effects.edit.CompressorEditor;
+import cadenza.gui.effects.edit.EffectEditor;
 import common.swing.GraphicsUtils;
 import common.swing.SwingUtils;
 import common.swing.Tooltip;
 
 @SuppressWarnings("serial")
-public class CompressorView extends PluginView {
+public class CompressorView extends EffectView {
   private static final int SIZE = 128 + MARGIN + MARGIN;
   private static final DecimalFormat FORMAT = new DecimalFormat("0.000");
   
@@ -79,7 +78,7 @@ public class CompressorView extends PluginView {
   }
   
   @Override
-  public PluginEditor createEditor() {
+  public EffectEditor createEditor() {
     return new CompressorEditor(_compressor);
   }
 }

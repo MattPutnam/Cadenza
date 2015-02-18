@@ -20,13 +20,12 @@ import cadenza.core.Keyboard;
 import cadenza.core.Patch;
 import cadenza.core.Song;
 import cadenza.core.Synthesizer;
+import cadenza.core.effects.Effect;
 import cadenza.core.patchusage.PatchUsage;
-import cadenza.core.plugins.Plugin;
 import cadenza.core.trigger.Trigger;
 import cadenza.delegate.PatchChangeDelegate;
 import cadenza.gui.CadenzaFrame;
-import cadenza.gui.PluginMonitor;
-
+import cadenza.gui.EffectMonitor;
 import common.Debug;
 import common.midi.MidiUtilities;
 import common.tuple.Pair;
@@ -52,8 +51,8 @@ public final class PerformanceController extends CadenzaController {
   /** The current list of triggers, which is the globals plus cue-specific */
   private List<Trigger> _currentTriggers;
   
-  /** The current list of global and cue-level plugins */
-  private List<Plugin> _currentGlobalCuePlugins;
+  /** The current list of global and cue-level effects */
+  private List<Effect> _currentGlobalCueEffects;
   
   /** The current cue, in perform mode */
   private Cue _currentCue;
@@ -296,10 +295,10 @@ public final class PerformanceController extends CadenzaController {
     for (final Trigger t : _currentTriggers)
       t.reset();
     
-    _currentGlobalCuePlugins = new LinkedList<>();
-    _currentGlobalCuePlugins.addAll(_currentCue.plugins);
-    _currentGlobalCuePlugins.addAll(getData().globalPlugins);
-    PluginMonitor.getInstance().setPlugins(_currentGlobalCuePlugins);
+    _currentGlobalCueEffects = new LinkedList<>();
+    _currentGlobalCueEffects.addAll(_currentCue.effects);
+    _currentGlobalCueEffects.addAll(getData().globalEffects);
+    EffectMonitor.getInstance().setEffects(_currentGlobalCueEffects);
   }
 
   @Override
@@ -402,16 +401,16 @@ public final class PerformanceController extends CadenzaController {
         if (patchUsage.location.getKeyboard() == keyboard && patchUsage.location.contains(inputMidiNumber)) {
           final Integer outputChannel = _currentAssignments.get(patchUsage);
           
-          final List<Plugin> puPlugins = new LinkedList<>();
-          puPlugins.addAll(patchUsage.plugins);
-          puPlugins.addAll(_currentGlobalCuePlugins);
+          final List<Effect> puEffects = new LinkedList<>();
+          puEffects.addAll(patchUsage.effects);
+          puEffects.addAll(_currentGlobalCueEffects);
           if (patchUsage.respondsTo(inputMidiNumber, inputVelocity)) {
             for (final int[] note : patchUsage.getNotes(inputMidiNumber, inputVelocity)) {
               int midiNumber = note[0];
               int velocity = note[1];
               
-              for (final Plugin plugin : puPlugins) {
-                velocity = MidiUtilities.clamp(plugin.process(midiNumber, velocity));
+              for (final Effect effect : puEffects) {
+                velocity = MidiUtilities.clamp(effect.process(midiNumber, velocity));
               }
               
               sendNoteOn(midiNumber, velocity, outputChannel.intValue());

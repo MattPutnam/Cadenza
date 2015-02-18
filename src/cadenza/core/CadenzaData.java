@@ -11,12 +11,11 @@ import java.io.Serializable;
 import java.util.List;
 
 import cadenza.Version;
+import cadenza.core.effects.Effect;
 import cadenza.core.patchusage.PatchUsage;
-import cadenza.core.plugins.Plugin;
 import cadenza.core.sequencer.Sequencer;
 import cadenza.core.trigger.Trigger;
 import cadenza.gui.trigger.HasTriggers;
-
 import common.collection.NotifyingList;
 import common.swing.dialog.Dialog;
 
@@ -38,8 +37,8 @@ public class CadenzaData implements Serializable, HasTriggers, ControlMapProvide
   /** The global control overrides */
   public NotifyingList<ControlMapEntry> globalControlMap;
   
-  /** The global plugins */
-  public NotifyingList<Plugin> globalPlugins;
+  /** The global effects */
+  public NotifyingList<Effect> globalEffects;
   
   /** All of the patches used in this Cadenza file */
   public NotifyingList<Patch> patches;
@@ -66,7 +65,7 @@ public class CadenzaData implements Serializable, HasTriggers, ControlMapProvide
     synthesizers = new NotifyingList<>();
     globalTriggers = new NotifyingList<>();
     globalControlMap = new NotifyingList<>();
-    globalPlugins = new NotifyingList<>();
+    globalEffects = new NotifyingList<>();
     patches = new NotifyingList<>();
     cues = new NotifyingList<>();
     keyboards = new NotifyingList<>();

@@ -1,14 +1,14 @@
-package cadenza.gui.plugins.view;
+package cadenza.gui.effects.view;
 
 import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.JPanel;
 
-import cadenza.gui.plugins.edit.PluginEditor;
+import cadenza.gui.effects.edit.EffectEditor;
 
 @SuppressWarnings("serial")
-public abstract class PluginView extends JPanel {
+public abstract class EffectView extends JPanel {
   public static final int MARGIN = 14;
   
   public static final Color BACKGROUND = Color.WHITE;
@@ -39,5 +39,5 @@ public abstract class PluginView extends JPanel {
     repaint();
   }
   
-  public abstract PluginEditor createEditor();
+  public abstract EffectEditor createEditor();
 }

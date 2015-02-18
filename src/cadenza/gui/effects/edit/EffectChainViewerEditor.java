@@ -1,4 +1,4 @@
-package cadenza.gui.plugins.edit;
+package cadenza.gui.effects.edit;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -23,21 +23,20 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
-import cadenza.core.plugins.Compressor;
-import cadenza.core.plugins.GraphicEQ;
-import cadenza.core.plugins.ParametricEQ;
-import cadenza.core.plugins.ParametricEQ.Band;
-import cadenza.core.plugins.Plugin;
+import cadenza.core.effects.Compressor;
+import cadenza.core.effects.GraphicEQ;
+import cadenza.core.effects.ParametricEQ;
+import cadenza.core.effects.Effect;
+import cadenza.core.effects.ParametricEQ.Band;
 import cadenza.gui.ImageStore;
-import cadenza.gui.plugins.view.PluginView;
-
+import cadenza.gui.effects.view.EffectView;
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
 import common.swing.dialog.Dialog;
 import common.swing.dialog.OKCancelDialog;
 
 @SuppressWarnings("serial")
-public class PluginChainViewerEditor extends JPanel {
+public class EffectChainViewerEditor extends JPanel {
   private static final int INSERT_SIZE = 40;
   private static final int[] INSERT_xPoints = new int[] {0,  32, 26, 29, 40, 29, 26, 32, 0};
   private static final int[] INSERT_yPoints = new int[] {18, 18, 12, 9,  20, 31, 28, 22, 22};
@@ -45,95 +44,95 @@ public class PluginChainViewerEditor extends JPanel {
   private static final String INSERT_TOP_TEXT = "Click to";
   private static final String INSERT_BOTTOM_TEXT = "add new";
   
-  private List<Plugin> _plugins;
+  private List<Effect> _effects;
   private final boolean _allowEdit;
   
-  private List<PluginView> _pluginViews;
-  private final JPanel _pluginViewPanel;
+  private List<EffectView> _effectViews;
+  private final JPanel _effectViewPanel;
   
-  public PluginChainViewerEditor(List<Plugin> initial, boolean allowEdit) {
-    _plugins = new ArrayList<>(initial.size());
-    for (final Plugin plugin : initial)
-      _plugins.add(plugin.copy());
+  public EffectChainViewerEditor(List<Effect> initial, boolean allowEdit) {
+    _effects = new ArrayList<>(initial.size());
+    for (final Effect effect : initial)
+      _effects.add(effect.copy());
     _allowEdit = allowEdit;
     
-    _pluginViewPanel = new JPanel();
-    _pluginViewPanel.setLayout(new BoxLayout(_pluginViewPanel, BoxLayout.X_AXIS));
-    final JScrollPane scrollPane = new JScrollPane(_pluginViewPanel,
+    _effectViewPanel = new JPanel();
+    _effectViewPanel.setLayout(new BoxLayout(_effectViewPanel, BoxLayout.X_AXIS));
+    final JScrollPane scrollPane = new JScrollPane(_effectViewPanel,
         JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     scrollPane.setPreferredSize(new Dimension(600, 180));
     
     setLayout(new BorderLayout());
     add(scrollPane, BorderLayout.CENTER);
-    refreshPluginViews();
+    refreshEffectViews();
   }
   
-  public List<Plugin> getPlugins() {
-    return _plugins;
+  public List<Effect> getEffects() {
+    return _effects;
   }
   
-  public void setPlugins(List<Plugin> plugins) {
-    _plugins = plugins;
-    refreshPluginViews();
+  public void setEffects(List<Effect> effects) {
+    _effects = effects;
+    refreshEffectViews();
   }
   
   public void showInputValue(int index, int midiNum, int velocity) {
-    _pluginViews.get(index).showInputValue(midiNum, velocity);
+    _effectViews.get(index).showInputValue(midiNum, velocity);
   }
   
   public void clearInputValues() {
-    for (final PluginView pv : _pluginViews)
+    for (final EffectView pv : _effectViews)
       pv.clearInputValue();
   }
   
-  private void refreshPluginViews() {
-    _pluginViews = new ArrayList<>(_plugins.size());
-    for (final Plugin plugin : _plugins) {
-      _pluginViews.add(plugin.createView());
+  private void refreshEffectViews() {
+    _effectViews = new ArrayList<>(_effects.size());
+    for (final Effect effect : _effects) {
+      _effectViews.add(effect.createView());
     }
     
-    _pluginViewPanel.removeAll();
-    _pluginViewPanel.add(Box.createHorizontalGlue());
-    for (int i = 0; i < _plugins.size(); ++i) {
-      _pluginViewPanel.add(new InsertPluginPanel(i));
+    _effectViewPanel.removeAll();
+    _effectViewPanel.add(Box.createHorizontalGlue());
+    for (int i = 0; i < _effects.size(); ++i) {
+      _effectViewPanel.add(new InsertEffectPanel(i));
       
-      final PluginView pluginView = _pluginViews.get(i);
-      _pluginViewPanel.add(pluginView);
+      final EffectView effectView = _effectViews.get(i);
+      _effectViewPanel.add(effectView);
       
       if (_allowEdit) {
         final int finali = i;
-        pluginView.addMouseListener(new MouseAdapter() {
+        effectView.addMouseListener(new MouseAdapter() {
           @Override
           public void mouseClicked(MouseEvent e) {
             if (e.getModifiersEx() == InputEvent.CTRL_DOWN_MASK ||
               e.getButton() == MouseEvent.BUTTON2 ||
               e.getButton() == MouseEvent.BUTTON3) {
               final JPopupMenu menu = new JPopupMenu();
-              menu.add(new JMenuItem(new EditAction(pluginView, finali)));
+              menu.add(new JMenuItem(new EditAction(effectView, finali)));
               menu.addSeparator();
               menu.add(new JMenuItem(new DeleteAction(finali)));
-              menu.show(pluginView, e.getX(), e.getY());
+              menu.show(effectView, e.getX(), e.getY());
             }
             
             if (e.getClickCount() == 2) {
-              final PluginEditor editor = pluginView.createEditor();
-              if (OKCancelDialog.showInDialog(PluginChainViewerEditor.this, "", editor)) {
-                _plugins.set(finali, editor.getPlugin());
-                refreshPluginViews();
+              final EffectEditor editor = effectView.createEditor();
+              if (OKCancelDialog.showInDialog(EffectChainViewerEditor.this, "", editor)) {
+                _effects.set(finali, editor.getEffect());
+                refreshEffectViews();
               }
             }
           }
         });
       }
     }
-    _pluginViewPanel.add(new InsertPluginPanel(_plugins.size()));
-    _pluginViewPanel.add(Box.createHorizontalGlue());
+    _effectViewPanel.add(new InsertEffectPanel(_effects.size()));
+    _effectViewPanel.add(Box.createHorizontalGlue());
     revalidate();
     repaint();
   }
   
-  private class InsertPluginPanel extends JPanel {
-    public InsertPluginPanel(final int index) {
+  private class InsertEffectPanel extends JPanel {
+    public InsertEffectPanel(final int index) {
       super();
       
       SwingUtils.freezeSize(this, INSERT_SIZE, INSERT_SIZE);
@@ -143,11 +142,11 @@ public class PluginChainViewerEditor extends JPanel {
         addMouseListener(new MouseAdapter() {
           @Override
           public void mouseClicked(MouseEvent e) {
-            final AddPluginDialog dialog = new AddPluginDialog();
+            final AddEffectDialog dialog = new AddEffectDialog();
             dialog.showDialog();
             if (dialog.okPressed()) {
-              _plugins.add(index, dialog.getPlugin());
-              refreshPluginViews();
+              _effects.add(index, dialog.getEffect());
+              refreshEffectViews();
             }
           }
         });
@@ -169,11 +168,11 @@ public class PluginChainViewerEditor extends JPanel {
     }
   }
   
-  private class AddPluginDialog extends OKCancelDialog {
+  private class AddEffectDialog extends OKCancelDialog {
     private JTabbedPane _tabbed;
     
-    public AddPluginDialog() {
-      super(PluginChainViewerEditor.this);
+    public AddEffectDialog() {
+      super(EffectChainViewerEditor.this);
     }
     
     @Override
@@ -195,11 +194,11 @@ public class PluginChainViewerEditor extends JPanel {
     
     @Override
     protected String declareTitle() {
-      return "Add new plugin";
+      return "Add new effect";
     }
     
-    public Plugin getPlugin() {
-      return ((PluginEditor) _tabbed.getSelectedComponent()).getPlugin();
+    public Effect getEffect() {
+      return ((EffectEditor) _tabbed.getSelectedComponent()).getEffect();
     }
     
     @Override
@@ -207,23 +206,23 @@ public class PluginChainViewerEditor extends JPanel {
   }
   
   private class EditAction extends AbstractAction {
-    private final PluginView _pluginView;
+    private final EffectView _effectView;
     private final int _index;
     
-    public EditAction(PluginView pluginView, int index) {
+    public EditAction(EffectView effectView, int index) {
       super("Edit");
       putValue(SMALL_ICON, ImageStore.EDIT);
       
-      _pluginView = pluginView;
+      _effectView = effectView;
       _index = index;
     }
     
     @Override
     public void actionPerformed(ActionEvent e) {
-      final PluginEditor editor = _pluginView.createEditor();
-      if (OKCancelDialog.showInDialog(PluginChainViewerEditor.this, "", editor)) {
-        _plugins.set(_index, editor.getPlugin());
-        refreshPluginViews();
+      final EffectEditor editor = _effectView.createEditor();
+      if (OKCancelDialog.showInDialog(EffectChainViewerEditor.this, "", editor)) {
+        _effects.set(_index, editor.getEffect());
+        refreshEffectViews();
       }
     }
   }
@@ -240,9 +239,9 @@ public class PluginChainViewerEditor extends JPanel {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-      if (Dialog.confirm(PluginChainViewerEditor.this, "Are you sure you want to delete this plugin?")) {
-        _plugins.remove(_index);
-        refreshPluginViews();
+      if (Dialog.confirm(EffectChainViewerEditor.this, "Are you sure you want to delete this effect?")) {
+        _effects.remove(_index);
+        refreshEffectViews();
       }
     }
   }

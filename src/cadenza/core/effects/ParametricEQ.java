@@ -1,16 +1,15 @@
-package cadenza.core.plugins;
+package cadenza.core.effects;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import cadenza.gui.plugins.view.ParametricEQView;
-import cadenza.gui.plugins.view.PluginView;
-
+import cadenza.gui.effects.view.EffectView;
+import cadenza.gui.effects.view.ParametricEQView;
 import common.Utils;
 
-public class ParametricEQ implements Plugin {
+public class ParametricEQ implements Effect {
   private static final long serialVersionUID = 1L;
   
   public static class Band implements Serializable {
@@ -146,12 +145,12 @@ public class ParametricEQ implements Plugin {
   }
   
   @Override
-  public Plugin copy() {
+  public Effect copy() {
     return new ParametricEQ(getBands());
   }
   
   @Override
-  public PluginView createView() {
+  public EffectView createView() {
     return new ParametricEQView(this);
   }
   

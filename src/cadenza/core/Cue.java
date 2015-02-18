@@ -8,11 +8,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import cadenza.core.effects.Effect;
 import cadenza.core.patchusage.PatchUsage;
-import cadenza.core.plugins.Plugin;
 import cadenza.core.trigger.Trigger;
 import cadenza.gui.trigger.HasTriggers;
-
 import common.Comparators;
 import common.Utils;
 
@@ -46,10 +45,10 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
   /** Whether or not to disable the global control map for this cue */
   public boolean disableGlobalControlMap = false;
   
-  /** The plugins used */
-  public List<Plugin> plugins;
+  /** The effects used */
+  public List<Effect> effects;
   
-  public boolean disableGlobalPlugins = false;
+  public boolean disableGlobalEffects = false;
   
   /**
    * Creates a new Cue for the given song and measure.  The list of patches and triggers is initially empty
@@ -62,7 +61,7 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
     patches = new ArrayList<>();
     triggers = new ArrayList<>();
     _controlMapping = new ArrayList<>();
-    plugins = new ArrayList<>();
+    effects = new ArrayList<>();
   }
   
   /**
@@ -76,7 +75,7 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
     this.triggers = other.triggers;
     this.disableGlobalTriggers = other.disableGlobalTriggers;
     this._controlMapping = other._controlMapping;
-    this.plugins = other.plugins;
+    this.effects = other.effects;
   }
   
   public List<PatchUsage> getPatchUsagesByKeyboard(Keyboard keyboard) {
@@ -142,8 +141,8 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
          this.triggers.equals(cue.triggers) &&
          this.disableGlobalTriggers == cue.disableGlobalTriggers &&
          this._controlMapping.equals(cue._controlMapping) &&
-         this.plugins.equals(cue.plugins) &&
-         this.disableGlobalPlugins == cue.disableGlobalPlugins;
+         this.effects.equals(cue.effects) &&
+         this.disableGlobalEffects == cue.disableGlobalEffects;
   }
   
   @Override
@@ -154,8 +153,8 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
     hashCode = 31*hashCode + triggers.hashCode();
     hashCode =  2*hashCode + (disableGlobalTriggers ? 1 : 0);
     hashCode = 31*hashCode + _controlMapping.hashCode();
-    hashCode = 31*hashCode + plugins.hashCode();
-    hashCode =  2*hashCode + (disableGlobalPlugins ? 1 : 0);
+    hashCode = 31*hashCode + effects.hashCode();
+    hashCode =  2*hashCode + (disableGlobalEffects ? 1 : 0);
     
     return hashCode;
   }

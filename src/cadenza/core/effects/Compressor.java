@@ -1,7 +1,7 @@
-package cadenza.core.plugins;
+package cadenza.core.effects;
 
-import cadenza.gui.plugins.view.CompressorView;
-import cadenza.gui.plugins.view.PluginView;
+import cadenza.gui.effects.view.CompressorView;
+import cadenza.gui.effects.view.EffectView;
 
 /**
  * <p>A compressor/limiter.  Reduces any input volume above the <b>threshold</b>
@@ -11,7 +11,7 @@ import cadenza.gui.plugins.view.PluginView;
  * 
  * @author Matt Putnam
  */
-public class Compressor implements Plugin {
+public class Compressor implements Effect {
   private static final long serialVersionUID = 1L;
   
   private int _threshold;
@@ -86,12 +86,12 @@ public class Compressor implements Plugin {
   }
   
   @Override
-  public Plugin copy() {
+  public Effect copy() {
     return new Compressor(_threshold, _ratio);
   }
   
   @Override
-  public PluginView createView() {
+  public EffectView createView() {
     return new CompressorView(this);
   }
   

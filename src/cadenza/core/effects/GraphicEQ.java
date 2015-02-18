@@ -1,11 +1,11 @@
-package cadenza.core.plugins;
+package cadenza.core.effects;
 
 import java.util.Arrays;
 
-import cadenza.gui.plugins.view.GraphicEQView;
-import cadenza.gui.plugins.view.PluginView;
+import cadenza.gui.effects.view.EffectView;
+import cadenza.gui.effects.view.GraphicEQView;
 
-public class GraphicEQ implements Plugin {
+public class GraphicEQ implements Effect {
   private static final long serialVersionUID = 1L;
   
   private int[] _levels;
@@ -32,12 +32,12 @@ public class GraphicEQ implements Plugin {
   }
   
   @Override
-  public Plugin copy() {
+  public Effect copy() {
     return new GraphicEQ(getLevels());
   }
   
   @Override
-  public PluginView createView() {
+  public EffectView createView() {
     return new GraphicEQView(this);
   }
   

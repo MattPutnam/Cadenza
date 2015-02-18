@@ -43,17 +43,16 @@ import cadenza.core.Keyboard;
 import cadenza.core.Patch;
 import cadenza.core.Song;
 import cadenza.core.Synthesizer;
+import cadenza.core.effects.Effect;
 import cadenza.core.metronome.Metronome;
-import cadenza.core.plugins.Plugin;
 import cadenza.core.trigger.Trigger;
 import cadenza.gui.control.ControlWindow;
 import cadenza.gui.controlmap.ControlMapPanel;
+import cadenza.gui.effects.edit.EffectChainViewerEditor;
 import cadenza.gui.keyboard.KeyboardListEditor;
-import cadenza.gui.plugins.edit.PluginChainViewerEditor;
 import cadenza.gui.preferences.PreferencesDialog;
 import cadenza.gui.synthesizer.SynthesizerListEditor;
 import cadenza.gui.trigger.TriggerPanel;
-
 import common.collection.ListAdapter;
 import common.collection.ListEvent;
 import common.io.IOUtils;
@@ -111,7 +110,7 @@ public class CadenzaFrame extends JFrame implements Receiver {
     _data.synthesizers.addListener(new Dirtyer<Synthesizer>());
     _data.globalTriggers.addListener(new Dirtyer<Trigger>());
     _data.globalControlMap.addListener(new Dirtyer<ControlMapEntry>());
-    _data.globalPlugins.addListener(new Dirtyer<Plugin>());
+    _data.globalEffects.addListener(new Dirtyer<Effect>());
     _data.patches.addListener(new Dirtyer<Patch>());
     _data.cues.addListener(new Dirtyer<Cue>());
     _data.keyboards.addListener(new Dirtyer<Keyboard>());
@@ -271,13 +270,13 @@ public class CadenzaFrame extends JFrame implements Receiver {
         }
       }
     }));
-    setupMenu.add(SwingUtils.menuItem("Configure Global Plugins", 'U', 'U', e -> {
-      final PluginChainViewerEditor panel = new PluginChainViewerEditor(_data.globalPlugins, true);
-      if (OKCancelDialog.showInDialog(CadenzaFrame.this, "Edit Global Plugins", panel)) {
-        final List<Plugin> plugins = panel.getPlugins();
-        if (!plugins.equals(_data.globalPlugins)) {
-          _data.globalPlugins.clear();
-          _data.globalPlugins.addAll(panel.getPlugins());
+    setupMenu.add(SwingUtils.menuItem("Configure Global Effects", 'F', 'F', e -> {
+      final EffectChainViewerEditor panel = new EffectChainViewerEditor(_data.globalEffects, true);
+      if (OKCancelDialog.showInDialog(CadenzaFrame.this, "Edit Global Effects", panel)) {
+        final List<Effect> effects = panel.getEffects();
+        if (!effects.equals(_data.globalEffects)) {
+          _data.globalEffects.clear();
+          _data.globalEffects.addAll(panel.getEffects());
         }
       }
     }));
@@ -291,7 +290,7 @@ public class CadenzaFrame extends JFrame implements Receiver {
     controlMenu.add(SwingUtils.menuItem("Show Control Window", 'O', 'O', new ShowControlWindowAction()));
     controlMenu.add(SwingUtils.menuItem("Show Metronome", 'M', 'M', new ShowMetronomeAction()));
     controlMenu.addSeparator();
-    controlMenu.add(SwingUtils.menuItem("Show Plugin Monitor", 'P', 'P', new ShowPluginMonitorAction()));
+    controlMenu.add(SwingUtils.menuItem("Show Effects Monitor", 'X', 'X', new ShowEffectsMonitorAction()));
     controlMenu.add(SwingUtils.menuItem("Show Input Monitor", 'I', 'I', new ShowInputMonitorAction()));
     
     final JMenuBar menuBar = new JMenuBar();
@@ -436,10 +435,10 @@ public class CadenzaFrame extends JFrame implements Receiver {
     }
   }
   
-  private class ShowPluginMonitorAction extends AbstractAction {
+  private class ShowEffectsMonitorAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
-      PluginMonitor.getInstance().setVisible(true);
+      EffectMonitor.getInstance().setVisible(true);
     }
   }
   

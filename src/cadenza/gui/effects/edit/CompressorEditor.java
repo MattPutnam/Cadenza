@@ -1,4 +1,4 @@
-package cadenza.gui.plugins.edit;
+package cadenza.gui.effects.edit;
 
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -10,16 +10,15 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
 
-import cadenza.core.plugins.Compressor;
-import cadenza.gui.plugins.view.CompressorView;
-
+import cadenza.core.effects.Compressor;
+import cadenza.gui.effects.view.CompressorView;
 import common.swing.DoubleField;
 import common.swing.IntField;
 import common.swing.SimpleGrid;
 import common.swing.SwingUtils;
 
 @SuppressWarnings("serial")
-public class CompressorEditor extends PluginEditor {
+public class CompressorEditor extends EffectEditor {
   private static final int RATIO_SLIDER_STEPS = 100000;
   private static final DecimalFormat RATIO_FORMAT = new DecimalFormat("0.000");
   
@@ -61,7 +60,7 @@ public class CompressorEditor extends PluginEditor {
   }
   
   @Override
-  public Compressor getPlugin() {
+  public Compressor getEffect() {
     return _compressor;
   }
   
