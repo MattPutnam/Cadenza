@@ -12,7 +12,6 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -29,6 +28,7 @@ import cadenza.synths.Synthesizers;
 
 import common.Utils;
 import common.swing.BlockingTask;
+import common.swing.SimpleListCellRenderer;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
 
@@ -144,23 +144,16 @@ public class OrphanedPatchRemapper extends OKCancelDialog {
     _data.synthesizers.addAll(_synthesizers);
   }
   
-  private class RemapRenderer extends DefaultListCellRenderer {
+  private class RemapRenderer extends SimpleListCellRenderer<Patch> {
     @Override
-    public Component getListCellRendererComponent(JList<?> list,
-        Object value, int index, boolean isSelected, boolean cellHasFocus) {
-      
-      final JLabel label = (JLabel) super.getListCellRendererComponent(
-          list, value, index, isSelected, cellHasFocus);
-      
-      final Patch patch = (Patch) value;
+    protected void processLabel(JLabel label, JList<Patch> list, Patch patch,
+        int index, boolean isSelected, boolean cellHasFocus) {
       final Patch remapped = _remapping.get(patch);
       if (remapped == null) {
         label.setText("<html>" + patch.name + " &rarr; [none selected]</html>");
       } else {
         label.setText("<html>" + patch.name + " &rarr; " + remapped.name + "</html>");
       }
-      
-      return label;
     }
   }
 

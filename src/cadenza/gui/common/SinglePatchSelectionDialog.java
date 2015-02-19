@@ -2,11 +2,9 @@ package cadenza.gui.common;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -18,6 +16,7 @@ import javax.swing.JScrollPane;
 import cadenza.core.Patch;
 import cadenza.core.Synthesizer;
 import cadenza.gui.patch.PatchPickerDialog;
+
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;

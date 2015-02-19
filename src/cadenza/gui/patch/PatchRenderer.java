@@ -1,25 +1,18 @@
 package cadenza.gui.patch;
 
-import java.awt.Component;
-
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
 import javax.swing.JList;
 
 import cadenza.core.Patch;
 
+import common.swing.SimpleListCellRenderer;
+
 @SuppressWarnings("serial")
-public class PatchRenderer extends DefaultListCellRenderer {
+public class PatchRenderer extends SimpleListCellRenderer<Patch> {
   @Override
-  public Component getListCellRendererComponent(JList<?> list, Object value,
+  protected void processLabel(JLabel label, JList<Patch> list, Patch patch,
       int index, boolean isSelected, boolean cellHasFocus) {
-    final Component c = super.getListCellRendererComponent(list, value, index, isSelected,
-        cellHasFocus);
-    final JLabel label = (JLabel) c;
-    final Patch patch = (Patch) value;
-    
-    if (value != null)
+    if (patch != null)
       label.setText(patch.name + " (" + patch.getSynthesizer() + " " + patch.bank + " " + patch.number + ")");
-    return label;
   }
 }

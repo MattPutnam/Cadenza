@@ -1,14 +1,13 @@
 package cadenza.gui.common;
 
-import java.awt.Component;
-
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 
 import cadenza.core.ControlNames;
+
+import common.swing.SimpleListCellRenderer;
 
 @SuppressWarnings("serial")
 public class ControlCombo extends JComboBox<Integer> {
@@ -28,15 +27,12 @@ public class ControlCombo extends JComboBox<Integer> {
     setRenderer(new ControlRenderer());
   }
   
-  private class ControlRenderer extends DefaultListCellRenderer {
+  private class ControlRenderer extends SimpleListCellRenderer<Integer> {
     @Override
-    public Component getListCellRendererComponent(JList<?> list, Object value,
-        int index, boolean isSelected, boolean hasFocus) {
-      final JLabel label = (JLabel) super.getListCellRendererComponent(
-          list, value, index, isSelected, hasFocus);
-      int ival = ((Integer) value).intValue();
+    protected void processLabel(JLabel label, JList<Integer> list,
+        Integer value, int index, boolean isSelected, boolean cellHasFocus) {
+      int ival = value.intValue();
       label.setText(ival + " -- " + ControlNames.getName(ival));
-      return label;
     }
   }
 

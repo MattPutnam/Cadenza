@@ -25,7 +25,6 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.basic.BasicTableUI;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
@@ -46,6 +45,7 @@ import common.Comparators;
 import common.Utils;
 import common.collection.ListAdapter;
 import common.collection.ListEvent;
+import common.swing.SimpleTableCellRenderer;
 import common.swing.SwingUtils;
 import common.swing.table.ListTableModel;
 import common.tuple.Pair;
@@ -237,14 +237,10 @@ public class CueListEditor extends JPanel {
       });
     }
     
-    private class CueTableRenderer extends DefaultTableCellRenderer {
+    private class CueTableRenderer extends SimpleTableCellRenderer<Object> {
       @Override
-      public Component getTableCellRendererComponent(JTable table,
-          Object value, boolean isSelected, boolean hasFocus,
-          int row, int column) {
-        final JLabel label = (JLabel) super.getTableCellRendererComponent(
-            table, value, isSelected, hasFocus, row, column);
-        
+      protected void processLabel(JLabel label, JTable table, Object value,
+          boolean isSelected, boolean hasFocus, int row, int column) {
         if (_entries.get(row).isSong()) {
           label.setHorizontalAlignment(SwingConstants.CENTER);
           label.setBackground(isSelected ? table.getSelectionBackground() : SONG_BACKGROUND);
@@ -279,7 +275,6 @@ public class CueListEditor extends JPanel {
             label.setIcon(null);
           }
         }
-        return label;
       }
       
       private Pair<Boolean, String> getWarning(Cue cue) {

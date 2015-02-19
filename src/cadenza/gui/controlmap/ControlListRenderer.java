@@ -1,24 +1,17 @@
 package cadenza.gui.controlmap;
 
-import java.awt.Component;
-
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
 import javax.swing.JList;
 
 import cadenza.core.ControlNames;
 
+import common.swing.SimpleListCellRenderer;
+
 @SuppressWarnings("serial")
-public class ControlListRenderer extends DefaultListCellRenderer {
+public class ControlListRenderer extends SimpleListCellRenderer<Integer> {
   @Override
-  public Component getListCellRendererComponent(JList<?> list, Object value,
+  protected void processLabel(JLabel label, JList<Integer> list, Integer value,
       int index, boolean isSelected, boolean cellHasFocus) {
-    final JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected,
-        cellHasFocus);
-    final Integer i = (Integer) value;
-    
-    label.setText(i + ": " + ControlNames.getName(i));
-    
-    return label;
+    label.setText(value + ": " + ControlNames.getName(value));
   }
 }

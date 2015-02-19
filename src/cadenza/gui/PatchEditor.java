@@ -2,7 +2,6 @@ package cadenza.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -16,7 +15,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
 import cadenza.control.PreviewController;
@@ -31,6 +29,7 @@ import cadenza.gui.patch.PatchPickerDialog;
 
 import common.collection.ListAdapter;
 import common.collection.ListEvent;
+import common.swing.SimpleTableCellRenderer;
 import common.swing.SwingUtils;
 import common.swing.table.ListTableModel;
 
@@ -204,13 +203,10 @@ public class PatchEditor extends JPanel {
       }
     }
     
-    private class PatchTableRenderer extends DefaultTableCellRenderer {
+    private class PatchTableRenderer extends SimpleTableCellRenderer<Object> {
       @Override
-      public Component getTableCellRendererComponent(JTable table,
-          Object value, boolean isSelected, boolean hasFocus,
-          int row, int column) {
-        final JLabel label = (JLabel) super.getTableCellRendererComponent(
-            table, value, isSelected, hasFocus, row, column);
+      protected void processLabel(JLabel label, JTable table, Object value,
+          boolean isSelected, boolean hasFocus, int row, int column) {
         if (isSelected) {
           label.setForeground(table.getSelectionForeground());
           label.setBackground(table.getSelectionBackground());
@@ -226,8 +222,6 @@ public class PatchEditor extends JPanel {
             label.setBackground(row % 2 == 0 ? EVEN_BACKGROUND : ODD_BACKGROUND);
           }
         }
-        
-        return label;
       }
     }
   }
