@@ -213,19 +213,13 @@ public class CadenzaFrame extends JFrame implements Receiver {
     fileMenu.add(SwingUtils.menuItem("Save As...", 'S', InputEvent.SHIFT_MASK, 'A', e -> saveAs()));
     if (!SystemUtils.IS_OS_MAC_OSX) {
       fileMenu.addSeparator();
-      fileMenu.add(SwingUtils.menuItem("Preferences", 'E', 'E', e -> {
-        final PreferencesDialog dialog = new PreferencesDialog(CadenzaFrame.this);
-        dialog.showDialog();
-        if (dialog.okPressed())
-          dialog.commitPreferences();
-      }));
+      fileMenu.add(SwingUtils.menuItem("Preferences", 'E', 'E', e -> 
+        OKCancelDialog.showDialog(new PreferencesDialog(CadenzaFrame.this), dialog -> dialog.commitPreferences())
+      ));
       fileMenu.addSeparator();
       fileMenu.add(SwingUtils.menuItem("Quit", 'Q', 'Q', e -> {
-        final int result = JOptionPane.showConfirmDialog(CadenzaFrame.this,
-            "Are you sure you want to quit?", "Quit", JOptionPane.YES_NO_OPTION);
-        if (result == JOptionPane.YES_OPTION) {
+        if (Dialog.askYesNo(CadenzaFrame.this, "Are you sure you want to quit?", "Quit"))
           safeClose(false);
-        }
       }));
     }
     
@@ -249,38 +243,32 @@ public class CadenzaFrame extends JFrame implements Receiver {
     
     setupMenu.addSeparator();
     setupMenu.add(SwingUtils.menuItem("Configure Synthesizers", 'Y', 'Y', new ConfigureSynthesizersAction()));
-    setupMenu.add(SwingUtils.menuItem("Configure Keyboards", 'K', 'K', e -> {
-      final KeyboardListEditor panel = new KeyboardListEditor(_data);
-      if (OKCancelDialog.showInDialog(CadenzaFrame.this, "Edit Keyboards", panel)) {
-        panel.doRemap();
-      }
-    }));
-    setupMenu.add(SwingUtils.menuItem("Configure Global Triggers", 'T', 'T', e -> {
-      final TriggerPanel panel = new TriggerPanel(_data, _data);
-      if (OKCancelDialog.showInDialog(CadenzaFrame.this, "Edit Global Triggers", panel)) {
+    setupMenu.add(SwingUtils.menuItem("Configure Keyboards", 'K', 'K', e ->
+      OKCancelDialog.showInDialog(CadenzaFrame.this, "Edit Keyboards", new KeyboardListEditor(_data), panel -> panel.doRemap())
+    ));
+    setupMenu.add(SwingUtils.menuItem("Configure Global Triggers", 'T', 'T', e ->
+      OKCancelDialog.showInDialog(CadenzaFrame.this, "Edit Global Triggers", new TriggerPanel(_data, _data), panel -> {
         _data.globalTriggers.clear();
         _data.globalTriggers.addAll(panel.getTriggers());
-      }
-    }));
+      })
+    ));
     setupMenu.add(SwingUtils.menuItem("Configure Global Control Overrides", 'L', 'L', e -> {
-      final ControlMapPanel panel = new ControlMapPanel(_data);
-      if (OKCancelDialog.showInDialog(CadenzaFrame.this, "Edit Global Control Overrides", panel)) {
+      OKCancelDialog.showInDialog(CadenzaFrame.this, "Edit Global Control Overrides", new ControlMapPanel(_data), panel -> {
         final List<ControlMapEntry> controls = panel.getMapping();
         if (!controls.equals(_data.globalControlMap)) {
           _data.globalControlMap.clear();
           _data.globalControlMap.addAll(controls);
         }
-      }
+      });
     }));
     setupMenu.add(SwingUtils.menuItem("Configure Global Effects", 'F', 'F', e -> {
-      final EffectChainViewerEditor panel = new EffectChainViewerEditor(_data.globalEffects, true);
-      if (OKCancelDialog.showInDialog(CadenzaFrame.this, "Edit Global Effects", panel)) {
+      OKCancelDialog.showInDialog(CadenzaFrame.this, "Edit Global Effects", new EffectChainViewerEditor(_data.globalEffects, true), panel -> {
         final List<Effect> effects = panel.getEffects();
         if (!effects.equals(_data.globalEffects)) {
           _data.globalEffects.clear();
           _data.globalEffects.addAll(panel.getEffects());
         }
-      }
+      });
     }));
     
     setupMenu.addSeparator();

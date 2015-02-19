@@ -1,8 +1,6 @@
 package cadenza.control.midiinput;
 
 import java.awt.KeyboardFocusManager;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.ShortMessage;
@@ -17,16 +15,13 @@ public class MIDIInputControlCenter {
     _active = true;
     
     final KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-    manager.addPropertyChangeListener(new PropertyChangeListener() {
-      @Override
-      public void propertyChange(PropertyChangeEvent evt) {
-        final String prop = evt.getPropertyName();
-        if ("focusOwner".equals(prop)) {
-          if (evt.getNewValue() instanceof AcceptsKeyboardInput)
-            _componentWithFocus = (AcceptsKeyboardInput) evt.getNewValue();
-          else
-            _componentWithFocus = null;
-        }
+    manager.addPropertyChangeListener(evt -> {
+      final String prop = evt.getPropertyName();
+      if ("focusOwner".equals(prop)) {
+        if (evt.getNewValue() instanceof AcceptsKeyboardInput)
+          _componentWithFocus = (AcceptsKeyboardInput) evt.getNewValue();
+        else
+          _componentWithFocus = null;
       }
     });
   }
