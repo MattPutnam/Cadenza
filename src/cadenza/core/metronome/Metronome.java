@@ -154,21 +154,18 @@ public class Metronome {
   }
   
   private void startMetronome() {
-    _metronomeThread = new Thread(new Runnable() {
-      @Override
-      public void run() {
-        boolean alive = true;
-        int counter = 0;
-        while (alive) {
-          for (final MetronomeListener listener : _listeners)
-            listener.metronomeClicked(counter);
-          counter = (counter+1) % 12;
-          
-          try {
-            Thread.sleep((long) ((MILLIS_IN_MINUTE / 12.0) / _bpm));
-          } catch (InterruptedException e) {
-            alive = false;
-          }
+    _metronomeThread = new Thread(() -> {
+      boolean alive = true;
+      int counter = 0;
+      while (alive) {
+        for (final MetronomeListener listener : _listeners)
+          listener.metronomeClicked(counter);
+        counter = (counter+1) % 12;
+        
+        try {
+          Thread.sleep((long) ((MILLIS_IN_MINUTE / 12.0) / _bpm));
+        } catch (InterruptedException e) {
+          alive = false;
         }
       }
     });

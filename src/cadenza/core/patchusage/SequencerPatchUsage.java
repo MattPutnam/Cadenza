@@ -114,11 +114,4 @@ public class SequencerPatchUsage extends PatchUsage implements MetronomeListener
   private boolean isRestart() {
     return sequencer.getNoteChangeBehavior() == NoteChangeBehavior.RESTART_SEQUENCE;
   }
-  
-  @Override
-  public void bpmSet(int bpm) { /* no op */ }
-  @Override
-  public void metronomeStarted() { /* no op */ }
-  @Override
-  public void metronomeStopped() { /* no op */ }
 }

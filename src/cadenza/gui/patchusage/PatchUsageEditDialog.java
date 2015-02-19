@@ -30,7 +30,6 @@ import cadenza.core.patchusage.PatchUsage;
 import cadenza.core.patchusage.SequencerPatchUsage;
 import cadenza.core.patchusage.SimplePatchUsage;
 import cadenza.gui.common.LocationEditPanel;
-import cadenza.gui.common.LocationListener;
 import cadenza.gui.common.TranspositionEditor;
 import cadenza.gui.common.VolumeField;
 import cadenza.gui.effects.edit.EffectChainViewerEditor;
@@ -38,6 +37,7 @@ import cadenza.gui.patch.PatchSelector;
 import cadenza.gui.patchusage.editor.CustomScalePatchUsageEditor;
 import cadenza.gui.patchusage.editor.GhostNotePatchUsageEditor;
 import cadenza.gui.patchusage.editor.SequencerPatchUsageEditor;
+
 import common.swing.IntField;
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
@@ -278,12 +278,7 @@ public class PatchUsageEditDialog extends OKCancelDialog {
     public GhostNotePatchUsagePane(PatchUsage startingPatchUsage, LocationEditPanel locationSelector) {
       _editor = new GhostNotePatchUsageEditor(startingPatchUsage);
       
-      locationSelector.addLocationListener(new LocationListener() {
-        @Override
-        public void locationChanged(Location newLocation) {
-          _editor.setLocation(newLocation);
-        }
-      });
+      locationSelector.addLocationListener(newLocation -> _editor.setLocation(newLocation));
       
       add(_editor);
     }

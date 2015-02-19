@@ -22,8 +22,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.basic.BasicTableUI;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
@@ -220,19 +218,16 @@ public class CueListEditor extends JPanel {
       
       accessTable().setDefaultRenderer(Object.class, new CueTableRenderer());
       
-      accessTable().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-        @Override
-        public void valueChanged(ListSelectionEvent e) {
-          if (e.getValueIsAdjusting()) return;
-          
-          CueTableEntry entry = null;
-          final boolean oneCue = accessTable().getSelectedRowCount() == 1 &&
-                 (entry = _entries.get(accessTable().getSelectedRow())).isCue();
-          cloneButton.setEnabled(oneCue);
-          if (oneCue && !_disableListSelectionListener) {
-            _controller.goTo(entry.cue);
-            _cadenzaFrame.notifyPerformLocationChanged(_data.cues.indexOf(entry.cue), false);
-          }
+      accessTable().getSelectionModel().addListSelectionListener(e -> {
+        if (e.getValueIsAdjusting()) return;
+        
+        CueTableEntry entry = null;
+        final boolean oneCue = accessTable().getSelectedRowCount() == 1 &&
+               (entry = _entries.get(accessTable().getSelectedRow())).isCue();
+        cloneButton.setEnabled(oneCue);
+        if (oneCue && !_disableListSelectionListener) {
+          _controller.goTo(entry.cue);
+          _cadenzaFrame.notifyPerformLocationChanged(_data.cues.indexOf(entry.cue), false);
         }
       });
     }

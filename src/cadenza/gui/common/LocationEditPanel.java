@@ -103,12 +103,7 @@ public class LocationEditPanel extends JPanel {
     layout.setVerticalGroup(sg);
     layout.setHorizontalGroup(pg);
     
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        updateRangeDisplay();
-      }
-    });
+    SwingUtilities.invokeLater(() -> updateRangeDisplay());
   }
   
   public void setSelectedLocation(Location location) {

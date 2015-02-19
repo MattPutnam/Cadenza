@@ -85,12 +85,9 @@ public class Trigger implements Serializable {
     
     _lastTriggered = System.currentTimeMillis();
     
-    new Thread(new Runnable() {
-      @Override
-      public void run() {
-        for (final TriggerAction action : actions)
-          action.takeAction(controller);
-      }
+    new Thread(() -> {
+      for (final TriggerAction action : actions)
+        action.takeAction(controller);
     }).start();
   }
 

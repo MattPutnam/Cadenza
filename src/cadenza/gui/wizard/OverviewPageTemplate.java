@@ -48,12 +48,9 @@ public class OverviewPageTemplate extends PageTemplate {
 
   @Override
   public void setPage(final WizardPage page) {
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        _innerTemplate.setPage(page);
-        _overview.setSelectedIndex(_pageFactory.getPageIndex(page));
-      }
+    SwingUtilities.invokeLater(() -> {
+      _innerTemplate.setPage(page);
+      _overview.setSelectedIndex(_pageFactory.getPageIndex(page));
     });
   }
   

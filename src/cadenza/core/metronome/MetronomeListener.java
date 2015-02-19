@@ -6,6 +6,7 @@ package cadenza.core.metronome;
  * 
  * @author Matt Putnam
  */
+@FunctionalInterface
 public interface MetronomeListener {
   /**
    * Notification that the Metronome's BPM has been set

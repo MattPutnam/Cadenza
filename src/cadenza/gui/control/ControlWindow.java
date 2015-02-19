@@ -221,10 +221,4 @@ public class ControlWindow extends JFrame implements MetronomeListener {
       SwingUtils.doDelayedInSwing(() -> _metronomeArea.setBackground(BG), 100);
     }
   }
-  
-  @Override
-  public void metronomeStarted() { /* no op */ }
-  
-  @Override
-  public void metronomeStopped() { /* no op */ }
 }
