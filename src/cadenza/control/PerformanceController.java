@@ -234,7 +234,7 @@ public final class PerformanceController extends CadenzaController {
     final Map<PatchUsage, Integer> oldAssignments = _currentAssignments;
     final Map<PatchUsage, Integer> newAssignments = new HashMap<>();
     
-    final List<PatchUsage> oldPatchUsages = oldCue == null ? Collections.<PatchUsage>emptyList()
+    final List<PatchUsage> oldPatchUsages = oldCue == null ? Collections.emptyList()
                                  : oldCue.getPatchUsages();
     final List<PatchUsage> newPatchUsages = newCue.getPatchUsages();
     
@@ -297,7 +297,8 @@ public final class PerformanceController extends CadenzaController {
     
     _currentGlobalCueEffects = new LinkedList<>();
     _currentGlobalCueEffects.addAll(_currentCue.effects);
-    _currentGlobalCueEffects.addAll(getData().globalEffects);
+    if (!_currentCue.disableGlobalEffects)
+      _currentGlobalCueEffects.addAll(getData().globalEffects);
     EffectMonitor.getInstance().setEffects(_currentGlobalCueEffects);
   }
 
@@ -332,7 +333,7 @@ public final class PerformanceController extends CadenzaController {
         pu.noteReleased(midiNumber);
       }
       
-      final Pair<Keyboard, Integer> key = Pair.make(keyboard, new Integer(midiNumber));
+      final Pair<Keyboard, Integer> key = Pair.make(keyboard, Integer.valueOf(midiNumber));
       final Set<Pair<Integer, Integer>> notes = _currentNotes.get(key);
       if (notes != null) {
         for (final Pair<Integer, Integer> entry : notes) {
