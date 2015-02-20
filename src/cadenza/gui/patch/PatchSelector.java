@@ -3,13 +3,17 @@ package cadenza.gui.patch;
 import java.util.Collections;
 import java.util.List;
 
-import javax.swing.JButton;
+
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+
 import cadenza.core.Patch;
 import cadenza.core.Synthesizer;
+
+import common.swing.SwingUtils;import common.swing.dialog.OKCancelDialog;
+
 
 @SuppressWarnings("serial")
 public class PatchSelector extends JPanel {
@@ -23,22 +27,17 @@ public class PatchSelector extends JPanel {
       _patchList.setSelectedItem(selected);
     _patchList.setRenderer(new PatchRenderer());
     
-    final JButton pickNewPatchButton = new JButton("Select New Patch");
-    pickNewPatchButton.addActionListener(e -> {
-      final PatchPickerDialog dialog = new PatchPickerDialog(PatchSelector.this, synthesizer);
-      dialog.showDialog();
-      if (dialog.okPressed()) {
+    add(new JLabel("Select existing patch:"));
+    add(_patchList);
+    add(new JLabel("or"));
+    add(SwingUtils.button("Select New Patch", e ->
+      OKCancelDialog.showDialog(new PatchPickerDialog(PatchSelector.this, synthesizer), dialog -> {
         patches.add(dialog.getSelectedPatch());
         Collections.sort(patches);
         _patchList.insertItemAt(dialog.getSelectedPatch(), 0);
         _patchList.setSelectedIndex(0);
-      }
-    });
-    
-    add(new JLabel("Select existing patch:"));
-    add(_patchList);
-    add(new JLabel("or"));
-    add(pickNewPatchButton);
+      })
+    ));
   }
   
   public JComboBox<Patch> accessCombo() {

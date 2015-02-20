@@ -131,21 +131,13 @@ public class PreviewMixer extends JPanel {
       }
     });
     
-    final JButton resetButton = new JButton("Reset");
-    resetButton.setToolTipText("Reset to the default volume");
-    resetButton.addActionListener(e -> textField.setInt(patch.defaultVolume));
-    
-    final JButton setButton = new JButton("Set");
-    setButton.setToolTipText("Set the selected volume as the default");
-    setButton.addActionListener(e -> {
-      patch.defaultVolume = textField.getInt();
-      _data.patches.notifyChange(patch);
-    });
-    
     final Box subSouth = Box.createVerticalBox();
     subSouth.add(textField);
-    subSouth.add(resetButton);
-    subSouth.add(setButton);
+    subSouth.add(SwingUtils.button("Reset",  "Reset to the default volume", e -> textField.setInt(patch.defaultVolume)));
+    subSouth.add(SwingUtils.button("Set", "Set the selected volume as the default", e -> {
+      patch.defaultVolume = textField.getInt();
+      _data.patches.notifyChange(patch);
+    }));
     
     final JPanel panel = new JPanel(new BorderLayout());
     panel.add(label, BorderLayout.NORTH);

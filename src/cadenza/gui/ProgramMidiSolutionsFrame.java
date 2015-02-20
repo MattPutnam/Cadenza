@@ -194,8 +194,7 @@ public class ProgramMidiSolutionsFrame extends JFrame {
       final IntField nrBottomField = buildIntField();
       final IntField nrTopField = buildIntField();
       
-      final JButton sendButton = new JButton("Send");
-      sendButton.addActionListener(e -> {
+      final JButton sendButton = SwingUtils.button("Send", e -> {
         try {
           _sender.sendPedalDeviceParametersMessage(
               extractBoolean(echoCheckBox),
@@ -250,8 +249,7 @@ public class ProgramMidiSolutionsFrame extends JFrame {
       box.add(new JLabel(fieldLabels[i] + ": "));
       box.add(field);
     }
-    final JButton sendButton = new JButton("Send");
-    sendButton.addActionListener(e -> {
+    final JButton sendButton = SwingUtils.button("Send", e -> {
       try {
         action.onClick(inputFields, _sender);
       } catch (Throwable t) {
