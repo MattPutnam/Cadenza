@@ -5,7 +5,6 @@ import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.util.Collections;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -54,7 +53,7 @@ public class ParametricEQEditor extends EffectEditor {
                               refreshBands();
                             }),
                             SwingUtils.button("Sort Bands", e -> {
-                              Collections.sort(_bands, (b1, b2) -> b1.getFrequency() - b2.getFrequency());
+                              _bands.sort((b1, b2) -> b1.getFrequency() - b2.getFrequency());
                               refreshBands();
                             })));
   }

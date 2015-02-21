@@ -3,7 +3,6 @@ package cadenza.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -147,7 +146,7 @@ public class PatchEditor extends JPanel {
       dialog.showDialog();
       if (dialog.okPressed()) {
         _data.patches.add(dialog.getPatch());
-        Collections.sort(_data.patches);
+        _data.patches.sort(null);
       }
     }
     
@@ -177,7 +176,7 @@ public class PatchEditor extends JPanel {
         }
         
         patch.copyFrom(edit, true);
-        Collections.sort(_data.patches);
+        _data.patches.sort(null);
       }
     }
     
@@ -237,7 +236,7 @@ public class PatchEditor extends JPanel {
       dialog.showDialog();
       if (dialog.okPressed()) {
         _data.patches.add(dialog.getSelectedPatch());
-        Collections.sort(_data.patches);
+        _data.patches.sort(null);
       }
     }
   }
@@ -264,7 +263,7 @@ public class PatchEditor extends JPanel {
           _data.patches.add(replacement);
         }
         
-        Collections.sort(_data.patches);
+        _data.patches.sort(null);
         
         for (final Cue cue : _data.cues) {
           for (final PatchUsage patchUsage : cue.patches) {

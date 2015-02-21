@@ -1,7 +1,6 @@
 package cadenza.core.patchusage;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -94,7 +93,7 @@ public class ArpeggiatorPatchUsage extends PatchUsage implements MetronomeListen
   public int[][] getNotes(int midiNumber, int velocity) {
     // abuse this just to get key pressed info
     _currentNotes.add(Integer.valueOf(midiNumber));
-    Collections.sort(_currentNotes);
+    _currentNotes.sort(null);
     Metronome.getInstance().start();
     return new int[][] {};
   }

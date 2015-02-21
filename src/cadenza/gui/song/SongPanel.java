@@ -2,7 +2,6 @@ package cadenza.gui.song;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.util.Collections;
 import java.util.List;
 
 import javax.swing.Box;
@@ -35,7 +34,7 @@ public class SongPanel extends JPanel {
       dialog.showDialog();
       if (dialog.okPressed()) {
         _songs.add(newSong);
-        Collections.sort(_songs);
+        _songs.sort(null);
         _songCombo.setModel(new DefaultComboBoxModel<>(_songs.toArray(new Song[_songs.size()])));
         _songCombo.setSelectedItem(newSong);
       }

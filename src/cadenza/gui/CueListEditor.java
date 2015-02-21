@@ -8,7 +8,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -141,7 +140,7 @@ public class CueListEditor extends JPanel {
       _entries.add(new CueTableEntry(cue));
     for (final Song song : _data.songs)
       _entries.add(new CueTableEntry(song));
-    Collections.sort(_entries);
+    _entries.sort(null);
     _table.accessTableModel().setList(_entries);
   }
   
@@ -367,7 +366,7 @@ public class CueListEditor extends JPanel {
       dialog.showDialog();
       if (dialog.okPressed()) {
         _data.cues.add(newCue);
-        Collections.sort(_data.cues);
+        _data.cues.sort(null);
         
         if (!_data.songs.contains(newCue.song)) {
           _data.songs.add(newCue.song);
@@ -384,7 +383,7 @@ public class CueListEditor extends JPanel {
         final CueEditDialog dialog = new CueEditDialog(_cadenzaFrame, cue, _data);
         dialog.showDialog();
         if (dialog.okPressed()) {
-          Collections.sort(_data.cues);
+          _data.cues.sort(null);
           
           if (_data.songs.contains(cue.song)) {
             rebuildEntries();

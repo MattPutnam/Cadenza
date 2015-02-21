@@ -2,7 +2,6 @@ package cadenza.gui.controlmap;
 
 import java.awt.BorderLayout;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -87,7 +86,7 @@ public class ControlMapPanel extends JPanel implements CustomWizardComponent {
       editor.showDialog();
       if (editor.okPressed()) {
         _selectedMapping.add(editor.getEntry());
-        Collections.sort(_selectedMapping, COMPARATOR);
+        _selectedMapping.sort(COMPARATOR);
       }
     }
     
@@ -98,7 +97,7 @@ public class ControlMapPanel extends JPanel implements CustomWizardComponent {
       editor.showDialog();
       if (editor.okPressed()) {
         _selectedMapping.set(index, editor.getEntry());
-        Collections.sort(_selectedMapping, COMPARATOR);
+        _selectedMapping.sort(COMPARATOR);
       }
     }
   }

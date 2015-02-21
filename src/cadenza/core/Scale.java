@@ -453,7 +453,7 @@ public final class Scale implements Serializable {
     _name = name;
     _pitches = new ArrayList<>(pitches);
     _size = _pitches.size();
-    Collections.sort(_pitches);
+    _pitches.sort(null);
   }
   
   /**
