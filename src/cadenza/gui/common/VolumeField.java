@@ -56,10 +56,4 @@ public class VolumeField extends IntField implements AcceptsKeyboardInput {
       }
     }, false);
   }
-  
-  @Override
-  public void keyPressed(int channel, int midiNumber, int velocity) { /* ignore */ }
-  @Override
-  public void keyReleased(int channel, int midiNumber) { /* ignore */ }
-
 }

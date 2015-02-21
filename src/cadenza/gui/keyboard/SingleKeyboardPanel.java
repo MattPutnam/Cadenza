@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputAdapter;
 
+import cadenza.control.midiinput.AcceptsKeyboardInput;
 import cadenza.core.Keyboard;
 import cadenza.core.Note;
 
@@ -19,7 +20,7 @@ import cadenza.core.Note;
  * 
  * @author Matt Putnam
  */
-public final class SingleKeyboardPanel extends JPanel {
+public final class SingleKeyboardPanel extends JPanel implements AcceptsKeyboardInput {
   private static final long serialVersionUID = 1L;
 
   private final KeyboardPanel _panel;
@@ -54,6 +55,20 @@ public final class SingleKeyboardPanel extends JPanel {
   
   public KeyboardPanel accessKeyboardPanel() {
     return _panel;
+  }
+  
+  @Override
+  public void keyPressed(int channel, int midiNumber, int velocity) {
+    _listeners.forEach(listener -> {
+      listener.keyPressed(new Note(midiNumber));
+    });
+  }
+  
+  @Override
+  public void keyReleased(int channel, int midiNumber) {
+    _listeners.forEach(listener -> {
+      listener.keyReleased(new Note(midiNumber));
+    });
   }
   
   /**

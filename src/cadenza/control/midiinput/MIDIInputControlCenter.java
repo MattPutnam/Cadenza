@@ -18,10 +18,14 @@ public class MIDIInputControlCenter {
     manager.addPropertyChangeListener(evt -> {
       final String prop = evt.getPropertyName();
       if ("focusOwner".equals(prop)) {
-        if (evt.getNewValue() instanceof AcceptsKeyboardInput)
+        if (evt.getNewValue() instanceof AcceptsKeyboardInput) {
           _componentWithFocus = (AcceptsKeyboardInput) evt.getNewValue();
-        else
+          System.out.println("Component with focus reassigned to " + _componentWithFocus.getClass());
+        }
+        else {
           _componentWithFocus = null;
+          System.out.println("Component with focus cleared");
+        }
       }
     });
   }
