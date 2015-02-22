@@ -1,4 +1,4 @@
- package cadenza.core;
+package cadenza.core;
 
 import java.io.Serializable;
 import java.util.IdentityHashMap;
@@ -14,7 +14,7 @@ public class Note implements Comparable<Note>, Serializable {
   
   public static enum PitchClass {
       Cb("Cb", true, 3, 1),
-    C("C", true, 2, 1),
+    C("C", true, 3, 1),
       Cs("C#", false, 1, 2),
       Db("Db", false, 2, 1),
     D("D", true, 1, 1),
