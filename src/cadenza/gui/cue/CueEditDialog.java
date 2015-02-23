@@ -26,6 +26,7 @@ import cadenza.gui.effects.edit.EffectChainViewerEditor;
 import cadenza.gui.patchusage.PatchUsagePanel;
 import cadenza.gui.song.SongPanel;
 import cadenza.gui.trigger.TriggerPanel;
+
 import common.collection.NotifyingList;
 import common.swing.CollapsiblePanel;
 import common.swing.CollapsiblePanel.Orientation;

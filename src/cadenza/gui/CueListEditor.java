@@ -108,6 +108,14 @@ public class CueListEditor extends JPanel {
     _disableListSelectionListener = false;
   }
   
+  private Song suggestSong() {
+    final List<CueTableEntry> selected = _table.getSelectedRows();
+    if (selected.isEmpty())
+      return _data.cues.get(_data.cues.size()-1).song;
+    else
+      return selected.get(0).song;
+  }
+  
   private class CloneCueAction extends AbstractAction {
     public CloneCueAction() {
       super();
@@ -362,6 +370,7 @@ public class CueListEditor extends JPanel {
     @Override
     protected void takeActionOnAdd() {
       final Cue newCue = new Cue(null, "");
+      newCue.song = suggestSong();
       final CueEditDialog dialog = new CueEditDialog(_cadenzaFrame, newCue, _data);
       dialog.showDialog();
       if (dialog.okPressed()) {
