@@ -54,10 +54,10 @@ public final class PerformanceController extends CadenzaController {
   /** The current list of global and cue-level effects */
   private List<Effect> _currentGlobalCueEffects;
   
-  /** The current cue, in perform mode */
+  /** The current cue */
   private Cue _currentCue;
   
-  /** The cue number, in perform mode */
+  /** The cue number */
   private int _position = -1;
   
   public PerformanceController(CadenzaData data, CadenzaFrame cadenzaFrame) {
