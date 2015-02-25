@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
@@ -30,6 +31,7 @@ public class InputMonitor extends JFrame {
   
   private final JList<MidiEvent> _jList;
   private final Vector<MidiEvent> _listData;
+  private final JScrollPane _sPane;
   
   private final Set<MidiEvent> _savedEvents;
   
@@ -57,12 +59,15 @@ public class InputMonitor extends JFrame {
     saveButton.setEnabled(false);
     
     setLayout(new BorderLayout());
-    add(new JScrollPane(_jList), BorderLayout.CENTER);
+    _sPane = new JScrollPane(_jList);
+    add(_sPane, BorderLayout.CENTER);
     add(subBottom, BorderLayout.SOUTH);
     
     pack();
     
     setTitle("Input Monitor");
+    setSize(400, 300);
+    setLocationRelativeTo(null);
     setAlwaysOnTop(true);
     SwingUtils.goInvisibleOnClose(this);
   }
@@ -71,6 +76,9 @@ public class InputMonitor extends JFrame {
     SwingUtilities.invokeLater(() -> {
       _listData.add(new MidiEvent(mm));
       _jList.setListData(_listData);
+      final JScrollBar bar = _sPane.getVerticalScrollBar();
+      if (bar != null)
+        bar.setValue(bar.getMaximum());
     });
   }
   

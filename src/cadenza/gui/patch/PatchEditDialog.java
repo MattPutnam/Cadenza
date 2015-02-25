@@ -17,8 +17,8 @@ import javax.swing.JTextField;
 import cadenza.core.Patch;
 import cadenza.core.Synthesizer;
 import cadenza.gui.common.VolumeField;
-
 import common.swing.ColorPreviewPanel;
+import common.swing.IntField;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
 
@@ -27,7 +27,7 @@ public class PatchEditDialog extends OKCancelDialog {
   private JComboBox<Synthesizer> _synthesizerCombo;
   private JTextField _nameField;
   private JTextField _bankField;
-  private JTextField _numField;
+  private IntField _numField;
   private VolumeField _volumeField;
   private ColorPreviewPanel _colorChooser;
   
@@ -57,7 +57,8 @@ public class PatchEditDialog extends OKCancelDialog {
     if (_patch != null) _synthesizerCombo.setSelectedItem(_patch.getSynthesizer());
     _nameField = new JTextField(16);
     _bankField = new JTextField(3);
-    _numField = new JTextField(3);
+    _numField = new IntField(1, 0, Integer.MAX_VALUE);
+    _numField.setColumns(3);
     _volumeField = new VolumeField(_patch == null ? 100 : _patch.defaultVolume);
     _colorChooser = new ColorPreviewPanel(_patch == null ? Color.WHITE : _patch.getDisplayColor());
     
@@ -91,7 +92,7 @@ public class PatchEditDialog extends OKCancelDialog {
     if (_patch != null) {
       _nameField.setText(_patch.name);
       _bankField.setText(_patch.bank);
-      _numField.setText(String.valueOf(_patch.number));
+      _numField.setInt(_patch.number);
     }
     
     _nameField.requestFocus();
@@ -117,21 +118,13 @@ public class PatchEditDialog extends OKCancelDialog {
     
     if (_bankField.getText().trim().isEmpty())
       throw new VerificationException("Please specify a Patch bank", _bankField);
-    
-    try {
-      int num = Integer.parseInt(_numField.getText());
-      if (num < 0)
-        throw new VerificationException("Patch number must be a positive integer", _numField);
-    } catch (NumberFormatException nfe) {
-      throw new VerificationException("Patch number must be a positive integer", _numField);
-    }
   }
   
   public Patch getPatch() {
     final Patch result = new Patch((Synthesizer) _synthesizerCombo.getSelectedItem(),
                      _nameField.getText(),
                      _bankField.getText(),
-                     Integer.parseInt(_numField.getText()),
+                     _numField.getInt(),
                      _volumeField.getVolume());
     result.setDisplayColor(_colorChooser.getSelectedColor());
     return result;
