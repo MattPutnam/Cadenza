@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 
 import cadenza.core.Patch;
 import cadenza.core.Synthesizer;
+import cadenza.gui.common.VolumeField;
 
 import common.swing.ColorPreviewPanel;
 import common.swing.VerificationException;
@@ -27,7 +28,7 @@ public class PatchEditDialog extends OKCancelDialog {
   private JTextField _nameField;
   private JTextField _bankField;
   private JTextField _numField;
-  private JTextField _volumeField;
+  private VolumeField _volumeField;
   private ColorPreviewPanel _colorChooser;
   
   private final Patch _patch;
@@ -57,7 +58,7 @@ public class PatchEditDialog extends OKCancelDialog {
     _nameField = new JTextField(16);
     _bankField = new JTextField(3);
     _numField = new JTextField(3);
-    _volumeField = new JTextField(3);
+    _volumeField = new VolumeField(_patch == null ? 100 : _patch.defaultVolume);
     _colorChooser = new ColorPreviewPanel(_patch == null ? Color.WHITE : _patch.getDisplayColor());
     
     final Box box = Box.createHorizontalBox();
@@ -87,13 +88,10 @@ public class PatchEditDialog extends OKCancelDialog {
   
   @Override
   protected void initialize() {
-    if (_patch == null) {
-      _volumeField.setText("100");
-    } else {
+    if (_patch != null) {
       _nameField.setText(_patch.name);
       _bankField.setText(_patch.bank);
       _numField.setText(String.valueOf(_patch.number));
-      _volumeField.setText(String.valueOf(_patch.defaultVolume));
     }
     
     _nameField.requestFocus();
@@ -127,14 +125,6 @@ public class PatchEditDialog extends OKCancelDialog {
     } catch (NumberFormatException nfe) {
       throw new VerificationException("Patch number must be a positive integer", _numField);
     }
-    
-    try {
-      int num = Integer.parseInt(_volumeField.getText());
-      if (num < 0)
-        throw new VerificationException("Patch volume must be an integer 1 to 100", _volumeField);
-    } catch (NumberFormatException nfe) {
-      throw new VerificationException("Patch volume must be an integer 1 to 100", _volumeField);
-    }
   }
   
   public Patch getPatch() {
@@ -142,7 +132,7 @@ public class PatchEditDialog extends OKCancelDialog {
                      _nameField.getText(),
                      _bankField.getText(),
                      Integer.parseInt(_numField.getText()),
-                     Integer.parseInt(_volumeField.getText()));
+                     _volumeField.getVolume());
     result.setDisplayColor(_colorChooser.getSelectedColor());
     return result;
   }

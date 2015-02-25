@@ -77,7 +77,6 @@ public class CadenzaFrame extends JFrame implements Receiver {
   private final CadenzaData _data;
   private final PerformanceController _performanceController;
   private final PreviewController _previewController;
-  private final MIDIInputControlCenter _inputControlCenter;
   
   private PatchEditor _patchEditor;
   private CueListEditor _cueListEditor;
@@ -105,7 +104,6 @@ public class CadenzaFrame extends JFrame implements Receiver {
     _data = data;
     _performanceController = new PerformanceController(_data, this);
     _previewController = new PreviewController(_data);
-    _inputControlCenter = new MIDIInputControlCenter();
     
     _data.synthesizers.addListener(new Dirtyer<Synthesizer>());
     _data.globalTriggers.addListener(new Dirtyer<Trigger>());
@@ -158,7 +156,7 @@ public class CadenzaFrame extends JFrame implements Receiver {
     else if (_mode == Mode.PREVIEW)
       _previewController.send(message);
     
-    _inputControlCenter.send(message);
+    MIDIInputControlCenter.getInstance().send(message);
     InputMonitor.getInstance().send(message);
   }
   

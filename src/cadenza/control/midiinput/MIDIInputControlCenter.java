@@ -1,6 +1,9 @@
 package cadenza.control.midiinput;
 
-import java.awt.KeyboardFocusManager;
+import java.awt.Component;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.util.Stack;
 
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.ShortMessage;
@@ -8,41 +11,62 @@ import javax.sound.midi.ShortMessage;
 import common.midi.MidiUtilities;
 
 public class MIDIInputControlCenter {
-  private volatile AcceptsKeyboardInput _componentWithFocus;
-  private volatile boolean _active;
-  
-  public MIDIInputControlCenter() {
-    _active = true;
-    
-    final KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-    manager.addPropertyChangeListener(evt -> {
-      final String prop = evt.getPropertyName();
-      if ("focusOwner".equals(prop)) {
-        if (evt.getNewValue() instanceof AcceptsKeyboardInput) {
-          _componentWithFocus = (AcceptsKeyboardInput) evt.getNewValue();
-          System.out.println("Component with focus reassigned to " + _componentWithFocus.getClass());
-        }
-        else {
-          _componentWithFocus = null;
-          System.out.println("Component with focus cleared");
-        }
-      }
-    });
+  private static final MIDIInputControlCenter INSTANCE = new MIDIInputControlCenter();
+  public static MIDIInputControlCenter getInstance() {
+    return INSTANCE;
   }
   
-  public void setActive(boolean active) {
+  private Stack<AcceptsKeyboardInput> _stack;
+  private volatile boolean _active;
+  
+  private MIDIInputControlCenter() {
+    _stack = new Stack<>();
+    _active = true;
+  }
+  
+  public synchronized void setActive(boolean active) {
     _active = active;
   }
   
-  public void send(MidiMessage message) {
-    if (_active && (_componentWithFocus != null) && (message instanceof ShortMessage)) {
-      final ShortMessage sm = (ShortMessage) message;
-      if (MidiUtilities.isNoteOn(sm))
-        _componentWithFocus.keyPressed(sm.getChannel(), sm.getData1(), sm.getData2());
-      else if (MidiUtilities.isNoteOff(sm))
-        _componentWithFocus.keyReleased(sm.getChannel(), sm.getData1());
-      else if (MidiUtilities.isControlChange(sm))
-        _componentWithFocus.controlReceived(sm.getChannel(), sm.getData1(), sm.getData2());
+  public synchronized void grabFocus(AcceptsKeyboardInput component) {
+    _stack.push(component);
+  }
+  
+  public synchronized void relinquishFocus(AcceptsKeyboardInput component) {
+    _stack.remove(component);
+  }
+  
+  public synchronized void send(MidiMessage message) {
+    if (!_stack.isEmpty()) {
+      final AcceptsKeyboardInput comp = _stack.peek();
+      if (_active && (message instanceof ShortMessage)) {
+        final ShortMessage sm = (ShortMessage) message;
+        if (MidiUtilities.isNoteOn(sm))
+          comp.keyPressed(sm.getChannel(), sm.getData1(), sm.getData2());
+        else if (MidiUtilities.isNoteOff(sm))
+          comp.keyReleased(sm.getChannel(), sm.getData1());
+        else if (MidiUtilities.isControlChange(sm))
+          comp.controlReceived(sm.getChannel(), sm.getData1(), sm.getData2());
+      }
+    }
+  }
+  
+  public static void installFocusGrabber(AcceptsKeyboardInput component) {
+    if (component instanceof Component) {
+      final Component comp = (Component) component;
+      comp.addFocusListener(new FocusListener() {
+        @Override
+        public void focusGained(FocusEvent e) {
+          MIDIInputControlCenter.getInstance().grabFocus(component);
+        }
+        
+        @Override
+        public void focusLost(FocusEvent e) {
+          MIDIInputControlCenter.getInstance().relinquishFocus(component);
+        }
+      });
+    } else {
+      throw new IllegalArgumentException("Component must be a Component");
     }
   }
 }

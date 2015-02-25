@@ -1,7 +1,7 @@
 package cadenza.gui.common;
 
 import cadenza.control.midiinput.AcceptsKeyboardInput;
-
+import cadenza.control.midiinput.MIDIInputControlCenter;
 import common.swing.IntField;
 import common.swing.SwingUtils;
 
@@ -35,6 +35,8 @@ public class VolumeField extends IntField implements AcceptsKeyboardInput {
     
     setColumns(3);
     SwingUtils.freezeSize(this);
+    
+    MIDIInputControlCenter.installFocusGrabber(this);
   }
   
   public void setVolume(int volume) {
