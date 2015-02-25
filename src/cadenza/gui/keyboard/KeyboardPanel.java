@@ -249,11 +249,21 @@ public final class KeyboardPanel extends JPanel {
   /**
    * Tells this component to start highlighting the given note.
    * @param note - the note to highlight
+   * @param color - the color to use
    */
   public void highlightNote(Note note, Color color) {
     _highlightedNotes.put(note, color);
     revalidate();
     repaint();
+  }
+  
+  /**
+   * Tells this component to start highlighting the given note.
+   * Uses the default color
+   * @param note - the note to highlight
+   */
+  public void highlightNote(Note note) {
+    highlightNote(note, HIGHLIGHT_COLOR);
   }
   
   /**

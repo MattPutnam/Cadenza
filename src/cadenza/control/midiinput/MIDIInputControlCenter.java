@@ -1,8 +1,11 @@
 package cadenza.control.midiinput;
 
 import java.awt.Component;
+import java.awt.Window;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Stack;
 
 import javax.sound.midi.MidiMessage;
@@ -67,6 +70,23 @@ public class MIDIInputControlCenter {
       });
     } else {
       throw new IllegalArgumentException("Component must be a Component");
+    }
+  }
+  
+  public static void installWindowFocusGrabber(AcceptsKeyboardInput component) {
+    if (component instanceof Window) {
+      final Window window = (Window) component;
+      window.addWindowListener(new WindowAdapter() {
+        @Override
+        public void windowOpened(WindowEvent e) {
+          MIDIInputControlCenter.getInstance().grabFocus(component);
+        }
+        
+        @Override
+        public void windowClosed(WindowEvent e) {
+          MIDIInputControlCenter.getInstance().relinquishFocus(component);
+        }
+      });
     }
   }
 }

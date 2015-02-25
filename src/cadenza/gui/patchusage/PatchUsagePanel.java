@@ -9,11 +9,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -24,7 +22,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import cadenza.control.midiinput.AcceptsKeyboardInput;
 import cadenza.core.CadenzaData;
 import cadenza.core.Cue;
 import cadenza.core.Keyboard;
@@ -34,7 +31,6 @@ import cadenza.core.Patch;
 import cadenza.core.patchusage.PatchUsage;
 import cadenza.core.patchusage.SimplePatchUsage;
 import cadenza.gui.keyboard.KeyboardAdapter;
-import cadenza.gui.keyboard.KeyboardPanel;
 import cadenza.gui.keyboard.SingleKeyboardPanel;
 import cadenza.gui.patch.PatchSelector;
 
@@ -44,7 +40,7 @@ import common.swing.dialog.OKCancelDialog;
 import common.swing.icon.DeleteIcon;
 
 @SuppressWarnings("serial")
-public class PatchUsagePanel extends JPanel implements AcceptsKeyboardInput {
+public class PatchUsagePanel extends JPanel {
   private static final Color PATCH_BORDER = Color.DARK_GRAY;
   
   private final Cue _cue;
@@ -114,6 +110,21 @@ public class PatchUsagePanel extends JPanel implements AcceptsKeyboardInput {
     
     revalidate();
     repaint();
+  }
+  
+  public void highlightKey(int keyboardIndex, int midiNum) {
+    _keyboardPanels.get(keyboardIndex).accessKeyboardPanel().highlightNote(new Note(midiNum));
+  }
+  
+  public void unHighlightKey(int keyboardIndex, int midiNum) {
+    _keyboardPanels.get(keyboardIndex).accessKeyboardPanel().unhighlightNote(new Note(midiNum));
+  }
+  
+  public void addPatchUsage(Location location) {
+    OKCancelDialog.showDialog(new PatchSelectorDialog(this, null), dialog -> {
+      _patchUsages.add(new SimplePatchUsage(dialog.getSelectedPatch(), location));
+      refreshDisplay();
+    });
   }
   
   private static Map<Keyboard, List<PatchUsage>> sortByKeyboard(List<PatchUsage> patchUsages) {
@@ -287,16 +298,10 @@ public class PatchUsagePanel extends JPanel implements AcceptsKeyboardInput {
     
     @Override
     public void keyClicked(Note note) {
-      final PatchSelectorDialog dialog = new PatchSelectorDialog(_anchor, null);
-      dialog.showDialog();
-      if (dialog.okPressed()) {
-        final Patch patch = dialog.getSelectedPatch();
-        _patchUsages.add(new SimplePatchUsage(patch,
-                            Location.singleNote(_keyboard, note),
-                            patch.defaultVolume,
-                            0, false, -1, true, 0));
+      OKCancelDialog.showDialog(new PatchSelectorDialog(_anchor, null), dialog -> {
+        _patchUsages.add(new SimplePatchUsage(dialog.getSelectedPatch(), Location.singleNote(_keyboard, note)));
         refreshDisplay();
-      }
+      });
     }
     
     @Override
@@ -308,16 +313,11 @@ public class PatchUsagePanel extends JPanel implements AcceptsKeyboardInput {
       else {
         low = endNote; high = startNote;
       }
-      final PatchSelectorDialog dialog = new PatchSelectorDialog(_anchor, null);
-      dialog.showDialog();
-      if (dialog.okPressed()) {
-        final Patch patch = dialog.getSelectedPatch();
-        _patchUsages.add(new SimplePatchUsage(patch,
-                            Location.range(_keyboard, low, high),
-                            patch.defaultVolume,
-                            0, false, -1, true, 0));
+      
+      OKCancelDialog.showDialog(new PatchSelectorDialog(_anchor, null), dialog -> {
+        _patchUsages.add(new SimplePatchUsage(dialog.getSelectedPatch(), Location.range(_keyboard, low, high)));
         refreshDisplay();
-      }
+      });
     }
   }
   
@@ -377,56 +377,4 @@ public class PatchUsagePanel extends JPanel implements AcceptsKeyboardInput {
       return _selector.getSelectedPatch();
     }
   }
-  
-  private Keyboard _activeKeyboard = null;
-  private Set<Integer> _currentlyPressedKeys = new HashSet<>(10);
-  private Set<Integer> _accumulatedPressedKeys = new HashSet<>(10);
-  @Override
-  public void keyPressed(int channel, int midiNumber, int velocity) {
-    final Keyboard kbd = findKeyboard(channel);
-    
-    _keyboardPanels.get(_data.keyboards.indexOf(kbd)).accessKeyboardPanel().
-        highlightNote(new Note(midiNumber), KeyboardPanel.HIGHLIGHT_COLOR);
-    
-    if (_activeKeyboard == null || kbd == _activeKeyboard) {
-      _activeKeyboard = kbd;
-      _accumulatedPressedKeys.add(Integer.valueOf(midiNumber));
-      _currentlyPressedKeys.add(Integer.valueOf(midiNumber));
-    } else {
-      // key pressed on other keyboard
-      _activeKeyboard = null;
-      _accumulatedPressedKeys.clear();
-      _currentlyPressedKeys.clear();
-    }
-  }
-  
-  @Override
-  public void keyReleased(int channel, int midiNumber) {
-    final Keyboard kbd = findKeyboard(channel);
-    
-    _keyboardPanels.get(_data.keyboards.indexOf(kbd)).accessKeyboardPanel().unhighlightNote(new Note(midiNumber));
-    
-    if (kbd == _activeKeyboard) {
-      _currentlyPressedKeys.remove(Integer.valueOf(midiNumber));
-      if (_currentlyPressedKeys.isEmpty()) {
-        if (_accumulatedPressedKeys.size() == 1) {
-          // Spoof click
-        } else if (_accumulatedPressedKeys.size() == 2) {
-          // Spoof drag
-        } else if (_accumulatedPressedKeys.size() >= 3) {
-          // make whole
-        }
-      }
-    }
-  }
-  
-  private Keyboard findKeyboard(int channel) {
-    for (final Keyboard kbd : _data.keyboards)
-      if (kbd.channel == channel)
-        return kbd;
-    return null;
-  }
-  
-  @Override
-  public void controlReceived(int channel, int ccNumber, int value) { /* ignore */ }
 }

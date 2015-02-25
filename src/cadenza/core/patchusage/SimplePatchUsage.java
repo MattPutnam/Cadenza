@@ -54,6 +54,10 @@ public class SimplePatchUsage extends PatchUsage {
     this.volumeReduction = volumeReduction;
   }
   
+  public SimplePatchUsage(Patch patch, Location location) {
+    this(patch, location, patch.defaultVolume, 0, false, -1, false, 0);
+  }
+  
   @Override
   public void prepare(PerformanceController controller) {
     _controller = controller;

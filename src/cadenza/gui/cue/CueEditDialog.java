@@ -6,7 +6,12 @@ import java.awt.Dimension;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.IdentityHashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.swing.Box;
 import javax.swing.JCheckBox;
@@ -16,10 +21,15 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import cadenza.control.midiinput.AcceptsKeyboardInput;
+import cadenza.control.midiinput.MIDIInputControlCenter;
 import cadenza.core.CadenzaData;
 import cadenza.core.ControlMapEntry;
 import cadenza.core.ControlMapProvider;
 import cadenza.core.Cue;
+import cadenza.core.Keyboard;
+import cadenza.core.Location;
+import cadenza.core.Note;
 import cadenza.core.patchusage.PatchUsage;
 import cadenza.gui.controlmap.ControlMapPanel;
 import cadenza.gui.effects.edit.EffectChainViewerEditor;
@@ -35,7 +45,7 @@ import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
 
 @SuppressWarnings("serial")
-public class CueEditDialog extends OKCancelDialog implements ControlMapProvider {
+public class CueEditDialog extends OKCancelDialog implements ControlMapProvider, AcceptsKeyboardInput {
   private final Cue _cue;
   private final NotifyingList<Cue> _otherCues;
   private final CadenzaData _data;
@@ -52,6 +62,12 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider 
   private JCheckBox _disableGlobalControlCheckBox;
   private JCheckBox _disableGlobalEffectsCheckBox;
   
+  // stuff for keyboard entry
+  private final Map<Integer, Keyboard> _keyboardMap = new IdentityHashMap<>();
+  private Keyboard _activeKeyboard = null;
+  private final Set<Integer> _currentlyPressedKeys = new HashSet<>(10);
+  private final Set<Integer> _accumulatedPressedKeys = new HashSet<>(10);
+  
   public CueEditDialog(Component parent, Cue cue, CadenzaData data) {
     super(parent);
     _cue = cue;
@@ -63,6 +79,10 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider 
         _otherCues.add(c);
       }
     }
+    
+    MIDIInputControlCenter.installWindowFocusGrabber(this);
+    
+    _data.keyboards.forEach(kbd -> _keyboardMap.put(Integer.valueOf(kbd.channel), kbd));
   }
   
   @Override
@@ -180,6 +200,56 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider 
     for (Cue cue : _otherCues) {
       if (_songPanel.getSelectedSong().equals(cue.song) && measure.equals(cue.measureNumber)) {
         throw new VerificationException("A Cue with this song/measure already exists");
+      }
+    }
+  }
+
+  @Override
+  public void keyPressed(int channel, int midiNumber, int velocity) {
+    final Keyboard kbd = _keyboardMap.get(Integer.valueOf(channel+1)); // +1 because input is raw
+    
+    _patchUsagePanel.highlightKey(_data.keyboards.indexOf(kbd), midiNumber);
+
+    if (_activeKeyboard == null || kbd == _activeKeyboard) {
+      _activeKeyboard = kbd;
+      _accumulatedPressedKeys.add(Integer.valueOf(midiNumber));
+      _currentlyPressedKeys.add(Integer.valueOf(midiNumber));
+    } else {
+      // key pressed on other keyboard
+      _activeKeyboard = null;
+      _accumulatedPressedKeys.clear();
+      _currentlyPressedKeys.clear();
+    }
+  }
+
+  @Override
+  public void keyReleased(int channel, int midiNumber) {
+    final Keyboard kbd = _keyboardMap.get(Integer.valueOf(channel+1)); // +1 because input is raw
+
+    _patchUsagePanel.unHighlightKey(_data.keyboards.indexOf(kbd), midiNumber);
+
+    if (kbd == _activeKeyboard) {
+      _currentlyPressedKeys.remove(Integer.valueOf(midiNumber));
+      
+      if (_currentlyPressedKeys.isEmpty()) {
+        
+        if (_accumulatedPressedKeys.size() == 1) {
+          _patchUsagePanel.addPatchUsage(Location.singleNote(kbd,
+              new Note(_accumulatedPressedKeys.iterator().next().intValue())));
+          
+        } else if (_accumulatedPressedKeys.size() == 2) {
+          final Iterator<Integer> i = _accumulatedPressedKeys.iterator();
+          Note n1 = new Note(i.next().intValue());
+          Note n2 = new Note(i.next().intValue());
+          if (n1.below(n2))
+            _patchUsagePanel.addPatchUsage(Location.range(kbd, n1, n2));
+          else
+            _patchUsagePanel.addPatchUsage(Location.range(kbd, n2, n1));
+          
+        } else if (_accumulatedPressedKeys.size() >= 3) {
+          _patchUsagePanel.addPatchUsage(Location.wholeKeyboard(kbd));
+        }
+        _accumulatedPressedKeys.clear();
       }
     }
   }
