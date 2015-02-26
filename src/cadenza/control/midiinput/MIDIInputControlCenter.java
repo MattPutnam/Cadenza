@@ -14,6 +14,8 @@ import javax.sound.midi.ShortMessage;
 import common.midi.MidiUtilities;
 
 public class MIDIInputControlCenter {  
+  private MIDIInputControlCenter() {}
+  
   private static Stack<AcceptsKeyboardInput> _stack = new Stack<>();
   private static volatile boolean _active = true;
   
@@ -32,7 +34,7 @@ public class MIDIInputControlCenter {
   public synchronized static void send(MidiMessage message) {
     if (_active && !_stack.isEmpty()) {
       final AcceptsKeyboardInput comp = _stack.peek();
-      if (_active && (message instanceof ShortMessage)) {
+      if (message instanceof ShortMessage) {
         final ShortMessage sm = (ShortMessage) message;
         if (MidiUtilities.isNoteOn(sm))
           comp.keyPressed(sm.getChannel(), sm.getData1(), sm.getData2());
