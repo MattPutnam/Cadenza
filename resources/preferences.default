@@ -7,3 +7,4 @@ synthesizer.channels = 1-16
 synthesizer.expansions = 
 midiport.input = 
 midiport.output = 
+input.allowmidiinput = true

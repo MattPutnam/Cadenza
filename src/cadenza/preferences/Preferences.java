@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import cadenza.control.midiinput.MIDIInputPreferences;
 import cadenza.core.Keyboard;
 import cadenza.core.Note;
 import cadenza.core.Synthesizer;
 import cadenza.synths.Synthesizers;
-
 import common.Utils;
 import common.io.PropertiesFileReader;
 import common.midi.MidiUtilities;
@@ -45,6 +45,10 @@ public class Preferences {
     private static class Midiport {
       private static String INPUT  = "midiport.input";
       private static String OUTPUT = "midiport.output";
+    }
+    
+    private static class Input {
+      private static String ALLOWMIDIINPUT = "input.allowmidiinput";
     }
   }
   
@@ -158,6 +162,28 @@ public class Preferences {
     return new String[] {loadedPrefs.get(Keys.Midiport.INPUT), loadedPrefs.get(Keys.Midiport.OUTPUT)};
   }
   
+  /**
+   * Reads the MIDI input options from the preferences file.  This is an IO
+   * operation and cannot be called from the Swing Event thread.
+   * @return the MIDI input options from the preferences file
+   * @throws Exception If any IO exception occurs
+   */
+  public static boolean[] readMIDIInputOptions() throws Exception {
+    return buildMIDIInputOptions(readAllPreferences());
+  }
+  
+  /**
+   * Reads the MIDI input options from the preferences file.  This is not an IO
+   * operation and can be called from anywhere.
+   * @param loadedPrefs the pre-loaded preferences map
+   * @return the MIDI input options from the given preferences map
+   */
+  public static boolean[] buildMIDIInputOptions(Map<String, String> loadedPrefs) {
+    return new boolean[] {
+        Boolean.parseBoolean(loadedPrefs.get(Keys.Input.ALLOWMIDIINPUT))
+    };
+  }
+  
   /////////////////////////////////////////////////////////////////////////////
   // Write block
   
@@ -196,6 +222,17 @@ public class Preferences {
   public static void commitDefaultMIDIPorts(Map<String, String> preferences, String[] ports) {
     preferences.put(Keys.Midiport.INPUT,  ports[0]);
     preferences.put(Keys.Midiport.OUTPUT, ports[1]);
+  }
+  
+  /**
+   * Commits the given MIDI input preferences to the given preferences map.
+   * This is not an IO operation and can be called from anywhere.
+   * @param preferences the loaded preferences map
+   * @param options the MIDI input options to commit
+   */
+  public static void commitInputOptions(Map<String, String> preferences, boolean[] options) {
+    preferences.put(Keys.Input.ALLOWMIDIINPUT, Boolean.toString(options[0]));
+    MIDIInputPreferences.match(options);
   }
   
   /**

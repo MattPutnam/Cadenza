@@ -17,11 +17,6 @@ public class MIDIInputControlCenter {
   private MIDIInputControlCenter() {}
   
   private static Stack<AcceptsKeyboardInput> _stack = new Stack<>();
-  private static volatile boolean _active = true;
-  
-  public synchronized static void setActive(boolean active) {
-    _active = active;
-  }
   
   public synchronized static void grabFocus(AcceptsKeyboardInput component) {
     _stack.push(component);
@@ -32,7 +27,7 @@ public class MIDIInputControlCenter {
   }
   
   public synchronized static void send(MidiMessage message) {
-    if (_active && !_stack.isEmpty()) {
+    if (MIDIInputPreferences.isAllowMIDIInput() && !_stack.isEmpty()) {
       final AcceptsKeyboardInput comp = _stack.peek();
       if (message instanceof ShortMessage) {
         final ShortMessage sm = (ShortMessage) message;
