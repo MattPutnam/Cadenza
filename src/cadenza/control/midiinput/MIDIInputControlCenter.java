@@ -13,34 +13,24 @@ import javax.sound.midi.ShortMessage;
 
 import common.midi.MidiUtilities;
 
-public class MIDIInputControlCenter {
-  private static final MIDIInputControlCenter INSTANCE = new MIDIInputControlCenter();
-  public static MIDIInputControlCenter getInstance() {
-    return INSTANCE;
-  }
+public class MIDIInputControlCenter {  
+  private static Stack<AcceptsKeyboardInput> _stack = new Stack<>();
+  private static volatile boolean _active = true;
   
-  private Stack<AcceptsKeyboardInput> _stack;
-  private volatile boolean _active;
-  
-  private MIDIInputControlCenter() {
-    _stack = new Stack<>();
-    _active = true;
-  }
-  
-  public synchronized void setActive(boolean active) {
+  public synchronized static void setActive(boolean active) {
     _active = active;
   }
   
-  public synchronized void grabFocus(AcceptsKeyboardInput component) {
+  public synchronized static void grabFocus(AcceptsKeyboardInput component) {
     _stack.push(component);
   }
   
-  public synchronized void relinquishFocus(AcceptsKeyboardInput component) {
+  public synchronized static void relinquishFocus(AcceptsKeyboardInput component) {
     _stack.remove(component);
   }
   
-  public synchronized void send(MidiMessage message) {
-    if (!_stack.isEmpty()) {
+  public synchronized static void send(MidiMessage message) {
+    if (_active && !_stack.isEmpty()) {
       final AcceptsKeyboardInput comp = _stack.peek();
       if (_active && (message instanceof ShortMessage)) {
         final ShortMessage sm = (ShortMessage) message;
@@ -60,12 +50,12 @@ public class MIDIInputControlCenter {
       comp.addFocusListener(new FocusListener() {
         @Override
         public void focusGained(FocusEvent e) {
-          MIDIInputControlCenter.getInstance().grabFocus(component);
+          MIDIInputControlCenter.grabFocus(component);
         }
         
         @Override
         public void focusLost(FocusEvent e) {
-          MIDIInputControlCenter.getInstance().relinquishFocus(component);
+          MIDIInputControlCenter.relinquishFocus(component);
         }
       });
     } else {
@@ -79,14 +69,16 @@ public class MIDIInputControlCenter {
       window.addWindowListener(new WindowAdapter() {
         @Override
         public void windowOpened(WindowEvent e) {
-          MIDIInputControlCenter.getInstance().grabFocus(component);
+          MIDIInputControlCenter.grabFocus(component);
         }
         
         @Override
         public void windowClosed(WindowEvent e) {
-          MIDIInputControlCenter.getInstance().relinquishFocus(component);
+          MIDIInputControlCenter.relinquishFocus(component);
         }
       });
+    } else {
+      throw new IllegalArgumentException("Component must be a Window");
     }
   }
 }

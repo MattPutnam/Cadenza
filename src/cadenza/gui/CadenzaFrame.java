@@ -156,7 +156,7 @@ public class CadenzaFrame extends JFrame implements Receiver {
     else if (_mode == Mode.PREVIEW)
       _previewController.send(message);
     
-    MIDIInputControlCenter.getInstance().send(message);
+    MIDIInputControlCenter.send(message);
     InputMonitor.getInstance().send(message);
   }
   
