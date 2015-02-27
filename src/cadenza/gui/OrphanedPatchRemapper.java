@@ -94,14 +94,12 @@ public class OrphanedPatchRemapper extends OKCancelDialog {
       public void mouseClicked(MouseEvent e) {
         if (e.getClickCount() == 2) {
           final Patch patch = _remappingList.getSelectedValue();
-          final PatchPickerDialog dialog = new PatchPickerDialog(OrphanedPatchRemapper.this,
-              _synthesizers, _suggestions.get(patch));
-          dialog.showDialog();
-          if (dialog.okPressed()) {
-            _remapping.put(patch, dialog.getSelectedPatch());
-            revalidate();
-            repaint();
-          }
+          OKCancelDialog.showDialog(new PatchPickerDialog(OrphanedPatchRemapper.this,
+              _synthesizers, _suggestions.get(patch)), dialog -> {
+                _remapping.put(patch, dialog.getSelectedPatch());
+                revalidate();
+                repaint();
+              });
         }
       }
     });

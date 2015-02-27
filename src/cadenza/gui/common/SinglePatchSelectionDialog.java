@@ -66,12 +66,10 @@ public class SinglePatchSelectionDialog extends OKCancelDialog {
     final JScrollPane scrollPane = new JScrollPane(patchButtons);
     
     _pickNewButton = SwingUtils.button("Pick new patch...", e -> {
-      final PatchPickerDialog dialog = new PatchPickerDialog(_parent, _synthesizers);
-      dialog.showDialog();
-      if (dialog.okPressed()) {
+      OKCancelDialog.showDialog(new PatchPickerDialog(_parent, _synthesizers), dialog -> {
         _selectedPatch = dialog.getSelectedPatch();
         pressOK();
-      }
+      });
     });
     
     final JPanel panel = new JPanel();

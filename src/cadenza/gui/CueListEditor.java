@@ -33,7 +33,6 @@ import cadenza.core.Patch;
 import cadenza.core.Song;
 import cadenza.core.Synthesizer;
 import cadenza.core.patchusage.PatchUsage;
-import cadenza.core.trigger.Trigger;
 import cadenza.gui.common.CadenzaTable;
 import cadenza.gui.cue.CueEditDialog;
 import cadenza.gui.song.SongEditDialog;
@@ -44,6 +43,7 @@ import common.collection.ListAdapter;
 import common.collection.ListEvent;
 import common.swing.SimpleTableCellRenderer;
 import common.swing.SwingUtils;
+import common.swing.dialog.OKCancelDialog;
 import common.swing.table.ListTableModel;
 import common.tuple.Pair;
 
@@ -127,18 +127,14 @@ public class CueListEditor extends JPanel {
     public void actionPerformed(ActionEvent e) {
       final Cue selected = _entries.get(_table.accessTable().getSelectedRow()).cue;
       final Cue cloned = new Cue(selected.song, selected.measureNumber);
-      for (final PatchUsage pu : selected.patches) {
-        cloned.patches.add(pu);
-      }
-      for (final Trigger trigger : selected.triggers) {
-        cloned.triggers.add(trigger);
-      }
-      final CueEditDialog dialog = new CueEditDialog(_cadenzaFrame, cloned, _data);
-      dialog.showDialog();
-      if (dialog.okPressed()) {
+      
+      selected.patches.forEach(pu -> cloned.patches.add(pu));
+      selected.triggers.forEach(trigger -> cloned.triggers.add(trigger));
+      
+      OKCancelDialog.showDialog(new CueEditDialog(_cadenzaFrame, cloned, _data), dialog -> {
         _data.cues.add(cloned);
         rebuildEntries();
-      }
+      });
     }
   }
   
@@ -150,6 +146,8 @@ public class CueListEditor extends JPanel {
       _entries.add(new CueTableEntry(song));
     _entries.sort(null);
     _table.accessTableModel().setList(_entries);
+    
+    _controller.clearOldCue();
   }
   
   private final static class Col {
@@ -371,9 +369,8 @@ public class CueListEditor extends JPanel {
     protected void takeActionOnAdd() {
       final Cue newCue = new Cue(null, "");
       newCue.song = suggestSong();
-      final CueEditDialog dialog = new CueEditDialog(_cadenzaFrame, newCue, _data);
-      dialog.showDialog();
-      if (dialog.okPressed()) {
+      
+      OKCancelDialog.showDialog(new CueEditDialog(_cadenzaFrame, newCue, _data), dialog -> {
         _data.cues.add(newCue);
         _data.cues.sort(null);
         
@@ -382,34 +379,27 @@ public class CueListEditor extends JPanel {
         }
         
         rebuildEntries();
-      }
+      });
     }
     
     @Override
     protected void takeActionOnEdit(CueTableEntry cueTableEntry) {
       if (cueTableEntry.isCue()) {
         final Cue cue = cueTableEntry.cue;
-        final CueEditDialog dialog = new CueEditDialog(_cadenzaFrame, cue, _data);
-        dialog.showDialog();
-        if (dialog.okPressed()) {
+        
+        OKCancelDialog.showDialog(new CueEditDialog(_cadenzaFrame, cue, _data), dialog -> {
           _data.cues.sort(null);
-          
-          if (_data.songs.contains(cue.song)) {
-            rebuildEntries();
-          } else {
+          if (!_data.songs.contains(cue.song))
             _data.songs.add(cue.song);
-            rebuildEntries();
-          }
+          rebuildEntries();
           _data.cues.notifyChange(cue);
-        }
+        });
       } else {
         final Song song = cueTableEntry.song;
-        final SongEditDialog dialog = new SongEditDialog(_cadenzaFrame, song);
-        dialog.showDialog();
-        if (dialog.okPressed()) {
+        OKCancelDialog.showDialog(new SongEditDialog(_cadenzaFrame, song), dialog -> {
           rebuildEntries();
           _data.songs.notifyChange(song);
-        }
+        });
       }
     }
     
@@ -442,15 +432,13 @@ public class CueListEditor extends JPanel {
           if (cue.song.equals(song))
             iter.remove();
         }
-        
-        rebuildEntries();
       } else {
         for (final CueTableEntry entry : removed) {
           _data.cues.remove(entry.cue);
         }
-        
-        rebuildEntries();
       }
+      
+      rebuildEntries();
     }
 
     @Override

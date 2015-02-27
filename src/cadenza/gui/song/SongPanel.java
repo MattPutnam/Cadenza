@@ -15,6 +15,7 @@ import cadenza.core.Song;
 
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
+import common.swing.dialog.OKCancelDialog;
 
 @SuppressWarnings("serial")
 public class SongPanel extends JPanel {
@@ -30,14 +31,12 @@ public class SongPanel extends JPanel {
     _label = new JLabel("Song: ");
     final JButton addButton = SwingUtils.button("Add new song", e -> {
       final Song newSong = new Song("", "");
-      final SongEditDialog dialog = new SongEditDialog(SongPanel.this, newSong);
-      dialog.showDialog();
-      if (dialog.okPressed()) {
+      OKCancelDialog.showDialog(new SongEditDialog(SongPanel.this, newSong), dialog -> {
         _songs.add(newSong);
         _songs.sort(null);
         _songCombo.setModel(new DefaultComboBoxModel<>(_songs.toArray(new Song[_songs.size()])));
         _songCombo.setSelectedItem(newSong);
-      }
+      });
     });
     
     final Box box = Box.createHorizontalBox();

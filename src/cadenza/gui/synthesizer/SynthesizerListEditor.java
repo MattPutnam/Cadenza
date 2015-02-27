@@ -79,22 +79,18 @@ public class SynthesizerListEditor extends JPanel implements CustomWizardCompone
     
     @Override
     protected void takeActionOnAdd() {
-      final SynthEditDialog dialog = new SynthEditDialog(null);
-      dialog.showDialog();
-      if (dialog.okPressed()) {
+      OKCancelDialog.showDialog(new SynthEditDialog(null), dialog -> {
         _synthesizers.add(dialog.getSynthesizer());
         _table.accessTableModel().fireTableDataChanged();
-      }
+      });
     }
     
     @Override
     protected void takeActionOnEdit(Synthesizer item) {
-      final SynthEditDialog dialog = new SynthEditDialog(item);
-      dialog.showDialog();
-      if (dialog.okPressed()) {
+      OKCancelDialog.showDialog(new SynthEditDialog(item), dialog -> {
         _synthesizers.set(_synthesizers.indexOf(item), dialog.getSynthesizer());
         _table.accessTableModel().fireTableDataChanged();
-      }
+      });
     }
   }
   

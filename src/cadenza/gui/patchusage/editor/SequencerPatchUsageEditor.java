@@ -18,6 +18,7 @@ import cadenza.gui.common.CadenzaTable;
 import cadenza.gui.sequencer.SequencerEditDialog;
 
 import common.swing.VerificationException;
+import common.swing.dialog.OKCancelDialog;
 import common.swing.table.ListTableModel;
 
 @SuppressWarnings("serial")
@@ -92,20 +93,14 @@ public class SequencerPatchUsageEditor extends JPanel {
 
     @Override
     protected void takeActionOnAdd() {
-      final SequencerEditDialog dialog = new SequencerEditDialog(SequencerPatchUsageEditor.this, Sequencer.DEFAULT);
-      dialog.showDialog();
-      if (dialog.okPressed()) {
-        _data.sequencers.add(dialog.getSequencer());
-      }
+      OKCancelDialog.showDialog(new SequencerEditDialog(SequencerPatchUsageEditor.this, Sequencer.DEFAULT),
+          dialog -> _data.sequencers.add(dialog.getSequencer()));
     }
     
     @Override
     protected void takeActionOnEdit(Sequencer item) {
-      final SequencerEditDialog dialog = new SequencerEditDialog(SequencerPatchUsageEditor.this, item);
-      dialog.showDialog();
-      if (dialog.okPressed()) {
-        _data.sequencers.set(_data.sequencers.indexOf(item), dialog.getSequencer());
-      }
+      OKCancelDialog.showDialog(new SequencerEditDialog(SequencerPatchUsageEditor.this, item),
+          dialog -> _data.sequencers.set(_data.sequencers.indexOf(item), dialog.getSequencer()));
     }
 
     @Override

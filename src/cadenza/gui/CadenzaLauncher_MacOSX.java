@@ -8,6 +8,7 @@ import java.awt.Component;
 import cadenza.gui.preferences.PreferencesDialog;
 
 import com.apple.eawt.Application;
+import common.swing.dialog.OKCancelDialog;
 
 public class CadenzaLauncher_MacOSX {
 private static final String APP_ID = "cadenzasoftware.cadenza";
@@ -29,10 +30,7 @@ private static final String APP_ID = "cadenzasoftware.cadenza";
     
     app.setPreferencesHandler(e -> {
     	final Component parent = (e.getSource() instanceof Component) ? (Component) e.getSource() : null;
-      final PreferencesDialog dialog = new PreferencesDialog(parent);
-      dialog.showDialog();
-      if (dialog.okPressed())
-        dialog.commitPreferences();
+    	OKCancelDialog.showDialog(new PreferencesDialog(parent), dialog -> dialog.commitPreferences());
     });
     
     Cadenza.setDelegate(new MacOSXDelegate());

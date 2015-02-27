@@ -142,12 +142,10 @@ public class EffectChainViewerEditor extends JPanel {
         addMouseListener(new MouseAdapter() {
           @Override
           public void mouseClicked(MouseEvent e) {
-            final AddEffectDialog dialog = new AddEffectDialog();
-            dialog.showDialog();
-            if (dialog.okPressed()) {
+            OKCancelDialog.showDialog(new AddEffectDialog(), dialog -> {
               _effects.add(index, dialog.getEffect());
               refreshEffectViews();
-            }
+            });
           }
         });
       }

@@ -225,14 +225,12 @@ public class PatchUsagePanel extends JPanel {
         public void mouseClicked(MouseEvent e) {
           if (e.getClickCount() == 2) {
             e.consume();
-            final PatchUsageEditDialog dialog = new PatchUsageEditDialog(
-                PatchUsageEntity.this, _patchUsage, _data);
-            dialog.showDialog();
-            if (dialog.okPressed()) {
-              _patchUsages.remove(_patchUsage);
-              _patchUsages.add(dialog.getPatchUsage());
-              refreshDisplay();
-            }
+            OKCancelDialog.showDialog(new PatchUsageEditDialog(
+                PatchUsageEntity.this, _patchUsage, _data), dialog -> {
+                  _patchUsages.remove(_patchUsage);
+                  _patchUsages.add(dialog.getPatchUsage());
+                  refreshDisplay();
+                });
           }
         }
       });

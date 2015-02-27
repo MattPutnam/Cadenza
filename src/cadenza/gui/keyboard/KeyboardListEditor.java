@@ -151,27 +151,23 @@ public class KeyboardListEditor extends JPanel implements CustomWizardComponent 
     @Override
     protected void takeActionOnAdd() {
       final Keyboard newKeyboard = new Keyboard(Keyboard.findFirstAvailableChannel(_keyboards));
-      final KeyboardEditDialog dialog = new KeyboardEditDialog(newKeyboard);
-      dialog.showDialog();
-      if (dialog.okPressed()) {
+      OKCancelDialog.showDialog(new KeyboardEditDialog(newKeyboard), dialog -> {
         _keyboards.add(dialog.getKeyboard());
         if (newKeyboard.isMain)
           for (final Keyboard keyboard : _keyboards)
             if (keyboard != newKeyboard)
               keyboard.isMain = false;
-      }
+      });
     }
     
     @Override
     protected void takeActionOnEdit(Keyboard keyboard) {
-      final KeyboardEditDialog dialog = new KeyboardEditDialog(keyboard);
-      dialog.showDialog();
-      if (dialog.okPressed()) {
+      OKCancelDialog.showDialog(new KeyboardEditDialog(keyboard), dialog -> {
         final Keyboard newKeyboard = dialog.getKeyboard();
         _remap.put(keyboard, newKeyboard);
         
         _keyboards.set(_keyboards.indexOf(keyboard), newKeyboard);
-      }
+      });
     }
     
     @Override

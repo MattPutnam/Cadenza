@@ -25,11 +25,11 @@ import cadenza.gui.common.CadenzaTable;
 import cadenza.gui.common.SinglePatchSelectionDialog;
 import cadenza.gui.patch.PatchEditDialog;
 import cadenza.gui.patch.PatchPickerDialog;
-
 import common.collection.ListAdapter;
 import common.collection.ListEvent;
 import common.swing.SimpleTableCellRenderer;
 import common.swing.SwingUtils;
+import common.swing.dialog.OKCancelDialog;
 import common.swing.table.ListTableModel;
 
 @SuppressWarnings("serial")
@@ -142,19 +142,15 @@ public class PatchEditor extends JPanel {
     
     @Override
     protected void takeActionOnAdd() {
-      final PatchEditDialog dialog = new PatchEditDialog(_cadenzaFrame, _data.synthesizers, null, _data.patches);
-      dialog.showDialog();
-      if (dialog.okPressed()) {
+      OKCancelDialog.showDialog(new PatchEditDialog(_cadenzaFrame, _data.synthesizers, null, _data.patches), dialog -> {
         _data.patches.add(dialog.getPatch());
         _data.patches.sort(null);
-      }
+      });
     }
     
     @Override
     protected void takeActionOnEdit(Patch patch) {
-      final PatchEditDialog dialog = new PatchEditDialog(_cadenzaFrame, _data.synthesizers, patch, _data.patches);
-      dialog.showDialog();
-      if (dialog.okPressed()) {
+      OKCancelDialog.showDialog(new PatchEditDialog(_cadenzaFrame, _data.synthesizers, patch, _data.patches), dialog -> {
         final Patch edit = dialog.getPatch();
         if (patch.equals(edit)) {
           return;
@@ -177,7 +173,7 @@ public class PatchEditor extends JPanel {
         
         patch.copyFrom(edit, true);
         _data.patches.sort(null);
-      }
+      });
     }
     
     @Override
@@ -232,12 +228,10 @@ public class PatchEditor extends JPanel {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-      final PatchPickerDialog dialog = new PatchPickerDialog(_cadenzaFrame, _data.synthesizers);
-      dialog.showDialog();
-      if (dialog.okPressed()) {
+      OKCancelDialog.showDialog(new PatchPickerDialog(_cadenzaFrame, _data.synthesizers), dialog -> {
         _data.patches.add(dialog.getSelectedPatch());
         _data.patches.sort(null);
-      }
+      });
     }
   }
   
@@ -249,9 +243,7 @@ public class PatchEditor extends JPanel {
     @Override
     public void actionPerformed(ActionEvent e) {
       final Patch patch = _data.patches.get(_table.accessTable().getSelectedRow());
-      final SinglePatchSelectionDialog dialog = new SinglePatchSelectionDialog(_cadenzaFrame, patch, _data.patches, _data.synthesizers);
-      dialog.showDialog();
-      if (dialog.okPressed()) {
+      OKCancelDialog.showDialog(new SinglePatchSelectionDialog(_cadenzaFrame, patch, _data.patches, _data.synthesizers), dialog -> {
         final Patch replacement = dialog.getSelectedPatch();
         if (replacement.equals(patch)) {
           return;
@@ -272,7 +264,7 @@ public class PatchEditor extends JPanel {
             }
           }
         }
-      }
+      });
     }
   }
 }

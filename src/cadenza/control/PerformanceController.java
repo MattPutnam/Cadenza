@@ -60,6 +60,8 @@ public final class PerformanceController extends CadenzaController {
   /** The cue number */
   private int _position = -1;
   
+  private boolean _shouldIgnoreOldPosition = false;
+  
   public PerformanceController(CadenzaData data, CadenzaFrame cadenzaFrame) {
     super(data);
     _cadenzaFrame = cadenzaFrame;
@@ -211,6 +213,15 @@ public final class PerformanceController extends CadenzaController {
   }
   
   /**
+   * Notifies the controller that next time it goes to update the location,
+   * it should ignore the old cue and reload everything from scratch.  Call
+   * this after mucking with the cue list.
+   */
+  public void clearOldCue() {
+    _shouldIgnoreOldPosition = true;
+  }
+  
+  /**
    * Send the necessary patch change events for changing from one cue to another.
    * If a patch from the old cue is reused in the new cue on the same keyboard, then it gets assigned
    * the same channel and no patch change is sent.  If there are more available channels than are needed,
@@ -228,7 +239,8 @@ public final class PerformanceController extends CadenzaController {
       pu.cleanup(this);
     }
     
-    final Cue oldCue = oldPosition == -1 ? null : getData().cues.get(oldPosition);
+    final Cue oldCue = (_shouldIgnoreOldPosition || oldPosition == -1) ? null : getData().cues.get(oldPosition);
+    _shouldIgnoreOldPosition = false;
     final Cue newCue = getData().cues.get(newPosition);
     
     final Map<PatchUsage, Integer> oldAssignments = _currentAssignments;
