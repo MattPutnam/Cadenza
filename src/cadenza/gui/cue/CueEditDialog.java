@@ -23,6 +23,7 @@ import javax.swing.border.EmptyBorder;
 
 import cadenza.control.midiinput.AcceptsKeyboardInput;
 import cadenza.control.midiinput.MIDIInputControlCenter;
+import cadenza.control.midiinput.MIDIInputPreferences;
 import cadenza.core.CadenzaData;
 import cadenza.core.ControlMapEntry;
 import cadenza.core.ControlMapProvider;
@@ -80,7 +81,8 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider,
       }
     }
     
-    MIDIInputControlCenter.installWindowFocusGrabber(this);
+    if (MIDIInputPreferences.PatchUsage.isAllowPatchUsageInput())
+      MIDIInputControlCenter.installWindowFocusGrabber(this);
     
     _data.keyboards.forEach(kbd -> _keyboardMap.put(Integer.valueOf(kbd.channel), kbd));
   }
@@ -233,11 +235,13 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider,
       
       if (_currentlyPressedKeys.isEmpty()) {
         
-        if (_accumulatedPressedKeys.size() == 1) {
+        if (_accumulatedPressedKeys.size() == 1 &&
+            MIDIInputPreferences.PatchUsage.isAllowSinglePatchUsage()) {
           _patchUsagePanel.addPatchUsage(Location.singleNote(kbd,
               new Note(_accumulatedPressedKeys.iterator().next().intValue())));
           
-        } else if (_accumulatedPressedKeys.size() == 2) {
+        } else if (_accumulatedPressedKeys.size() == 2 &&
+            MIDIInputPreferences.PatchUsage.isAllowRangePatchUsage()) {
           final Iterator<Integer> i = _accumulatedPressedKeys.iterator();
           Note n1 = new Note(i.next().intValue());
           Note n2 = new Note(i.next().intValue());
@@ -246,7 +250,8 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider,
           else
             _patchUsagePanel.addPatchUsage(Location.range(kbd, n2, n1));
           
-        } else if (_accumulatedPressedKeys.size() >= 3) {
+        } else if (_accumulatedPressedKeys.size() >= 3 &&
+            MIDIInputPreferences.PatchUsage.isAllowWholePatchUsage()) {
           _patchUsagePanel.addPatchUsage(Location.wholeKeyboard(kbd));
         }
         _accumulatedPressedKeys.clear();

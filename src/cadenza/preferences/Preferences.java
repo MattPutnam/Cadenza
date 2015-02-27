@@ -48,9 +48,15 @@ public class Preferences {
     }
     
     private static class Input {
-      private static String ALLOW_MIDI_INPUT = "input.allowmidiinput";
-      private static String ALLOW_VOLUME     = "input.allowvolumeinput";
-      private static String VOLUME_STRICT    = "input.volumestrict";
+      private static String ALLOW_MIDI_INPUT  = "input.allow";
+      
+      private static String ALLOW_VOLUME      = "input.volume.allow";
+      private static String VOLUME_STRICT     = "input.volume.strict";
+      
+      private static String ALLOW_PATCHUSAGE  = "input.patchusage.allow";
+      private static String PATCHUSAGE_SINGLE = "input.patchusage.single";
+      private static String PATCHUSAGE_RANGE  = "input.patchusage.range";
+      private static String PATCHUSAGE_WHOLE  = "input.patchusage.whole";
     }
   }
   
@@ -183,8 +189,14 @@ public class Preferences {
   public static boolean[] buildMIDIInputOptions(Map<String, String> loadedPrefs) {
     return new boolean[] {
         Boolean.parseBoolean(loadedPrefs.get(Keys.Input.ALLOW_MIDI_INPUT)),
+        
         Boolean.parseBoolean(loadedPrefs.get(Keys.Input.ALLOW_VOLUME)),
-        Boolean.parseBoolean(loadedPrefs.get(Keys.Input.VOLUME_STRICT))
+        Boolean.parseBoolean(loadedPrefs.get(Keys.Input.VOLUME_STRICT)),
+        
+        Boolean.parseBoolean(loadedPrefs.get(Keys.Input.ALLOW_PATCHUSAGE)),
+        Boolean.parseBoolean(loadedPrefs.get(Keys.Input.PATCHUSAGE_SINGLE)),
+        Boolean.parseBoolean(loadedPrefs.get(Keys.Input.PATCHUSAGE_RANGE)),
+        Boolean.parseBoolean(loadedPrefs.get(Keys.Input.PATCHUSAGE_WHOLE)),
     };
   }
   
@@ -235,9 +247,16 @@ public class Preferences {
    * @param options the MIDI input options to commit
    */
   public static void commitInputOptions(Map<String, String> preferences, boolean[] options) {
-    preferences.put(Keys.Input.ALLOW_MIDI_INPUT, Boolean.toString(options[0]));
-    preferences.put(Keys.Input.ALLOW_VOLUME,     Boolean.toString(options[1]));
-    preferences.put(Keys.Input.VOLUME_STRICT,    Boolean.toString(options[2]));
+    preferences.put(Keys.Input.ALLOW_MIDI_INPUT,  Boolean.toString(options[0]));
+    
+    preferences.put(Keys.Input.ALLOW_VOLUME,      Boolean.toString(options[1]));
+    preferences.put(Keys.Input.VOLUME_STRICT,     Boolean.toString(options[2]));
+    
+    preferences.put(Keys.Input.ALLOW_PATCHUSAGE,  Boolean.toString(options[3]));
+    preferences.put(Keys.Input.PATCHUSAGE_SINGLE, Boolean.toString(options[4]));
+    preferences.put(Keys.Input.PATCHUSAGE_RANGE,  Boolean.toString(options[5]));
+    preferences.put(Keys.Input.PATCHUSAGE_WHOLE,  Boolean.toString(options[6]));
+    
     MIDIInputPreferences.match(options);
   }
   
