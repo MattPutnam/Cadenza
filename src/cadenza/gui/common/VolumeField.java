@@ -2,6 +2,7 @@ package cadenza.gui.common;
 
 import cadenza.control.midiinput.AcceptsKeyboardInput;
 import cadenza.control.midiinput.MIDIInputControlCenter;
+import cadenza.control.midiinput.MIDIInputPreferences;
 import common.swing.IntField;
 import common.swing.SwingUtils;
 
@@ -14,29 +15,19 @@ import common.swing.SwingUtils;
  */
 @SuppressWarnings("serial")
 public class VolumeField extends IntField implements AcceptsKeyboardInput {
-  private final boolean _lenient;
-  
-  /**
-   * Creates a new VolumeField with the given value and strict input.
-   * @param volume the starting volume
-   */
-  public VolumeField(int volume) {
-    this (volume, false);
-  }
-  
   /**
    * Creates a new VolumeField with the given value and strictness
    * @param volume the starting volume
    * @param strict <tt>true</tt> to be strict, <tt>false</tt> to be lenient
    */
-  public VolumeField(int volume, boolean strict) {
+  public VolumeField(int volume) {
     super(volume, 0, 127);
-    _lenient = !strict;
     
     setColumns(3);
     SwingUtils.freezeSize(this);
     
-    MIDIInputControlCenter.installFocusGrabber(this);
+    if (MIDIInputPreferences.isAllowVolumeInput())
+      MIDIInputControlCenter.installFocusGrabber(this);
   }
   
   public void setVolume(int volume) {
@@ -52,7 +43,7 @@ public class VolumeField extends IntField implements AcceptsKeyboardInput {
   @Override
   public void controlReceived(int channel, int ccNumber, final int value) { 
     SwingUtils.doInSwing(() -> {
-      if (_lenient || ccNumber == 7) {
+      if (!MIDIInputPreferences.isVolumeStrict() || ccNumber == 7) {
         setInt(value);
         selectAll();
       }
