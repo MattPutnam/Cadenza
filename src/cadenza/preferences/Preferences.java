@@ -48,7 +48,9 @@ public class Preferences {
     }
     
     private static class Input {
-      private static String ALLOWMIDIINPUT = "input.allowmidiinput";
+      private static String ALLOW_MIDI_INPUT = "input.allowmidiinput";
+      private static String ALLOW_VOLUME     = "input.allowvolumeinput";
+      private static String VOLUME_STRICT    = "input.volumestrict";
     }
   }
   
@@ -180,7 +182,9 @@ public class Preferences {
    */
   public static boolean[] buildMIDIInputOptions(Map<String, String> loadedPrefs) {
     return new boolean[] {
-        Boolean.parseBoolean(loadedPrefs.get(Keys.Input.ALLOWMIDIINPUT))
+        Boolean.parseBoolean(loadedPrefs.get(Keys.Input.ALLOW_MIDI_INPUT)),
+        Boolean.parseBoolean(loadedPrefs.get(Keys.Input.ALLOW_VOLUME)),
+        Boolean.parseBoolean(loadedPrefs.get(Keys.Input.VOLUME_STRICT))
     };
   }
   
@@ -231,7 +235,9 @@ public class Preferences {
    * @param options the MIDI input options to commit
    */
   public static void commitInputOptions(Map<String, String> preferences, boolean[] options) {
-    preferences.put(Keys.Input.ALLOWMIDIINPUT, Boolean.toString(options[0]));
+    preferences.put(Keys.Input.ALLOW_MIDI_INPUT, Boolean.toString(options[0]));
+    preferences.put(Keys.Input.ALLOW_VOLUME,     Boolean.toString(options[1]));
+    preferences.put(Keys.Input.VOLUME_STRICT,    Boolean.toString(options[2]));
     MIDIInputPreferences.match(options);
   }
   

@@ -17,7 +17,14 @@ public class MIDIInputPreferences {
   private static boolean _allowMIDIInput = true;
   public static boolean isAllowMIDIInput() { return _allowMIDIInput; }
   
+  private static boolean _allowVolumeInput = true;
+  public static boolean isAllowVolumeInput() { return _allowVolumeInput; }
+  private static boolean _volumeIsStrict = true;
+  public static boolean isVolumeStrict() { return _volumeIsStrict; }
+  
   public static void match(boolean[] options) {
-    _allowMIDIInput = options[0];
+    _allowMIDIInput   = options[0];
+    _allowVolumeInput = options[1];
+    _volumeIsStrict   = options[2];
   }
 }

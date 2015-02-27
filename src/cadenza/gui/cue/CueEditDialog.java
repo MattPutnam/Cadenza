@@ -36,9 +36,9 @@ import cadenza.gui.effects.edit.EffectChainViewerEditor;
 import cadenza.gui.patchusage.PatchUsagePanel;
 import cadenza.gui.song.SongPanel;
 import cadenza.gui.trigger.TriggerPanel;
-
 import common.collection.NotifyingList;
 import common.swing.CollapsiblePanel;
+import common.swing.CollapsiblePanel.Icon;
 import common.swing.CollapsiblePanel.Orientation;
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
@@ -123,13 +123,13 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider,
     pp.add(_effectsPanel, BorderLayout.CENTER);
     
     final CollapsiblePanel collapsePatches = new CollapsiblePanel(
-        _patchUsagePanel, Orientation.VERTICAL, "Patches", null);
+        _patchUsagePanel, Orientation.VERTICAL, Icon.ARROW,"Patches", null);
     final CollapsiblePanel collapseTrigger = new CollapsiblePanel(
-        tp, Orientation.VERTICAL, "Triggers", null);
+        tp, Orientation.VERTICAL, Icon.ARROW, "Triggers", null);
     final CollapsiblePanel collapseControl = new CollapsiblePanel(
-        cp, Orientation.VERTICAL, "Control Overrides", null);
+        cp, Orientation.VERTICAL, Icon.ARROW,"Control Overrides", null);
     final CollapsiblePanel collapseEffects = new CollapsiblePanel(
-        pp, Orientation.VERTICAL, "Effects", null);
+        pp, Orientation.VERTICAL, Icon.ARROW,"Effects", null);
     
     collapseTrigger.setExpanded(!_cue.triggers.isEmpty() || _cue.disableGlobalTriggers);
     collapseControl.setExpanded(!_cue.getControlMap().isEmpty() || _cue.disableGlobalControlMap);
