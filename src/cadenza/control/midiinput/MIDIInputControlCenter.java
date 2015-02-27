@@ -29,9 +29,11 @@ public class MIDIInputControlCenter {
     return INSTANCE;
   }
   
-  private MIDIInputControlCenter() {}
+  private Stack<AcceptsKeyboardInput> _stack;
   
-  private Stack<AcceptsKeyboardInput> _stack = new Stack<>();
+  private MIDIInputControlCenter() {
+    _stack = new Stack<>();
+  }
   
   public void grabFocus(AcceptsKeyboardInput component) {
     synchronized (_stack) {
