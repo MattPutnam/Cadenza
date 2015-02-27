@@ -6,9 +6,9 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import cadenza.control.midiinput.MIDIInputControlCenter;
 import cadenza.core.Patch;
 import cadenza.core.Synthesizer;
-
 import common.swing.SwingUtils;
 import common.swing.dialog.OKCancelDialog;
 
@@ -24,6 +24,7 @@ public class PatchSelector extends JPanel {
     if (selected != null)
       _patchList.setSelectedItem(selected);
     _patchList.setRenderer(new PatchRenderer());
+    MIDIInputControlCenter.installKeyboardArrowSpoofer(_patchList);
     
     add(new JLabel("Select existing patch:"));
     add(_patchList);

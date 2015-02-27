@@ -22,6 +22,8 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import cadenza.control.midiinput.AcceptsKeyboardInput;
+import cadenza.control.midiinput.MIDIInputControlCenter;
 import cadenza.core.CadenzaData;
 import cadenza.core.Cue;
 import cadenza.core.Keyboard;
@@ -33,7 +35,6 @@ import cadenza.core.patchusage.SimplePatchUsage;
 import cadenza.gui.keyboard.KeyboardAdapter;
 import cadenza.gui.keyboard.SingleKeyboardPanel;
 import cadenza.gui.patch.PatchSelector;
-
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
@@ -121,10 +122,12 @@ public class PatchUsagePanel extends JPanel {
   }
   
   public void addPatchUsage(Location location) {
-    OKCancelDialog.showDialog(new PatchSelectorDialog(this, null), dialog -> {
-      _patchUsages.add(new SimplePatchUsage(dialog.getSelectedPatch(), location));
-      refreshDisplay();
-    });
+    SwingUtils.doInSwing(() -> {
+      OKCancelDialog.showDialog(new PatchSelectorDialog(this, null), dialog -> {
+        _patchUsages.add(new SimplePatchUsage(dialog.getSelectedPatch(), location));
+        refreshDisplay();
+      });
+    }, false);
   }
   
   private static Map<Keyboard, List<PatchUsage>> sortByKeyboard(List<PatchUsage> patchUsages) {
@@ -331,24 +334,24 @@ public class PatchUsagePanel extends JPanel {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-      final PatchSelectorDialog dialog = new PatchSelectorDialog((JButton) e.getSource(), null);
-      dialog.showDialog();
-      if (dialog.okPressed()) {
+      OKCancelDialog.showDialog(new PatchSelectorDialog((JButton) e.getSource(), null), dialog -> {
         final Patch patch = dialog.getSelectedPatch();
         _patchUsages.add(new SimplePatchUsage(patch, Location.wholeKeyboard(_keyboard),
             patch.defaultVolume, 0, false, -1, true, 0));
         refreshDisplay();
-      }
+      });
     }
   }
   
-  private class PatchSelectorDialog extends OKCancelDialog {
+  private class PatchSelectorDialog extends OKCancelDialog implements AcceptsKeyboardInput {
     private PatchSelector _selector;
     private final Patch _selected;
     
     public PatchSelectorDialog(Component anchor, Patch selected) {
       super(anchor);
       _selected = selected;
+      // dead input reader to prevent fallthrough when patch combo doesn't have focus
+      MIDIInputControlCenter.installWindowFocusGrabber(this);
     }
     
     @Override
