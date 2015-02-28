@@ -19,6 +19,7 @@ import common.collection.ListAdapter;
 import common.collection.ListEvent;
 import common.collection.NotifyingList;
 import common.midi.MidiUtilities;
+import common.swing.SwingUtils;
 
 @SuppressWarnings("serial")
 public class KeyboardInputViewer extends JPanel {
@@ -56,7 +57,7 @@ public class KeyboardInputViewer extends JPanel {
       _channelToIndex.put(Integer.valueOf(k.channel), Integer.valueOf(i));
       _keyboardPanels.add(kp);
       
-      add(new JLabel(k.name));
+      add(SwingUtils.buildCenteredRow(new JLabel(k.name)));
       add(kp);
       add(Box.createVerticalStrut(8));
     }
