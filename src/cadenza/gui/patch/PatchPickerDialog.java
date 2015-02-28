@@ -18,14 +18,18 @@ import javax.swing.event.DocumentEvent;
 
 import cadenza.core.Patch;
 import cadenza.core.Synthesizer;
+import cadenza.gui.common.HelpButton;
 import cadenza.synths.Synthesizers;
-
 import common.swing.DocumentAdapter;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
 
 @SuppressWarnings("serial")
 public class PatchPickerDialog extends OKCancelDialog {
+  private static final String HELP_TEXT = "<html>Search is not case sensitive.<br><br>"
+      + "Separate multiple search entries with a | (pipe):<br>"
+      + "'tpt|trumpet' matches 'muted tpt', 'Jazz Trumpet', etc.</html>";
+  
   private final List<Synthesizer> _synthesizers;
   private final List<Patch> _suggestions;
   private final boolean _hasSuggestions;
@@ -75,6 +79,7 @@ public class PatchPickerDialog extends OKCancelDialog {
     final Box search = Box.createHorizontalBox();
     search.add(new JLabel("Filter text:"));
     search.add(searchField);
+    search.add(new HelpButton(HELP_TEXT));
     final JPanel top = new JPanel(new BorderLayout());
     top.add(search, BorderLayout.SOUTH);
     if (_hasSuggestions) {
@@ -92,6 +97,11 @@ public class PatchPickerDialog extends OKCancelDialog {
     panel.add(bottom, BorderLayout.SOUTH);
     
     return panel;
+  }
+  
+  @Override
+  protected void initialize() {
+    setSize(500, 400);
   }
   
   @Override
