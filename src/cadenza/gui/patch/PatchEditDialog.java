@@ -1,24 +1,23 @@
 package cadenza.gui.patch;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import cadenza.core.Patch;
 import cadenza.core.Synthesizer;
 import cadenza.gui.common.VolumeField;
+
 import common.swing.ColorPreviewPanel;
 import common.swing.IntField;
+import common.swing.SwingUtils;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
 
@@ -56,35 +55,21 @@ public class PatchEditDialog extends OKCancelDialog {
     _synthesizerCombo = new JComboBox<>(_synthesizers.toArray(new Synthesizer[_synthesizers.size()]));
     if (_patch != null) _synthesizerCombo.setSelectedItem(_patch.getSynthesizer());
     _nameField = new JTextField(16);
-    _bankField = new JTextField(3);
+    _bankField = new JTextField(8);
     _numField = new IntField(1, 0, Integer.MAX_VALUE);
-    _numField.setColumns(3);
+    _numField.setColumns(4);
     _volumeField = new VolumeField(_patch == null ? 100 : _patch.defaultVolume);
     _colorChooser = new ColorPreviewPanel(_patch == null ? Color.WHITE : _patch.getDisplayColor());
     
-    final Box box = Box.createHorizontalBox();
-    box.add(new JLabel("Synth:"));
-    box.add(_synthesizerCombo);
-    box.add(Box.createHorizontalStrut(8));
-    box.add(new JLabel("Name:"));
-    box.add(_nameField);
-    box.add(Box.createHorizontalStrut(8));
-    box.add(new JLabel("Bank:"));
-    box.add(_bankField);
-    box.add(Box.createHorizontalStrut(8));
-    box.add(new JLabel("Num:"));
-    box.add(_numField);
-    box.add(Box.createHorizontalStrut(8));
-    box.add(new JLabel("Volume (0-127):"));
-    box.add(_volumeField);
-    box.add(new JLabel("  Display Color: "));
-    box.add(_colorChooser);
-    box.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+    SwingUtils.freezeSize(_numField);
+    SwingUtils.freezeSize(_colorChooser);
     
-    final JPanel panel = new JPanel();
-    panel.add(box, BorderLayout.NORTH);
+    final Box vBox = Box.createVerticalBox();
+    vBox.add(SwingUtils.buildLeftAlignedRow(new JLabel("Name:"), _nameField));
+    vBox.add(SwingUtils.buildLeftAlignedRow(new JLabel("Synth:"), _synthesizerCombo, new JLabel("Bank:"), _bankField, new JLabel("Num:"), _numField));
+    vBox.add(SwingUtils.buildLeftAlignedRow(new JLabel("Default Volume:"), _volumeField, Box.createHorizontalGlue(), new JLabel("Display Color:"), _colorChooser));
     
-    return panel;
+    return vBox;
   }
   
   @Override
