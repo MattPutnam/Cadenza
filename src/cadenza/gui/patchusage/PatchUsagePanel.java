@@ -22,8 +22,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import cadenza.control.midiinput.AcceptsKeyboardInput;
-import cadenza.control.midiinput.MIDIInputControlCenter;
 import cadenza.core.CadenzaData;
 import cadenza.core.Cue;
 import cadenza.core.Keyboard;
@@ -35,6 +33,7 @@ import cadenza.core.patchusage.SimplePatchUsage;
 import cadenza.gui.keyboard.KeyboardAdapter;
 import cadenza.gui.keyboard.SingleKeyboardPanel;
 import cadenza.gui.patch.PatchSelector;
+
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
@@ -341,15 +340,13 @@ public class PatchUsagePanel extends JPanel {
     }
   }
   
-  private class PatchSelectorDialog extends OKCancelDialog implements AcceptsKeyboardInput {
+  private class PatchSelectorDialog extends OKCancelDialog {
     private PatchSelector _selector;
     private final Patch _selected;
     
     public PatchSelectorDialog(Component anchor, Patch selected) {
       super(anchor);
       _selected = selected;
-      // dead input reader to prevent fallthrough when patch combo doesn't have focus
-      MIDIInputControlCenter.installWindowFocusGrabber(this);
     }
     
     @Override

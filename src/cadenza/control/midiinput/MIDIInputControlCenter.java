@@ -95,12 +95,12 @@ public class MIDIInputControlCenter {
       final Window window = (Window) component;
       window.addWindowListener(new WindowAdapter() {
         @Override
-        public void windowOpened(WindowEvent e) {
+        public void windowActivated(WindowEvent e) {
           getInstance().grabFocus(component);
         }
         
         @Override
-        public void windowClosed(WindowEvent e) {
+        public void windowDeactivated(WindowEvent e) {
           getInstance().relinquishFocus(component);
         }
       });

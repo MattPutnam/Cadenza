@@ -24,12 +24,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
 import cadenza.core.effects.Compressor;
+import cadenza.core.effects.Effect;
 import cadenza.core.effects.GraphicEQ;
 import cadenza.core.effects.ParametricEQ;
-import cadenza.core.effects.Effect;
 import cadenza.core.effects.ParametricEQ.Band;
 import cadenza.gui.ImageStore;
 import cadenza.gui.effects.view.EffectView;
+
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
 import common.swing.dialog.Dialog;
