@@ -99,6 +99,8 @@ public class CadenzaFrame extends JFrame implements Receiver {
   private static File _lastPath = null;
   private boolean _dirty;
   
+  private InputMonitor _inputMonitor;
+  
   public CadenzaFrame(CadenzaData data) {
     super();
     
@@ -159,7 +161,8 @@ public class CadenzaFrame extends JFrame implements Receiver {
     else if (_mode == Mode.PREVIEW)
       _previewController.send(message);
     
-    InputMonitor.getInstance().send(message);
+    if (_inputMonitor != null)
+      _inputMonitor.send(message);
   }
   
   @Override
@@ -281,13 +284,19 @@ public class CadenzaFrame extends JFrame implements Receiver {
     controlMenu.add(SwingUtils.menuItem("Show Metronome", 'M', 'M', e -> MetronomeView.getInstance().setVisible(true)));
     controlMenu.addSeparator();
     controlMenu.add(SwingUtils.menuItem("Show Effects Monitor", 'X', 'X', e -> EffectMonitor.getInstance().setVisible(true)));
-    controlMenu.add(SwingUtils.menuItem("Show Input Monitor", 'I', 'I', e -> InputMonitor.getInstance().setVisible(true)));
+    controlMenu.add(SwingUtils.menuItem("Show Input Monitor", 'I', 'I', e -> showInputMonitor()));
     
     final JMenuBar menuBar = new JMenuBar();
     menuBar.add(fileMenu);
     menuBar.add(setupMenu);
     menuBar.add(controlMenu);
     setJMenuBar(menuBar);
+  }
+  
+  private void showInputMonitor() {
+    if (_inputMonitor == null)
+      _inputMonitor = new InputMonitor(_data);
+    _inputMonitor.setVisible(true);
   }
   
   private class RescanTask extends Thread {

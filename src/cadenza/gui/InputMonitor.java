@@ -19,23 +19,24 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
+import cadenza.core.CadenzaData;
+
 import common.midi.MidiUtilities;
 import common.swing.SwingUtils;
 
+
+
 @SuppressWarnings("serial")
-public class InputMonitor extends JFrame {
-  private static final InputMonitor INSTANCE = new InputMonitor();
-  public static InputMonitor getInstance() {
-    return INSTANCE;
-  }
-  
+public class InputMonitor extends JFrame {  
+  private final KeyboardInputViewer _viewer;
   private final JList<MidiEvent> _jList;
   private final Vector<MidiEvent> _listData;
   private final JScrollPane _sPane;
   
   private final Set<MidiEvent> _savedEvents;
   
-  private InputMonitor() {
+  public InputMonitor(CadenzaData data) {
+    _viewer = new KeyboardInputViewer(data.keyboards);
     _jList = new JList<>();
     _listData = new Vector<>();
     
@@ -62,17 +63,17 @@ public class InputMonitor extends JFrame {
     _sPane = new JScrollPane(_jList);
     add(_sPane, BorderLayout.CENTER);
     add(subBottom, BorderLayout.SOUTH);
+    add(_viewer, BorderLayout.NORTH);
     
     pack();
     
     setTitle("Input Monitor");
-    setSize(400, 300);
     setLocationRelativeTo(null);
     setAlwaysOnTop(true);
     SwingUtils.goInvisibleOnClose(this);
   }
   
-  public synchronized void send(final MidiMessage mm) {
+  public void send(final MidiMessage mm) {
     SwingUtilities.invokeLater(() -> {
       _listData.add(new MidiEvent(mm));
       _jList.setListData(_listData);
@@ -80,6 +81,8 @@ public class InputMonitor extends JFrame {
       if (bar != null)
         bar.setValue(bar.getMaximum());
     });
+    
+    _viewer.receive(mm);
   }
   
   public Set<MidiEvent> accessSavedEvents() {
