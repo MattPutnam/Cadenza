@@ -3,6 +3,7 @@ package cadenza.gui.patch;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.Box;
@@ -135,13 +136,13 @@ public class PatchPickerDialog extends OKCancelDialog {
     
     @Override
     public void documentChanged(DocumentEvent e) {
-      final List<Patch> keep = new ArrayList<>();
-      for (final Patch patch : _patches) {
-        if (patch.name.toLowerCase().contains(_searchField.getText().trim().toLowerCase())) {
-          keep.add(patch);
-        }
-      }
-      _resultList.setListData(keep.toArray(new Patch[keep.size()]));
+      final String[] tokens = _searchField.getText().split("\\|");
+      final String[] searchTerms = Arrays.stream(tokens).map(s -> s.trim().toLowerCase()).toArray(String[]::new);
+      
+      _resultList.setListData(_patches.stream()
+                                      .filter(patch -> Arrays.stream(searchTerms)
+                                                             .anyMatch(term -> patch.name.toLowerCase().contains(term)))
+                                      .toArray(Patch[]::new));
     }
   }
 }
