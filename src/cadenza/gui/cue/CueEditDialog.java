@@ -6,12 +6,7 @@ import java.awt.Dimension;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.IdentityHashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import javax.swing.Box;
 import javax.swing.JCheckBox;
@@ -22,6 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import cadenza.control.midiinput.AcceptsKeyboardInput;
+import cadenza.control.midiinput.LocationEntryTracker;
 import cadenza.control.midiinput.MIDIInputControlCenter;
 import cadenza.control.midiinput.MIDIInputPreferences;
 import cadenza.core.CadenzaData;
@@ -37,6 +33,7 @@ import cadenza.gui.effects.edit.EffectChainViewerEditor;
 import cadenza.gui.patchusage.PatchUsagePanel;
 import cadenza.gui.song.SongPanel;
 import cadenza.gui.trigger.TriggerPanel;
+
 import common.collection.NotifyingList;
 import common.swing.CollapsiblePanel;
 import common.swing.CollapsiblePanel.Icon;
@@ -63,11 +60,7 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider,
   private JCheckBox _disableGlobalControlCheckBox;
   private JCheckBox _disableGlobalEffectsCheckBox;
   
-  // stuff for keyboard entry
-  private final Map<Integer, Keyboard> _keyboardMap = new IdentityHashMap<>();
-  private Keyboard _activeKeyboard = null;
-  private final Set<Integer> _currentlyPressedKeys = new HashSet<>(10);
-  private final Set<Integer> _accumulatedPressedKeys = new HashSet<>(10);
+  private PatchEnterer _patchEnterer;
   
   public CueEditDialog(Component parent, Cue cue, CadenzaData data) {
     super(parent);
@@ -81,10 +74,10 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider,
       }
     }
     
-    if (MIDIInputPreferences.PatchUsage.isAllowPatchUsageInput())
+    if (MIDIInputPreferences.PatchUsage.isAllowPatchUsageInput()) {
       MIDIInputControlCenter.installWindowFocusGrabber(this);
-    
-    _data.keyboards.forEach(kbd -> _keyboardMap.put(Integer.valueOf(kbd.channel), kbd));
+      _patchEnterer = new PatchEnterer();
+    }
   }
   
   @Override
@@ -208,54 +201,34 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider,
 
   @Override
   public void keyPressed(int channel, int midiNumber, int velocity) {
-    final Keyboard kbd = _keyboardMap.get(Integer.valueOf(channel+1)); // +1 because input is raw
-    
+    final Keyboard kbd = _patchEnterer.keyPressed(channel, midiNumber);
     _patchUsagePanel.highlightKey(_data.keyboards.indexOf(kbd), midiNumber);
-
-    if (_activeKeyboard == null || kbd == _activeKeyboard) {
-      _activeKeyboard = kbd;
-      _accumulatedPressedKeys.add(Integer.valueOf(midiNumber));
-      _currentlyPressedKeys.add(Integer.valueOf(midiNumber));
-    } else {
-      // key pressed on other keyboard
-      _activeKeyboard = null;
-      _accumulatedPressedKeys.clear();
-      _currentlyPressedKeys.clear();
-    }
   }
 
   @Override
   public void keyReleased(int channel, int midiNumber) {
-    final Keyboard kbd = _keyboardMap.get(Integer.valueOf(channel+1)); // +1 because input is raw
-
+    final Keyboard kbd = _patchEnterer.keyReleased(channel, midiNumber);
     _patchUsagePanel.unHighlightKey(_data.keyboards.indexOf(kbd), midiNumber);
-
-    if (kbd == _activeKeyboard) {
-      _currentlyPressedKeys.remove(Integer.valueOf(midiNumber));
-      
-      if (_currentlyPressedKeys.isEmpty()) {
-        
-        if (_accumulatedPressedKeys.size() == 1 &&
-            MIDIInputPreferences.PatchUsage.isAllowSinglePatchUsage()) {
-          _patchUsagePanel.addPatchUsage(Location.singleNote(kbd,
-              new Note(_accumulatedPressedKeys.iterator().next().intValue())));
-          
-        } else if (_accumulatedPressedKeys.size() == 2 &&
-            MIDIInputPreferences.PatchUsage.isAllowRangePatchUsage()) {
-          final Iterator<Integer> i = _accumulatedPressedKeys.iterator();
-          Note n1 = new Note(i.next().intValue());
-          Note n2 = new Note(i.next().intValue());
-          if (n1.below(n2))
-            _patchUsagePanel.addPatchUsage(Location.range(kbd, n1, n2));
-          else
-            _patchUsagePanel.addPatchUsage(Location.range(kbd, n2, n1));
-          
-        } else if (_accumulatedPressedKeys.size() >= 3 &&
-            MIDIInputPreferences.PatchUsage.isAllowWholePatchUsage()) {
-          _patchUsagePanel.addPatchUsage(Location.wholeKeyboard(kbd));
-        }
-        _accumulatedPressedKeys.clear();
-      }
+  }
+  
+  private class PatchEnterer extends LocationEntryTracker {
+    public PatchEnterer() {
+      super(_data.keyboards);
+    }
+    
+    @Override
+    protected void singlePressed(Keyboard keyboard, int noteNumber) {
+      _patchUsagePanel.addPatchUsage(Location.singleNote(keyboard, new Note(noteNumber)));
+    }
+    
+    @Override
+    protected void rangePressed(Keyboard keyboard, int lowNumber, int highNumber) {
+      _patchUsagePanel.addPatchUsage(Location.range(keyboard, new Note(lowNumber), new Note(highNumber)));
+    }
+    
+    @Override
+    protected void wholePressed(Keyboard keyboard) {
+      _patchUsagePanel.addPatchUsage(Location.wholeKeyboard(keyboard));
     }
   }
 }
