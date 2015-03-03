@@ -17,8 +17,14 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
 
+import cadenza.control.midiinput.AcceptsKeyboardInput;
+import cadenza.control.midiinput.LocationEntryTracker;
+import cadenza.control.midiinput.MIDIInputControlCenter;
+import cadenza.control.midiinput.MIDIInputPreferences;
 import cadenza.core.CadenzaData;
+import cadenza.core.Keyboard;
 import cadenza.core.Location;
+import cadenza.core.Note;
 import cadenza.core.Patch;
 import cadenza.core.effects.Effect;
 import cadenza.core.metronome.Metronome.Subdivision;
@@ -44,7 +50,7 @@ import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
 
 @SuppressWarnings("serial")
-public class PatchUsageEditDialog extends OKCancelDialog {
+public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeyboardInput {
   private final PatchUsage _startingPatchUsage;
   private final CadenzaData _data;
   
@@ -59,6 +65,8 @@ public class PatchUsageEditDialog extends OKCancelDialog {
   private CustomScalePatchUsagePane _scalePane;
   private ArpeggiatorPatchUsagePane _arpeggiatorPane;
   private SequencerPatchUsagePane _sequencerPane;
+  
+  private LocationEnterer _locationEnterer;
 
   public PatchUsageEditDialog(Component parent, PatchUsage startingPatchUsage,
       CadenzaData data) {
@@ -66,6 +74,11 @@ public class PatchUsageEditDialog extends OKCancelDialog {
     _startingPatchUsage = startingPatchUsage;
     
     _data = data;
+    
+    if (MIDIInputPreferences.isAllowMIDIInput()) {
+      MIDIInputControlCenter.installWindowFocusGrabber(this);
+      _locationEnterer = new LocationEnterer();
+    }
   }
 
   @Override
@@ -162,6 +175,39 @@ public class PatchUsageEditDialog extends OKCancelDialog {
     
     newPatchUsage.effects = _effectPanel.getEffects();
     return newPatchUsage;
+  }
+  
+  @Override
+  public void keyPressed(int channel, int midiNumber, int velocity) {
+    final Keyboard kbd = _locationEnterer.keyPressed(channel, midiNumber);
+    _locationSelector.highlightKey(kbd, midiNumber);
+  }
+  
+  @Override
+  public void keyReleased(int channel, int midiNumber) {
+    final Keyboard kbd = _locationEnterer.keyReleased(channel, midiNumber);
+    _locationSelector.unhighlightKey(kbd, midiNumber);
+  }
+  
+  private class LocationEnterer extends LocationEntryTracker {
+    public LocationEnterer() {
+      super(_data.keyboards);
+    }
+    
+    @Override
+    protected void singlePressed(Keyboard keyboard, int noteNumber) {
+      _locationSelector.setSelectedLocation(Location.singleNote(keyboard, new Note(noteNumber)));
+    }
+    
+    @Override
+    protected void rangePressed(Keyboard keyboard, int lowNumber, int highNumber) {
+      _locationSelector.setSelectedLocation(Location.range(keyboard, new Note(lowNumber), new Note(highNumber)));
+    }
+    
+    @Override
+    protected void wholePressed(Keyboard keyboard) {
+      _locationSelector.setSelectedLocation(Location.wholeKeyboard(keyboard));
+    }
   }
   
   private static abstract class PatchUsageEditPane<T extends PatchUsage> extends JPanel {

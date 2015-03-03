@@ -33,11 +33,11 @@ import org.ciscavate.cjwizard.WizardListener;
 import org.ciscavate.cjwizard.WizardPage;
 import org.ciscavate.cjwizard.WizardSettings;
 
+import cadenza.control.midiinput.MIDIInputPreferences;
 import cadenza.core.CadenzaData;
 import cadenza.gui.wizard.CadenzaWizardPageFactory;
 import cadenza.gui.wizard.OverviewPageTemplate;
 import cadenza.preferences.Preferences;
-
 import common.io.IOUtils;
 import common.swing.BlockingTask;
 import common.swing.SwingUtils;
@@ -60,6 +60,7 @@ public class Cadenza extends JFrame {
   
   private Cadenza() {
     super();
+    MIDIInputPreferences.init();
     _recents = buildRecents();
     init();
   }

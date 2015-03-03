@@ -5,7 +5,7 @@ import cadenza.preferences.Preferences;
 public class MIDIInputPreferences {
   private MIDIInputPreferences() {}
   
-  static {
+  public static void init() {
     try {
       match(Preferences.readMIDIInputOptions());
     } catch (Exception e) {
@@ -36,14 +36,14 @@ public class MIDIInputPreferences {
   }
   
   public static void match(boolean[] options) {
-    _allowMIDIInput   = options[0];
+    _allowMIDIInput = options[0];
     
     Volume._allowVolumeInput = options[1];
     Volume._volumeIsStrict   = options[2];
     
-    PatchUsage._allowPatchUsageInput = options[3];
+    PatchUsage._allowPatchUsageInput  = options[3];
     PatchUsage._allowSinglePatchUsage = options[4];
-    PatchUsage._allowRangePatchUsage = options[5];
-    PatchUsage._allowWholePatchUsage = options[6];
+    PatchUsage._allowRangePatchUsage  = options[5];
+    PatchUsage._allowWholePatchUsage  = options[6];
   }
 }

@@ -129,6 +129,16 @@ public class LocationEditPanel extends JPanel {
     _listeners.remove(listener);
   }
   
+  public void highlightKey(Keyboard keyboard, int noteNumber) {
+    if (_keyboardSelector != null)
+      _keyboardSelector.setSelectedKeyboard(keyboard);
+    _keyboardPanels.get(_keyboards.indexOf(keyboard)).accessKeyboardPanel().highlightNote(new Note(noteNumber));
+  }
+  
+  public void unhighlightKey(Keyboard keyboard, int noteNumber) {
+    _keyboardPanels.get(_keyboards.indexOf(keyboard)).accessKeyboardPanel().unhighlightNote(new Note(noteNumber));
+  }
+  
   private Keyboard getSelectedKeyboard() {
     if (_keyboards == null || _keyboards.isEmpty())
       return null;
