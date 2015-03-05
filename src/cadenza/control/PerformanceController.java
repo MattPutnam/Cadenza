@@ -230,7 +230,7 @@ public final class PerformanceController extends CadenzaController {
    * @param newPosition - the index of the new cue
    * @throws InvalidMidiDataException if any exception occurs setting messages (shouldn't happen)
    */
-  private void updatePosition(int oldPosition, int newPosition) throws InvalidMidiDataException {
+  private synchronized void updatePosition(int oldPosition, int newPosition) throws InvalidMidiDataException {
     if (oldPosition == newPosition) {
       return;
     }

@@ -93,13 +93,17 @@ public class CueListEditor extends JPanel {
       if (entry.isCue()) {
         if (index == 0) {
           _table.accessTable().setRowSelectionInterval(row, row);
-          _controller.notifyReceiver();
           return;
         } else {
           index--;
         }
       }
     }
+  }
+  
+  public void notifyCueChanged(int index) {
+    _disableListSelectionListener = true;
+    setSelectedCue(index);
   }
   
   public void clearSelection() {
