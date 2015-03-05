@@ -8,7 +8,6 @@ import javax.sound.midi.MidiMessage;
 import javax.sound.midi.ShortMessage;
 
 import cadenza.core.Keyboard;
-
 import common.Utils;
 import common.midi.MidiUtilities;
 import common.tuple.Pair;
@@ -55,6 +54,16 @@ public class ChordPredicate implements TriggerPredicate {
     }
     
     return _currentNotes.containsAll(_notes);
+  }
+  
+  @Override
+  public void reset() {
+    /*
+     * FIXME: this shouldn't be necessary.  What's happening is that if the
+     * trigger fires a cue advance action, the note offs never make it back
+     * to this predicate.
+     */
+    _currentNotes.clear();
   }
   
   @Override

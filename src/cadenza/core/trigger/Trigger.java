@@ -76,6 +76,8 @@ public class Trigger implements Serializable {
     _orderIndex = 0;
     _remainingPredicates.clear();
     _remainingPredicates.addAll(predicates);
+    
+    predicates.forEach(TriggerPredicate::reset);
   }
   
   private void trigger(final PerformanceController controller) {

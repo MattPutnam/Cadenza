@@ -17,4 +17,10 @@ public interface TriggerPredicate extends Serializable {
    * @return true iff the condition has been met
    */
   public boolean receive(MidiMessage message);
+  
+  /**
+   * Resets any internal state maintained in the predicate.  Default
+   * implementation does nothing.
+   */
+  public default void reset() {}
 }
