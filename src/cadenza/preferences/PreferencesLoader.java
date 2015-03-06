@@ -182,6 +182,8 @@ public final class PreferencesLoader {
     preferences.put(Keys.Keyboard.CHANNEL,        String.valueOf(keyboard.channel));
     preferences.put(Keys.Keyboard.RANGE,          keyboard.low + "-" + keyboard.high);
     preferences.put(Keys.Keyboard.SOUNDING_RANGE, keyboard.soundingLow + "-" + keyboard.soundingHigh);
+    
+    Preferences._defaultKeyboard = keyboard;
   }
   
   /**
@@ -194,6 +196,8 @@ public final class PreferencesLoader {
     preferences.put(Keys.Synthesizer.SYNTH,      synth.getName());
     preferences.put(Keys.Synthesizer.CHANNELS,   Utils.makeRangeString(synth.getChannels()));
     preferences.put(Keys.Synthesizer.EXPANSIONS, synth.getExpansionString());
+    
+    Preferences._defaultSynthesizer = synth;
   }
   
   /**
@@ -206,6 +210,8 @@ public final class PreferencesLoader {
   public static void commitDefaultMIDIPorts(Map<String, String> preferences, String[] ports) {
     preferences.put(Keys.Midiport.INPUT,  ports[0]);
     preferences.put(Keys.Midiport.OUTPUT, ports[1]);
+    
+    Preferences._defaultMIDIPorts = ports;
   }
   
   /**
@@ -224,6 +230,8 @@ public final class PreferencesLoader {
     preferences.put(Keys.Input.PATCHUSAGE_SINGLE, Boolean.toString(options[4]));
     preferences.put(Keys.Input.PATCHUSAGE_RANGE,  Boolean.toString(options[5]));
     preferences.put(Keys.Input.PATCHUSAGE_WHOLE,  Boolean.toString(options[6]));
+    
+    Preferences.matchMIDIInputOptions(options);
   }
   
   /**

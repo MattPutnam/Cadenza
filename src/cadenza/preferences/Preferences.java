@@ -25,16 +25,7 @@ public final class Preferences {
     _defaultSynthesizer = PreferencesLoader.buildDefaultSynthesizer(prefs);
     _defaultMIDIPorts = PreferencesLoader.buildDefaultMIDIPorts(prefs);
     
-    final boolean[] options = PreferencesLoader.buildMIDIInputOptions(prefs);
-    _allowMIDIInput = options[0];
-    
-    _allowVolumeInput = options[1];
-    _volumeIsStrict   = options[2];
-    
-    _allowPatchUsageInput  = options[3];
-    _allowSinglePatchUsage = options[4];
-    _allowRangePatchUsage  = options[5];
-    _allowWholePatchUsage  = options[6];
+    matchMIDIInputOptions(PreferencesLoader.buildMIDIInputOptions(prefs));
   }
   
   static Keyboard _defaultKeyboard;
@@ -64,6 +55,18 @@ public final class Preferences {
   public static boolean allowRangePatchUsage() { return _allowRangePatchUsage; }
   private static boolean _allowWholePatchUsage = true;
   public static boolean allowWholePatchUsage() { return _allowWholePatchUsage; }
+  
+  static void matchMIDIInputOptions(boolean[] options) {
+    _allowMIDIInput = options[0];
+    
+    _allowVolumeInput = options[1];
+    _volumeIsStrict   = options[2];
+    
+    _allowPatchUsageInput  = options[3];
+    _allowSinglePatchUsage = options[4];
+    _allowRangePatchUsage  = options[5];
+    _allowWholePatchUsage  = options[6];
+  }
   // End MIDI Input block
   ///////////////////////
 }
