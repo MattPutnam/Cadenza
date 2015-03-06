@@ -90,7 +90,7 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider,
     
     _patchUsagePanel = new PatchUsagePanel(_cue, _data);
     _triggerPanel = new TriggerPanel(_cue, _data);
-    _controlPanel = new ControlMapPanel(_cue == null ? this : _cue);
+    _controlPanel = new ControlMapPanel(_cue);
     _effectsPanel = new EffectChainViewerEditor(_cue.effects, true);
     
     _disableGlobalTriggersCheckBox = new JCheckBox("Disable global triggers", _cue.disableGlobalTriggers);

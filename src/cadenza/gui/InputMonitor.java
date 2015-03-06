@@ -90,8 +90,6 @@ public class InputMonitor extends JFrame {
   }
   
   public static class MidiEvent {
-    private static final DateFormat FORMAT = DateFormat.getTimeInstance(DateFormat.MEDIUM);
-    
     private final MidiMessage _message;
     private final long _timeStamp;
     
@@ -112,24 +110,13 @@ public class InputMonitor extends JFrame {
     
     public String getTimeStampString() {
       if (_timeStampString == null)
-        _timeStampString = FORMAT.format(new Date(_timeStamp));
+        _timeStampString = DateFormat.getTimeInstance(DateFormat.MEDIUM).format(new Date(_timeStamp));
       return _timeStampString;
     }
     
     @Override
     public String toString() {
       return MidiUtilities.toString(_message) + " @ " + getTimeStampString();
-    }
-    
-    @Override
-    public boolean equals(Object obj) {
-      final MidiEvent other = (MidiEvent) obj;
-      return _message.equals(other._message) && _timeStamp == other._timeStamp;
-    }
-    
-    @Override
-    public int hashCode() {
-      return (Long.valueOf(_timeStamp).hashCode() << 16) + _message.hashCode();
     }
   }
   

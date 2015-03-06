@@ -22,10 +22,14 @@ import com.sun.glass.events.KeyEvent;
 import common.midi.MidiUtilities;
 
 public class MIDIInputControlCenter {
-  private static MIDIInputControlCenter INSTANCE;
+  private static volatile MIDIInputControlCenter INSTANCE;
   public static MIDIInputControlCenter getInstance() {
-    if (INSTANCE == null)
-      INSTANCE = new MIDIInputControlCenter();
+    if (INSTANCE == null) {
+      synchronized (MIDIInputControlCenter.class) {
+        if (INSTANCE == null)
+          INSTANCE = new MIDIInputControlCenter();
+      }
+    }
     return INSTANCE;
   }
   

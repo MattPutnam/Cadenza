@@ -91,7 +91,8 @@ public class Synthesizer implements Serializable {
   
   @Override
   public boolean equals(Object obj) {
-    if (this == obj) return true;
+    if (obj == null) return false;
+    if (obj == this) return true;
     final Synthesizer sm = (Synthesizer) obj;
     return this._name.equals(sm._name) &&
          this._expansions.equals(sm._expansions) &&

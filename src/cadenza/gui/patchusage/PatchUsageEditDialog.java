@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -26,7 +25,6 @@ import cadenza.core.Keyboard;
 import cadenza.core.Location;
 import cadenza.core.Note;
 import cadenza.core.Patch;
-import cadenza.core.effects.Effect;
 import cadenza.core.metronome.Metronome.Subdivision;
 import cadenza.core.patchusage.ArpeggiatorPatchUsage;
 import cadenza.core.patchusage.ArpeggiatorPatchUsage.Pattern;
@@ -83,17 +81,10 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
 
   @Override
   protected JComponent buildContent() {
-    if (_startingPatchUsage == null) {
-      _patchSelector = new PatchSelector(_data.patches, _data.synthesizers, null);
-      _volumeField = new VolumeField(100);
-      _locationSelector = new LocationEditPanel(_data.keyboards, null);
-      _effectPanel = new EffectChainViewerEditor(new ArrayList<Effect>(), true);
-    } else {
-      _patchSelector = new PatchSelector(_data.patches, _data.synthesizers, _startingPatchUsage.patch);
-      _volumeField = new VolumeField(_startingPatchUsage.volume);
-      _locationSelector = new LocationEditPanel(_data.keyboards, _startingPatchUsage.location);
-      _effectPanel = new EffectChainViewerEditor(_startingPatchUsage.effects, true);
-    }
+    _patchSelector = new PatchSelector(_data.patches, _data.synthesizers, _startingPatchUsage.patch);
+    _volumeField = new VolumeField(_startingPatchUsage.volume);
+    _locationSelector = new LocationEditPanel(_data.keyboards, _startingPatchUsage.location);
+    _effectPanel = new EffectChainViewerEditor(_startingPatchUsage.effects, true);
     
     _patchSelector.accessCombo().addActionListener(e -> _volumeField.setVolume(_patchSelector.getSelectedPatch().defaultVolume));
     _locationSelector.setBorder(BorderFactory.createTitledBorder("Location"));

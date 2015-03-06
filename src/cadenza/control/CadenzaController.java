@@ -35,7 +35,7 @@ public abstract class CadenzaController {
     notifyReceiver();
   }
   
-  protected final Receiver getReceiver() {
+  protected synchronized final Receiver getReceiver() {
     return _receiver;
   }
   

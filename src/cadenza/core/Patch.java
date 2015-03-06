@@ -111,7 +111,8 @@ public class Patch implements Comparable<Patch>, Serializable {
   
   @Override
   public boolean equals(Object obj) {
-    if (this == obj) return true;
+    if (obj == null) return false;
+    if (obj == this) return true;
     final Patch p = (Patch) obj;
     // foreground color is a function of display color
     return this._synthesizer.equals(p._synthesizer) &&

@@ -61,7 +61,8 @@ public class Keyboard implements Serializable {
   
   @Override
   public boolean equals(Object obj) {
-    if (this == obj) return true;
+    if (obj == null) return false;
+    if (obj == this) return true;
     final Keyboard k = (Keyboard) obj;
     return this.low == k.low &&
          this.high == k.high &&

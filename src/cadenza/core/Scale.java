@@ -642,7 +642,8 @@ public final class Scale implements Serializable {
   
   @Override
   public boolean equals(Object obj) {
-    if (this == obj) return true;
+    if (obj == null) return false;
+    if (obj == this) return true;
     final Scale scale = (Scale) obj;
     return _name.equals(scale._name) && _pitches.equals(scale._pitches);
   }

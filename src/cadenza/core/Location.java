@@ -102,7 +102,8 @@ public class Location implements Serializable {
   
   @Override
   public boolean equals(Object obj) {
-    if (this == obj) return true;
+    if (obj == null) return false;
+    if (obj == this) return true;
     final Location nro = (Location) obj;
     if (nro._type != _type) return false;
     switch (_type) {

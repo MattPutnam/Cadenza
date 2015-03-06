@@ -133,6 +133,7 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
   
   @Override
   public boolean equals(Object obj) {
+    if (obj == null) return false;
     if (obj == this) return true;
     final Cue cue = (Cue) obj;
     return this.song.equals(cue.song) &&

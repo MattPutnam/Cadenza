@@ -168,6 +168,8 @@ public class Note implements Comparable<Note>, Serializable {
   
   @Override
   public boolean equals(Object other) {
+    if (other == null) return false;
+    if (other == this) return true;
     final Note n2 = (Note) other;
     return _midiNumber == n2._midiNumber;
   }
