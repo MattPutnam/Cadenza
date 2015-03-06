@@ -19,7 +19,6 @@ import javax.swing.JTabbedPane;
 import cadenza.control.midiinput.AcceptsKeyboardInput;
 import cadenza.control.midiinput.LocationEntryTracker;
 import cadenza.control.midiinput.MIDIInputControlCenter;
-import cadenza.control.midiinput.MIDIInputPreferences;
 import cadenza.core.CadenzaData;
 import cadenza.core.Keyboard;
 import cadenza.core.Location;
@@ -41,6 +40,7 @@ import cadenza.gui.patch.PatchSelector;
 import cadenza.gui.patchusage.editor.CustomScalePatchUsageEditor;
 import cadenza.gui.patchusage.editor.GhostNotePatchUsageEditor;
 import cadenza.gui.patchusage.editor.SequencerPatchUsageEditor;
+import cadenza.preferences.Preferences;
 
 import common.swing.IntField;
 import common.swing.SwingUtils;
@@ -73,7 +73,7 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
     
     _data = data;
     
-    if (MIDIInputPreferences.isAllowMIDIInput()) {
+    if (Preferences.allowMIDIInput()) {
       MIDIInputControlCenter.installWindowFocusGrabber(this);
       _locationEnterer = new LocationEnterer();
     }

@@ -36,7 +36,6 @@ import cadenza.control.MidiSolutionsMessageSender;
 import cadenza.control.PerformanceController;
 import cadenza.control.PreviewController;
 import cadenza.control.midiinput.MIDIInputControlCenter;
-import cadenza.control.midiinput.MIDIInputPreferences;
 import cadenza.core.CadenzaData;
 import cadenza.core.ControlMapEntry;
 import cadenza.core.Cue;
@@ -54,6 +53,7 @@ import cadenza.gui.keyboard.KeyboardListEditor;
 import cadenza.gui.preferences.PreferencesDialog;
 import cadenza.gui.synthesizer.SynthesizerListEditor;
 import cadenza.gui.trigger.TriggerPanel;
+import cadenza.preferences.Preferences;
 import common.collection.ListAdapter;
 import common.collection.ListEvent;
 import common.io.IOUtils;
@@ -154,7 +154,7 @@ public class CadenzaFrame extends JFrame implements Receiver {
   
   @Override
   public void send(MidiMessage message, long timestamp) {
-    if (MIDIInputPreferences.isAllowMIDIInput() && MIDIInputControlCenter.getInstance().isActive())
+    if (Preferences.allowMIDIInput() && MIDIInputControlCenter.getInstance().isActive())
       MIDIInputControlCenter.getInstance().send(message);
     else if (_mode == Mode.PERFORM)
       _performanceController.send(message);

@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import cadenza.core.Keyboard;
+import cadenza.preferences.Preferences;
 
 /**
  * Object that tracks key presses for the sake of generating Location entry
@@ -64,12 +65,9 @@ public abstract class LocationEntryTracker {
       _currentlyPressedKeys.remove(Integer.valueOf(midiNumber));
       
       if (_currentlyPressedKeys.isEmpty()) {
-        
-        if (_accumulatedPressedKeys.size() == 1 &&
-            MIDIInputPreferences.PatchUsage.isAllowSinglePatchUsage()) {
+        if (_accumulatedPressedKeys.size() == 1 && Preferences.allowSinglePatchUsage()) {
           singlePressed(kbd, _accumulatedPressedKeys.iterator().next().intValue());
-        } else if (_accumulatedPressedKeys.size() == 2 &&
-            MIDIInputPreferences.PatchUsage.isAllowRangePatchUsage()) {
+        } else if (_accumulatedPressedKeys.size() == 2 && Preferences.allowRangePatchUsage()) {
           final Iterator<Integer> i = _accumulatedPressedKeys.iterator();
           int n1 = i.next().intValue();
           int n2 = i.next().intValue();
@@ -77,9 +75,7 @@ public abstract class LocationEntryTracker {
             rangePressed(kbd, n1, n2);
           else
             rangePressed(kbd, n2, n1);
-          
-        } else if (_accumulatedPressedKeys.size() >= 3 &&
-            MIDIInputPreferences.PatchUsage.isAllowWholePatchUsage()) {
+        } else if (_accumulatedPressedKeys.size() >= 3 && Preferences.allowWholePatchUsage()) {
           wholePressed(kbd);
         }
         _accumulatedPressedKeys.clear();

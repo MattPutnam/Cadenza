@@ -2,7 +2,8 @@ package cadenza.gui.common;
 
 import cadenza.control.midiinput.AcceptsKeyboardInput;
 import cadenza.control.midiinput.MIDIInputControlCenter;
-import cadenza.control.midiinput.MIDIInputPreferences;
+import cadenza.preferences.Preferences;
+
 import common.swing.IntField;
 import common.swing.SwingUtils;
 
@@ -26,7 +27,7 @@ public class VolumeField extends IntField implements AcceptsKeyboardInput {
     setColumns(3);
     SwingUtils.freezeSize(this);
     
-    if (MIDIInputPreferences.Volume.isAllowVolumeInput())
+    if (Preferences.allowVolumeInput())
       MIDIInputControlCenter.installFocusGrabber(this);
   }
   
@@ -43,7 +44,7 @@ public class VolumeField extends IntField implements AcceptsKeyboardInput {
   @Override
   public void controlReceived(int channel, int ccNumber, final int value) { 
     SwingUtils.doInSwing(() -> {
-      if (!MIDIInputPreferences.Volume.isVolumeStrict() || ccNumber == 7) {
+      if (!Preferences.isVolumeStrict() || ccNumber == 7) {
         setInt(value);
         selectAll();
       }

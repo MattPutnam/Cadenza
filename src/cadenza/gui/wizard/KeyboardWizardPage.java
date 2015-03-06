@@ -10,7 +10,7 @@ import org.ciscavate.cjwizard.WizardSettings;
 import cadenza.core.CadenzaData;
 import cadenza.core.Keyboard;
 import cadenza.gui.keyboard.KeyboardListEditor;
-import cadenza.preferences.Preferences;
+import cadenza.preferences.PreferencesLoader;
 
 @SuppressWarnings("serial")
 public class KeyboardWizardPage extends WizardPage {
@@ -23,7 +23,7 @@ public class KeyboardWizardPage extends WizardPage {
     super("Keyboards", "Set up the keyboards used in this performance");
     _data = data;
     
-    final Keyboard keyboard = Preferences.buildDefaultKeyboard(preferences);
+    final Keyboard keyboard = PreferencesLoader.buildDefaultKeyboard(preferences);
     keyboard.isMain = true;
     _data.keyboards.add(keyboard);
     

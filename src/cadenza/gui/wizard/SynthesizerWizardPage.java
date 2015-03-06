@@ -11,7 +11,7 @@ import org.ciscavate.cjwizard.WizardSettings;
 import cadenza.core.CadenzaData;
 import cadenza.core.Synthesizer;
 import cadenza.gui.synthesizer.SynthesizerListEditor;
-import cadenza.preferences.Preferences;
+import cadenza.preferences.PreferencesLoader;
 
 @SuppressWarnings("serial")
 public class SynthesizerWizardPage extends WizardPage {
@@ -24,7 +24,7 @@ public class SynthesizerWizardPage extends WizardPage {
     super("Synthesizers", "Set up the synthesizers used in this performance");
     _data = data;
     
-    final Synthesizer synth = Preferences.buildDefaultSynthesizer(preferences);
+    final Synthesizer synth = PreferencesLoader.buildDefaultSynthesizer(preferences);
     final List<Synthesizer> synths = new ArrayList<>(1);
     synths.add(synth);
     

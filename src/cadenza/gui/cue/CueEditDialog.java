@@ -19,7 +19,6 @@ import javax.swing.border.EmptyBorder;
 import cadenza.control.midiinput.AcceptsKeyboardInput;
 import cadenza.control.midiinput.LocationEntryTracker;
 import cadenza.control.midiinput.MIDIInputControlCenter;
-import cadenza.control.midiinput.MIDIInputPreferences;
 import cadenza.core.CadenzaData;
 import cadenza.core.ControlMapEntry;
 import cadenza.core.ControlMapProvider;
@@ -33,6 +32,7 @@ import cadenza.gui.effects.edit.EffectChainViewerEditor;
 import cadenza.gui.patchusage.PatchUsagePanel;
 import cadenza.gui.song.SongPanel;
 import cadenza.gui.trigger.TriggerPanel;
+import cadenza.preferences.Preferences;
 
 import common.collection.NotifyingList;
 import common.swing.CollapsiblePanel;
@@ -74,7 +74,7 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider,
       }
     }
     
-    if (MIDIInputPreferences.PatchUsage.isAllowPatchUsageInput()) {
+    if (Preferences.allowPatchUsageInput()) {
       MIDIInputControlCenter.installWindowFocusGrabber(this);
       _patchEnterer = new PatchEnterer();
     }

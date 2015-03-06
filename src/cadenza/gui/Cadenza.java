@@ -33,11 +33,12 @@ import org.ciscavate.cjwizard.WizardListener;
 import org.ciscavate.cjwizard.WizardPage;
 import org.ciscavate.cjwizard.WizardSettings;
 
-import cadenza.control.midiinput.MIDIInputPreferences;
 import cadenza.core.CadenzaData;
 import cadenza.gui.wizard.CadenzaWizardPageFactory;
 import cadenza.gui.wizard.OverviewPageTemplate;
 import cadenza.preferences.Preferences;
+import cadenza.preferences.PreferencesLoader;
+
 import common.io.IOUtils;
 import common.swing.BlockingTask;
 import common.swing.SwingUtils;
@@ -60,7 +61,7 @@ public class Cadenza extends JFrame {
   
   private Cadenza() {
     super();
-    MIDIInputPreferences.init();
+    Preferences.init();
     _recents = buildRecents();
     init();
   }
@@ -205,7 +206,7 @@ public class Cadenza extends JFrame {
       final Map<String, String> preferences = new LinkedHashMap<>();
       
       try {
-        preferences.putAll(Preferences.readAllPreferences());
+        preferences.putAll(PreferencesLoader.readAllPreferences());
       } catch (Exception e) {
         System.err.println("Exception reading preferences file:");
         e.printStackTrace();
@@ -231,7 +232,7 @@ public class Cadenza extends JFrame {
             for (final WizardPage page : path)
               page.updateSettings(settings);
             
-            final String[] midiIO = Preferences.buildDefaultMIDIPorts(preferences);
+            final String[] midiIO = PreferencesLoader.buildDefaultMIDIPorts(preferences);
             newData.savedInputDeviceName = midiIO[0];
             newData.savedOutputDeviceName = midiIO[1];
             

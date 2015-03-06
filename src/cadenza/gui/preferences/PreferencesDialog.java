@@ -14,7 +14,7 @@ import cadenza.core.Keyboard;
 import cadenza.core.Synthesizer;
 import cadenza.gui.common.SynthConfigPanel;
 import cadenza.gui.keyboard.KeyboardEditPanel;
-import cadenza.preferences.Preferences;
+import cadenza.preferences.PreferencesLoader;
 
 import common.io.PropertiesFileReader;
 import common.swing.BlockingTask;
@@ -29,8 +29,8 @@ public class PreferencesDialog extends OKCancelDialog {
   
   private Map<String, String> _preferences;
   
-  private KeyboardEditPanel _keyboardEditPanel;
-  private SynthConfigPanel _synthConfigPanel;
+  private KeyboardEditPanel _defaultKeyboardPanel;
+  private SynthConfigPanel _defaultSynthPanel;
   private DefaultMIDIPortsPanel _midiPortsPanel;
   private MIDIInputPrefPanel _midiInputPrefPanel;
 
@@ -40,15 +40,15 @@ public class PreferencesDialog extends OKCancelDialog {
 
   @Override
   protected JComponent buildContent() {
-    _keyboardEditPanel = new KeyboardEditPanel(new Keyboard(1));
-    _synthConfigPanel = new SynthConfigPanel(new ArrayList<Synthesizer>(0), null);
+    _defaultKeyboardPanel = new KeyboardEditPanel(new Keyboard(1));
+    _defaultSynthPanel = new SynthConfigPanel(new ArrayList<Synthesizer>(0), null);
     _midiPortsPanel = new DefaultMIDIPortsPanel();
     _midiInputPrefPanel = new MIDIInputPrefPanel();
     
     loadPreferences();
     
     return new CardPanel(
-        Arrays.asList(SwingUtils.hugNorth(_keyboardEditPanel), _synthConfigPanel, _midiPortsPanel, _midiInputPrefPanel),
+        Arrays.asList(SwingUtils.hugNorth(_defaultKeyboardPanel), _defaultSynthPanel, _midiPortsPanel, _midiInputPrefPanel),
         Arrays.asList("Default Keyboard", "Default Synthesizer", "Default MIDI Ports", "MIDI Input Preferences"));
   }
   
@@ -63,14 +63,14 @@ public class PreferencesDialog extends OKCancelDialog {
         return;
       }
       
-      final Keyboard kbd = Preferences.buildDefaultKeyboard(_preferences);
-      final Synthesizer synth = Preferences.buildDefaultSynthesizer(_preferences);
-      final String[] midiPorts = Preferences.buildDefaultMIDIPorts(_preferences);
-      final boolean[] inputPrefs = Preferences.buildMIDIInputOptions(_preferences);
+      final Keyboard kbd = PreferencesLoader.buildDefaultKeyboard(_preferences);
+      final Synthesizer synth = PreferencesLoader.buildDefaultSynthesizer(_preferences);
+      final String[] midiPorts = PreferencesLoader.buildDefaultMIDIPorts(_preferences);
+      final boolean[] inputPrefs = PreferencesLoader.buildMIDIInputOptions(_preferences);
       
       SwingUtils.doInSwing(() -> {
-        _keyboardEditPanel.match(kbd);
-        _synthConfigPanel.match(synth);
+        _defaultKeyboardPanel.match(kbd);
+        _defaultSynthPanel.match(synth);
         _midiPortsPanel.match(midiPorts);
         _midiInputPrefPanel.match(inputPrefs);
       }, true);
@@ -79,13 +79,13 @@ public class PreferencesDialog extends OKCancelDialog {
   
   public void commitPreferences() {
     new Thread(() -> {
-      Preferences.commitDefaultKeyboard(_preferences, _keyboardEditPanel.getKeyboard());
-      Preferences.commitDefaultSynthesizer(_preferences, _synthConfigPanel.getSynthesizer());
-      Preferences.commitDefaultMIDIPorts(_preferences, _midiPortsPanel.getSelectedPorts());
-      Preferences.commitInputOptions(_preferences, _midiInputPrefPanel.getSelectedOptions());
+      PreferencesLoader.commitDefaultKeyboard(_preferences, _defaultKeyboardPanel.getKeyboard());
+      PreferencesLoader.commitDefaultSynthesizer(_preferences, _defaultSynthPanel.getSynthesizer());
+      PreferencesLoader.commitDefaultMIDIPorts(_preferences, _midiPortsPanel.getSelectedPorts());
+      PreferencesLoader.commitInputOptions(_preferences, _midiInputPrefPanel.getSelectedOptions());
       
       try {
-        Preferences.writePreferences(_preferences);
+        PreferencesLoader.writePreferences(_preferences);
       } catch (IOException e) {
         System.err.println("Exception trying to commit preferences:");
         e.printStackTrace();
@@ -101,8 +101,8 @@ public class PreferencesDialog extends OKCancelDialog {
 
   @Override
   protected void verify() throws VerificationException {
-    _keyboardEditPanel.verify();
-    _synthConfigPanel.verify();
+    _defaultKeyboardPanel.verify();
+    _defaultSynthPanel.verify();
   }
   
 }
