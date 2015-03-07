@@ -69,4 +69,13 @@ public final class Preferences {
   }
   // End MIDI Input block
   ///////////////////////
+  
+  ///////////////////////
+  // Patch search block
+  public static final int SIMPLE = 0;
+  public static final int PIPES = 1;
+  public static final int REGEX = 2;
+  
+  static int _patchSearchMode = PIPES;
+  public static int getPatchSearchMode() { return _patchSearchMode; }
 }

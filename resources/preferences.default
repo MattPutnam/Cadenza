@@ -14,3 +14,4 @@ input.patchusage.allow = true
 input.patchusage.single = false
 input.patchusage.range = true
 input.patchusage.whole = true
+patchsearch.mode = pipes

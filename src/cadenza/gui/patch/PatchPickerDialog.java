@@ -5,6 +5,8 @@ import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import javax.swing.Box;
 import javax.swing.JComponent;
@@ -18,18 +20,15 @@ import javax.swing.event.DocumentEvent;
 
 import cadenza.core.Patch;
 import cadenza.core.Synthesizer;
-import cadenza.gui.common.HelpButton;
+import cadenza.preferences.Preferences;
 import cadenza.synths.Synthesizers;
+
 import common.swing.DocumentAdapter;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
 
 @SuppressWarnings("serial")
 public class PatchPickerDialog extends OKCancelDialog {
-  private static final String HELP_TEXT = "<html>Search is not case sensitive.<br><br>"
-      + "Separate multiple search entries with a | (pipe):<br>"
-      + "'tpt|trumpet' matches 'muted tpt', 'Jazz Trumpet', etc.</html>";
-  
   private final List<Synthesizer> _synthesizers;
   private final List<Patch> _suggestions;
   private final boolean _hasSuggestions;
@@ -79,7 +78,6 @@ public class PatchPickerDialog extends OKCancelDialog {
     final Box search = Box.createHorizontalBox();
     search.add(new JLabel("Filter text:"));
     search.add(searchField);
-    search.add(new HelpButton(HELP_TEXT));
     final JPanel top = new JPanel(new BorderLayout());
     top.add(search, BorderLayout.SOUTH);
     if (_hasSuggestions) {
@@ -146,13 +144,34 @@ public class PatchPickerDialog extends OKCancelDialog {
     
     @Override
     public void documentChanged(DocumentEvent e) {
-      final String[] tokens = _searchField.getText().split("\\|");
-      final String[] searchTerms = Arrays.stream(tokens).map(s -> s.trim().toLowerCase()).toArray(String[]::new);
+      final String searchText = _searchField.getText();
+      final int mode = Preferences.getPatchSearchMode();
+      if (mode == Preferences.SIMPLE) {
+        final String lower = searchText.toLowerCase();
+        _resultList.setListData(_patches.stream()
+                                        .filter(patch -> patch.name.toLowerCase().contains(lower))
+                                        .toArray(Patch[]::new));
+      } else if (mode == Preferences.PIPES) {
+        final String[] tokens = searchText.split("\\|");
+        final String[] searchTerms = Arrays.stream(tokens).map(s -> s.trim().toLowerCase()).toArray(String[]::new);
+        
+        _resultList.setListData(_patches.stream()
+                                        .filter(patch -> Arrays.stream(searchTerms)
+                                                               .anyMatch(term -> patch.name.toLowerCase().contains(term)))
+                                        .toArray(Patch[]::new));
+      } else { // mode == Preferences.REGEX
+        final Pattern pattern;
+        try {
+          pattern = Pattern.compile(searchText);
+        } catch (PatternSyntaxException ex) {
+          return;
+        }
+        _resultList.setListData(_patches.stream()
+                                        .filter(patch -> pattern.matcher(patch.name).matches())
+                                        .toArray(Patch[]::new));
+      }
       
-      _resultList.setListData(_patches.stream()
-                                      .filter(patch -> Arrays.stream(searchTerms)
-                                                             .anyMatch(term -> patch.name.toLowerCase().contains(term)))
-                                      .toArray(Patch[]::new));
+      
     }
   }
 }

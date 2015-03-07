@@ -32,4 +32,8 @@ final class Keys {
     static String PATCHUSAGE_RANGE  = "input.patchusage.range";
     static String PATCHUSAGE_WHOLE  = "input.patchusage.whole";
   }
+  
+  static class PatchSearch {
+    static String MODE = "patchsearch.mode";
+  }
 }

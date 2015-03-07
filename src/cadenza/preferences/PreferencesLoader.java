@@ -128,7 +128,7 @@ public final class PreferencesLoader {
   }
   
   /**
-   * Returns the default MIDI I/O ports from the preferences file.  This is not
+   * Builds the default MIDI I/O ports from the given preferences map.  This is not
    * an IO operation and can be called from anywhere.
    * @param loadedPrefs the pre-loaded preferences map
    * @return the default MIDI I/O ports from the given preferences map.  The
@@ -149,7 +149,7 @@ public final class PreferencesLoader {
   }
   
   /**
-   * Reads the MIDI input options from the preferences file.  This is not an IO
+   * Builds the MIDI input options from the given preferences map.  This is not an IO
    * operation and can be called from anywhere.
    * @param loadedPrefs the pre-loaded preferences map
    * @return the MIDI input options from the given preferences map
@@ -166,6 +166,32 @@ public final class PreferencesLoader {
         Boolean.parseBoolean(loadedPrefs.get(Keys.Input.PATCHUSAGE_RANGE)),
         Boolean.parseBoolean(loadedPrefs.get(Keys.Input.PATCHUSAGE_WHOLE)),
     };
+  }
+  
+  /**
+   * Reads the patch search mode option from the preferences file.  This is an
+   * IO operation and cannot be called from the Swing Event thread.
+   * @return the patch search mode option
+   * @throws Exception If any IO exception occurs
+   */
+  public static int readPatchSearchMode() throws Exception {
+    return buildPatchSearchMode(readAllPreferences());
+  }
+  
+  /**
+   * Builds the patch search mode option from the given preferences map.  This
+   * is not an IO operation and can be called from anywhere.
+   * @param loadedPrefs the pre-loaded preferences map
+   * @return the patch search mode option
+   */
+  public static int buildPatchSearchMode(Map<String, String> loadedPrefs) {
+    final String option = loadedPrefs.get(Keys.PatchSearch.MODE);
+    if (option.equalsIgnoreCase("simple"))
+      return Preferences.SIMPLE;
+    else if (option.equalsIgnoreCase("pipes"))
+      return Preferences.PIPES;
+    else
+      return Preferences.REGEX;
   }
   
   /////////////////////////////////////////////////////////////////////////////
@@ -232,6 +258,22 @@ public final class PreferencesLoader {
     preferences.put(Keys.Input.PATCHUSAGE_WHOLE,  Boolean.toString(options[6]));
     
     Preferences.matchMIDIInputOptions(options);
+  }
+  
+  /**
+   * Commits the given patch search mode to the given preferences map.
+   * This is not an IO operation and can be called from anywhere.
+   * @param preferences the loaded preferences map
+   * @param mode the patch search mode
+   */
+  public static void commitPatchSearchMode(Map<String, String> preferences, int mode) {
+    switch (mode) {
+      case Preferences.SIMPLE: preferences.put(Keys.PatchSearch.MODE, "simple"); break;
+      case Preferences.PIPES:  preferences.put(Keys.PatchSearch.MODE, "pipes");  break;
+      case Preferences.REGEX:  preferences.put(Keys.PatchSearch.MODE, "regex");  break;
+    }
+    
+    Preferences._patchSearchMode = mode;
   }
   
   /**
