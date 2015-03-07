@@ -34,7 +34,7 @@ public class SynthesizerListEditor extends JPanel implements CustomWizardCompone
       "<br><br>" +
       WordUtils.wrap("Each synthesizer must be assigned a list of output channels " +
       "to use, and these cannot overlap across synthesizers.  Specify the list as " +
-      "integers, or ranges of integers, separated by commas.  Example: 1-4, 6, 8", 60, "<br>", false);
+      "integers, or ranges of integers, separated by commas.  Example: 0-4, 6, 8", 60, "<br>", false);
   
   private List<Synthesizer> _synthesizers;
   private SynthesizerTable _table;

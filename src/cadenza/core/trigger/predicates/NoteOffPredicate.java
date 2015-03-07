@@ -23,7 +23,7 @@ public class NoteOffPredicate implements TriggerPredicate {
       if (!MidiUtilities.isNoteOff(sm))
         return false;
       
-      final int channel = sm.getChannel() + 1; // libraries use 0-indexing, this application uses 1-indexing
+      final int channel = sm.getChannel();
       final int midiNumber = sm.getData1();
       
       return _location.getKeyboard().channel == channel && _location.contains(midiNumber);

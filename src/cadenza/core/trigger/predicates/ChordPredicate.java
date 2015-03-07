@@ -42,7 +42,7 @@ public class ChordPredicate implements TriggerPredicate {
   public boolean receive(MidiMessage message) {
     if (message instanceof ShortMessage) {
       final ShortMessage sm = (ShortMessage) message;
-      final int channel = sm.getChannel() + 1; // libraries use 0-indexing, this application uses 1-indexing
+      final int channel = sm.getChannel();
       
       final int midiNumber = sm.getData1();
       final Pair<Integer, Integer> entry = Pair.make(Integer.valueOf(channel), Integer.valueOf(midiNumber));

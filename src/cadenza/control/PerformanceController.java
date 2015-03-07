@@ -326,7 +326,7 @@ public final class PerformanceController extends CadenzaController {
   }
   
   private void send_perform(ShortMessage sm) {
-    final int channel = sm.getChannel() + 1; // libraries use 0-indexing, this application uses 1-indexing
+    final int channel = sm.getChannel();
     
     // find input keyboard:
     final Keyboard keyboard = _channelKeyboards.get(Integer.valueOf(channel));

@@ -36,7 +36,7 @@ public abstract class LocationEntryTracker {
    * @return the Keyboard object on which the key was pressed.
    */
   public Keyboard keyPressed(int channel, int midiNumber) {
-    final Keyboard kbd = _keyboardMap.get(Integer.valueOf(channel+1));
+    final Keyboard kbd = _keyboardMap.get(Integer.valueOf(channel));
 
     if (_activeKeyboard == null || kbd == _activeKeyboard) {
       _activeKeyboard = kbd;
@@ -59,7 +59,7 @@ public abstract class LocationEntryTracker {
    * @param midiNumber the MIDI note number of the released key
    */
   public Keyboard keyReleased(int channel, int midiNumber) {
-    final Keyboard kbd = _keyboardMap.get(Integer.valueOf(channel+1));
+    final Keyboard kbd = _keyboardMap.get(Integer.valueOf(channel));
 
     if (kbd == _activeKeyboard) {
       _currentlyPressedKeys.remove(Integer.valueOf(midiNumber));

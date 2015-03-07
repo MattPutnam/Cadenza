@@ -63,7 +63,7 @@ public class PreviewController extends CadenzaController {
           final int index = _synthIndexes.get(synth).intValue();
           _synthIndexes.put(synth, Integer.valueOf(index+1));
           
-          final int channel = synth.getChannels().get(index).intValue()-1;
+          final int channel = synth.getChannels().get(index).intValue();
           PatchChangeDelegate.performPatchChange(getReceiver(), patch, channel);
           _previewChannels.put(patch, Integer.valueOf(channel));
         }

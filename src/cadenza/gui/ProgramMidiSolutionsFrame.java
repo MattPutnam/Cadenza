@@ -278,7 +278,7 @@ public class ProgramMidiSolutionsFrame extends JFrame {
     if (text.equalsIgnoreCase("all"))
       return 0x7F;
     else
-      return Integer.parseInt(text) - 1;
+      return Integer.parseInt(text);
   }
   
   private static int extractInt(JTextField textField) {

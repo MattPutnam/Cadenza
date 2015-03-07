@@ -40,7 +40,7 @@ public class KeyboardEditPanel extends JPanel {
     _keyboardPanel = new SingleKeyboardPanel(new Note(0), new Note(127));
     
     _nameField = new JTextField(keyboard.name);
-    _channelField = new IntField(keyboard.channel, 1, Integer.MAX_VALUE);
+    _channelField = new IntField(keyboard.channel, 0, Integer.MAX_VALUE);
     SwingUtils.freezeWidth(_channelField, 50);
     _selectedFullRange = Location.range(keyboard, keyboard.low, keyboard.high);
     _selectedSoundingRange = Location.range(keyboard, keyboard.soundingLow, keyboard.soundingHigh);

@@ -34,7 +34,7 @@ public class ControlValuePredicate implements TriggerPredicate {
       if (!MidiUtilities.isControlChange(sm))
         return false;
       
-      final int channel = sm.getChannel() + 1; // libraries use 0-indexing, this application uses 1-indexing
+      final int channel = sm.getChannel();
       final int control = sm.getData1();
       final int value = sm.getData2();
       

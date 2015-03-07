@@ -31,7 +31,7 @@ public class SynthConfigPanel extends JPanel {
   private static final String HELP_TEXT = "<html>"
       + "List the channels to be used by this synthesizer, as a<br>"
       + "comma-separated list (with hyphens for a range, e.g.<br>"
-      + "\"1-3, 5\" specifies channels 1, 2, 3, and 5)<br>"
+      + "\"0-3, 5\" specifies channels 0, 1, 2, 3, and 5)<br>"
       + "<br>"
       + "You will need at least as many channels as you plan<br>"
       + "to have simultaneous patches.  You may specify more<br>"
@@ -140,7 +140,7 @@ public class SynthConfigPanel extends JPanel {
   }
   
   private static JLabel createChannelHintLabel() {
-    final JLabel result = new JLabel("Ex: 1-4, 9-12");
+    final JLabel result = new JLabel("Ex: 0-3, 8-11");
     result.setFont(result.getFont().deriveFont(Font.ITALIC));
     return result;
   }
@@ -170,8 +170,8 @@ public class SynthConfigPanel extends JPanel {
     try {
       final List<Integer> ints = buildList();
       for (final int i : ints) {
-        if (i < 1)
-          throw new VerificationException("Channels must be >= 1", _channelField);
+        if (i < 0)
+          throw new VerificationException("Channels must be >= 0", _channelField);
         for (final Synthesizer synth : _otherSynthesizers)
           if (synth.getChannels().contains(Integer.valueOf(i)))
             throw new VerificationException("Another synthesizer already uses channel " + i, _channelField);
