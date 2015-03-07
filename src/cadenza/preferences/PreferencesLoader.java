@@ -17,6 +17,7 @@ import common.Utils;
 import common.io.PropertiesFileReader;
 import common.midi.MidiUtilities;
 import common.swing.SwingUtils;
+import common.tuple.Pair;
 
 /**
  * Utility for loading and saving the global Cadenza preferences
@@ -169,29 +170,32 @@ public final class PreferencesLoader {
   }
   
   /**
-   * Reads the patch search mode option from the preferences file.  This is an
+   * Reads the patch search option from the preferences file.  This is an
    * IO operation and cannot be called from the Swing Event thread.
-   * @return the patch search mode option
+   * @return the patch search options
    * @throws Exception If any IO exception occurs
    */
-  public static int readPatchSearchMode() throws Exception {
-    return buildPatchSearchMode(readAllPreferences());
+  public static Pair<Integer, Boolean> readPatchSearchOptions() throws Exception {
+    return buildPatchSearchOptions(readAllPreferences());
   }
   
   /**
-   * Builds the patch search mode option from the given preferences map.  This
+   * Builds the patch search options from the given preferences map.  This
    * is not an IO operation and can be called from anywhere.
    * @param loadedPrefs the pre-loaded preferences map
-   * @return the patch search mode option
+   * @return the patch search options
    */
-  public static int buildPatchSearchMode(Map<String, String> loadedPrefs) {
-    final String option = loadedPrefs.get(Keys.PatchSearch.MODE);
-    if (option.equalsIgnoreCase("simple"))
-      return Preferences.SIMPLE;
-    else if (option.equalsIgnoreCase("pipes"))
-      return Preferences.PIPES;
+  public static Pair<Integer, Boolean> buildPatchSearchOptions(Map<String, String> loadedPrefs) {
+    final String optionString = loadedPrefs.get(Keys.PatchSearch.MODE);
+    final int option;
+    if (optionString.equalsIgnoreCase("simple"))
+      option = Preferences.SIMPLE;
+    else if (optionString.equalsIgnoreCase("pipes"))
+      option = Preferences.PIPES;
     else
-      return Preferences.REGEX;
+      option = Preferences.REGEX;
+    
+    return Pair.make(Integer.valueOf(option), Boolean.valueOf(loadedPrefs.get(Keys.PatchSearch.CASE_SENSITIVE)));
   }
   
   /////////////////////////////////////////////////////////////////////////////
@@ -266,14 +270,16 @@ public final class PreferencesLoader {
    * @param preferences the loaded preferences map
    * @param mode the patch search mode
    */
-  public static void commitPatchSearchMode(Map<String, String> preferences, int mode) {
-    switch (mode) {
+  public static void commitPatchSearchOptions(Map<String, String> preferences, Pair<Integer, Boolean> options) {
+    switch (options._1().intValue()) {
       case Preferences.SIMPLE: preferences.put(Keys.PatchSearch.MODE, "simple"); break;
       case Preferences.PIPES:  preferences.put(Keys.PatchSearch.MODE, "pipes");  break;
       case Preferences.REGEX:  preferences.put(Keys.PatchSearch.MODE, "regex");  break;
     }
+    preferences.put(Keys.PatchSearch.CASE_SENSITIVE, options._2().toString());
     
-    Preferences._patchSearchMode = mode;
+    Preferences._patchSearchMode = options._1().intValue();
+    Preferences._patchSearchCaseSensitive = options._2().booleanValue();
   }
   
   /**

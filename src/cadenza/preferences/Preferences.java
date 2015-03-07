@@ -6,6 +6,7 @@ import cadenza.core.Keyboard;
 import cadenza.core.Synthesizer;
 
 import common.swing.SwingUtils;
+import common.tuple.Pair;
 
 public final class Preferences {
   private Preferences() {}
@@ -26,6 +27,10 @@ public final class Preferences {
     _defaultMIDIPorts = PreferencesLoader.buildDefaultMIDIPorts(prefs);
     
     matchMIDIInputOptions(PreferencesLoader.buildMIDIInputOptions(prefs));
+    
+    Pair<Integer, Boolean> patchOptions = PreferencesLoader.buildPatchSearchOptions(prefs);
+    _patchSearchMode = patchOptions._1().intValue();
+    _patchSearchCaseSensitive = patchOptions._2().booleanValue();
   }
   
   static Keyboard _defaultKeyboard;
@@ -37,7 +42,7 @@ public final class Preferences {
   static String[] _defaultMIDIPorts;
   public static String[] getDefaultMIDIPorts() { return _defaultMIDIPorts; }
   
-  //////////////////////
+  ///////////////////////
   // MIDI Input block
   private static boolean _allowMIDIInput = true;
   public static boolean allowMIDIInput() { return _allowMIDIInput; }
@@ -70,7 +75,7 @@ public final class Preferences {
   // End MIDI Input block
   ///////////////////////
   
-  ///////////////////////
+  /////////////////////////
   // Patch search block
   public static final int SIMPLE = 0;
   public static final int PIPES = 1;
@@ -78,4 +83,9 @@ public final class Preferences {
   
   static int _patchSearchMode = PIPES;
   public static int getPatchSearchMode() { return _patchSearchMode; }
+  
+  static boolean _patchSearchCaseSensitive = false;
+  public static boolean isPatchSearchCaseSensitive() { return _patchSearchCaseSensitive; }
+  // End Patch search block
+  /////////////////////////
 }

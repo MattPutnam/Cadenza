@@ -22,6 +22,7 @@ import common.swing.CardPanel;
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
+import common.tuple.Pair;
 
 @SuppressWarnings("serial")
 public class PreferencesDialog extends OKCancelDialog {
@@ -33,7 +34,7 @@ public class PreferencesDialog extends OKCancelDialog {
   private SynthConfigPanel _defaultSynthPanel;
   private DefaultMIDIPortsPanel _midiPortsPanel;
   private MIDIInputPrefPanel _midiInputPrefPanel;
-  private PatchSearchModePanel _patchSearchModePanel;
+  private PatchSearchOptionsPanel _patchSearchModePanel;
 
   public PreferencesDialog(Component parent) {
     super(parent);
@@ -45,7 +46,7 @@ public class PreferencesDialog extends OKCancelDialog {
     _defaultSynthPanel = new SynthConfigPanel(new ArrayList<Synthesizer>(0), null);
     _midiPortsPanel = new DefaultMIDIPortsPanel();
     _midiInputPrefPanel = new MIDIInputPrefPanel();
-    _patchSearchModePanel = new PatchSearchModePanel();
+    _patchSearchModePanel = new PatchSearchOptionsPanel();
     
     loadPreferences();
     
@@ -69,14 +70,14 @@ public class PreferencesDialog extends OKCancelDialog {
       final Synthesizer synth = PreferencesLoader.buildDefaultSynthesizer(_preferences);
       final String[] midiPorts = PreferencesLoader.buildDefaultMIDIPorts(_preferences);
       final boolean[] inputPrefs = PreferencesLoader.buildMIDIInputOptions(_preferences);
-      final int patchSearchMode = PreferencesLoader.buildPatchSearchMode(_preferences);
+      final Pair<Integer, Boolean> patchSearchOptions = PreferencesLoader.buildPatchSearchOptions(_preferences);
       
       SwingUtils.doInSwing(() -> {
         _defaultKeyboardPanel.match(kbd);
         _defaultSynthPanel.match(synth);
         _midiPortsPanel.match(midiPorts);
         _midiInputPrefPanel.match(inputPrefs);
-        _patchSearchModePanel.setSelectedOption(patchSearchMode);
+        _patchSearchModePanel.setSelectedOptions(patchSearchOptions);
       }, true);
     }).start();
   }
@@ -87,7 +88,7 @@ public class PreferencesDialog extends OKCancelDialog {
       PreferencesLoader.commitDefaultSynthesizer(_preferences, _defaultSynthPanel.getSynthesizer());
       PreferencesLoader.commitDefaultMIDIPorts(_preferences, _midiPortsPanel.getSelectedPorts());
       PreferencesLoader.commitInputOptions(_preferences, _midiInputPrefPanel.getSelectedOptions());
-      PreferencesLoader.commitPatchSearchMode(_preferences, _patchSearchModePanel.getSelectedOption());
+      PreferencesLoader.commitPatchSearchOptions(_preferences, _patchSearchModePanel.getSelectedOptions());
       
       try {
         PreferencesLoader.writePreferences(_preferences);

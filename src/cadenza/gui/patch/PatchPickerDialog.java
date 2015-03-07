@@ -146,19 +146,40 @@ public class PatchPickerDialog extends OKCancelDialog {
     public void documentChanged(DocumentEvent e) {
       final String searchText = _searchField.getText();
       final int mode = Preferences.getPatchSearchMode();
+      final boolean caseSensitive = Preferences.isPatchSearchCaseSensitive();
+      
       if (mode == Preferences.SIMPLE) {
-        final String lower = searchText.toLowerCase();
-        _resultList.setListData(_patches.stream()
-                                        .filter(patch -> patch.name.toLowerCase().contains(lower))
-                                        .toArray(Patch[]::new));
+        if (caseSensitive) {
+          _resultList.setListData(_patches.stream()
+                                          .filter(patch -> patch.name.contains(searchText))
+                                          .toArray(Patch[]::new));
+        } else {
+          final String lower = searchText.toLowerCase();
+          _resultList.setListData(_patches.stream()
+                                          .filter(patch -> patch.name.toLowerCase().contains(lower))
+                                          .toArray(Patch[]::new));
+        }
       } else if (mode == Preferences.PIPES) {
         final String[] tokens = searchText.split("\\|");
-        final String[] searchTerms = Arrays.stream(tokens).map(s -> s.trim().toLowerCase()).toArray(String[]::new);
-        
-        _resultList.setListData(_patches.stream()
-                                        .filter(patch -> Arrays.stream(searchTerms)
-                                                               .anyMatch(term -> patch.name.toLowerCase().contains(term)))
-                                        .toArray(Patch[]::new));
+        if (caseSensitive) {
+          final String[] searchTerms = Arrays.stream(tokens)
+                                             .map(String::trim)
+                                             .toArray(String[]::new);
+          
+          _resultList.setListData(_patches.stream()
+                                          .filter(patch -> Arrays.stream(searchTerms)
+                                                                 .anyMatch(term -> patch.name.contains(term)))
+                                          .toArray(Patch[]::new));
+        } else {
+          final String[] searchTerms = Arrays.stream(tokens)
+                                             .map(s -> s.trim().toLowerCase())
+                                             .toArray(String[]::new);
+          
+          _resultList.setListData(_patches.stream()
+                                          .filter(patch -> Arrays.stream(searchTerms)
+                                                                 .anyMatch(term -> patch.name.toLowerCase().contains(term)))
+                                          .toArray(Patch[]::new));
+        }
       } else { // mode == Preferences.REGEX
         final Pattern pattern;
         try {
