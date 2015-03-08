@@ -11,6 +11,7 @@ import java.util.Map;
 import cadenza.core.Keyboard;
 import cadenza.core.Note;
 import cadenza.core.Synthesizer;
+import cadenza.preferences.Preferences.PatchSearchMode;
 import cadenza.synths.Synthesizers;
 
 import common.Utils;
@@ -175,7 +176,7 @@ public final class PreferencesLoader {
    * @return the patch search options
    * @throws Exception If any IO exception occurs
    */
-  public static Pair<Integer, Boolean> readPatchSearchOptions() throws Exception {
+  public static Pair<PatchSearchMode, Boolean> readPatchSearchOptions() throws Exception {
     return buildPatchSearchOptions(readAllPreferences());
   }
   
@@ -185,17 +186,9 @@ public final class PreferencesLoader {
    * @param loadedPrefs the pre-loaded preferences map
    * @return the patch search options
    */
-  public static Pair<Integer, Boolean> buildPatchSearchOptions(Map<String, String> loadedPrefs) {
-    final String optionString = loadedPrefs.get(Keys.PatchSearch.MODE);
-    final int option;
-    if (optionString.equalsIgnoreCase("simple"))
-      option = Preferences.SIMPLE;
-    else if (optionString.equalsIgnoreCase("pipes"))
-      option = Preferences.PIPES;
-    else
-      option = Preferences.REGEX;
-    
-    return Pair.make(Integer.valueOf(option), Boolean.valueOf(loadedPrefs.get(Keys.PatchSearch.CASE_SENSITIVE)));
+  public static Pair<PatchSearchMode, Boolean> buildPatchSearchOptions(Map<String, String> loadedPrefs) {
+    return Pair.make(PatchSearchMode.valueOf(loadedPrefs.get(Keys.PatchSearch.MODE)),
+                     Boolean.valueOf(loadedPrefs.get(Keys.PatchSearch.CASE_SENSITIVE)));
   }
   
   /////////////////////////////////////////////////////////////////////////////
@@ -270,15 +263,11 @@ public final class PreferencesLoader {
    * @param preferences the loaded preferences map
    * @param mode the patch search mode
    */
-  public static void commitPatchSearchOptions(Map<String, String> preferences, Pair<Integer, Boolean> options) {
-    switch (options._1().intValue()) {
-      case Preferences.SIMPLE: preferences.put(Keys.PatchSearch.MODE, "simple"); break;
-      case Preferences.PIPES:  preferences.put(Keys.PatchSearch.MODE, "pipes");  break;
-      case Preferences.REGEX:  preferences.put(Keys.PatchSearch.MODE, "regex");  break;
-    }
+  public static void commitPatchSearchOptions(Map<String, String> preferences, Pair<PatchSearchMode, Boolean> options) {
+    preferences.put(Keys.PatchSearch.MODE, options._1().name());
     preferences.put(Keys.PatchSearch.CASE_SENSITIVE, options._2().toString());
     
-    Preferences._patchSearchMode = options._1().intValue();
+    Preferences._patchSearchMode = options._1();
     Preferences._patchSearchCaseSensitive = options._2().booleanValue();
   }
   

@@ -28,8 +28,8 @@ public final class Preferences {
     
     matchMIDIInputOptions(PreferencesLoader.buildMIDIInputOptions(prefs));
     
-    Pair<Integer, Boolean> patchOptions = PreferencesLoader.buildPatchSearchOptions(prefs);
-    _patchSearchMode = patchOptions._1().intValue();
+    Pair<PatchSearchMode, Boolean> patchOptions = PreferencesLoader.buildPatchSearchOptions(prefs);
+    _patchSearchMode = patchOptions._1();
     _patchSearchCaseSensitive = patchOptions._2().booleanValue();
   }
   
@@ -77,12 +77,24 @@ public final class Preferences {
   
   /////////////////////////
   // Patch search block
-  public static final int SIMPLE = 0;
-  public static final int PIPES = 1;
-  public static final int REGEX = 2;
+  public static enum PatchSearchMode {
+    SIMPLE("Simple search - search the given text verbatim"),
+    PIPES("Multiple search - separate multiple terms with a pipe (|)"),
+    REGEX("Regex search - use a Java formatted regex (advanced)");
+    
+    private final String _display;
+    private PatchSearchMode(String display) {
+      _display = display;
+    }
+    
+    @Override
+    public String toString() {
+      return _display;
+    }
+  }
   
-  static int _patchSearchMode = PIPES;
-  public static int getPatchSearchMode() { return _patchSearchMode; }
+  static PatchSearchMode _patchSearchMode = PatchSearchMode.PIPES;
+  public static PatchSearchMode getPatchSearchMode() { return _patchSearchMode; }
   
   static boolean _patchSearchCaseSensitive = false;
   public static boolean isPatchSearchCaseSensitive() { return _patchSearchCaseSensitive; }
