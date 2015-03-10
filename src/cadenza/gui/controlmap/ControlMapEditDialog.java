@@ -83,7 +83,7 @@ public class ControlMapEditDialog extends OKCancelDialog implements AcceptsKeybo
     return new SimpleGrid(new JComponent[][]
     {
       { new JLabel("From:"), new JLabel("To:"), new JLabel("On Patches:") },
-      { fromPane,         toPane,        patchPane          }
+      { fromPane,            toPane,            patchPane                 }
     });
   }
   
