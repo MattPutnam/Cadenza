@@ -5,6 +5,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -13,9 +14,12 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
 
+import cadenza.control.midiinput.AcceptsKeyboardInput;
+import cadenza.control.midiinput.LocationEntryTracker;
+import cadenza.control.midiinput.MIDIInputControlCenter;
 import cadenza.core.Keyboard;
+import cadenza.core.Location;
 import cadenza.core.Note;
 import cadenza.core.trigger.predicates.ChordPredicate;
 import cadenza.core.trigger.predicates.ControlValuePredicate;
@@ -26,7 +30,9 @@ import cadenza.gui.common.ControlCombo;
 import cadenza.gui.common.KeyboardSelector;
 import cadenza.gui.common.LocationEditPanel;
 import cadenza.gui.keyboard.KeyboardPanel;
+import cadenza.preferences.Preferences;
 
+import common.swing.IntField;
 import common.swing.SimpleGrid;
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
@@ -34,7 +40,7 @@ import common.swing.dialog.OKCancelDialog;
 import common.tuple.Pair;
 
 @SuppressWarnings("serial")
-public class TriggerPredicateEditDialog extends OKCancelDialog {
+public class TriggerPredicateEditDialog extends OKCancelDialog implements AcceptsKeyboardInput {
   private final List<Keyboard> _keyboards;
   private final TriggerPredicate _initial;
   
@@ -44,10 +50,17 @@ public class TriggerPredicateEditDialog extends OKCancelDialog {
   private ChordPredicatePane _chordPane;
   private ControlValuePredicatePane _controlPane;
   
+  private KeyPressTracker _keyPressTracker;
+  
   public TriggerPredicateEditDialog(Component parent, List<Keyboard> keyboards, TriggerPredicate initial) {
     super(parent);
     _keyboards = keyboards;
     _initial = initial;
+    
+    if (Preferences.allowMIDIInput()) {
+      MIDIInputControlCenter.installWindowFocusGrabber(this);
+      _keyPressTracker = new KeyPressTracker(keyboards);
+    }
   }
 
   @Override
@@ -86,8 +99,32 @@ public class TriggerPredicateEditDialog extends OKCancelDialog {
     }
   }
   
+  @Override
+  public void keyPressed(int channel, int midiNumber, int velocity) {
+    final Keyboard kbd = _keyPressTracker.keyPressed(channel, midiNumber);
+    getCurrentTab().notifyKeyPress(kbd, midiNumber);
+  }
+  
+  @Override
+  public void keyReleased(int channel, int midiNumber) {
+    final Keyboard kbd = _keyPressTracker.keyReleased(channel, midiNumber);
+    getCurrentTab().notifyKeyRelease(kbd, midiNumber);
+  }
+  
+  @Override
+  public void controlReceived(int channel, int ccNumber, int value) {
+    final Component selected = _tabbedPane.getSelectedComponent();
+    if (selected instanceof ControlValuePredicatePane) {
+      ((ControlValuePredicatePane) selected).receive(channel, ccNumber, value);
+    }
+  }
+  
   public TriggerPredicate getPredicate() {
     return ((PredicatePane<?>) _tabbedPane.getSelectedComponent()).createPredicate();
+  }
+  
+  private PredicatePane<?> getCurrentTab() {
+    return (PredicatePane<?>) _tabbedPane.getSelectedComponent();
   }
 
   @Override
@@ -100,6 +137,27 @@ public class TriggerPredicateEditDialog extends OKCancelDialog {
     ((PredicatePane<?>) _tabbedPane.getSelectedComponent()).verify();
   }
   
+  private class KeyPressTracker extends LocationEntryTracker {
+    public KeyPressTracker(List<Keyboard> keyboards) {
+      super(keyboards);
+    }
+    
+    @Override
+    protected void singlePressed(Keyboard keyboard, int noteNumber) {
+      getCurrentTab().setLocation(Location.singleNote(keyboard, new Note(noteNumber)));
+    }
+    
+    @Override
+    protected void rangePressed(Keyboard keyboard, int lowNumber, int highNumber) {
+      getCurrentTab().setLocation(Location.range(keyboard, new Note(lowNumber), new Note(highNumber)));
+    }
+    
+    @Override
+    protected void wholePressed(Keyboard keyboard) {
+      getCurrentTab().setLocation(Location.wholeKeyboard(keyboard));
+    }
+  }
+  
   private abstract class PredicatePane<T extends TriggerPredicate> extends JPanel {
     public abstract void initialize(T initial);
     
@@ -110,6 +168,27 @@ public class TriggerPredicateEditDialog extends OKCancelDialog {
     public void verify() throws VerificationException {}
     
     public abstract T createPredicate();
+    
+    /**
+     * Sets the selected location, if that makes sense for this predicate.
+     * Default implementation does nothing.
+     * @param location the location
+     */
+    public void setLocation(Location location) {}
+    
+    /**
+     * Notification that a note has been pressed.  Default does nothing.
+     * @param keyboard the keyboard
+     * @param noteNumber the note number
+     */
+    public void notifyKeyPress(Keyboard keyboard, int noteNumber) {}
+    
+    /**
+     * Notification that a note has been released.  Default does nothing.
+     * @param keyboard the keyboard
+     * @param noteNumber the note number
+     */
+    public void notifyKeyRelease(Keyboard keyboard, int noteNumber) {}
   }
   
   private class NoteOnPredicatePane extends PredicatePane<NoteOnPredicate> {
@@ -130,25 +209,55 @@ public class TriggerPredicateEditDialog extends OKCancelDialog {
     public NoteOnPredicate createPredicate() {
       return new NoteOnPredicate(_locationPanel.getSelectedLocation());
     }
+    
+    @Override
+    public void setLocation(Location location) {
+      _locationPanel.setSelectedLocation(location);
+    }
+    
+    @Override
+    public void notifyKeyPress(Keyboard keyboard, int noteNumber) {
+      _locationPanel.highlightKey(keyboard, noteNumber);
+    }
+    
+    @Override
+    public void notifyKeyRelease(Keyboard keyboard, int noteNumber) {
+      _locationPanel.unhighlightKey(keyboard, noteNumber);
+    }
   }
   
   private class NoteOffPredicatePane extends PredicatePane<NoteOffPredicate> {
-    private final LocationEditPanel _locationEditPanel;
+    private final LocationEditPanel _locationPanel;
     
     public NoteOffPredicatePane() {
       super();
-      _locationEditPanel = new LocationEditPanel(_keyboards, null);
-      add(_locationEditPanel);
+      _locationPanel = new LocationEditPanel(_keyboards, null);
+      add(_locationPanel);
     }
     
     @Override
     public void initialize(NoteOffPredicate initial) {
-      _locationEditPanel.setSelectedLocation(initial.getLocation());
+      _locationPanel.setSelectedLocation(initial.getLocation());
     }
 
     @Override
     public NoteOffPredicate createPredicate() {
-      return new NoteOffPredicate(_locationEditPanel.getSelectedLocation());
+      return new NoteOffPredicate(_locationPanel.getSelectedLocation());
+    }
+    
+    @Override
+    public void setLocation(Location location) {
+      _locationPanel.setSelectedLocation(location);
+    }
+    
+    @Override
+    public void notifyKeyPress(Keyboard keyboard, int noteNumber) {
+      _locationPanel.highlightKey(keyboard, noteNumber);
+    }
+    
+    @Override
+    public void notifyKeyRelease(Keyboard keyboard, int noteNumber) {
+      _locationPanel.unhighlightKey(keyboard, noteNumber);
     }
   }
   
@@ -194,6 +303,19 @@ public class TriggerPredicateEditDialog extends OKCancelDialog {
       updateDisplay();
     }
     
+    @Override
+    public void notifyKeyPress(Keyboard keyboard, int noteNumber) {
+      final Optional<Pair<Keyboard, Integer>> opt = _notes.stream()
+                                                          .filter(pair -> pair._1() == keyboard && pair._2().intValue() == noteNumber)
+                                                          .findFirst();
+      if (opt.isPresent()) {
+        _notes.remove(opt.get());
+      } else {
+        _notes.add(Pair.make(keyboard, Integer.valueOf(noteNumber)));
+      }
+      updateDisplay();
+    }
+    
     private void updateDisplay() {
       for (final KeyboardPanel kp : _keyboardPanels)
         kp.unhighlightAll();
@@ -211,7 +333,7 @@ public class TriggerPredicateEditDialog extends OKCancelDialog {
   
   private class ControlValuePredicatePane extends PredicatePane<ControlValuePredicate> {
     private final ControlCombo _controlCombo;
-    private final JTextField _valueField;
+    private final IntField _valueField;
     private final KeyboardSelector _keyboardSelector;
     
     private int _lowCache;
@@ -221,7 +343,8 @@ public class TriggerPredicateEditDialog extends OKCancelDialog {
       super();
       
       _controlCombo = new ControlCombo(null);
-      _valueField = new JTextField(3);
+      _valueField = new IntField(0, 0, 127);
+      _valueField.setColumns(3);
       _keyboardSelector = new KeyboardSelector(_keyboards);
       
       add(new SimpleGrid(new JComponent[][] {
@@ -230,7 +353,7 @@ public class TriggerPredicateEditDialog extends OKCancelDialog {
         { new JLabel("From"), SwingUtils.hugWest(_keyboardSelector) }
       }, Alignment.CENTER, Alignment.LEADING));
     }
-    
+
     @Override
     public void initialize(ControlValuePredicate initial) {
       _controlCombo.setSelectedIndex(initial.getControlNumber());
@@ -242,6 +365,18 @@ public class TriggerPredicateEditDialog extends OKCancelDialog {
         _valueField.setText(String.valueOf(low));
       } else {
         _valueField.setText(low + "-" + high);
+      }
+    }
+    
+    public void receive(int channel, int ccNumber, int value) {
+      _controlCombo.setSelectedIndex(ccNumber);
+      _valueField.setInt(value);
+      
+      if (_keyboards.size() > 1) {
+        _keyboards.stream()
+                  .filter(kbd -> kbd.channel == channel)
+                  .findFirst()
+                  .ifPresent(kbd -> _keyboardSelector.setSelectedKeyboard(kbd));
       }
     }
     
