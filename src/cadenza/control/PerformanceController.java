@@ -252,7 +252,14 @@ public final class PerformanceController extends CadenzaController {
     
     final Map<Synthesizer, List<Integer>> availableChannels = new HashMap<>();
     for (final Synthesizer synth : getData().synthesizers) {
-      availableChannels.put(synth, new ArrayList<>(synth.getChannels()));
+      // sort available channels by synth, and move currently assigned ones to
+      // the back of the list, so they get used last:
+      final List<Integer> synthChannels = new ArrayList<>(synth.getChannels());
+      for (final Integer i : oldAssignments.values())
+        if (synthChannels.remove(i))
+          synthChannels.add(i);
+      
+      availableChannels.put(synth, synthChannels);
     }
     
     final List<PatchUsage> unassigned = new LinkedList<>();
