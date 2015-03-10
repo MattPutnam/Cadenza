@@ -2,6 +2,7 @@ package cadenza.gui.controlmap;
 
 import java.awt.Component;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -9,16 +10,18 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
+import cadenza.control.midiinput.AcceptsKeyboardInput;
+import cadenza.control.midiinput.MIDIInputControlCenter;
 import cadenza.core.ControlMapEntry;
 import cadenza.core.patchusage.PatchUsage;
-
+import cadenza.preferences.Preferences;
 import common.swing.SimpleGrid;
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
 
 @SuppressWarnings("serial")
-public class ControlMapEditDialog extends OKCancelDialog {
+public class ControlMapEditDialog extends OKCancelDialog implements AcceptsKeyboardInput {
   private final List<PatchUsage> _patchUsages;
   private final ControlMapEntry _entry;
   
@@ -31,13 +34,14 @@ public class ControlMapEditDialog extends OKCancelDialog {
     
     _patchUsages = patchUsages;
     _entry = entry;
+    
+    if (Preferences.allowMIDIInput())
+      MIDIInputControlCenter.installWindowFocusGrabber(this);
   }
   
   @Override
   protected JComponent buildContent() {
-    final Integer[] ints = new Integer[128];
-    for (int i = 0; i < 128; ++i)
-      ints[i] = Integer.valueOf(i);
+    final Integer[] ints = IntStream.range(0, 128).boxed().toArray(Integer[]::new);
     
     _fromList = new JList<>(ints);
     _fromList.setCellRenderer(new ControlListRenderer());
@@ -86,6 +90,11 @@ public class ControlMapEditDialog extends OKCancelDialog {
   @Override
   protected void initialize() {
     setSize(900, 400);
+  }
+  
+  @Override
+  public void controlReceived(int channel, int ccNumber, int value) {
+    _fromList.setSelectedIndex(ccNumber);
   }
   
   @Override
