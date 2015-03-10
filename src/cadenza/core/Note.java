@@ -155,7 +155,7 @@ public class Note implements Comparable<Note>, Serializable {
     _pitchClassDisplay = _pitchClass.getDisplay();
   }
   
-  private static Note[] ALL_NOTES = IntStream.range(0, 128).mapToObj(i -> new Note(i)).toArray(Note[]::new);
+  private static Note[] ALL_NOTES = IntStream.range(0, 128).mapToObj(Note::new).toArray(Note[]::new);
   
   public static Note valueOf(int midiNumber) {
     return ALL_NOTES[midiNumber];

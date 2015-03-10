@@ -46,7 +46,7 @@ public class LocationEditPanel extends JPanel {
     
     if (_keyboards == null) {
       _keyboardSelector = null;
-      final SingleKeyboardPanel skp = new SingleKeyboardPanel(Note.valueOf(0), Note.valueOf(127));
+      final SingleKeyboardPanel skp = new SingleKeyboardPanel(Note.MIN, Note.MAX);
       skp.addKeyboardListener(updater);
       components.add(skp);
       _keyboardPanels.add(skp);
