@@ -91,7 +91,7 @@ public abstract class LocationEntryTracker {
    * @param keyboard the keyboard on which the note was pressed
    * @param noteNumber the MIDI note number of the pressed key
    */
-  protected abstract void singlePressed(Keyboard keyboard, int noteNumber);
+  protected void singlePressed(Keyboard keyboard, int noteNumber) {}
   
   /**
    * Called once two different keys on one keyboard have been pressed and
@@ -100,12 +100,12 @@ public abstract class LocationEntryTracker {
    * @param lowNumber the MIDI note number of the lower key
    * @param highNumber the MIDI note number of the higher key
    */
-  protected abstract void rangePressed(Keyboard keyboard, int lowNumber, int highNumber);
+  protected void rangePressed(Keyboard keyboard, int lowNumber, int highNumber) {}
   
   /**
    * Called once three or more different keys on one keyboard have been pressed
    * and released, if whole range entry is turned on.
    * @param keyboard the keyboard on which the notes were pressed.
    */
-  protected abstract void wholePressed(Keyboard keyboard);
+  protected void wholePressed(Keyboard keyboard) {}
 }

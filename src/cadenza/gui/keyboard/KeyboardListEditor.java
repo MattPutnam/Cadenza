@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,14 +25,19 @@ import javax.swing.table.TableColumn;
 import org.apache.commons.lang3.text.WordUtils;
 import org.ciscavate.cjwizard.CustomWizardComponent;
 
+import cadenza.control.midiinput.AcceptsKeyboardInput;
+import cadenza.control.midiinput.LocationEntryTracker;
+import cadenza.control.midiinput.MIDIInputControlCenter;
 import cadenza.core.CadenzaData;
 import cadenza.core.Cue;
 import cadenza.core.Keyboard;
 import cadenza.core.Location;
+import cadenza.core.Note;
 import cadenza.core.patchusage.PatchUsage;
 import cadenza.gui.common.CadenzaTable;
 import cadenza.gui.common.HelpButton;
-
+import cadenza.preferences.Preferences;
+import common.swing.SwingUtils;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
 import common.swing.table.ListTableModel;
@@ -227,13 +233,21 @@ public class KeyboardListEditor extends JPanel implements CustomWizardComponent 
       }
     }
     
-    private class KeyboardEditDialog extends OKCancelDialog {
+    private class KeyboardEditDialog extends OKCancelDialog implements AcceptsKeyboardInput {
       private final KeyboardEditPanel _panel;
+      
+      private LocationTracker _locationTracker;
       
       public KeyboardEditDialog(Keyboard keyboard) {
         super(KeyboardListEditor.this);
         
         _panel = new KeyboardEditPanel(keyboard);
+        
+        if (Preferences.allowMIDIInput()) {
+          MIDIInputControlCenter.installWindowFocusGrabber(this);
+          _locationTracker = new LocationTracker(new Keyboard(
+              Note.MIN, Note.MAX, Note.MIN, Note.MAX, "dummy", true, 0));
+        }
       }
       
       @Override
@@ -257,7 +271,32 @@ public class KeyboardListEditor extends JPanel implements CustomWizardComponent 
       }
       
       public Keyboard getKeyboard() {
-        return _panel.getKeyboard();
+        return _panel.buildKeyboard();
+      }
+      
+      @Override
+      public void keyPressed(int channel, int midiNumber, int velocity) {
+        _panel.accessKeyboardPanel().highlightNote(Note.valueOf(midiNumber));
+        _locationTracker.keyPressed(channel, midiNumber);
+      }
+      
+      @Override
+      public void keyReleased(int channel, int midiNumber) {
+        _panel.accessKeyboardPanel().unhighlightNote(Note.valueOf(midiNumber));
+        _locationTracker.keyReleased(channel, midiNumber);
+      }
+      
+      private class LocationTracker extends LocationEntryTracker {
+        public LocationTracker(Keyboard keyboard) {
+          super(Collections.singletonList(keyboard));
+        }
+        
+        @Override
+        protected void rangePressed(Keyboard keyboard, int lowNumber, int highNumber) {
+          SwingUtils.doInSwing(() -> {
+            _panel.applyLocation(Location.range(keyboard, Note.valueOf(lowNumber), Note.valueOf(highNumber)));
+          }, false);
+        }
       }
     }
   }

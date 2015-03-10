@@ -24,12 +24,13 @@ import common.swing.VerificationException;
 public class KeyboardEditPanel extends JPanel {
   private final Keyboard _keyboard;
   
-  private final JTextField _nameField;
-  private final IntField _channelField;
-  private final SingleKeyboardPanel _keyboardPanel;
-  
   private Location _selectedFullRange;
   private Location _selectedSoundingRange;
+  
+  private final JTextField _nameField;
+  private final IntField _channelField;
+  private final JComboBox<String> _combo;
+  private final SingleKeyboardPanel _keyboardPanel;
   
   private JPanel _rangeArea;
   
@@ -37,20 +38,21 @@ public class KeyboardEditPanel extends JPanel {
     super();
     
     _keyboard = keyboard;
-    _keyboardPanel = new SingleKeyboardPanel(Note.MIN, Note.MAX);
+    _selectedFullRange = Location.range(keyboard, keyboard.low, keyboard.high);
+    _selectedSoundingRange = Location.range(keyboard, keyboard.soundingLow, keyboard.soundingHigh);
     
     _nameField = new JTextField(keyboard.name);
     _channelField = new IntField(keyboard.channel, 0, Integer.MAX_VALUE);
     SwingUtils.freezeWidth(_channelField, 50);
-    _selectedFullRange = Location.range(keyboard, keyboard.low, keyboard.high);
-    _selectedSoundingRange = Location.range(keyboard, keyboard.soundingLow, keyboard.soundingHigh);
+    
+    _combo = new JComboBox<>(new String[] { "Specify Range", "Specify Sounding Range" });
+    _keyboardPanel = new SingleKeyboardPanel(Note.MIN, Note.MAX);
+    
     
     init();
   }
   
   private void init() {
-    final JComboBox<String> combo = new JComboBox<>(new String[] { "Specify Range", "Specify Sounding Range" });
-    
     _rangeArea = new JPanel();
     _rangeArea.setLayout(null);
     SwingUtils.freezeSize(_rangeArea, _keyboardPanel.getSize().width, 50);
@@ -58,27 +60,37 @@ public class KeyboardEditPanel extends JPanel {
     _keyboardPanel.addKeyboardListener(new KeyboardAdapter() {
       @Override
       public void keyDragged(Note startNote, Note endNote) {
-        if (combo.getSelectedIndex() == 0) {
-          _selectedFullRange = Location.range(_keyboard, startNote, endNote);
-          combo.setSelectedIndex(1);
-          rebuildLabels();
-        } else {
-          _selectedSoundingRange = Location.range(_keyboard, startNote, endNote);
-          combo.setSelectedIndex(0);
-          rebuildLabels();
-        }
+        applyLocation(Location.range(_keyboard, startNote, endNote));
       }
     });
     rebuildLabels();
     
     final Box content = Box.createVerticalBox();
     content.add(SwingUtils.buildRow(new JLabel("Name: "), _nameField, new JLabel("  Input channel: "), _channelField));
-    content.add(combo);
+    content.add(_combo);
     content.add(_keyboardPanel);
     content.add(_rangeArea);
     
     setLayout(new BorderLayout());
     add(content, BorderLayout.CENTER);
+  }
+  
+  public void applyLocation(Location location) {
+    SwingUtils.throwIfNotEventThread();
+    
+    if (_combo.getSelectedIndex() == 0) {
+      _selectedFullRange = location;
+      _combo.setSelectedIndex(1);
+      rebuildLabels();
+    } else {
+      _selectedSoundingRange = location;
+      _combo.setSelectedIndex(0);
+      rebuildLabels();
+    }
+  }
+  
+  KeyboardPanel accessKeyboardPanel() {
+    return _keyboardPanel.accessKeyboardPanel();
   }
   
   private void rebuildLabels() {
@@ -133,7 +145,7 @@ public class KeyboardEditPanel extends JPanel {
     return _nameField.getText().trim();
   }
   
-  public Keyboard getKeyboard() {
+  public Keyboard buildKeyboard() {
     return new Keyboard(_selectedFullRange.getLowerOfRange(), _selectedFullRange.getUpperOfRange(),
         _selectedSoundingRange.getLowerOfRange(), _selectedSoundingRange.getUpperOfRange(),
         getEnteredName(), _keyboard.isMain, _channelField.getInt());

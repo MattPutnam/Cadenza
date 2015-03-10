@@ -85,7 +85,7 @@ public class PreferencesDialog extends OKCancelDialog {
   
   public void commitPreferences() {
     new Thread(() -> {
-      PreferencesLoader.commitDefaultKeyboard(_preferences, _defaultKeyboardPanel.getKeyboard());
+      PreferencesLoader.commitDefaultKeyboard(_preferences, _defaultKeyboardPanel.buildKeyboard());
       PreferencesLoader.commitDefaultSynthesizer(_preferences, _defaultSynthPanel.getSynthesizer());
       PreferencesLoader.commitDefaultMIDIPorts(_preferences, _midiPortsPanel.getSelectedPorts());
       PreferencesLoader.commitInputOptions(_preferences, _midiInputPrefPanel.getSelectedOptions());
