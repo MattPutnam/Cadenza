@@ -34,7 +34,7 @@ public class GraphicEQView extends EffectView {
       final int midiNum = (e.getPoint().x - MARGIN) / BAND_WIDTH;
       if (0 <= midiNum && midiNum <= 127) {
         final int gain = _geq.process(midiNum, 0);
-        return Optional.of(new Note(midiNum).toString() + ": " + (gain >= 0 ? "+" : "") + gain);
+        return Optional.of(Note.valueOf(midiNum).toString() + ": " + (gain >= 0 ? "+" : "") + gain);
       } else {
         return Optional.empty();
       }

@@ -138,9 +138,9 @@ public class GhostNotePatchUsageEditor extends JPanel {
     _destPanel.unhighlightAll();
     
     for (final Entry<Integer, List<Integer>> entry : _map.entrySet()) {
-      _sourcePanel.highlightNote(new Note(entry.getKey().intValue()), KeyboardPanel.LIGHT_HIGHLIGHT_COLOR);
+      _sourcePanel.highlightNote(Note.valueOf(entry.getKey().intValue()), KeyboardPanel.LIGHT_HIGHLIGHT_COLOR);
       for (final Integer i : entry.getValue()) {
-        _destPanel.highlightNote(new Note(i.intValue()), KeyboardPanel.LIGHT_HIGHLIGHT_COLOR);
+        _destPanel.highlightNote(Note.valueOf(i.intValue()), KeyboardPanel.LIGHT_HIGHLIGHT_COLOR);
       }
     }
     
@@ -148,7 +148,7 @@ public class GhostNotePatchUsageEditor extends JPanel {
       _sourcePanel.highlightNote(_currentlySelected, KeyboardPanel.HIGHLIGHT_COLOR);
       if (_map.containsKey(_currentlySelectedNum)) {
         for (final Integer i : _map.get(_currentlySelectedNum))
-          _destPanel.highlightNote(new Note(i.intValue()), KeyboardPanel.HIGHLIGHT_COLOR);
+          _destPanel.highlightNote(Note.valueOf(i.intValue()), KeyboardPanel.HIGHLIGHT_COLOR);
       }
     }
   }

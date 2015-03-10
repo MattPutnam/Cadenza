@@ -46,7 +46,7 @@ public class LocationEditPanel extends JPanel {
     
     if (_keyboards == null) {
       _keyboardSelector = null;
-      final SingleKeyboardPanel skp = new SingleKeyboardPanel(new Note(0), new Note(127));
+      final SingleKeyboardPanel skp = new SingleKeyboardPanel(Note.valueOf(0), Note.valueOf(127));
       skp.addKeyboardListener(updater);
       components.add(skp);
       _keyboardPanels.add(skp);
@@ -132,11 +132,11 @@ public class LocationEditPanel extends JPanel {
   public void highlightKey(Keyboard keyboard, int noteNumber) {
     if (_keyboardSelector != null)
       _keyboardSelector.setSelectedKeyboard(keyboard);
-    _keyboardPanels.get(_keyboards.indexOf(keyboard)).accessKeyboardPanel().highlightNote(new Note(noteNumber));
+    _keyboardPanels.get(_keyboards.indexOf(keyboard)).accessKeyboardPanel().highlightNote(Note.valueOf(noteNumber));
   }
   
   public void unhighlightKey(Keyboard keyboard, int noteNumber) {
-    _keyboardPanels.get(_keyboards.indexOf(keyboard)).accessKeyboardPanel().unhighlightNote(new Note(noteNumber));
+    _keyboardPanels.get(_keyboards.indexOf(keyboard)).accessKeyboardPanel().unhighlightNote(Note.valueOf(noteNumber));
   }
   
   private Keyboard getSelectedKeyboard() {

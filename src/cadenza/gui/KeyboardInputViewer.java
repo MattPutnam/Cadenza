@@ -67,7 +67,7 @@ public class KeyboardInputViewer extends JPanel {
     if (mm instanceof ShortMessage) {
       final ShortMessage sm = (ShortMessage) mm;
       final int index = _channelToIndex.get(Integer.valueOf(sm.getChannel())).intValue();
-      final Note note = new Note(sm.getData1());
+      final Note note = Note.valueOf(sm.getData1());
       if (MidiUtilities.isNoteOn(sm)) {
         _keyboardPanels.get(index).highlightNote(note);
       } else if (MidiUtilities.isNoteOff(sm)) {

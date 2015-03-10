@@ -37,7 +37,7 @@ public class KeyboardEditPanel extends JPanel {
     super();
     
     _keyboard = keyboard;
-    _keyboardPanel = new SingleKeyboardPanel(new Note(0), new Note(127));
+    _keyboardPanel = new SingleKeyboardPanel(Note.valueOf(0), Note.valueOf(127));
     
     _nameField = new JTextField(keyboard.name);
     _channelField = new IntField(keyboard.channel, 0, Integer.MAX_VALUE);

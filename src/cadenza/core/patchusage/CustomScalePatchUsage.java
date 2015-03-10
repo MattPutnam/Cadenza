@@ -68,7 +68,7 @@ public class CustomScalePatchUsage extends PatchUsage {
 
   @Override
   public int[][] getNotes(int midiNumber, int velocity) {
-    final PitchClass pc = new Note(midiNumber).getPitchClass();
+    final PitchClass pc = Note.valueOf(midiNumber).getPitchClass();
     if (map.containsKey(pc)) {
       return new int[][] {{midiNumber + map.get(pc).intValue(), velocity}};
     } else {
@@ -78,7 +78,7 @@ public class CustomScalePatchUsage extends PatchUsage {
   
   @Override
   boolean respondsTo_additional(int midiNumber, int velocity) {
-    return map.containsKey(new Note(midiNumber).getPitchClass());
+    return map.containsKey(Note.valueOf(midiNumber).getPitchClass());
   }
   
   @Override

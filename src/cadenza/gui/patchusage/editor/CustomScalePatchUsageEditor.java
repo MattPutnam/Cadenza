@@ -156,7 +156,7 @@ public class CustomScalePatchUsageEditor extends JPanel {
         final int x1 = startRect.x + (startRect.width/2) + _srcPanel.getLocation().x;
         final int y1 = _srcPanel.getHeight();
         
-        final Note end = new Note(start.getMidiNumber() + entry.getValue().intValue());
+        final Note end = Note.valueOf(start.getMidiNumber() + entry.getValue().intValue());
         final Rectangle endRect = _destPanel.getKeyPosition(end);
         final int x2 = endRect.x + (endRect.width/2);
         final int y2 = _srcPanel.getHeight() + GAP;

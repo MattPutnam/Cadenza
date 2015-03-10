@@ -187,12 +187,12 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
     
     @Override
     protected void singlePressed(Keyboard keyboard, int noteNumber) {
-      _locationSelector.setSelectedLocation(Location.singleNote(keyboard, new Note(noteNumber)));
+      _locationSelector.setSelectedLocation(Location.singleNote(keyboard, Note.valueOf(noteNumber)));
     }
     
     @Override
     protected void rangePressed(Keyboard keyboard, int lowNumber, int highNumber) {
-      _locationSelector.setSelectedLocation(Location.range(keyboard, new Note(lowNumber), new Note(highNumber)));
+      _locationSelector.setSelectedLocation(Location.range(keyboard, Note.valueOf(lowNumber), Note.valueOf(highNumber)));
     }
     
     @Override

@@ -144,12 +144,12 @@ public class TriggerPredicateEditDialog extends OKCancelDialog implements Accept
     
     @Override
     protected void singlePressed(Keyboard keyboard, int noteNumber) {
-      getCurrentTab().setLocation(Location.singleNote(keyboard, new Note(noteNumber)));
+      getCurrentTab().setLocation(Location.singleNote(keyboard, Note.valueOf(noteNumber)));
     }
     
     @Override
     protected void rangePressed(Keyboard keyboard, int lowNumber, int highNumber) {
-      getCurrentTab().setLocation(Location.range(keyboard, new Note(lowNumber), new Note(highNumber)));
+      getCurrentTab().setLocation(Location.range(keyboard, Note.valueOf(lowNumber), Note.valueOf(highNumber)));
     }
     
     @Override
@@ -322,7 +322,7 @@ public class TriggerPredicateEditDialog extends OKCancelDialog implements Accept
       
       for (final Pair<Keyboard, Integer> p : _notes)
         _keyboardPanels.get(_keyboards.indexOf(p._1())).
-            highlightNote(new Note(p._2().intValue()), KeyboardPanel.HIGHLIGHT_COLOR);
+            highlightNote(Note.valueOf(p._2().intValue()), KeyboardPanel.HIGHLIGHT_COLOR);
     }
     
     @Override

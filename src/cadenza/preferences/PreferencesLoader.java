@@ -291,11 +291,11 @@ public final class PreferencesLoader {
   private static Note[] parse(String range) {
     final int hyphenIndex = range.indexOf("-");
     if (hyphenIndex == -1) {
-      final Note note = new Note(MidiUtilities.noteNameToNumber(range.trim()));
+      final Note note = Note.valueOf(MidiUtilities.noteNameToNumber(range.trim()));
       return new Note[] {note, note};
     }
     
-    return new Note[] { new Note(MidiUtilities.noteNameToNumber(range.substring(0, hyphenIndex).trim())),
-                        new Note(MidiUtilities.noteNameToNumber(range.substring(hyphenIndex +1).trim()))};
+    return new Note[] { Note.valueOf(MidiUtilities.noteNameToNumber(range.substring(0, hyphenIndex).trim())),
+                        Note.valueOf(MidiUtilities.noteNameToNumber(range.substring(hyphenIndex +1).trim()))};
   }
 }

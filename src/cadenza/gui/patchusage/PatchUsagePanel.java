@@ -113,11 +113,11 @@ public class PatchUsagePanel extends JPanel {
   }
   
   public void highlightKey(int keyboardIndex, int midiNum) {
-    _keyboardPanels.get(keyboardIndex).accessKeyboardPanel().highlightNote(new Note(midiNum));
+    _keyboardPanels.get(keyboardIndex).accessKeyboardPanel().highlightNote(Note.valueOf(midiNum));
   }
   
   public void unHighlightKey(int keyboardIndex, int midiNum) {
-    _keyboardPanels.get(keyboardIndex).accessKeyboardPanel().unhighlightNote(new Note(midiNum));
+    _keyboardPanels.get(keyboardIndex).accessKeyboardPanel().unhighlightNote(Note.valueOf(midiNum));
   }
   
   public void addPatchUsage(Location location) {

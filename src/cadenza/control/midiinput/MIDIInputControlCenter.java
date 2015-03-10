@@ -147,7 +147,7 @@ public class MIDIInputControlCenter {
         return;
       }
       
-      if (new Note(midiNumber).getPitchClass().isWhite())
+      if (Note.valueOf(midiNumber).getPitchClass().isWhite())
         robot.keyPress(KeyEvent.VK_DOWN);
       else
         robot.keyPress(KeyEvent.VK_UP);

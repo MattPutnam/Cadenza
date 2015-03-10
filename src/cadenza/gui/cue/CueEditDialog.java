@@ -218,12 +218,12 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider,
     
     @Override
     protected void singlePressed(Keyboard keyboard, int noteNumber) {
-      _patchUsagePanel.addPatchUsage(Location.singleNote(keyboard, new Note(noteNumber)));
+      _patchUsagePanel.addPatchUsage(Location.singleNote(keyboard, Note.valueOf(noteNumber)));
     }
     
     @Override
     protected void rangePressed(Keyboard keyboard, int lowNumber, int highNumber) {
-      _patchUsagePanel.addPatchUsage(Location.range(keyboard, new Note(lowNumber), new Note(highNumber)));
+      _patchUsagePanel.addPatchUsage(Location.range(keyboard, Note.valueOf(lowNumber), Note.valueOf(highNumber)));
     }
     
     @Override

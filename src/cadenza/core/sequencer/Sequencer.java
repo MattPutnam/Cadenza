@@ -116,7 +116,7 @@ public class Sequencer implements Serializable {
         else if (_scale == null) { 
           result.add(Integer.valueOf(midiNum + _notes[note]));
         } else {
-          result.add(Integer.valueOf(_scale.upDegrees(new Note(midiNum), _notes[note]).getMidiNumber()));
+          result.add(Integer.valueOf(_scale.upDegrees(Note.valueOf(midiNum), _notes[note]).getMidiNumber()));
         }
       }
     }

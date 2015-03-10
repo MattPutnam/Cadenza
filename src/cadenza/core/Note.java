@@ -3,6 +3,7 @@ package cadenza.core;
 import java.io.Serializable;
 import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 import common.midi.MidiUtilities;
 
@@ -147,11 +148,17 @@ public class Note implements Comparable<Note>, Serializable {
     _midiNumber = MidiUtilities.noteNameToNumber(toString());
   }
   
-  public Note(int midiNumber) {
+  private Note(int midiNumber) {
     _midiNumber = midiNumber;
     _octave = (midiNumber / 12) - 1;
     _pitchClass = PitchClass.getNormal(midiNumber % 12);
     _pitchClassDisplay = _pitchClass.getDisplay();
+  }
+  
+  private static Note[] ALL_NOTES = IntStream.range(0, 128).mapToObj(i -> new Note(i)).toArray(Note[]::new);
+  
+  public static Note valueOf(int midiNumber) {
+    return ALL_NOTES[midiNumber];
   }
   
   public PitchClass getPitchClass() {
