@@ -169,7 +169,7 @@ public class PatchPickerDialog extends OKCancelDialog {
           
           _resultList.setListData(_patches.stream()
                                           .filter(patch -> Arrays.stream(searchTerms)
-                                                                 .anyMatch(term -> patch.name.contains(term)))
+                                                                 .anyMatch(patch.name::contains))
                                           .toArray(Patch[]::new));
         } else {
           final String[] searchTerms = Arrays.stream(tokens)
@@ -178,7 +178,7 @@ public class PatchPickerDialog extends OKCancelDialog {
           
           _resultList.setListData(_patches.stream()
                                           .filter(patch -> Arrays.stream(searchTerms)
-                                                                 .anyMatch(term -> patch.name.toLowerCase().contains(term)))
+                                                                 .anyMatch(patch.name.toLowerCase()::contains))
                                           .toArray(Patch[]::new));
         }
       } else { // mode == Preferences.REGEX
