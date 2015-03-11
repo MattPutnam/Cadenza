@@ -9,10 +9,10 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -58,8 +58,6 @@ public class CueListEditor extends JPanel {
   private final CueTable _table;
   private final List<CueTableEntry> _entries;
   
-  private volatile boolean _disableListSelectionListener = false;
-  
   public CueListEditor(CadenzaFrame cadenzaFrame, CadenzaData data, PerformanceController controller) {
     super();
     _cadenzaFrame = cadenzaFrame;
@@ -101,15 +99,8 @@ public class CueListEditor extends JPanel {
     }
   }
   
-  public void notifyCueChanged(int index) {
-    _disableListSelectionListener = true;
-    setSelectedCue(index);
-  }
-  
   public void clearSelection() {
-    _disableListSelectionListener = true;
     _table.accessTable().getSelectionModel().clearSelection();
-    _disableListSelectionListener = false;
   }
   
   private Song suggestSong() {
@@ -132,8 +123,8 @@ public class CueListEditor extends JPanel {
       final Cue selected = _entries.get(_table.accessTable().getSelectedRow()).cue;
       final Cue cloned = new Cue(selected.song, selected.measureNumber);
       
-      selected.patches.forEach(pu -> cloned.patches.add(pu));
-      selected.triggers.forEach(trigger -> cloned.triggers.add(trigger));
+      selected.patches.forEach(cloned.patches::add);
+      selected.triggers.forEach(cloned.triggers::add);
       
       OKCancelDialog.showDialog(new CueEditDialog(_cadenzaFrame, cloned, _data), dialog -> {
         _data.cues.add(cloned);
@@ -144,10 +135,10 @@ public class CueListEditor extends JPanel {
   
   private void rebuildEntries() {
     _entries.clear();
-    for (final Cue cue : _data.cues)
-      _entries.add(new CueTableEntry(cue));
-    for (final Song song : _data.songs)
-      _entries.add(new CueTableEntry(song));
+    
+    _data.cues.forEach(cue -> _entries.add(new CueTableEntry(cue)));
+    _data.songs.forEach(song -> _entries.add(new CueTableEntry(song)));
+    
     _entries.sort(null);
     _table.accessTableModel().setList(_entries);
     
@@ -234,7 +225,7 @@ public class CueListEditor extends JPanel {
         final boolean oneCue = accessTable().getSelectedRowCount() == 1 &&
                (entry = _entries.get(accessTable().getSelectedRow())).isCue();
         cloneButton.setEnabled(oneCue);
-        if (oneCue && !_disableListSelectionListener) {
+        if (oneCue) {
           _controller.goTo(entry.cue);
           _cadenzaFrame.notifyPerformLocationChanged(_data.cues.indexOf(entry.cue), false);
         }
@@ -253,26 +244,22 @@ public class CueListEditor extends JPanel {
         } else {
           label.setHorizontalAlignment(SwingConstants.LEFT);
           if (column == Col.PATCHES) {
-            final StringBuilder sb = new StringBuilder("<html>");
-            
             final Cue cue = ((CueTableEntry) value).cue;
             final Map<Keyboard, List<PatchUsage>> map = cue.getPatchUsagesByKeyboard(_data.keyboards);
-            for (final Iterator<Map.Entry<Keyboard, List<PatchUsage>>> i = map.entrySet().iterator(); i.hasNext();) {
-              final Map.Entry<Keyboard, List<PatchUsage>> entry = i.next();
-              for (final Iterator<PatchUsage> iter = entry.getValue().iterator(); iter.hasNext();) {
-                sb.append(iter.next().toString(false, true));
-                if (iter.hasNext()) sb.append(", ");
-              }
-              if (_data.keyboards.size() > 1)
-                sb.append(" on ").append(entry.getKey().name);
-              if (i.hasNext()) sb.append(", ");
-            }
-            sb.append("</html>");
-            label.setText(sb.toString());
+            final String text = "<html>" +
+                map.entrySet().stream()
+                              .map(k_lpu -> k_lpu.getValue().stream()
+                                                            .map(pu -> pu.toString(false, true))
+                                                            .collect(Collectors.joining(", "))
+                                            + (_data.keyboards.size() > 1 ? " on " + k_lpu.getKey().name
+                                                                          : ""))
+                              .collect(Collectors.joining(", ")) + "</html>";
+            
+            label.setText(text);
             
             final Pair<Boolean, String> warning = getWarning(cue);
             label.setIcon(warning == null ? null : warning._1().booleanValue() ? ImageStore.ERROR : ImageStore.WARNING);
-            label.setToolTipText(warning == null ? sb.toString() : warning._2());
+            label.setToolTipText(warning == null ? text : warning._2());
           } else {
             label.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
             label.setToolTipText(null);
@@ -358,7 +345,7 @@ public class CueListEditor extends JPanel {
               case Col.PATCHES:     return row; // Renderer handles this
               case Col.TRIGGERS:    return Utils.countItems(row.cue.triggers, "trigger");
               case Col.CONTROL_MAP: return Utils.countItems(row.cue.getControlMap(), "mapped control");
-              case Col.EFFECTS:     return Utils.countItems(row.cue.effects, "effects");
+              case Col.EFFECTS:     return Utils.countItems(row.cue.effects, "effect");
               default: throw new IllegalStateException("Unknown Column!");
             }
           } else {
@@ -413,10 +400,7 @@ public class CueListEditor extends JPanel {
       if (toDelete.size() == 1)
         return true;
       else
-        for (final CueTableEntry entry : toDelete)
-          if (entry.isSong())
-            return false;
-      return true;
+        return !toDelete.stream().anyMatch(CueTableEntry::isSong);
     }
     
     @Override
@@ -430,16 +414,9 @@ public class CueListEditor extends JPanel {
       if (removed.get(0).isSong()) {
         final Song song = removed.get(0).song;
         _data.songs.remove(song);
-        // remove all cues using the song
-        for (final Iterator<Cue> iter = _data.cues.iterator(); iter.hasNext();) {
-          final Cue cue = iter.next();
-          if (cue.song.equals(song))
-            iter.remove();
-        }
+        _data.cues.removeIf(cue -> cue.song.equals(song));
       } else {
-        for (final CueTableEntry entry : removed) {
-          _data.cues.remove(entry.cue);
-        }
+        removed.forEach(entry -> _data.cues.remove(entry.cue));
       }
       
       rebuildEntries();
