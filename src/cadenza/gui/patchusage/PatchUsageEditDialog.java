@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 
 import cadenza.control.midiinput.AcceptsKeyboardInput;
 import cadenza.control.midiinput.LocationEntryTracker;
@@ -41,7 +42,6 @@ import cadenza.gui.patchusage.editor.CustomScalePatchUsageEditor;
 import cadenza.gui.patchusage.editor.GhostNotePatchUsageEditor;
 import cadenza.gui.patchusage.editor.SequencerPatchUsageEditor;
 import cadenza.preferences.Preferences;
-
 import common.swing.IntField;
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
@@ -170,14 +170,18 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
   
   @Override
   public void keyPressed(int channel, int midiNumber, int velocity) {
-    final Keyboard kbd = _locationEnterer.keyPressed(channel, midiNumber);
-    _locationSelector.highlightKey(kbd, midiNumber);
+    SwingUtilities.invokeLater(() -> {
+      final Keyboard kbd = _locationEnterer.keyPressed(channel, midiNumber);
+      _locationSelector.highlightKey(kbd, midiNumber);
+    });
   }
   
   @Override
   public void keyReleased(int channel, int midiNumber) {
-    final Keyboard kbd = _locationEnterer.keyReleased(channel, midiNumber);
-    _locationSelector.unhighlightKey(kbd, midiNumber);
+    SwingUtilities.invokeLater(() -> {
+      final Keyboard kbd = _locationEnterer.keyReleased(channel, midiNumber);
+      _locationSelector.unhighlightKey(kbd, midiNumber);
+    });
   }
   
   private class LocationEnterer extends LocationEntryTracker {

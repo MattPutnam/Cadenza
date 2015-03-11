@@ -14,6 +14,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import cadenza.control.midiinput.AcceptsKeyboardInput;
@@ -33,7 +34,6 @@ import cadenza.gui.patchusage.PatchUsagePanel;
 import cadenza.gui.song.SongPanel;
 import cadenza.gui.trigger.TriggerPanel;
 import cadenza.preferences.Preferences;
-
 import common.collection.NotifyingList;
 import common.swing.CollapsiblePanel;
 import common.swing.CollapsiblePanel.Icon;
@@ -201,14 +201,18 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider,
 
   @Override
   public void keyPressed(int channel, int midiNumber, int velocity) {
-    final Keyboard kbd = _patchEnterer.keyPressed(channel, midiNumber);
-    _patchUsagePanel.highlightKey(_data.keyboards.indexOf(kbd), midiNumber);
+    SwingUtilities.invokeLater(() -> {
+      final Keyboard kbd = _patchEnterer.keyPressed(channel, midiNumber);
+      _patchUsagePanel.highlightKey(_data.keyboards.indexOf(kbd), midiNumber);
+    });
   }
 
   @Override
   public void keyReleased(int channel, int midiNumber) {
-    final Keyboard kbd = _patchEnterer.keyReleased(channel, midiNumber);
-    _patchUsagePanel.unHighlightKey(_data.keyboards.indexOf(kbd), midiNumber);
+    SwingUtilities.invokeLater(() -> {
+      final Keyboard kbd = _patchEnterer.keyReleased(channel, midiNumber);
+      _patchUsagePanel.unHighlightKey(_data.keyboards.indexOf(kbd), midiNumber);
+    });
   }
   
   private class PatchEnterer extends LocationEntryTracker {

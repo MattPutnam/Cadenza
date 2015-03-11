@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 
 import cadenza.control.midiinput.AcceptsKeyboardInput;
 import cadenza.control.midiinput.MIDIInputControlCenter;
@@ -94,7 +95,7 @@ public class ControlMapEditDialog extends OKCancelDialog implements AcceptsKeybo
   
   @Override
   public void controlReceived(int channel, int ccNumber, int value) {
-    _fromList.setSelectedIndex(ccNumber);
+    SwingUtilities.invokeLater(() -> _fromList.setSelectedIndex(ccNumber));
   }
   
   @Override

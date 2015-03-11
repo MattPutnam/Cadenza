@@ -14,6 +14,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 
 import cadenza.control.midiinput.AcceptsKeyboardInput;
 import cadenza.control.midiinput.LocationEntryTracker;
@@ -31,7 +32,6 @@ import cadenza.gui.common.KeyboardSelector;
 import cadenza.gui.common.LocationEditPanel;
 import cadenza.gui.keyboard.KeyboardPanel;
 import cadenza.preferences.Preferences;
-
 import common.swing.IntField;
 import common.swing.SimpleGrid;
 import common.swing.SwingUtils;
@@ -101,22 +101,28 @@ public class TriggerPredicateEditDialog extends OKCancelDialog implements Accept
   
   @Override
   public void keyPressed(int channel, int midiNumber, int velocity) {
-    final Keyboard kbd = _keyPressTracker.keyPressed(channel, midiNumber);
-    getCurrentTab().notifyKeyPress(kbd, midiNumber);
+    SwingUtilities.invokeLater(() -> {
+      final Keyboard kbd = _keyPressTracker.keyPressed(channel, midiNumber);
+      getCurrentTab().notifyKeyPress(kbd, midiNumber);
+    });
   }
   
   @Override
   public void keyReleased(int channel, int midiNumber) {
-    final Keyboard kbd = _keyPressTracker.keyReleased(channel, midiNumber);
-    getCurrentTab().notifyKeyRelease(kbd, midiNumber);
+    SwingUtilities.invokeLater(() -> {
+      final Keyboard kbd = _keyPressTracker.keyReleased(channel, midiNumber);
+      getCurrentTab().notifyKeyRelease(kbd, midiNumber);
+    });
   }
   
   @Override
   public void controlReceived(int channel, int ccNumber, int value) {
-    final Component selected = _tabbedPane.getSelectedComponent();
-    if (selected instanceof ControlValuePredicatePane) {
-      ((ControlValuePredicatePane) selected).receive(channel, ccNumber, value);
-    }
+    SwingUtilities.invokeLater(() -> {
+      final Component selected = _tabbedPane.getSelectedComponent();
+      if (selected instanceof ControlValuePredicatePane) {
+        ((ControlValuePredicatePane) selected).receive(channel, ccNumber, value);
+      }
+    });
   }
   
   public TriggerPredicate getPredicate() {

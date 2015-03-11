@@ -1,8 +1,13 @@
 package cadenza.control.midiinput;
 
 /**
- * Interface for components that should be able to interpret input from a MIDI
- * instrument.  All methods have default no-op implementations
+ * <p>Interface for components that should be able to interpret input from a
+ * MIDI instrument.  All methods have default no-op implementations.</p>
+ * 
+ * <p>Be aware that the methods in this class will be called from the thread
+ * handling all MIDI events.  Any GUI updates should be fired off in the
+ * Swing Event thread, and all heavy lifting should be done in another
+ * separate thread.</p>
  * 
  * @author Matt Putnam
  */

@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
@@ -37,7 +38,7 @@ import cadenza.core.patchusage.PatchUsage;
 import cadenza.gui.common.CadenzaTable;
 import cadenza.gui.common.HelpButton;
 import cadenza.preferences.Preferences;
-import common.swing.SwingUtils;
+
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
 import common.swing.table.ListTableModel;
@@ -276,14 +277,18 @@ public class KeyboardListEditor extends JPanel implements CustomWizardComponent 
       
       @Override
       public void keyPressed(int channel, int midiNumber, int velocity) {
-        _panel.accessKeyboardPanel().highlightNote(Note.valueOf(midiNumber));
-        _locationTracker.keyPressed(channel, midiNumber);
+        SwingUtilities.invokeLater(() -> {
+          _panel.accessKeyboardPanel().highlightNote(Note.valueOf(midiNumber));
+          _locationTracker.keyPressed(channel, midiNumber);
+        });
       }
       
       @Override
       public void keyReleased(int channel, int midiNumber) {
-        _panel.accessKeyboardPanel().unhighlightNote(Note.valueOf(midiNumber));
-        _locationTracker.keyReleased(channel, midiNumber);
+        SwingUtilities.invokeLater(() -> {
+          _panel.accessKeyboardPanel().unhighlightNote(Note.valueOf(midiNumber));
+          _locationTracker.keyReleased(channel, midiNumber);
+        });
       }
       
       private class LocationTracker extends LocationEntryTracker {
@@ -293,9 +298,7 @@ public class KeyboardListEditor extends JPanel implements CustomWizardComponent 
         
         @Override
         protected void rangePressed(Keyboard keyboard, int lowNumber, int highNumber) {
-          SwingUtils.doInSwing(() -> {
-            _panel.applyLocation(Location.range(keyboard, Note.valueOf(lowNumber), Note.valueOf(highNumber)));
-          }, false);
+          _panel.applyLocation(Location.range(keyboard, Note.valueOf(lowNumber), Note.valueOf(highNumber)));
         }
       }
     }

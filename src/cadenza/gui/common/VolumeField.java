@@ -1,9 +1,10 @@
 package cadenza.gui.common;
 
+import javax.swing.SwingUtilities;
+
 import cadenza.control.midiinput.AcceptsKeyboardInput;
 import cadenza.control.midiinput.MIDIInputControlCenter;
 import cadenza.preferences.Preferences;
-
 import common.swing.IntField;
 import common.swing.SwingUtils;
 
@@ -43,11 +44,11 @@ public class VolumeField extends IntField implements AcceptsKeyboardInput {
   
   @Override
   public void controlReceived(int channel, int ccNumber, final int value) { 
-    SwingUtils.doInSwing(() -> {
+    SwingUtilities.invokeLater(() -> {
       if (!Preferences.isVolumeStrict() || ccNumber == 7) {
         setInt(value);
         selectAll();
       }
-    }, false);
+    });
   }
 }
