@@ -13,6 +13,9 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.ShortMessage;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import cadenza.core.CadenzaData;
 import cadenza.core.ControlMapEntry;
 import cadenza.core.Cue;
@@ -26,11 +29,13 @@ import cadenza.core.trigger.Trigger;
 import cadenza.delegate.PatchChangeDelegate;
 import cadenza.gui.CadenzaFrame;
 import cadenza.gui.EffectMonitor;
-import common.Debug;
+
 import common.midi.MidiUtilities;
 import common.tuple.Pair;
 
 public final class PerformanceController extends CadenzaController {
+  private static final Logger LOG = LogManager.getLogger(PerformanceController.class);
+  
   private final CadenzaFrame _cadenzaFrame;
   
   /**
@@ -82,7 +87,7 @@ public final class PerformanceController extends CadenzaController {
       try {
         updatePosition(-1, getData().cues.indexOf(_currentCue));
       } catch (InvalidMidiDataException e) {
-        e.printStackTrace();
+        LOG.error("Error updating performance position", e);
       }
     }
   }
@@ -110,7 +115,7 @@ public final class PerformanceController extends CadenzaController {
       try {
         updatePosition(oldIndex, _position);
       } catch (InvalidMidiDataException e) {
-        e.printStackTrace();
+        LOG.error("Error updating performance position", e);
       }
     }
     updatePerformanceLocation();
@@ -124,7 +129,7 @@ public final class PerformanceController extends CadenzaController {
       try {
         updatePosition(oldIndex, _position);
       } catch (InvalidMidiDataException e) {
-        e.printStackTrace();
+        LOG.error("Error updating performance position", e);
       }
     }
     updatePerformanceLocation();
@@ -154,7 +159,7 @@ public final class PerformanceController extends CadenzaController {
       try {
         updatePosition(oldPosition, newPosition);
       } catch (InvalidMidiDataException e) {
-        e.printStackTrace();
+        LOG.error("Error updating performance position", e);
       }
     }
     
@@ -170,7 +175,7 @@ public final class PerformanceController extends CadenzaController {
       sm.setMessage(ShortMessage.CONTROL_CHANGE, channel, cc, value);
       getReceiver().send(sm, -1);
     } catch (InvalidMidiDataException e) {
-      e.printStackTrace();
+      LOG.error("Error sending CC value", e);
     }
   }
   
@@ -187,7 +192,7 @@ public final class PerformanceController extends CadenzaController {
       sm.setMessage(ShortMessage.NOTE_ON, channel, midiNumber, velocity);
       getReceiver().send(sm, -1);
     } catch (InvalidMidiDataException e) {
-      e.printStackTrace();
+      LOG.error("Error sending note on", e);
     }
   }
   
@@ -204,7 +209,7 @@ public final class PerformanceController extends CadenzaController {
       sm.setMessage(ShortMessage.NOTE_OFF, channel, midiNumber, 0);
       getReceiver().send(sm, -1);
     } catch (InvalidMidiDataException e) {
-      e.printStackTrace();
+      LOG.error("Error sending note off", e);
     }
   }
   
@@ -270,7 +275,7 @@ public final class PerformanceController extends CadenzaController {
       for (final PatchUsage oldUsage : oldPatchUsages) {
         if (patch == oldUsage.patch && oldAssignments.containsKey(oldUsage)) {
           final Integer channel = oldAssignments.get(oldUsage);
-          Debug.println("Patch '" + patch.name + "' was already assigned, keeping on channel " + channel);
+          LOG.info("Patch '" + patch.name + "' was already assigned, keeping on channel " + channel);
           newAssignments.put(newUsage, channel);
           availableChannels.get(patch.getSynthesizer()).remove(channel);
           continue matchPatches;
@@ -284,14 +289,13 @@ public final class PerformanceController extends CadenzaController {
     for (final PatchUsage pu : unassigned) {
       final List<Integer> available = availableChannels.get(pu.patch.getSynthesizer());
       if (available.isEmpty()) {
-        // TODO notify of error
-        System.err.println("Not enough channels assigned to "
+        LOG.warn("Not enough channels assigned to "
             + pu.patch.getSynthesizer().getName() + ", patch '" + pu.patch.name + "' not assigned.");
         continue;
       }
       
       final Integer channel = available.remove(0);
-      Debug.println("Patch '" + pu.patch.name + "' assigned to channel " + channel);
+      LOG.info("Patch '" + pu.patch.name + "' assigned to channel " + channel);
       newAssignments.put(pu, channel);
       PatchChangeDelegate.performPatchChange(getReceiver(), pu.patch, channel.intValue());
     }
@@ -442,7 +446,7 @@ public final class PerformanceController extends CadenzaController {
       
       _currentNotes.put(Pair.make(keyboard, Integer.valueOf(inputMidiNumber)), noteEntry);
     } else {
-      Debug.println("Unknown MIDI message: " + MidiUtilities.toString(sm));
+      LOG.warn("Unknown MIDI message: " + MidiUtilities.toString(sm));
     }
   }
   
@@ -456,7 +460,7 @@ public final class PerformanceController extends CadenzaController {
     try {
       updatePosition(-1, 0);
     } catch (InvalidMidiDataException e) {
-      e.printStackTrace();
+      LOG.warn("Error trying to restart");
     }
     updatePerformanceLocation();
   }

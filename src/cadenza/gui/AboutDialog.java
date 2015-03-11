@@ -13,10 +13,15 @@ import javax.swing.Box;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import cadenza.Version;
 
 @SuppressWarnings("serial")
 public class AboutDialog extends JDialog {
+  private static final Logger LOG = LogManager.getLogger(AboutDialog.class);
+  
   private static final String WEBSITE = "http://www.cadenzasoftware.com";
   
   private static final Font TITLE_FONT = Font.decode("Lucida bold 18");
@@ -42,7 +47,7 @@ public class AboutDialog extends JDialog {
           try {
             desktop.browse(new URI(WEBSITE));
           } catch (Exception ex) {
-            ex.printStackTrace();
+            LOG.warn("Exception trying to open website link", e);
           }
         }
       }

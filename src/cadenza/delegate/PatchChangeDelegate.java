@@ -12,6 +12,9 @@ import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.SysexMessage;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import cadenza.core.Patch;
 import cadenza.delegate.DelegateEntry.MessageType;
 import cadenza.synths.GeneralMIDI;
@@ -21,6 +24,8 @@ import common.tuple.Pair;
 import common.tuple.Triple;
 
 public class PatchChangeDelegate {
+  private static final Logger LOG = LogManager.getLogger(PatchChangeDelegate.class);
+  
   private static final String DELEGATE_DIR = "resources/delegates/";
   
   private static final Map<String, PatchChangeDelegate> MAP;
@@ -34,8 +39,7 @@ public class PatchChangeDelegate {
       try {
         lines = IOUtils.getLineArray(delegateFile);
       } catch (IOException e) {
-        System.err.println("IOException while handling delegate file " +
-            delegateFile.getName() + "\n" + e.getMessage());
+        LOG.fatal("IOException while handling delegate file " + delegateFile.getName(), e);
         continue;
       }
         
@@ -51,7 +55,7 @@ public class PatchChangeDelegate {
         try {
           entry = DelegateEntryParser.parse(trimmed);
         } catch (ParseException e) {
-          System.err.println(e.getMessage());
+          LOG.warn("Unable to parse delegate entry", e.getMessage());
           continue;
         }
         

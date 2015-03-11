@@ -5,7 +5,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class Version {
+  private static final Logger LOG = LogManager.getLogger(Version.class);
+  
   private Version() {}
   
   private static final File versionFile = new File("resources/version.txt");
@@ -16,11 +21,10 @@ public class Version {
       try (BufferedReader reader = new BufferedReader(new FileReader(versionFile))) {
         version = reader.readLine();
       } catch (IOException e) {
-        System.err.println("Error reading version file:");
-        e.printStackTrace();
+        LOG.fatal("Error reading version file", e);
       } 
     } else {
-      System.err.println("Version file not found");
+      LOG.fatal("Version file not found");
     }
   }
   

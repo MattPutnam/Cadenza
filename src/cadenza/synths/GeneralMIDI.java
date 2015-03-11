@@ -1,9 +1,11 @@
 package cadenza.synths;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import cadenza.core.Patch;
 import cadenza.core.Synthesizer;
@@ -12,6 +14,8 @@ import common.io.IOUtils;
 import common.tuple.Pair;
 
 public class GeneralMIDI {
+  private static final Logger LOG = LogManager.getLogger(GeneralMIDI.class);
+  
   private static final String GM_PATH = "resources" + File.separator + "GM" + File.separator + "GM.txt";
   
   private static final List<Patch> GM1_PATCHES = new ArrayList<>(128);
@@ -45,12 +49,8 @@ public class GeneralMIDI {
       }
       
       GM_VALID = true;
-    } catch (IOException e) {
-      System.err.println("IOException trying to read GM file:");
-      e.printStackTrace();
     } catch (Exception e) {
-      System.err.println("Exception parsing GM file:");
-      e.printStackTrace();
+      LOG.fatal("Exception parsing GM file", e);
     }
   }
   

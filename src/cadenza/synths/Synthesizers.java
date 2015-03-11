@@ -13,6 +13,8 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import cadenza.core.Patch;
 import cadenza.core.Synthesizer;
@@ -21,6 +23,8 @@ import common.io.IOUtils;
 import common.tuple.Pair;
 
 public class Synthesizers {
+  private static final Logger LOG = LogManager.getLogger(Synthesizers.class);
+  
   private Synthesizers() {}
   
   private static final String _SYNTH_PATH = "resources" + File.separator + "synthconfigs";
@@ -45,7 +49,7 @@ public class Synthesizers {
     // build synthesizer names and info
     final File synthRoot = new File(_SYNTH_PATH);
     if (!synthRoot.isDirectory()) {
-      System.err.println("Root directory '" + synthRoot.getAbsolutePath() + "' is not a directory.");
+      LOG.fatal("Root directory '" + synthRoot.getAbsolutePath() + "' is not a directory.");
     }
     final File[] files = synthRoot.listFiles();
     for (final File file : files) {
@@ -53,7 +57,7 @@ public class Synthesizers {
       try {
         info = IOUtils.getLineArray(file, 2);
       } catch (IOException ioe) {
-        ioe.printStackTrace();
+        LOG.error("Error getting synth file info", ioe);
         info = new String[] {"", ""};
       }
       
@@ -84,7 +88,7 @@ public class Synthesizers {
             banks.add(str.substring(1));
         }
       } catch (IOException e) {
-        e.printStackTrace();
+        LOG.error("Error loading banks for synth file", e);
       }
       
       _SYNTH_BANKS.put(entry.getKey(), banks);
@@ -93,7 +97,7 @@ public class Synthesizers {
     // build expansion info
     final File expRoot = new File(_EXP_PATH);
     if (!expRoot.isDirectory()) {
-      System.err.println("Root directory '" + expRoot.getAbsolutePath() + "' is not a directory.");
+      LOG.fatal("Root directory '" + expRoot.getAbsolutePath() + "' is not a directory.");
     }
     final File[] subdirectories = expRoot.listFiles();
     for (final File dir : subdirectories) {
@@ -104,7 +108,7 @@ public class Synthesizers {
         try {
           name = IOUtils.getLineArray(expoFile, 1)[0];
         } catch (final IOException ioe) {
-          ioe.printStackTrace();
+          LOG.error("Error trying to read expansion file", ioe);
           name = "";
         }
         
@@ -166,7 +170,7 @@ public class Synthesizers {
     try {
       mainLines = IOUtils.getLineArray(synthFile);
     } catch (final IOException ioe) {
-      ioe.printStackTrace();
+      LOG.error("Error while loading synth patches", ioe);
       mainLines = new String[0];
     }
     
@@ -202,7 +206,7 @@ public class Synthesizers {
       try {
         expLines = IOUtils.getLineArray(expFile);
       } catch (final IOException ioe) {
-        ioe.printStackTrace();
+        LOG.error("Error while loading expansion patches", ioe);
         expLines = new String[0];
       }
       

@@ -2,6 +2,9 @@ package cadenza.preferences;
 
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import cadenza.core.Keyboard;
 import cadenza.core.Synthesizer;
 
@@ -9,6 +12,8 @@ import common.swing.SwingUtils;
 import common.tuple.Pair;
 
 public final class Preferences {
+  private static final Logger LOG = LogManager.getLogger(Preferences.class);
+  
   private Preferences() {}
   
   public static void init() {
@@ -17,8 +22,7 @@ public final class Preferences {
       SwingUtils.throwIfEventThread();
       prefs = PreferencesLoader.readAllPreferences();
     } catch (Exception e) {
-      System.err.println("Exception trying to load preferences: ");
-      e.printStackTrace();
+      LOG.fatal("Exception trying to load preferences", e);
       return;
     }
     

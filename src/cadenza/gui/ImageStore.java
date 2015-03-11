@@ -4,7 +4,12 @@ import java.io.File;
 
 import javax.swing.ImageIcon;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class ImageStore {
+  private static final Logger LOG = LogManager.getLogger(ImageStore.class);
+  
   private static final String IMG_PATH = "resources" + File.separator + "icons" + File.separator;
   
   public static final ImageIcon APPLICATION_ICON;
@@ -61,7 +66,7 @@ public class ImageStore {
     if (file.exists())
       return new ImageIcon(fullPath, description);
     else {
-      System.err.println("No image found: " + fullPath);
+      LOG.warn("No image found: " + fullPath);
       return null;
     }
   }

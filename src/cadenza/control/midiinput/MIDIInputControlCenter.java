@@ -16,12 +16,17 @@ import java.util.stream.IntStream;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.ShortMessage;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import cadenza.core.Note;
 
 import com.sun.glass.events.KeyEvent;
 import common.midi.MidiUtilities;
 
 public class MIDIInputControlCenter {
+  private static final Logger LOG = LogManager.getLogger(MIDIInputControlCenter.class);
+  
   private static volatile MIDIInputControlCenter INSTANCE;
   public static MIDIInputControlCenter getInstance() {
     if (INSTANCE == null) {
@@ -142,8 +147,7 @@ public class MIDIInputControlCenter {
       try {
         robot = new Robot();
       } catch (AWTException e) {
-        System.err.println("Unable to set up key spoofer:");
-        e.printStackTrace();
+        LOG.error("Unable to set up key spoofer:", e);
         return;
       }
       
@@ -159,8 +163,7 @@ public class MIDIInputControlCenter {
       try {
         robot = new Robot();
       } catch (AWTException e) {
-        System.err.println("Unable to set up key spoofer:");
-        e.printStackTrace();
+        LOG.error("Unable to set up key spoofer:", e);
         return;
       }
       

@@ -3,6 +3,9 @@ package cadenza.control;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Receiver;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import common.midi.MidiMessageSender;
 
 /**
@@ -15,6 +18,8 @@ import common.midi.MidiMessageSender;
  * @author Matt Putnam
  */
 public class MidiSolutionsMessageSender extends MidiMessageSender {
+  private static final Logger LOG = LogManager.getLogger(MidiSolutionsMessageSender.class);
+  
   public MidiSolutionsMessageSender(Receiver receiver) {
     super(receiver);
   }
@@ -36,8 +41,7 @@ public class MidiSolutionsMessageSender extends MidiMessageSender {
       sendSysexMessage(-1, 0xF0, 0, 0, 0x50, 0x04, 0x11, midiNumber, 0x80, channel, 0xF7);
     } catch (InvalidMidiDataException e) {
       // shouldn't happen
-      System.err.println("Error during sendFootswitchNoteOnMessage");
-      e.printStackTrace();
+      LOG.error("Error during sendFootswitchNoteOnMessage", e);
     }
   }
   
@@ -56,8 +60,7 @@ public class MidiSolutionsMessageSender extends MidiMessageSender {
       sendSysexMessage(-1, 0xF0, 0, 0, 0x50, 0x04, 0x12, number, value, channel, 0xF7);
     } catch (InvalidMidiDataException e) {
       // shouldn't happen
-      System.err.println("Error during sendFootswitchControlChangeMessage");
-      e.printStackTrace();
+      LOG.error("Error during sendFootswitchControlChangeMessage", e);
     }
   }
   
@@ -73,8 +76,7 @@ public class MidiSolutionsMessageSender extends MidiMessageSender {
       sendSysexMessage(-1, 0xF0, 0, 0, 0x50, 0x04, 0x05, 0x01, 0xF7);
     } catch (InvalidMidiDataException e) {
       // shouldn't happen
-      System.err.println("Error during sendFootswitchMidiStartMessage");
-      e.printStackTrace();
+      LOG.error("Error during sendFootswitchMidiStartMessage", e);
     }
   }
   
@@ -90,8 +92,7 @@ public class MidiSolutionsMessageSender extends MidiMessageSender {
       sendSysexMessage(-1, 0xF0, 0, 0, 0x50, 0x04, 0x05, 0x00, 0xF7);
     } catch (InvalidMidiDataException e) {
       // shouldn't happen
-      System.err.println("Error during sendFootswitchMidiStopMessage");
-      e.printStackTrace();
+      LOG.error("Error during sendFootswitchMidiStopMessage", e);
     }
   }
   
@@ -107,8 +108,7 @@ public class MidiSolutionsMessageSender extends MidiMessageSender {
       sendSysexMessage(-1, 0xF0, 0, 0, 0x50, 0x04, 0x05, 0xF7);
     } catch (InvalidMidiDataException e) {
       // shouldn't happen
-      System.err.println("Error during sendFootswitchMidiStartStopMessage");
-      e.printStackTrace();
+      LOG.error("Error during sendFootswitchMidiStartStopMessage", e);
     }
   }
   
@@ -127,8 +127,7 @@ public class MidiSolutionsMessageSender extends MidiMessageSender {
       sendSysexMessage(-1, 0xF0, 0, 0, 0x50, 0x04, 0x03, lsb, msb, channel, 0xF7);
     } catch (InvalidMidiDataException e) {
       // shouldn't happen
-      System.err.println("Error during sendFootswitchPitchBendMessage");
-      e.printStackTrace();
+      LOG.error("Error during sendFootswitchPitchBendMessage", e);
     }
   }
   
@@ -146,8 +145,7 @@ public class MidiSolutionsMessageSender extends MidiMessageSender {
       sendSysexMessage(-1, 0xF0, 0, 0, 0x50, 0x04, 0x04, programNumber, channel, 0xF7);
     } catch (InvalidMidiDataException e) {
       // shouldn't happen
-      System.err.println("Error during sendFootswitchProgramChangeMessage");
-      e.printStackTrace();
+      LOG.error("Error during sendFootswitchProgramChangeMessage", e);
     }
   }
   
@@ -167,8 +165,7 @@ public class MidiSolutionsMessageSender extends MidiMessageSender {
       sendSysexMessage(-1, 0xF0, 0, 0, 0x50, 0x04, 0x04, bankMSB, bankLSB, programNumber, channel, 0xF7);
     } catch (InvalidMidiDataException e) {
       // shouldn't happen
-      System.err.println("Error during sendFootswitchProgramChangeMessage");
-      e.printStackTrace();
+      LOG.error("Error during sendFootswitchProgramChangeMessage", e);
     }
   }
   
@@ -184,8 +181,7 @@ public class MidiSolutionsMessageSender extends MidiMessageSender {
       sendSysexMessage(-1, 0xF0, 0, 0, 0x50, 0x04, 0x0D, 0xF7);
     } catch (InvalidMidiDataException e) {
       // shouldn't happen
-      System.err.println("Error during sendFootswitchProgramChangeCaptureMessage");
-      e.printStackTrace();
+      LOG.error("Error during sendFootswitchProgramChangeCaptureMessage", e);
     }
   }
   
@@ -205,8 +201,7 @@ public class MidiSolutionsMessageSender extends MidiMessageSender {
       sendSysexMessage(-1, 0xF0, 0, 0, 0x50, 0x04, 0x07, 0x01, channel, 0xF7);
     } catch (InvalidMidiDataException e) {
       // shouldn't happen
-      System.err.println("Error during sendFootswitchINCMessage");
-      e.printStackTrace();
+      LOG.error("Error during sendFootswitchINCMessage", e);
     }
   }
   
@@ -226,8 +221,7 @@ public class MidiSolutionsMessageSender extends MidiMessageSender {
       sendSysexMessage(-1, 0xF0, 0, 0, 0x50, 0x04, 0x07, 0x00, channel, 0xF7);
     } catch (InvalidMidiDataException e) {
       // shouldn't happen
-      System.err.println("Error during sendFootswitchDECMessage");
-      e.printStackTrace();
+      LOG.error("Error during sendFootswitchDECMessage", e);
     }
   }
   
@@ -248,8 +242,7 @@ public class MidiSolutionsMessageSender extends MidiMessageSender {
       sendSysexMessage(-1, 0xF0, 0, 0, 0x50, 0x04, 0x07, 0x01, channel, min, max, 0xF7);
     } catch (InvalidMidiDataException e) {
       // shouldn't happen
-      System.err.println("Error during sendFootswitchINCMessage");
-      e.printStackTrace();
+      LOG.error("Error during sendFootswitchINCMessage", e);
     }
   }
   
@@ -270,8 +263,7 @@ public class MidiSolutionsMessageSender extends MidiMessageSender {
       sendSysexMessage(-1, 0xF0, 0, 0, 0x50, 0x04, 0x07, 0x00, channel, min, max, 0xF7);
     } catch (InvalidMidiDataException e) {
       // shouldn't happen
-      System.err.println("Error during sendFootswitchDECMessage");
-      e.printStackTrace();
+      LOG.error("Error during sendFootswitchDECMessage", e);
     }
   }
   
@@ -293,8 +285,7 @@ public class MidiSolutionsMessageSender extends MidiMessageSender {
       sendSysexMessage(-1, message);
     } catch (InvalidMidiDataException e) {
       // shouldn't happen
-      System.err.println("Error during sendFootswitchSysexMessage");
-      e.printStackTrace();
+      LOG.error("Error during sendFootswitchSysexMessage", e);
     }
   }
   
@@ -310,8 +301,7 @@ public class MidiSolutionsMessageSender extends MidiMessageSender {
       sendSysexMessage(-1, 0xF0, 0, 0, 0x50, 0x04, 0x0C, 0x7F, 0x01, 0xF7);
     } catch (InvalidMidiDataException e) {
       // shouldn't happen
-      System.err.println("Error during sendFootswitchPanicMessage");
-      e.printStackTrace();
+      LOG.error("Error during sendFootswitchPanicMessage", e);
     }
   }
   
@@ -326,8 +316,7 @@ public class MidiSolutionsMessageSender extends MidiMessageSender {
       sendSysexMessage(-1, 0xF0, 0x00, 0x00, 0x50, 0x06, 0x00, 0xF7);
     } catch (InvalidMidiDataException e) {
       // shouldn't happen
-      System.err.println("Error during sendRelayClearSettingsMessage");
-      e.printStackTrace();
+      LOG.error("Error during sendRelayClearSettingsMessage", e);
     }
   }
   
@@ -342,8 +331,7 @@ public class MidiSolutionsMessageSender extends MidiMessageSender {
       sendSysexMessage(-1, 0xF0, 0x00, 0x00, 0x50, 0x06, 0x10, 0xF7);
     } catch (InvalidMidiDataException e) {
       // shouldn't happen
-      System.err.println("Error during sendRelayDumpSettingsMessage");
-      e.printStackTrace();
+      LOG.error("Error during sendRelayDumpSettingsMessage", e);
     }
   }
   
@@ -366,8 +354,7 @@ public class MidiSolutionsMessageSender extends MidiMessageSender {
       sendSysexMessage(-1, 0xF0, 0x00, 0x00, 0x50, 0x06, 0x05, linkSettings, 0xF7);
     } catch (InvalidMidiDataException e) {
       // shouldn't happen
-      System.err.println("Error during sendRelayDumpSettingsMessage");
-      e.printStackTrace();
+      LOG.error("Error during sendRelayDumpSettingsMessage", e);
     }
   }
   
@@ -390,8 +377,7 @@ public class MidiSolutionsMessageSender extends MidiMessageSender {
           neutralRangeBottom, neutralRangeTop, 0xF7);
     } catch (InvalidMidiDataException e) {
       // shouldn't happen
-      System.err.println("Error during sendRelayDumpSettingsMessage");
-      e.printStackTrace();
+      LOG.error("Error during sendRelayDumpSettingsMessage", e);
     }
   }
   
@@ -426,8 +412,7 @@ public class MidiSolutionsMessageSender extends MidiMessageSender {
       sendSysexMessage(-1, message);
     } catch (InvalidMidiDataException e) {
       // shouldn't happen
-      System.err.println("Error during sendRelayDumpSettingsMessage");
-      e.printStackTrace();
+      LOG.error("Error during sendRelayDumpSettingsMessage", e);
     }
   }
   
@@ -442,8 +427,7 @@ public class MidiSolutionsMessageSender extends MidiMessageSender {
       sendSysexMessage(-1, 0xF0, 0x00, 0x00, 0x50, 0x16, 0x10, 0xF7);
     } catch (InvalidMidiDataException e) {
       // shouldn't happen
-      System.err.println("Error during sendRelayDumpSettingsMessage");
-      e.printStackTrace();
+      LOG.error("Error during sendRelayDumpSettingsMessage", e);
     }
   }
 }

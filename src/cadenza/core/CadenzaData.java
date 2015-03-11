@@ -10,12 +10,16 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import cadenza.Version;
 import cadenza.core.effects.Effect;
 import cadenza.core.patchusage.PatchUsage;
 import cadenza.core.sequencer.Sequencer;
 import cadenza.core.trigger.Trigger;
 import cadenza.gui.trigger.HasTriggers;
+
 import common.collection.NotifyingList;
 import common.swing.dialog.Dialog;
 
@@ -26,6 +30,8 @@ import common.swing.dialog.Dialog;
  * @author Matt Putnam
  */
 public class CadenzaData implements Serializable, HasTriggers, ControlMapProvider {
+  private static final Logger LOG = LogManager.getLogger(CadenzaData.class);
+  
   private static final long serialVersionUID = 1L;
   
   /** The synthesizers to be used */
@@ -81,7 +87,7 @@ public class CadenzaData implements Serializable, HasTriggers, ControlMapProvide
       fout = new FileOutputStream(new File(filename));
     } catch (FileNotFoundException e) {
       // shouldn't happen
-      e.printStackTrace();
+      LOG.fatal("Error writing to file", e);
       return;
     }
     
@@ -89,14 +95,13 @@ public class CadenzaData implements Serializable, HasTriggers, ControlMapProvide
       oos.writeUTF(Version.getVersion());
       oos.writeObject(data);
     } catch (Exception e) {
-      System.err.println("Exception while writing to file:");
-      e.printStackTrace();
+      LOG.fatal("Exception while writing to file:", e);
     }
     
     try {
       fout.close();
     } catch (IOException e) {
-      e.printStackTrace();
+      LOG.fatal("Error writing to file", e);
     }
   }
   
@@ -106,7 +111,7 @@ public class CadenzaData implements Serializable, HasTriggers, ControlMapProvide
       fin = new FileInputStream(file);
     } catch (FileNotFoundException e) {
       // shouldn't happen
-      e.printStackTrace();
+      LOG.fatal("Error reading from file", e);
       return null;
     }
     
@@ -124,13 +129,13 @@ public class CadenzaData implements Serializable, HasTriggers, ControlMapProvide
       final CadenzaData data = (CadenzaData) ois.readObject();
       return data;
     } catch (Exception e) {
-      System.err.println("Exception while reading from file:");
+      LOG.fatal("Exception while reading from file:", e);
       throw e;
     } finally {
       try {
         fin.close();
       } catch (IOException e) {
-        e.printStackTrace();
+        LOG.fatal("Error reading from file", e);
       }
     }
   }

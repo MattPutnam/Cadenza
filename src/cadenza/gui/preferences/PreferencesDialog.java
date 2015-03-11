@@ -10,6 +10,9 @@ import java.util.Map;
 
 import javax.swing.JComponent;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import cadenza.core.Keyboard;
 import cadenza.core.Synthesizer;
 import cadenza.gui.common.SynthConfigPanel;
@@ -27,6 +30,8 @@ import common.tuple.Pair;
 
 @SuppressWarnings("serial")
 public class PreferencesDialog extends OKCancelDialog {
+  private static final Logger LOG = LogManager.getLogger(PreferencesDialog.class);
+  
   private static final File PREFERENCES_FILE = new File("resources/preferences.txt");
   
   private Map<String, String> _preferences;
@@ -62,8 +67,7 @@ public class PreferencesDialog extends OKCancelDialog {
       try {
         _preferences.putAll(PropertiesFileReader.readAll(PREFERENCES_FILE));
       } catch (Exception e) {
-        System.err.println("Exception while trying to read preferences file:");
-        e.printStackTrace();
+        LOG.warn("Exception while trying to read preferences file", e);
         return;
       }
       
@@ -94,9 +98,7 @@ public class PreferencesDialog extends OKCancelDialog {
       try {
         PreferencesLoader.writePreferences(_preferences);
       } catch (IOException e) {
-        System.err.println("Exception trying to commit preferences:");
-        e.printStackTrace();
-        // TODO: better error reporting
+        LOG.warn("Exception trying to commit preferences", e);
       }
     }).start();
   }

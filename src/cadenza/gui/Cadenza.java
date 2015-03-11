@@ -28,6 +28,8 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.ciscavate.cjwizard.WizardContainer;
 import org.ciscavate.cjwizard.WizardListener;
 import org.ciscavate.cjwizard.WizardPage;
@@ -46,6 +48,8 @@ import common.swing.dialog.Dialog;
 
 @SuppressWarnings("serial")
 public class Cadenza extends JFrame {
+  private static final Logger LOG = LogManager.getLogger(Cadenza.class);
+  
   private static File _lastPath = null;
   private static final File _RECENTS = new File("resources" + File.separator + "recentfiles.txt");
   private static final int NUM_RECENTS = 10;
@@ -85,7 +89,7 @@ public class Cadenza extends JFrame {
     try {
       list = loadRecents();
     } catch (final IOException ioe) {
-      ioe.printStackTrace();
+      LOG.warn("Exception trying to read recent files list", ioe);
       list = new ArrayList<>();
     }
     
@@ -195,7 +199,7 @@ public class Cadenza extends JFrame {
           hideHome();
           temp.setVisible(true);
         } catch (Exception ex) {
-          ex.printStackTrace();
+          LOG.fatal("Exception trying to open file", e);
         }
       }
     }
@@ -208,9 +212,7 @@ public class Cadenza extends JFrame {
       try {
         preferences.putAll(PreferencesLoader.readAllPreferences());
       } catch (Exception e) {
-        System.err.println("Exception reading preferences file:");
-        e.printStackTrace();
-        // TODO: better error report
+        LOG.fatal("Exception reading preferences file", e);
       }
       
       final CadenzaData newData = new CadenzaData();
@@ -281,10 +283,7 @@ public class Cadenza extends JFrame {
         temp.setVisible(true);
         
       } catch (Exception e) {
-        Dialog.error(parent, "Unable to read file " +
-            "because it is from an earlier version of Cadenza " +
-            "which is incompatible with this version.");
-        e.printStackTrace();
+        LOG.fatal("Error while opening file", e);
       }
     }
   }
@@ -320,7 +319,7 @@ public class Cadenza extends JFrame {
         writer.newLine();
       }
     } catch (IOException e) {
-      e.printStackTrace();
+      LOG.warn("Error while trying to save recently accessed files list", e);
     }
   }
   
@@ -342,7 +341,7 @@ public class Cadenza extends JFrame {
           Dialog.info(Cadenza.this, "File imported successfully.", "Success!");
         } catch (IOException e1) {
           Dialog.error(Cadenza.this, "There was an I/O Exception copying the file.", "Error during import");
-          e1.printStackTrace();
+          LOG.error("IO Exception while copying file", e1);
         }
       }
     }
@@ -364,7 +363,7 @@ public class Cadenza extends JFrame {
         try {
           firstLine = IOUtils.getLineArray(file, 1)[0];
         } catch (final IOException ioe) {
-          ioe.printStackTrace();
+          LOG.error("IO Exception while copying file", ioe);
           Dialog.error(Cadenza.this, "Exception trying to read the given file", "Error during import");
           return;
         }
@@ -392,7 +391,7 @@ public class Cadenza extends JFrame {
           Dialog.info(Cadenza.this, "File imported successfully.", "Success!");
         } catch (IOException e1) {
           Dialog.error(Cadenza.this, "There was an I/O Exception copying the file.", "Error during import");
-          e1.printStackTrace();
+          LOG.error("IO Exception while copying file", e1);
         }
       }
     }
@@ -425,7 +424,7 @@ public class Cadenza extends JFrame {
           Dialog.info(Cadenza.this, "File imported successfully.", "Success!");
         } catch (IOException e1) {
           Dialog.error(Cadenza.this, "There was an I/O Exception copying the file.", "Error during import");
-          e1.printStackTrace();
+          LOG.error("IO Exception while copying file", e1);
         }
       }
     }

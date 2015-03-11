@@ -10,14 +10,17 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.ShortMessage;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import cadenza.core.CadenzaData;
 import cadenza.core.Patch;
 import cadenza.core.Synthesizer;
 import cadenza.delegate.PatchChangeDelegate;
 
-import common.Debug;
-
 public class PreviewController extends CadenzaController {
+  private static final Logger LOG = LogManager.getLogger(PreviewController.class);
+  
   /** The currently assigned preview patch */
   private List<Patch> _previewPatches;
   
@@ -41,7 +44,7 @@ public class PreviewController extends CadenzaController {
           getReceiver().send(sm, -1);
         }
       } catch (InvalidMidiDataException e) {
-        e.printStackTrace();
+        LOG.error("Error sending MIDI message for preview", e);
       }
     }
   }
@@ -50,7 +53,7 @@ public class PreviewController extends CadenzaController {
    _previewPatches = patches;
     _previewChannels.clear();
     
-    Debug.println("Previewing patches: " + _previewPatches);
+    LOG.info("Previewing patches: " + _previewPatches);
     
     if (receiverReady()) {
       try {
@@ -70,7 +73,7 @@ public class PreviewController extends CadenzaController {
         
         // don't notify, this method is called from a notify so we get an infinite loop
       } catch (InvalidMidiDataException e) {
-        e.printStackTrace();
+        LOG.error("Error setting patches for preview", e);
       }
     }
   }
@@ -85,7 +88,7 @@ public class PreviewController extends CadenzaController {
     
     final Integer channel = _previewChannels.get(patch);
     if (channel == null) {
-      System.err.println("Patch '" + patch.name + "' not found");
+      LOG.error("Patch '" + patch.name + "' not found");
       return;
     }
     
@@ -94,7 +97,7 @@ public class PreviewController extends CadenzaController {
       sm.setMessage(ShortMessage.CONTROL_CHANGE, channel.intValue(), 7, volume);
       getReceiver().send(sm, -1);
     } catch (InvalidMidiDataException e) {
-      e.printStackTrace();
+      LOG.error("Error setting volume for preview", e);
     }
   }
 

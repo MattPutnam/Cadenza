@@ -1,10 +1,15 @@
 package cadenza.core.trigger.actions;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import cadenza.control.PerformanceController;
 import cadenza.core.metronome.Metronome;
 import cadenza.core.metronome.MetronomeListener;
 
 public class WaitAction implements TriggerAction {
+  private static final Logger LOG = LogManager.getLogger(WaitAction.class);
+  
   private static final long serialVersionUID = 1L;
   
   private final int _num;
@@ -23,7 +28,7 @@ public class WaitAction implements TriggerAction {
       try {
         Thread.sleep(_num);
       } catch (InterruptedException e) {
-        e.printStackTrace();
+        LOG.warn("Exception during wait action", e);
       }
     } else if (Metronome.getInstance().isRunning()) {
       _beatCounter = 0;
