@@ -114,8 +114,7 @@ public class Metronome {
     
     if (bpm != _bpm) {
       _bpm = bpm;
-      for (final MetronomeListener listener : _listeners)
-        listener.bpmSet(_bpm);
+      _listeners.forEach(l -> l.bpmSet(_bpm));
     }
   }
   
@@ -149,8 +148,7 @@ public class Metronome {
     
     startMetronome();
     
-    for (final MetronomeListener listener : _listeners)
-      listener.metronomeStarted();
+    _listeners.forEach(MetronomeListener::metronomeStarted);
   }
   
   private void startMetronome() {
@@ -158,8 +156,9 @@ public class Metronome {
       boolean alive = true;
       int counter = 0;
       while (alive) {
-        for (final MetronomeListener listener : _listeners)
-          listener.metronomeClicked(counter);
+        final int fcounter = counter;
+        _listeners.forEach(l -> l.metronomeClicked(fcounter));
+        
         counter = (counter+1) % 12;
         
         try {
@@ -184,8 +183,7 @@ public class Metronome {
     
     _metronomeThread.interrupt();
     
-    for (final MetronomeListener listener : _listeners)
-      listener.metronomeStopped();
+    _listeners.forEach(MetronomeListener::metronomeStopped);
   }
   
   /**
