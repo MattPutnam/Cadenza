@@ -3,7 +3,6 @@ package cadenza.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -18,13 +17,12 @@ import javax.swing.table.TableColumnModel;
 
 import cadenza.control.PreviewController;
 import cadenza.core.CadenzaData;
-import cadenza.core.Cue;
 import cadenza.core.Patch;
-import cadenza.core.patchusage.PatchUsage;
 import cadenza.gui.common.CadenzaTable;
 import cadenza.gui.common.SinglePatchSelectionDialog;
 import cadenza.gui.patch.PatchEditDialog;
 import cadenza.gui.patch.PatchPickerDialog;
+
 import common.collection.ListAdapter;
 import common.collection.ListEvent;
 import common.swing.SimpleTableCellRenderer;
@@ -161,13 +159,17 @@ public class PatchEditor extends JPanel {
               "Persist change to default volume?",
               "Choose", JOptionPane.YES_NO_OPTION);
           if (result == JOptionPane.OK_OPTION) {
-            for (Cue cue : _data.cues) {
-              for (PatchUsage patchUsage : cue.patches) {
-                if (patchUsage.patch == patch && patchUsage.volume == patch.defaultVolume) {
-                  patchUsage.volume = edit.defaultVolume;
-                }
-              }
-            }
+            _data.cues.forEach(cue -> {
+              cue.patches.stream()
+                         .filter(pu -> pu.patch == patch && pu.volume == patch.defaultVolume)
+                         .forEach(pu -> pu.volume = edit.defaultVolume);
+              _data.cues.notifyChange(cue);
+            });
+          } else {
+            // notify all cues with the given patch so they will update in cue editor
+            _data.cues.stream()
+                      .filter(cue -> cue.patches.stream().anyMatch(pu -> pu.patch == patch))
+                      .forEach(_data.cues::notifyChange);
           }
         }
         
@@ -183,19 +185,9 @@ public class PatchEditor extends JPanel {
     
     @Override
     protected void takeActionAfterDelete(List<Patch> removed) {
-      for (final Patch patch : removed) {
-        for (final Cue cue : _data.cues) {
-          final List<PatchUsage> remove = new LinkedList<>();
-          for (final PatchUsage usage : cue.patches) {
-            if (usage.patch == patch) {
-              remove.add(usage);
-            }
-          }
-          for (final PatchUsage usage : remove) {
-            cue.patches.remove(usage);
-          }
-        }
-      }
+      removed.forEach(patch ->
+        _data.cues.forEach(cue ->
+          cue.patches.removeIf(pu -> pu.patch == patch)));
     }
     
     private class PatchTableRenderer extends SimpleTableCellRenderer<Object> {
@@ -257,13 +249,10 @@ public class PatchEditor extends JPanel {
         
         _data.patches.sort(null);
         
-        for (final Cue cue : _data.cues) {
-          for (final PatchUsage patchUsage : cue.patches) {
-            if (patchUsage.patch.equals(patch)) {
-              patchUsage.patch = replacement;
-            }
-          }
-        }
+        _data.cues.forEach(cue ->
+          cue.patches.stream()
+                     .filter(patchUsage -> patchUsage.patch.equals(patch))
+                     .forEach(patchUsage -> patchUsage.patch = replacement));
       });
     }
   }

@@ -9,6 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
@@ -20,7 +21,6 @@ import cadenza.control.PreviewController;
 import cadenza.core.CadenzaData;
 import cadenza.core.Patch;
 import cadenza.gui.CadenzaFrame.Mode;
-
 import common.swing.IntField;
 import common.swing.SwingUtils;
 
@@ -66,9 +66,7 @@ public class PreviewMixer extends JPanel {
       
       _mixerBox.removeAll();
       _mixerBox.add(Box.createHorizontalGlue());
-      for (final Patch patch : patches) {
-        _mixerBox.add(createChannel(patch));
-      }
+      patches.forEach(patch -> _mixerBox.add(createChannel(patch)));
       _mixerBox.add(Box.createHorizontalGlue());
       _previewModePane.revalidate();
       _previewModePane.repaint();
@@ -134,8 +132,26 @@ public class PreviewMixer extends JPanel {
     subSouth.add(textField);
     subSouth.add(SwingUtils.button("Reset",  "Reset to the default volume", e -> textField.setInt(patch.defaultVolume)));
     subSouth.add(SwingUtils.button("Set", "Set the selected volume as the default", e -> {
-      patch.defaultVolume = textField.getInt();
-      _data.patches.notifyChange(patch);
+      final int selected = textField.getInt();
+      if (patch.defaultVolume != selected) {
+        patch.defaultVolume = selected;
+        _data.patches.notifyChange(patch);
+        int result = JOptionPane.showConfirmDialog(this, "Persist change to default volume?",
+            "Choose", JOptionPane.YES_NO_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+          _data.cues.forEach(cue -> {
+            cue.patches.stream()
+                       .filter(pu -> pu.patch == patch && pu.volume == patch.defaultVolume)
+                       .forEach(pu -> pu.volume = selected);
+            _data.cues.notifyChange(cue);
+          });
+        } else {
+          // notify all cues with the given patch so they will update in cue editor
+          _data.cues.stream()
+                    .filter(cue -> cue.patches.stream().anyMatch(pu -> pu.patch == patch))
+                    .forEach(_data.cues::notifyChange);
+        }
+      }
     }));
     
     final JPanel panel = new JPanel(new BorderLayout());

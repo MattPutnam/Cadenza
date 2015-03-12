@@ -71,11 +71,23 @@ public class CueListEditor extends JPanel {
     setLayout(new BorderLayout());
     add(_table, BorderLayout.CENTER);
     
+    _data.cues.addListener(new ListAdapter<Cue>() {
+      @Override
+      public void anyChange(ListEvent<Cue> event) {
+        SwingUtils.doInSwing(() -> {
+          revalidate();
+          repaint();
+        }, false);
+      }
+    });
+    
     _data.patches.addListener(new ListAdapter<Patch>() {
       @Override
       public void anyChange(ListEvent<Patch> event) {
-        revalidate();
-        repaint();
+        SwingUtils.doInSwing(() -> {
+          revalidate();
+          repaint();
+        }, false);
       }
     });
   }
