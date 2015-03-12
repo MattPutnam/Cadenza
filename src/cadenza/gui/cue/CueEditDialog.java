@@ -74,7 +74,7 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider,
       }
     }
     
-    if (Preferences.allowPatchUsageInput()) {
+    if (Preferences.getMIDIInputOptions().allowPatchUsageInput()) {
       MIDIInputControlCenter.installWindowFocusGrabber(this);
       _patchEnterer = new PatchEnterer();
     }

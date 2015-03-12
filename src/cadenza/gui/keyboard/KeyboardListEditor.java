@@ -244,7 +244,7 @@ public class KeyboardListEditor extends JPanel implements CustomWizardComponent 
         
         _panel = new KeyboardEditPanel(keyboard);
         
-        if (Preferences.allowMIDIInput()) {
+        if (Preferences.getMIDIInputOptions().allowMIDIInput()) {
           MIDIInputControlCenter.installWindowFocusGrabber(this);
           _locationTracker = new LocationTracker(new Keyboard(
               Note.MIN, Note.MAX, Note.MIN, Note.MAX, "dummy", true, 0));

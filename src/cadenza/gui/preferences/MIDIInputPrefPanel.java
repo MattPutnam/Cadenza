@@ -8,6 +8,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import cadenza.preferences.MIDIInputOptions;
 import common.swing.CollapsiblePanel;
 import common.swing.CollapsiblePanel.Icon;
 import common.swing.CollapsiblePanel.Orientation;
@@ -58,23 +59,20 @@ public class MIDIInputPrefPanel extends JPanel {
     add(SwingUtils.hugWest(_mainPanel), BorderLayout.NORTH);
   }
   
-  public void match(boolean[] options) {
-    _mainPanel.setExpanded(options[0]);
+  public void match(MIDIInputOptions options) {
+    _mainPanel.setExpanded(options.allowMIDIInput());
     
-    _volumePanel.setExpanded(options[1]);
-    if (options[2])
-      _strictButton.setSelected(true);
-    else
-      _lenientButton.setSelected(true);
+    _volumePanel.setExpanded(options.allowVolumeInput());
+    _strictButton.setSelected(options.isVolumeStrict());
     
-    _patchUsagePanel.setExpanded(options[3]);
-    _puSingleCheckBox.setSelected(options[4]);
-    _puRangeCheckBox.setSelected(options[5]);
-    _puWholeCheckBox.setSelected(options[6]);
+    _patchUsagePanel.setExpanded(options.allowPatchUsageInput());
+    _puSingleCheckBox.setSelected(options.allowSinglePatchUsage());
+    _puRangeCheckBox.setSelected(options.allowRangePatchUsage());
+    _puWholeCheckBox.setSelected(options.allowWholePatchUsage());
   }
   
-  public boolean[] getSelectedOptions() {
-    return new boolean[] {
+  public MIDIInputOptions getSelectedOptions() {
+    return new MIDIInputOptions(
         _mainPanel.isExpanded(),
         
         _volumePanel.isExpanded(),
@@ -83,8 +81,8 @@ public class MIDIInputPrefPanel extends JPanel {
         _patchUsagePanel.isExpanded(),
         _puSingleCheckBox.isSelected(),
         _puRangeCheckBox.isSelected(),
-        _puWholeCheckBox.isSelected(),
-    };
+        _puWholeCheckBox.isSelected()
+    );
   }
   
   private static JComponent indent(JComponent content) {

@@ -20,8 +20,8 @@ import javax.swing.event.DocumentEvent;
 
 import cadenza.core.Patch;
 import cadenza.core.Synthesizer;
+import cadenza.preferences.PatchSearchOptions.PatchSearchMode;
 import cadenza.preferences.Preferences;
-import cadenza.preferences.Preferences.PatchSearchMode;
 import cadenza.synths.Synthesizers;
 
 import common.swing.DocumentAdapter;
@@ -146,8 +146,8 @@ public class PatchPickerDialog extends OKCancelDialog {
     @Override
     public void documentChanged(DocumentEvent e) {
       final String searchText = _searchField.getText();
-      final PatchSearchMode mode = Preferences.getPatchSearchMode();
-      final boolean caseSensitive = Preferences.isPatchSearchCaseSensitive();
+      final PatchSearchMode mode = Preferences.getPatchSearchOptions().getSearchMode();
+      final boolean caseSensitive = Preferences.getPatchSearchOptions().isCaseSensitive();
       
       if (mode == PatchSearchMode.SIMPLE) {
         if (caseSensitive) {

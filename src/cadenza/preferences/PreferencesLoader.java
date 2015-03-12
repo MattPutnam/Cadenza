@@ -11,14 +11,13 @@ import java.util.Map;
 import cadenza.core.Keyboard;
 import cadenza.core.Note;
 import cadenza.core.Synthesizer;
-import cadenza.preferences.Preferences.PatchSearchMode;
+import cadenza.preferences.PatchSearchOptions.PatchSearchMode;
 import cadenza.synths.Synthesizers;
 
 import common.Utils;
 import common.io.PropertiesFileReader;
 import common.midi.MidiUtilities;
 import common.swing.SwingUtils;
-import common.tuple.Pair;
 
 /**
  * Utility for loading and saving the global Cadenza preferences
@@ -146,7 +145,7 @@ public final class PreferencesLoader {
    * @return the MIDI input options from the preferences file
    * @throws Exception If any IO exception occurs
    */
-  public static boolean[] readMIDIInputOptions() throws Exception {
+  public static MIDIInputOptions readMIDIInputOptions() throws Exception {
     return buildMIDIInputOptions(readAllPreferences());
   }
   
@@ -156,8 +155,8 @@ public final class PreferencesLoader {
    * @param loadedPrefs the pre-loaded preferences map
    * @return the MIDI input options from the given preferences map
    */
-  public static boolean[] buildMIDIInputOptions(Map<String, String> loadedPrefs) {
-    return new boolean[] {
+  public static MIDIInputOptions buildMIDIInputOptions(Map<String, String> loadedPrefs) {
+    return new MIDIInputOptions(
         Boolean.parseBoolean(loadedPrefs.get(Keys.Input.ALLOW_MIDI_INPUT)),
         
         Boolean.parseBoolean(loadedPrefs.get(Keys.Input.ALLOW_VOLUME)),
@@ -166,8 +165,8 @@ public final class PreferencesLoader {
         Boolean.parseBoolean(loadedPrefs.get(Keys.Input.ALLOW_PATCHUSAGE)),
         Boolean.parseBoolean(loadedPrefs.get(Keys.Input.PATCHUSAGE_SINGLE)),
         Boolean.parseBoolean(loadedPrefs.get(Keys.Input.PATCHUSAGE_RANGE)),
-        Boolean.parseBoolean(loadedPrefs.get(Keys.Input.PATCHUSAGE_WHOLE)),
-    };
+        Boolean.parseBoolean(loadedPrefs.get(Keys.Input.PATCHUSAGE_WHOLE))
+    );
   }
   
   /**
@@ -176,7 +175,7 @@ public final class PreferencesLoader {
    * @return the patch search options
    * @throws Exception If any IO exception occurs
    */
-  public static Pair<PatchSearchMode, Boolean> readPatchSearchOptions() throws Exception {
+  public static PatchSearchOptions readPatchSearchOptions() throws Exception {
     return buildPatchSearchOptions(readAllPreferences());
   }
   
@@ -186,9 +185,10 @@ public final class PreferencesLoader {
    * @param loadedPrefs the pre-loaded preferences map
    * @return the patch search options
    */
-  public static Pair<PatchSearchMode, Boolean> buildPatchSearchOptions(Map<String, String> loadedPrefs) {
-    return Pair.make(PatchSearchMode.valueOf(loadedPrefs.get(Keys.PatchSearch.MODE)),
-                     Boolean.valueOf(loadedPrefs.get(Keys.PatchSearch.CASE_SENSITIVE)));
+  public static PatchSearchOptions buildPatchSearchOptions(Map<String, String> loadedPrefs) {
+    return new PatchSearchOptions(
+        PatchSearchMode.valueOf(loadedPrefs.get(Keys.PatchSearch.MODE)),
+        Boolean.valueOf(loadedPrefs.get(Keys.PatchSearch.CASE_SENSITIVE)).booleanValue());
   }
   
   /////////////////////////////////////////////////////////////////////////////
@@ -243,18 +243,18 @@ public final class PreferencesLoader {
    * @param preferences the loaded preferences map
    * @param options the MIDI input options to commit
    */
-  public static void commitInputOptions(Map<String, String> preferences, boolean[] options) {
-    preferences.put(Keys.Input.ALLOW_MIDI_INPUT,  Boolean.toString(options[0]));
+  public static void commitInputOptions(Map<String, String> preferences, MIDIInputOptions options) {
+    preferences.put(Keys.Input.ALLOW_MIDI_INPUT,  Boolean.toString(options.allowMIDIInput()));
     
-    preferences.put(Keys.Input.ALLOW_VOLUME,      Boolean.toString(options[1]));
-    preferences.put(Keys.Input.VOLUME_STRICT,     Boolean.toString(options[2]));
+    preferences.put(Keys.Input.ALLOW_VOLUME,      Boolean.toString(options.allowVolumeInput()));
+    preferences.put(Keys.Input.VOLUME_STRICT,     Boolean.toString(options.isVolumeStrict()));
     
-    preferences.put(Keys.Input.ALLOW_PATCHUSAGE,  Boolean.toString(options[3]));
-    preferences.put(Keys.Input.PATCHUSAGE_SINGLE, Boolean.toString(options[4]));
-    preferences.put(Keys.Input.PATCHUSAGE_RANGE,  Boolean.toString(options[5]));
-    preferences.put(Keys.Input.PATCHUSAGE_WHOLE,  Boolean.toString(options[6]));
+    preferences.put(Keys.Input.ALLOW_PATCHUSAGE,  Boolean.toString(options.allowPatchUsageInput()));
+    preferences.put(Keys.Input.PATCHUSAGE_SINGLE, Boolean.toString(options.allowSinglePatchUsage()));
+    preferences.put(Keys.Input.PATCHUSAGE_RANGE,  Boolean.toString(options.allowRangePatchUsage()));
+    preferences.put(Keys.Input.PATCHUSAGE_WHOLE,  Boolean.toString(options.allowWholePatchUsage()));
     
-    Preferences.matchMIDIInputOptions(options);
+    Preferences._midiInputOptions = options;
   }
   
   /**
@@ -263,12 +263,11 @@ public final class PreferencesLoader {
    * @param preferences the loaded preferences map
    * @param mode the patch search mode
    */
-  public static void commitPatchSearchOptions(Map<String, String> preferences, Pair<PatchSearchMode, Boolean> options) {
-    preferences.put(Keys.PatchSearch.MODE, options._1().name());
-    preferences.put(Keys.PatchSearch.CASE_SENSITIVE, options._2().toString());
+  public static void commitPatchSearchOptions(Map<String, String> preferences, PatchSearchOptions options) {
+    preferences.put(Keys.PatchSearch.MODE, options.getSearchMode().name());
+    preferences.put(Keys.PatchSearch.CASE_SENSITIVE, Boolean.toString(options.isCaseSensitive()));
     
-    Preferences._patchSearchMode = options._1();
-    Preferences._patchSearchCaseSensitive = options._2().booleanValue();
+    Preferences._patchSearchOptions = options;
   }
   
   /**

@@ -73,7 +73,7 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
     
     _data = data;
     
-    if (Preferences.allowMIDIInput()) {
+    if (Preferences.getMIDIInputOptions().allowMIDIInput()) {
       MIDIInputControlCenter.installWindowFocusGrabber(this);
       _locationEnterer = new LocationEnterer();
     }

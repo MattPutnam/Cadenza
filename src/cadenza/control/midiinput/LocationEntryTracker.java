@@ -65,9 +65,9 @@ public abstract class LocationEntryTracker {
       _currentlyPressedKeys.remove(Integer.valueOf(midiNumber));
       
       if (_currentlyPressedKeys.isEmpty()) {
-        if (_accumulatedPressedKeys.size() == 1 && Preferences.allowSinglePatchUsage()) {
+        if (_accumulatedPressedKeys.size() == 1 && Preferences.getMIDIInputOptions().allowSinglePatchUsage()) {
           singlePressed(kbd, _accumulatedPressedKeys.iterator().next().intValue());
-        } else if (_accumulatedPressedKeys.size() == 2 && Preferences.allowRangePatchUsage()) {
+        } else if (_accumulatedPressedKeys.size() == 2 && Preferences.getMIDIInputOptions().allowRangePatchUsage()) {
           final Iterator<Integer> i = _accumulatedPressedKeys.iterator();
           int n1 = i.next().intValue();
           int n2 = i.next().intValue();
@@ -75,7 +75,7 @@ public abstract class LocationEntryTracker {
             rangePressed(kbd, n1, n2);
           else
             rangePressed(kbd, n2, n1);
-        } else if (_accumulatedPressedKeys.size() >= 3 && Preferences.allowWholePatchUsage()) {
+        } else if (_accumulatedPressedKeys.size() >= 3 && Preferences.getMIDIInputOptions().allowWholePatchUsage()) {
           wholePressed(kbd);
         }
         _accumulatedPressedKeys.clear();

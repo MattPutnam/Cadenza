@@ -154,7 +154,7 @@ public class CadenzaFrame extends JFrame implements Receiver {
   
   @Override
   public void send(MidiMessage message, long timestamp) {
-    if (Preferences.allowMIDIInput() && MIDIInputControlCenter.getInstance().isActive())
+    if (Preferences.getMIDIInputOptions().allowMIDIInput() && MIDIInputControlCenter.getInstance().isActive())
       MIDIInputControlCenter.getInstance().send(message);
     else if (_mode == Mode.PERFORM)
       _performanceController.send(message);

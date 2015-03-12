@@ -17,7 +17,8 @@ import cadenza.core.Keyboard;
 import cadenza.core.Synthesizer;
 import cadenza.gui.common.SynthConfigPanel;
 import cadenza.gui.keyboard.KeyboardEditPanel;
-import cadenza.preferences.Preferences.PatchSearchMode;
+import cadenza.preferences.MIDIInputOptions;
+import cadenza.preferences.PatchSearchOptions;
 import cadenza.preferences.PreferencesLoader;
 
 import common.io.PropertiesFileReader;
@@ -26,7 +27,6 @@ import common.swing.CardPanel;
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
-import common.tuple.Pair;
 
 @SuppressWarnings("serial")
 public class PreferencesDialog extends OKCancelDialog {
@@ -74,8 +74,8 @@ public class PreferencesDialog extends OKCancelDialog {
       final Keyboard kbd = PreferencesLoader.buildDefaultKeyboard(_preferences);
       final Synthesizer synth = PreferencesLoader.buildDefaultSynthesizer(_preferences);
       final String[] midiPorts = PreferencesLoader.buildDefaultMIDIPorts(_preferences);
-      final boolean[] inputPrefs = PreferencesLoader.buildMIDIInputOptions(_preferences);
-      final Pair<PatchSearchMode, Boolean> patchSearchOptions = PreferencesLoader.buildPatchSearchOptions(_preferences);
+      final MIDIInputOptions inputPrefs = PreferencesLoader.buildMIDIInputOptions(_preferences);
+      final PatchSearchOptions patchSearchOptions = PreferencesLoader.buildPatchSearchOptions(_preferences);
       
       SwingUtils.doInSwing(() -> {
         _defaultKeyboardPanel.match(kbd);

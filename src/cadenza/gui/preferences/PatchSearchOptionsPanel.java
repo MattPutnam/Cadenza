@@ -5,10 +5,10 @@ import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 
-import cadenza.preferences.Preferences.PatchSearchMode;
+import cadenza.preferences.PatchSearchOptions;
+import cadenza.preferences.PatchSearchOptions.PatchSearchMode;
 
 import common.swing.RadioButtonPanel;
-import common.tuple.Pair;
 
 @SuppressWarnings("serial")
 public class PatchSearchOptionsPanel extends JPanel {
@@ -25,12 +25,12 @@ public class PatchSearchOptionsPanel extends JPanel {
     add(_caseSensitiveBox);
   }
   
-  public void setSelectedOptions(Pair<PatchSearchMode, Boolean> options) {
-    _radioButtonPanel.setSelectedValue(options._1());
-    _caseSensitiveBox.setSelected(options._2().booleanValue());
+  public void setSelectedOptions(PatchSearchOptions options) {
+    _radioButtonPanel.setSelectedValue(options.getSearchMode());
+    _caseSensitiveBox.setSelected(options.isCaseSensitive());
   }
   
-  public Pair<PatchSearchMode, Boolean> getSelectedOptions() {
-    return Pair.make(_radioButtonPanel.getSelectedValue(), Boolean.valueOf(_caseSensitiveBox.isSelected()));
+  public PatchSearchOptions getSelectedOptions() {
+    return new PatchSearchOptions(_radioButtonPanel.getSelectedValue(), _caseSensitiveBox.isSelected());
   }
 }

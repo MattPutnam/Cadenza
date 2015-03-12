@@ -57,7 +57,7 @@ public class TriggerPredicateEditDialog extends OKCancelDialog implements Accept
     _keyboards = keyboards;
     _initial = initial;
     
-    if (Preferences.allowMIDIInput()) {
+    if (Preferences.getMIDIInputOptions().allowMIDIInput()) {
       MIDIInputControlCenter.installWindowFocusGrabber(this);
       _keyPressTracker = new KeyPressTracker(keyboards);
     }

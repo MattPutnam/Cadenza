@@ -28,7 +28,7 @@ public class VolumeField extends IntField implements AcceptsKeyboardInput {
     setColumns(3);
     SwingUtils.freezeSize(this);
     
-    if (Preferences.allowVolumeInput())
+    if (Preferences.getMIDIInputOptions().allowVolumeInput())
       MIDIInputControlCenter.installFocusGrabber(this);
   }
   
@@ -45,7 +45,7 @@ public class VolumeField extends IntField implements AcceptsKeyboardInput {
   @Override
   public void controlReceived(int channel, int ccNumber, final int value) { 
     SwingUtilities.invokeLater(() -> {
-      if (!Preferences.isVolumeStrict() || ccNumber == 7) {
+      if (!Preferences.getMIDIInputOptions().isVolumeStrict() || ccNumber == 7) {
         setInt(value);
         selectAll();
       }

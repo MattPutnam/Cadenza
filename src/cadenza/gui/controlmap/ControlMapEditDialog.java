@@ -36,7 +36,7 @@ public class ControlMapEditDialog extends OKCancelDialog implements AcceptsKeybo
     _patchUsages = patchUsages;
     _entry = entry;
     
-    if (Preferences.allowMIDIInput())
+    if (Preferences.getMIDIInputOptions().allowMIDIInput())
       MIDIInputControlCenter.installWindowFocusGrabber(this);
   }
   

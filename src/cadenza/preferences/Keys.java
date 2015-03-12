@@ -1,7 +1,7 @@
 package cadenza.preferences;
 
 final class Keys {
-  Keys() {}
+  private Keys() {}
   
   static class Keyboard {
     static String NAME           = "keyboard.name";
