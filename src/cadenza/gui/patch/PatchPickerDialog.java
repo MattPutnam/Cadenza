@@ -1,12 +1,11 @@
 package cadenza.gui.patch;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+import java.util.stream.Collectors;
 
 import javax.swing.Box;
 import javax.swing.JComponent;
@@ -20,6 +19,7 @@ import javax.swing.event.DocumentEvent;
 
 import cadenza.core.Patch;
 import cadenza.core.Synthesizer;
+import cadenza.gui.CadenzaFrame;
 import cadenza.preferences.PatchSearchOptions.PatchSearchMode;
 import cadenza.preferences.Preferences;
 import cadenza.synths.Synthesizers;
@@ -30,6 +30,7 @@ import common.swing.dialog.OKCancelDialog;
 
 @SuppressWarnings("serial")
 public class PatchPickerDialog extends OKCancelDialog {
+  private final CadenzaFrame _frame;
   private final List<Synthesizer> _synthesizers;
   private final List<Patch> _suggestions;
   private final boolean _hasSuggestions;
@@ -38,12 +39,13 @@ public class PatchPickerDialog extends OKCancelDialog {
   private JList<Patch> _suggestionList;
   private JTextField _nameField;
   
-  public PatchPickerDialog(Component parent, List<Synthesizer> synthesizers) {
-    this(parent, synthesizers, null);
+  public PatchPickerDialog(CadenzaFrame frame, List<Synthesizer> synthesizers) {
+    this(frame, synthesizers, null);
   }
   
-  public PatchPickerDialog(Component parent, List<Synthesizer> synthesizers, List<Patch> suggestions) {
-    super(parent);
+  public PatchPickerDialog(CadenzaFrame frame, List<Synthesizer> synthesizers, List<Patch> suggestions) {
+    super(frame);
+    _frame = frame;
     _synthesizers = synthesizers;
     _suggestions = suggestions;
     _hasSuggestions = _suggestions != null && _suggestions.size() > 0;
@@ -51,9 +53,9 @@ public class PatchPickerDialog extends OKCancelDialog {
   
   @Override
   protected JComponent buildContent() {
-    final List<Patch> patches = new ArrayList<>();
-    for (Synthesizer synthesizer : _synthesizers)
-      patches.addAll(Synthesizers.loadPatches(synthesizer));
+    final List<Patch> patches = _synthesizers.stream()
+                                             .flatMap(Synthesizers::streamPatches)
+                                             .collect(Collectors.toList());
     
     _resultList = new JList<>();
     _resultList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -67,8 +69,19 @@ public class PatchPickerDialog extends OKCancelDialog {
       
       _resultList.addListSelectionListener(e -> _suggestionList.clearSelection());
       
-      _suggestionList.addListSelectionListener(e -> _resultList.clearSelection());
+      _suggestionList.addListSelectionListener(e -> {
+        _resultList.clearSelection();
+        final Patch selected = _suggestionList.getSelectedValue();
+        if (selected != null)
+          _frame.quickPreview(selected);
+      });
     }
+    
+    _resultList.addListSelectionListener(e -> {
+      final Patch selected = _resultList.getSelectedValue();
+      if (selected != null)
+        _frame.quickPreview(selected);
+    });
     
     _nameField = new JTextField(16);
     

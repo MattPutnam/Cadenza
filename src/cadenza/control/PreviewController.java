@@ -50,7 +50,7 @@ public class PreviewController extends CadenzaController {
   }
   
   public synchronized void setPatches(List<Patch> patches) {
-   _previewPatches = patches;
+    _previewPatches = patches;
     _previewChannels.clear();
     
     LOG.info("Previewing patches: " + _previewPatches);

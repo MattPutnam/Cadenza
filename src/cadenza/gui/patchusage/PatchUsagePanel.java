@@ -30,6 +30,7 @@ import cadenza.core.Note;
 import cadenza.core.Patch;
 import cadenza.core.patchusage.PatchUsage;
 import cadenza.core.patchusage.SimplePatchUsage;
+import cadenza.gui.CadenzaFrame;
 import cadenza.gui.keyboard.KeyboardAdapter;
 import cadenza.gui.keyboard.SingleKeyboardPanel;
 import cadenza.gui.patch.PatchSelector;
@@ -43,6 +44,7 @@ import common.swing.icon.DeleteIcon;
 public class PatchUsagePanel extends JPanel {
   private static final Color PATCH_BORDER = Color.DARK_GRAY;
   
+  private final CadenzaFrame _frame;
   private final Cue _cue;
   private final CadenzaData _data;
   
@@ -50,8 +52,9 @@ public class PatchUsagePanel extends JPanel {
   private final List<SingleKeyboardPanel> _keyboardPanels;
   private final List<PatchUsageArea> _patchUsageAreas;
   
-  public PatchUsagePanel(Cue cue, CadenzaData data) {
+  public PatchUsagePanel(CadenzaFrame frame, Cue cue, CadenzaData data) {
     super();
+    _frame = frame;
     _cue = cue;
     _data = data;
     
@@ -225,7 +228,7 @@ public class PatchUsagePanel extends JPanel {
           if (e.getClickCount() == 2) {
             e.consume();
             OKCancelDialog.showDialog(new PatchUsageEditDialog(
-                PatchUsageEntity.this, _patchUsage, _data), dialog -> {
+                _frame, _patchUsage, _data), dialog -> {
                   _patchUsages.remove(_patchUsage);
                   _patchUsages.add(dialog.getPatchUsage());
                   refreshDisplay();
@@ -351,7 +354,7 @@ public class PatchUsagePanel extends JPanel {
     
     @Override
     protected JComponent buildContent() {
-      _selector = new PatchSelector(_data.patches, _data.synthesizers, _selected);
+      _selector = new PatchSelector(_frame, _data.patches, _data.synthesizers, _selected);
       return _selector;
     }
     

@@ -1,7 +1,6 @@
 package cadenza.gui.cue;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -28,12 +27,14 @@ import cadenza.core.Keyboard;
 import cadenza.core.Location;
 import cadenza.core.Note;
 import cadenza.core.patchusage.PatchUsage;
+import cadenza.gui.CadenzaFrame;
 import cadenza.gui.controlmap.ControlMapPanel;
 import cadenza.gui.effects.edit.EffectChainViewerEditor;
 import cadenza.gui.patchusage.PatchUsagePanel;
 import cadenza.gui.song.SongPanel;
 import cadenza.gui.trigger.TriggerPanel;
 import cadenza.preferences.Preferences;
+
 import common.collection.NotifyingList;
 import common.swing.CollapsiblePanel;
 import common.swing.CollapsiblePanel.Icon;
@@ -44,6 +45,7 @@ import common.swing.dialog.OKCancelDialog;
 
 @SuppressWarnings("serial")
 public class CueEditDialog extends OKCancelDialog implements ControlMapProvider, AcceptsKeyboardInput {
+  private final CadenzaFrame _frame;
   private final Cue _cue;
   private final NotifyingList<Cue> _otherCues;
   private final CadenzaData _data;
@@ -62,8 +64,9 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider,
   
   private PatchEnterer _patchEnterer;
   
-  public CueEditDialog(Component parent, Cue cue, CadenzaData data) {
-    super(parent);
+  public CueEditDialog(CadenzaFrame frame, Cue cue, CadenzaData data) {
+    super(frame);
+    _frame = frame;
     _cue = cue;
     _data = data;
     
@@ -88,7 +91,7 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider,
     
     _measureField = new JTextField(_cue.measureNumber, 8);
     
-    _patchUsagePanel = new PatchUsagePanel(_cue, _data);
+    _patchUsagePanel = new PatchUsagePanel(_frame, _cue, _data);
     _triggerPanel = new TriggerPanel(_cue, _data);
     _controlPanel = new ControlMapPanel(_cue);
     _effectsPanel = new EffectChainViewerEditor(_cue.effects, true);

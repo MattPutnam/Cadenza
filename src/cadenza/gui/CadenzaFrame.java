@@ -35,6 +35,7 @@ import org.apache.commons.lang3.SystemUtils;
 import cadenza.control.MidiSolutionsMessageSender;
 import cadenza.control.PerformanceController;
 import cadenza.control.PreviewController;
+import cadenza.control.QuickPreviewController;
 import cadenza.control.midiinput.MIDIInputControlCenter;
 import cadenza.core.CadenzaData;
 import cadenza.core.ControlMapEntry;
@@ -54,6 +55,7 @@ import cadenza.gui.preferences.PreferencesDialog;
 import cadenza.gui.synthesizer.SynthesizerListEditor;
 import cadenza.gui.trigger.TriggerPanel;
 import cadenza.preferences.Preferences;
+
 import common.collection.ListAdapter;
 import common.collection.ListEvent;
 import common.io.IOUtils;
@@ -71,13 +73,14 @@ public class CadenzaFrame extends JFrame implements Receiver {
       "for is not in the list, quit Cadenza, ensure that it is plugged in and any\n" +
       "drivers are installed, and start Cadenza again.";
   
-  public static enum Mode { PERFORM, PREVIEW }
+  public static enum Mode { PERFORM, PREVIEW, QUICK_PREVIEW }
   
   private Mode _mode;
   
   private final CadenzaData _data;
   private final PerformanceController _performanceController;
   private final PreviewController _previewController;
+  private final QuickPreviewController _quickPreviewer;
   
   private PatchEditor _patchEditor;
   private CueListEditor _cueListEditor;
@@ -107,6 +110,7 @@ public class CadenzaFrame extends JFrame implements Receiver {
     _data = data;
     _performanceController = new PerformanceController(_data, this);
     _previewController = new PreviewController(_data);
+    _quickPreviewer = new QuickPreviewController(_data);
     
     _data.synthesizers.addListener(new Dirtyer<Synthesizer>());
     _data.globalTriggers.addListener(new Dirtyer<Trigger>());
@@ -152,6 +156,13 @@ public class CadenzaFrame extends JFrame implements Receiver {
     _mode = Mode.PREVIEW;
   }
   
+  public void quickPreview(Patch patch) {
+    _cueListEditor.clearSelection();
+    _patchEditor.clearSelection();
+    _quickPreviewer.setPatch(patch);
+    _mode = Mode.QUICK_PREVIEW;
+  }
+  
   @Override
   public void send(MidiMessage message, long timestamp) {
     if (Preferences.getMIDIInputOptions().allowMIDIInput() && MIDIInputControlCenter.getInstance().isActive())
@@ -160,6 +171,8 @@ public class CadenzaFrame extends JFrame implements Receiver {
       _performanceController.send(message);
     else if (_mode == Mode.PREVIEW)
       _previewController.send(message);
+    else if (_mode == Mode.QUICK_PREVIEW)
+      _quickPreviewer.send(message);
     
     if (_inputMonitor != null)
       _inputMonitor.send(message);
@@ -479,6 +492,7 @@ public class CadenzaFrame extends JFrame implements Receiver {
       final Receiver receiver = _outDevice.getReceiver();
       _performanceController.setReceiver(receiver);
       _previewController.setReceiver(receiver);
+      _quickPreviewer.setReceiver(receiver);
       if (_msmSender == null)
         _msmSender = new MidiSolutionsMessageSender(receiver);
       else

@@ -1,7 +1,6 @@
 package cadenza.gui.patchusage;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 
@@ -33,6 +32,7 @@ import cadenza.core.patchusage.GhostNotePatchUsage;
 import cadenza.core.patchusage.PatchUsage;
 import cadenza.core.patchusage.SequencerPatchUsage;
 import cadenza.core.patchusage.SimplePatchUsage;
+import cadenza.gui.CadenzaFrame;
 import cadenza.gui.common.LocationEditPanel;
 import cadenza.gui.common.TranspositionEditor;
 import cadenza.gui.common.VolumeField;
@@ -42,6 +42,7 @@ import cadenza.gui.patchusage.editor.CustomScalePatchUsageEditor;
 import cadenza.gui.patchusage.editor.GhostNotePatchUsageEditor;
 import cadenza.gui.patchusage.editor.SequencerPatchUsageEditor;
 import cadenza.preferences.Preferences;
+
 import common.swing.IntField;
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
@@ -49,6 +50,7 @@ import common.swing.dialog.OKCancelDialog;
 
 @SuppressWarnings("serial")
 public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeyboardInput {
+  private final CadenzaFrame _frame;
   private final PatchUsage _startingPatchUsage;
   private final CadenzaData _data;
   
@@ -66,9 +68,10 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
   
   private LocationEnterer _locationEnterer;
 
-  public PatchUsageEditDialog(Component parent, PatchUsage startingPatchUsage,
+  public PatchUsageEditDialog(CadenzaFrame frame, PatchUsage startingPatchUsage,
       CadenzaData data) {
-    super(parent);
+    super(frame);
+    _frame = frame;
     _startingPatchUsage = startingPatchUsage;
     
     _data = data;
@@ -81,7 +84,7 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
 
   @Override
   protected JComponent buildContent() {
-    _patchSelector = new PatchSelector(_data.patches, _data.synthesizers, _startingPatchUsage.patch);
+    _patchSelector = new PatchSelector(_frame, _data.patches, _data.synthesizers, _startingPatchUsage.patch);
     _volumeField = new VolumeField(_startingPatchUsage.volume);
     _locationSelector = new LocationEditPanel(_data.keyboards, _startingPatchUsage.location);
     _effectPanel = new EffectChainViewerEditor(_startingPatchUsage.effects, true);

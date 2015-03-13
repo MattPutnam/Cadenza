@@ -1,7 +1,6 @@
 package cadenza.gui.common;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +14,7 @@ import javax.swing.JScrollPane;
 
 import cadenza.core.Patch;
 import cadenza.core.Synthesizer;
+import cadenza.gui.CadenzaFrame;
 import cadenza.gui.patch.PatchPickerDialog;
 
 import common.swing.SwingUtils;
@@ -23,7 +23,7 @@ import common.swing.dialog.OKCancelDialog;
 
 @SuppressWarnings("serial")
 public class SinglePatchSelectionDialog extends OKCancelDialog {
-  private final Component _parent;
+  private final CadenzaFrame _frame;
   private final List<Patch> _patches;
   private final List<Synthesizer> _synthesizers;
   
@@ -33,9 +33,9 @@ public class SinglePatchSelectionDialog extends OKCancelDialog {
   
   private Patch _selectedPatch;
   
-  public SinglePatchSelectionDialog(Component parent, Patch selected, List<Patch> patches, List<Synthesizer> synthesizers) {
-    super(parent);
-    _parent = parent;
+  public SinglePatchSelectionDialog(CadenzaFrame frame, Patch selected, List<Patch> patches, List<Synthesizer> synthesizers) {
+    super(frame);
+    _frame = frame;
     _synthesizers = synthesizers;
     
     if (selected == null)
@@ -66,7 +66,7 @@ public class SinglePatchSelectionDialog extends OKCancelDialog {
     final JScrollPane scrollPane = new JScrollPane(patchButtons);
     
     _pickNewButton = SwingUtils.button("Pick new patch...", e -> {
-      OKCancelDialog.showDialog(new PatchPickerDialog(_parent, _synthesizers), dialog -> {
+      OKCancelDialog.showDialog(new PatchPickerDialog(_frame, _synthesizers), dialog -> {
         _selectedPatch = dialog.getSelectedPatch();
         pressOK();
       });

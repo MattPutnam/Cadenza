@@ -1,7 +1,6 @@
 package cadenza.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -39,6 +38,7 @@ public class OrphanedPatchRemapper extends OKCancelDialog {
   private static final int MAX_SUGGESTIONS = 8;
   private static final int DISTANCE_THRESHOLD = 3;
   
+  private final CadenzaFrame _frame;
   private final CadenzaData _data;
   private final List<Patch> _orphans;
   private final List<Synthesizer> _synthesizers;
@@ -47,9 +47,10 @@ public class OrphanedPatchRemapper extends OKCancelDialog {
   
   private JList<Patch> _remappingList;
   
-  public OrphanedPatchRemapper(Component parent, CadenzaData data,
+  public OrphanedPatchRemapper(CadenzaFrame frame, CadenzaData data,
       List<Patch> orphans, List<Synthesizer> synthesizers) {
-    super(parent);
+    super(frame);
+    _frame = frame;
     _data = data;
     _orphans = orphans;
     _synthesizers = synthesizers;
@@ -94,7 +95,7 @@ public class OrphanedPatchRemapper extends OKCancelDialog {
       public void mouseClicked(MouseEvent e) {
         if (e.getClickCount() == 2) {
           final Patch patch = _remappingList.getSelectedValue();
-          OKCancelDialog.showDialog(new PatchPickerDialog(OrphanedPatchRemapper.this,
+          OKCancelDialog.showDialog(new PatchPickerDialog(_frame,
               _synthesizers, _suggestions.get(patch)), dialog -> {
                 _remapping.put(patch, dialog.getSelectedPatch());
                 revalidate();

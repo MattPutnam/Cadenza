@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 
 import cadenza.core.Patch;
 import cadenza.core.Synthesizer;
+import cadenza.gui.CadenzaFrame;
 
 import common.swing.SwingUtils;
 import common.swing.dialog.OKCancelDialog;
@@ -16,7 +17,7 @@ import common.swing.dialog.OKCancelDialog;
 public class PatchSelector extends JPanel {
   private final JComboBox<Patch> _patchList;
   
-  public PatchSelector(final List<Patch> patches, final List<Synthesizer> synthesizer, Patch selected) {
+  public PatchSelector(final CadenzaFrame frame, final List<Patch> patches, final List<Synthesizer> synthesizer, Patch selected) {
     super();
 
     _patchList = new JComboBox<>(patches.toArray(new Patch[patches.size()]));
@@ -28,7 +29,7 @@ public class PatchSelector extends JPanel {
     add(_patchList);
     add(new JLabel("or"));
     add(SwingUtils.button("Select New Patch", e ->
-      OKCancelDialog.showDialog(new PatchPickerDialog(PatchSelector.this, synthesizer), dialog -> {
+      OKCancelDialog.showDialog(new PatchPickerDialog(frame, synthesizer), dialog -> {
         patches.add(dialog.getSelectedPatch());
         patches.sort(null);
         _patchList.insertItemAt(dialog.getSelectedPatch(), 0);

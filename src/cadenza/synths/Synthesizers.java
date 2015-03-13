@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -221,6 +222,10 @@ public class Synthesizers {
     
     SM_CACHE.put(synthesizer, result);
     return result;
+  }
+  
+  public static Stream<Patch> streamPatches(Synthesizer synthesizer) {
+    return loadPatches(synthesizer).stream();
   }
   
   private static String getBankName(String synthname, String slotName, Map<String, String> expansions) {
