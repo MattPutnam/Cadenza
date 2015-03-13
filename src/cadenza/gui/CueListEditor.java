@@ -117,10 +117,19 @@ public class CueListEditor extends JPanel {
   
   private Song suggestSong() {
     final List<CueTableEntry> selected = _table.getSelectedRows();
-    if (selected.isEmpty())
-      return _data.cues.get(_data.cues.size()-1).song;
-    else
-      return selected.get(0).song;
+    if (selected.isEmpty()) {
+      if (_data.cues.isEmpty())
+        return null;
+      else
+        return _data.cues.get(_data.cues.size()-1).song;
+    }
+    else {
+      final CueTableEntry c = selected.get(0);
+      if (c.isSong())
+        return c.song;
+      else
+        return c.cue.song;
+    }
   }
   
   private class CloneCueAction extends AbstractAction {
