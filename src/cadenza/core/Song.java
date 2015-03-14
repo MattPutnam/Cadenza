@@ -5,7 +5,7 @@ import java.io.Serializable;
 import common.Comparators;
 
 public class Song implements Comparable<Song>, Serializable {
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 2L;
   
   public String number;
   public String name;

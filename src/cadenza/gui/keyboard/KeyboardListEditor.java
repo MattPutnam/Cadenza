@@ -8,8 +8,11 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.Box;
@@ -35,10 +38,11 @@ import cadenza.core.Keyboard;
 import cadenza.core.Location;
 import cadenza.core.Note;
 import cadenza.core.patchusage.PatchUsage;
+import cadenza.core.trigger.Trigger;
+import cadenza.core.trigger.predicates.HasLocation;
 import cadenza.gui.common.CadenzaTable;
 import cadenza.gui.common.HelpButton;
 import cadenza.preferences.Preferences;
-
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
 import common.swing.table.ListTableModel;
@@ -87,11 +91,43 @@ public class KeyboardListEditor extends JPanel implements CustomWizardComponent 
   
   public void doRemap() {
     for (final Cue cue : _data.cues) {
-      for (final PatchUsage patchUsage : cue.patches) {
+      /*
+       * Copy all locations to new keyboards, if that works.  If the keyboard
+       * size changed and locations fall off the edited keyboards, remove the
+       * corresponding items.
+       */
+      final Iterator<PatchUsage> puIterator = cue.patches.iterator();
+      while (puIterator.hasNext()) {
+        final PatchUsage patchUsage = puIterator.next();
         final Keyboard newKeyboard = _remap.get(patchUsage.location.getKeyboard());
         if (newKeyboard != null) {
-          patchUsage.location = new Location(patchUsage.location, newKeyboard);
+          final Optional<Location> opt = patchUsage.location.copyTo(newKeyboard, true);
+          if (opt.isPresent())
+            patchUsage.location = opt.get();
+          else
+            puIterator.remove();
         }
+      }
+      
+      final Iterator<Trigger> triggerIterator = cue.triggers.iterator();
+      while (triggerIterator.hasNext()) {
+        final Trigger trigger = triggerIterator.next();
+        final List<HasLocation> hls = trigger.predicates.stream()
+                                                        .filter(p -> p instanceof HasLocation)
+                                                        .map(p -> ((HasLocation) p))
+                                                        .collect(Collectors.toList());
+        hls.forEach(hl -> {
+          final Location curLoc = hl.getLocation();
+          final Keyboard newKeyboard = _remap.get(curLoc.getKeyboard());
+          final Optional<Location> opt = curLoc.copyTo(newKeyboard, false);
+          if (opt.isPresent())
+            hl.setLocation(opt.get());
+          else
+            trigger.predicates.remove(hl);
+        });
+        
+        if (trigger.predicates.isEmpty())
+          triggerIterator.remove();
       }
     }
     
@@ -124,11 +160,11 @@ public class KeyboardListEditor extends JPanel implements CustomWizardComponent 
         @Override
         public Object resolveValue(Keyboard row, int column) {
           switch (column) {
-            case Col.NAME:        return row.name;
-            case Col.RANGE:        return row.low.toString() + "-" + row.high.toString();
-            case Col.SOUNDING_RANGE:  return row.soundingLow.toString() + "-" + row.soundingHigh.toString();
-            case Col.MAIN:        return Boolean.valueOf(row.isMain);
-            case Col.CHANNEL:      return Integer.valueOf(row.channel);
+            case Col.NAME:           return row.name;
+            case Col.RANGE:          return row.low.toString() + "-" + row.high.toString();
+            case Col.SOUNDING_RANGE: return row.soundingLow.toString() + "-" + row.soundingHigh.toString();
+            case Col.MAIN:           return Boolean.valueOf(row.isMain);
+            case Col.CHANNEL:        return Integer.valueOf(row.channel);
             default: throw new IllegalStateException("Unknown Column!");
           }
         }
@@ -298,7 +334,7 @@ public class KeyboardListEditor extends JPanel implements CustomWizardComponent 
         
         @Override
         protected void rangePressed(Keyboard keyboard, int lowNumber, int highNumber) {
-          _panel.applyLocation(Location.range(keyboard, Note.valueOf(lowNumber), Note.valueOf(highNumber)));
+          _panel.applyLocation(new Location(keyboard, Note.valueOf(lowNumber), Note.valueOf(highNumber)));
         }
       }
     }

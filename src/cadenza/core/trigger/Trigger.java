@@ -12,7 +12,7 @@ import cadenza.core.trigger.actions.TriggerAction;
 import cadenza.core.trigger.predicates.TriggerPredicate;
 
 public class Trigger implements Serializable {
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 2L;
   
   public List<TriggerPredicate> predicates;
   public boolean AND;

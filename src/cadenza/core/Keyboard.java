@@ -10,7 +10,7 @@ import java.util.List;
  * @author Matt Putnam
  */
 public class Keyboard implements Serializable {
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 2L;
   
   /** The low note on the keyboard */
   public Note low;

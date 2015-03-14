@@ -20,7 +20,7 @@ import common.swing.ColorUtils;
  * @author Matt Putnam
  */
 public abstract class PatchUsage implements Serializable {
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 2L;
   
   /** The patch to play */
   public Patch patch;
@@ -46,7 +46,7 @@ public abstract class PatchUsage implements Serializable {
    */
   public static final PatchUsage ALL = new SimplePatchUsage(
       new Patch(Synthesizer.TEMP, "ALL", "TEMP", 0),
-            Location.wholeKeyboard(null), 100, 0, false, -1, true, 0);
+            new Location(null, null, null), 100, 0, false, -1, true, 0);
   
   public PatchUsage(Patch patch, Location location, int volume) {
     this.patch = patch;

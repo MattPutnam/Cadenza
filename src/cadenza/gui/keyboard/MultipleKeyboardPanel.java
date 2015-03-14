@@ -23,7 +23,7 @@ import cadenza.core.Note;
  * @author Matt Putnam
  */
 public class MultipleKeyboardPanel extends JPanel {
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 2L;
   
   private final KeyboardPanel[] _keyboards;
   private final int _spacing;

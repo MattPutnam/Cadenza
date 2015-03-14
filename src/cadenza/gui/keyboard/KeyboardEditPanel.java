@@ -38,8 +38,8 @@ public class KeyboardEditPanel extends JPanel {
     super();
     
     _keyboard = keyboard;
-    _selectedFullRange = Location.range(keyboard, keyboard.low, keyboard.high);
-    _selectedSoundingRange = Location.range(keyboard, keyboard.soundingLow, keyboard.soundingHigh);
+    _selectedFullRange = new Location(keyboard, keyboard.low, keyboard.high);
+    _selectedSoundingRange = new Location(keyboard, keyboard.soundingLow, keyboard.soundingHigh);
     
     _nameField = new JTextField(keyboard.name);
     _channelField = new IntField(keyboard.channel, 0, Integer.MAX_VALUE);
@@ -60,7 +60,7 @@ public class KeyboardEditPanel extends JPanel {
     _keyboardPanel.addKeyboardListener(new KeyboardAdapter() {
       @Override
       public void keyDragged(Note startNote, Note endNote) {
-        applyLocation(Location.range(_keyboard, startNote, endNote));
+        applyLocation(new Location(_keyboard, startNote, endNote));
       }
     });
     rebuildLabels();
@@ -95,13 +95,13 @@ public class KeyboardEditPanel extends JPanel {
   
   private void rebuildLabels() {
     _rangeArea.removeAll();
-    Rectangle r1 = _keyboardPanel.accessKeyboardPanel().getKeyPosition(_selectedFullRange.getLowerOfRange());
-    Rectangle r2 = _keyboardPanel.accessKeyboardPanel().getKeyPosition(_selectedFullRange.getUpperOfRange());
+    Rectangle r1 = _keyboardPanel.accessKeyboardPanel().getKeyPosition(_selectedFullRange.getLower());
+    Rectangle r2 = _keyboardPanel.accessKeyboardPanel().getKeyPosition(_selectedFullRange.getUpper());
     int width = r2.x+r2.width-r1.x;
     final RangePanel fullPanel = new RangePanel("Physical Range", width);
     fullPanel.setBounds(r1.x, 1, width, 24);
-    r1 = _keyboardPanel.accessKeyboardPanel().getKeyPosition(_selectedSoundingRange.getLowerOfRange());
-    r2 = _keyboardPanel.accessKeyboardPanel().getKeyPosition(_selectedSoundingRange.getUpperOfRange());
+    r1 = _keyboardPanel.accessKeyboardPanel().getKeyPosition(_selectedSoundingRange.getLower());
+    r2 = _keyboardPanel.accessKeyboardPanel().getKeyPosition(_selectedSoundingRange.getUpper());
     width = r2.x+r2.width-r1.x;
     final RangePanel soundingPanel = new RangePanel("Sounding Range", width);
     soundingPanel.setBounds(r1.x, 26, width, 24);
@@ -114,10 +114,10 @@ public class KeyboardEditPanel extends JPanel {
     kp.labelNote(Note.A0);
     kp.labelNote(Note.C4);
     kp.labelNote(Note.C8);
-    kp.labelNote(_selectedFullRange.getLowerOfRange());
-    kp.labelNote(_selectedFullRange.getUpperOfRange());
-    kp.labelNote(_selectedSoundingRange.getLowerOfRange());
-    kp.labelNote(_selectedSoundingRange.getUpperOfRange());
+    kp.labelNote(_selectedFullRange.getLower());
+    kp.labelNote(_selectedFullRange.getUpper());
+    kp.labelNote(_selectedSoundingRange.getLower());
+    kp.labelNote(_selectedSoundingRange.getUpper());
     
     revalidate();
     repaint();
@@ -146,8 +146,8 @@ public class KeyboardEditPanel extends JPanel {
   }
   
   public Keyboard buildKeyboard() {
-    return new Keyboard(_selectedFullRange.getLowerOfRange(), _selectedFullRange.getUpperOfRange(),
-        _selectedSoundingRange.getLowerOfRange(), _selectedSoundingRange.getUpperOfRange(),
+    return new Keyboard(_selectedFullRange.getLower(), _selectedFullRange.getUpper(),
+        _selectedSoundingRange.getLower(), _selectedSoundingRange.getUpper(),
         getEnteredName(), _keyboard.isMain, _channelField.getInt());
   }
   
@@ -167,8 +167,8 @@ public class KeyboardEditPanel extends JPanel {
     
     _nameField.setText(keyboard.name);
     _channelField.setInt(keyboard.channel);
-    _selectedFullRange = Location.range(_keyboard, keyboard.low, keyboard.high);
-    _selectedSoundingRange = Location.range(_keyboard, keyboard.soundingLow, keyboard.soundingHigh);
+    _selectedFullRange = new Location(_keyboard, keyboard.low, keyboard.high);
+    _selectedSoundingRange = new Location(_keyboard, keyboard.soundingLow, keyboard.soundingHigh);
     rebuildLabels();
   }
 }

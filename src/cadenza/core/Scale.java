@@ -38,7 +38,7 @@ import cadenza.core.Note.PitchClass;
  * @author Matt Putnam
  */
 public final class Scale implements Serializable {
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 2L;
   
   public static final class Diatonic {
     public static final Scale C_Major  = new Scale("C Major", C, D, E, F, G, A, B);

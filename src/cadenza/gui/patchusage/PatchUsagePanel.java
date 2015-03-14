@@ -157,7 +157,7 @@ public class PatchUsagePanel extends JPanel {
     
     final List<PatchUsage> nonConflicting = new LinkedList<>();
     for (final PatchUsage pu : patchUsages)
-      if (pu.location.getLowest().above(last.location.getHighest()))
+      if (pu.location.getLower().above(last.location.getUpper()))
         nonConflicting.add(pu);
     
     if (nonConflicting.isEmpty())
@@ -168,10 +168,10 @@ public class PatchUsagePanel extends JPanel {
   
   private static PatchUsage findWithLowestHigh(List<PatchUsage> patchUsages) {
     PatchUsage found = patchUsages.get(0);
-    Note foundHigh = found.location.getHighest();
+    Note foundHigh = found.location.getUpper();
     for (int i = 1; i < patchUsages.size(); ++i) {
       final PatchUsage pu = patchUsages.get(i);
-      final Note high = pu.location.getHighest();
+      final Note high = pu.location.getUpper();
       if (high.below(foundHigh)) {
         found = pu;
         foundHigh = high;
@@ -187,8 +187,8 @@ public class PatchUsagePanel extends JPanel {
       for (final PatchUsage pu2 : patchUsages) {
         if (pu1 == pu2) continue;
         
-        if (pu1.location.getHighest().below(pu2.location.getLowest()) ||
-          pu2.location.getHighest().below(pu1.location.getLowest())) // non-conflicting
+        if (pu1.location.getUpper().below(pu2.location.getLower()) ||
+          pu2.location.getUpper().below(pu1.location.getLower())) // non-conflicting
           continue outer;
       }
       return pu1;
@@ -259,21 +259,21 @@ public class PatchUsagePanel extends JPanel {
     }
     
     public void addPatchUsage(PatchUsage patchUsage) {
-      if (rightMostNote != null && !rightMostNote.below(patchUsage.location.getLowest())) {
+      if (rightMostNote != null && !rightMostNote.below(patchUsage.location.getLower())) {
         rightMostNote = null;
         yPos += HEIGHT + GAP;
         SwingUtils.freezeHeight(this, yPos + HEIGHT);
       }
       
-      final int x = _keyboardPanel.accessKeyboardPanel().getKeyPosition(patchUsage.location.getLowest()).x;
-      final Rectangle r = _keyboardPanel.accessKeyboardPanel().getKeyPosition(patchUsage.location.getHighest());
+      final int x = _keyboardPanel.accessKeyboardPanel().getKeyPosition(patchUsage.location.getLower()).x;
+      final Rectangle r = _keyboardPanel.accessKeyboardPanel().getKeyPosition(patchUsage.location.getUpper());
       final int width = r.x + r.width - x;
       
       final PatchUsageEntity pue = new PatchUsageEntity(patchUsage, width, HEIGHT);
       pue.setBounds(x, yPos, width, HEIGHT);
       add(pue);
       repaint();
-      rightMostNote = patchUsage.location.getHighest();
+      rightMostNote = patchUsage.location.getUpper();
     }
     
     public void clearEntities() {
@@ -302,7 +302,7 @@ public class PatchUsagePanel extends JPanel {
     @Override
     public void keyClicked(Note note) {
       OKCancelDialog.showDialog(new PatchSelectorDialog(_anchor, null), dialog -> {
-        _patchUsages.add(new SimplePatchUsage(dialog.getSelectedPatch(), Location.singleNote(_keyboard, note)));
+        _patchUsages.add(new SimplePatchUsage(dialog.getSelectedPatch(), new Location(_keyboard, note)));
         refreshDisplay();
       });
     }
@@ -318,7 +318,7 @@ public class PatchUsagePanel extends JPanel {
       }
       
       OKCancelDialog.showDialog(new PatchSelectorDialog(_anchor, null), dialog -> {
-        _patchUsages.add(new SimplePatchUsage(dialog.getSelectedPatch(), Location.range(_keyboard, low, high)));
+        _patchUsages.add(new SimplePatchUsage(dialog.getSelectedPatch(), new Location(_keyboard, low, high)));
         refreshDisplay();
       });
     }
@@ -336,7 +336,7 @@ public class PatchUsagePanel extends JPanel {
     public void actionPerformed(ActionEvent e) {
       OKCancelDialog.showDialog(new PatchSelectorDialog((JButton) e.getSource(), null), dialog -> {
         final Patch patch = dialog.getSelectedPatch();
-        _patchUsages.add(new SimplePatchUsage(patch, Location.wholeKeyboard(_keyboard),
+        _patchUsages.add(new SimplePatchUsage(patch, new Location(_keyboard, true),
             patch.defaultVolume, 0, false, -1, true, 0));
         refreshDisplay();
       });

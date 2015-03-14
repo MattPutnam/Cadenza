@@ -32,7 +32,7 @@ import common.swing.dialog.Dialog;
 public class CadenzaData implements Serializable, HasTriggers, ControlMapProvider {
   private static final Logger LOG = LogManager.getLogger(CadenzaData.class);
   
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 2L;
   
   /** The synthesizers to be used */
   public NotifyingList<Synthesizer> synthesizers;

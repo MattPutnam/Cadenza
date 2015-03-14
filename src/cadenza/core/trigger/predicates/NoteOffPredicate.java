@@ -7,10 +7,10 @@ import cadenza.core.Location;
 
 import common.midi.MidiUtilities;
 
-public class NoteOffPredicate implements TriggerPredicate {
-  private static final long serialVersionUID = 1L;
+public class NoteOffPredicate implements TriggerPredicate, HasLocation {
+  private static final long serialVersionUID = 2L;
   
-  private final Location _location;
+  private Location _location;
 
   public NoteOffPredicate(Location location) {
     _location = location;
@@ -37,7 +37,13 @@ public class NoteOffPredicate implements TriggerPredicate {
     return _location.toString() + " released";
   }
   
+  @Override
   public Location getLocation() {
     return _location;
+  }
+  
+  @Override
+  public void setLocation(Location newLocation) {
+    _location = newLocation;
   }
 }

@@ -9,7 +9,7 @@ import cadenza.core.Song;
  * @author Matt Putnam
  */
 public class GotoAction implements TriggerAction {
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 2L;
   
   private final Song _song;
   private final String _measure;

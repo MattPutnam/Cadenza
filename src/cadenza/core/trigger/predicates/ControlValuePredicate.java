@@ -9,7 +9,7 @@ import cadenza.core.Keyboard;
 import common.midi.MidiUtilities;
 
 public class ControlValuePredicate implements TriggerPredicate {
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 2L;
   
   private final Keyboard _keyboard;
   private final int _cc;

@@ -15,7 +15,7 @@ import common.swing.ColorUtils;
  * @author Matt Putnam
  */
 public class Patch implements Comparable<Patch>, Serializable {
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 2L;
   
   /** The synthesizer that this Patch is on */
   private Synthesizer _synthesizer;

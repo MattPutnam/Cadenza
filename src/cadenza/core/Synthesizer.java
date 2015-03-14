@@ -11,7 +11,7 @@ import java.util.Map;
 import common.Utils;
 
 public class Synthesizer implements Serializable {
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 2L;
   
   private static final String EXP_STRING_MAP_ARROW = " -> ";
   

@@ -6,7 +6,7 @@ import cadenza.gui.effects.view.EffectView;
 import cadenza.gui.effects.view.GraphicEQView;
 
 public class GraphicEQ implements Effect {
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 2L;
   
   private int[] _levels;
   

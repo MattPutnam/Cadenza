@@ -10,10 +10,10 @@ import cadenza.gui.effects.view.ParametricEQView;
 import common.Utils;
 
 public class ParametricEQ implements Effect {
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 2L;
   
   public static class Band implements Serializable {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
     
     private int _frequency;
     private double _gain;

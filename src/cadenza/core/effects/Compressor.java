@@ -12,7 +12,7 @@ import cadenza.gui.effects.view.EffectView;
  * @author Matt Putnam
  */
 public class Compressor implements Effect {
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 2L;
   
   private int _threshold;
   private double _ratio;

@@ -19,7 +19,7 @@ import cadenza.core.metronome.MetronomeListener;
  * @author Matt Putnam
  */
 public class ArpeggiatorPatchUsage extends PatchUsage implements MetronomeListener {
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 2L;
   
   /**
    * Enumerates the possible patterns for the arpeggiator.

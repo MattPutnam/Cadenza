@@ -10,7 +10,7 @@ import cadenza.core.metronome.MetronomeListener;
 public class WaitAction implements TriggerAction {
   private static final Logger LOG = LogManager.getLogger(WaitAction.class);
   
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 2L;
   
   private final int _num;
   private final boolean _isMillis;

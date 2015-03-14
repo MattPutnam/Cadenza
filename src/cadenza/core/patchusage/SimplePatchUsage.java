@@ -10,7 +10,7 @@ import cadenza.core.Patch;
  * @author Matt Putnam
  */
 public class SimplePatchUsage extends PatchUsage {
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 2L;
   
   /**
    * The transposition, in half steps to add to the sounding note

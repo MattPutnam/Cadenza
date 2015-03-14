@@ -83,9 +83,9 @@ public class LocationEditPanel extends JPanel {
     }
     
     _rangePanel = new JPanel(null);
-    setSelectedLocation(initialLocation == null ? Location.wholeKeyboard(getSelectedKeyboard()) : initialLocation);
+    setSelectedLocation(initialLocation == null ? new Location(getSelectedKeyboard(), true) : initialLocation);
     
-    _resetButton = SwingUtils.button("Use Entire Keyboard", e -> setSelectedLocation(Location.wholeKeyboard(getSelectedKeyboard())));
+    _resetButton = SwingUtils.button("Use Entire Keyboard", e -> setSelectedLocation(new Location(getSelectedKeyboard(), true)));
     
     components.add(_rangePanel);
     components.add(_resetButton);
@@ -160,8 +160,8 @@ public class LocationEditPanel extends JPanel {
     _rangePanel.removeAll();
     
     final JPanel range = new JPanel(null);
-    final int x = skp.accessKeyboardPanel().getKeyPosition(_selectedLocation.getLowest()).x;
-    final Rectangle r = skp.accessKeyboardPanel().getKeyPosition(_selectedLocation.getHighest());
+    final int x = skp.accessKeyboardPanel().getKeyPosition(_selectedLocation.getLower()).x;
+    final Rectangle r = skp.accessKeyboardPanel().getKeyPosition(_selectedLocation.getUpper());
     final int width = r.x+r.width-x;
     range.setBounds(x, 1, width, 24);
     range.setBackground(Color.WHITE);
@@ -179,7 +179,7 @@ public class LocationEditPanel extends JPanel {
   private class Updater extends KeyboardAdapter {
     @Override
     public void keyClicked(Note note) {
-      setSelectedLocation(Location.singleNote(getSelectedKeyboard(), note));
+      setSelectedLocation(new Location(getSelectedKeyboard(), note));
     }
     
     @Override
@@ -193,7 +193,7 @@ public class LocationEditPanel extends JPanel {
         high = startNote;
       }
       
-      setSelectedLocation(Location.range(getSelectedKeyboard(), low, high));
+      setSelectedLocation(new Location(getSelectedKeyboard(), low, high));
     }
   }
 }

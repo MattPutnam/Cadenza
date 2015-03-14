@@ -150,17 +150,17 @@ public class TriggerPredicateEditDialog extends OKCancelDialog implements Accept
     
     @Override
     protected void singlePressed(Keyboard keyboard, int noteNumber) {
-      getCurrentTab().setLocation(Location.singleNote(keyboard, Note.valueOf(noteNumber)));
+      getCurrentTab().setLocation(new Location(keyboard, Note.valueOf(noteNumber)));
     }
     
     @Override
     protected void rangePressed(Keyboard keyboard, int lowNumber, int highNumber) {
-      getCurrentTab().setLocation(Location.range(keyboard, Note.valueOf(lowNumber), Note.valueOf(highNumber)));
+      getCurrentTab().setLocation(new Location(keyboard, Note.valueOf(lowNumber), Note.valueOf(highNumber)));
     }
     
     @Override
     protected void wholePressed(Keyboard keyboard) {
-      getCurrentTab().setLocation(Location.wholeKeyboard(keyboard));
+      getCurrentTab().setLocation(new Location(keyboard, false));
     }
   }
   

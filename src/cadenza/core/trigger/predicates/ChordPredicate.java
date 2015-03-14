@@ -13,7 +13,7 @@ import common.midi.MidiUtilities;
 import common.tuple.Pair;
 
 public class ChordPredicate implements TriggerPredicate {
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 2L;
   
   private final List<Pair<Integer, Integer>> _notes;
   

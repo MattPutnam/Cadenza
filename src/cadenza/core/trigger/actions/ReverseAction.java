@@ -8,7 +8,7 @@ import cadenza.control.PerformanceController;
  * @author Matt Putnam
  */
 public class ReverseAction implements TriggerAction {
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 2L;
   
   @Override
   public void takeAction(PerformanceController controller) {

@@ -8,7 +8,7 @@ import java.util.stream.IntStream;
 import common.midi.MidiUtilities;
 
 public class Note implements Comparable<Note>, Serializable {
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 2L;
   
   public static final String SHARP = "\u266F";
   public static final String FLAT = "\u266D";

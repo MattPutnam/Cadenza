@@ -9,7 +9,7 @@ import cadenza.core.patchusage.PatchUsage;
 import common.Utils;
 
 public class ControlMapEntry implements Serializable {
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 2L;
   
   public int sourceCC;
   public List<Integer> destCCs;

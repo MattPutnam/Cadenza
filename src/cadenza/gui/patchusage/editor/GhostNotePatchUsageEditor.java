@@ -100,8 +100,8 @@ public class GhostNotePatchUsageEditor extends JPanel {
   }
   
   private void rebuildSourceRow(Location location) {
-    final Note low = location.getLowest();
-    final Note high = location.getHighest();
+    final Note low = location.getLower();
+    final Note high = location.getUpper();
     _sourcePanel = new KeyboardPanel(low, high);
     
     final int sourceSpacer = _destPanel.getKeyPosition(low).x;
