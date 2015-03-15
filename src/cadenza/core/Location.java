@@ -57,7 +57,7 @@ public class Location implements Serializable {
     final int newLow = Math.max(_lower.getMidiNumber(),
         soundingOnly ? newKeyboard.soundingLow.getMidiNumber()
                      : newKeyboard.low.getMidiNumber());
-    final int newHigh = Math.max(_upper.getMidiNumber(),
+    final int newHigh = Math.min(_upper.getMidiNumber(),
         soundingOnly ? newKeyboard.soundingHigh.getMidiNumber()
                      : newKeyboard.high.getMidiNumber());
     

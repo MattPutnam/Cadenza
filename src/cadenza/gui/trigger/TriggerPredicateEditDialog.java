@@ -278,7 +278,7 @@ public class TriggerPredicateEditDialog extends OKCancelDialog implements Accept
       setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
       for (int i = 0; i < _keyboards.size(); ++i) {
         final Keyboard keyboard = _keyboards.get(i);
-        final KeyboardPanel panel = new KeyboardPanel(keyboard);
+        final KeyboardPanel panel = new KeyboardPanel(keyboard.soundingLow, keyboard.soundingHigh);
         _keyboardPanels.add(panel);
         
         panel.addMouseListener(new MouseAdapter() {

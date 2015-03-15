@@ -9,7 +9,6 @@ import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputAdapter;
 
-import cadenza.core.Keyboard;
 import cadenza.core.Note;
 
 
@@ -28,10 +27,6 @@ public final class SingleKeyboardPanel extends JPanel {
   private transient Note _draggedKey;
   
   private transient List<KeyboardListener> _listeners;
-  
-  public SingleKeyboardPanel(Keyboard keyboard) {
-    this(keyboard.low, keyboard.high);
-  }
   
   /**
    * Creates a new SingleKeyboardPanel with a keyboard with the specified range

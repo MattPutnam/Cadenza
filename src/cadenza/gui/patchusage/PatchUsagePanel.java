@@ -63,7 +63,7 @@ public class PatchUsagePanel extends JPanel {
     _patchUsageAreas = new ArrayList<>(_data.keyboards.size());
     
     for (final Keyboard keyboard : _data.keyboards) {
-      final SingleKeyboardPanel skp = new SingleKeyboardPanel(keyboard);
+      final SingleKeyboardPanel skp = new SingleKeyboardPanel(keyboard.soundingLow, keyboard.soundingHigh);
       skp.addKeyboardListener(new PatchUsageAdder(keyboard, skp));
       _keyboardPanels.add(skp);
       _patchUsageAreas.add(new PatchUsageArea(skp));

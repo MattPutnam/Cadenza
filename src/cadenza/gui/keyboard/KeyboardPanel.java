@@ -15,7 +15,6 @@ import java.util.Set;
 
 import javax.swing.JPanel;
 
-import cadenza.core.Keyboard;
 import cadenza.core.Note;
 import cadenza.core.Note.PitchClass;
 
@@ -99,10 +98,6 @@ public final class KeyboardPanel extends JPanel {
   private Map<Note, Color> _highlightedNotes = new HashMap<>();
   
   private Set<Note> _labeledNotes = new HashSet<>();
-  
-  public KeyboardPanel(Keyboard keyboard) {
-    this(keyboard.low, keyboard.high);
-  }
   
   /**
    * Creates a new KeyboardPanel with the specified range.  For example, a

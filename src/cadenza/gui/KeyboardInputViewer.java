@@ -52,7 +52,7 @@ public class KeyboardInputViewer extends JPanel {
     
     for (int i = 0; i < _keyboards.size(); ++i) {
       final Keyboard k = _keyboards.get(i);
-      final KeyboardPanel kp = new KeyboardPanel(k);
+      final KeyboardPanel kp = new KeyboardPanel(k.low, k.high);
       
       _channelToIndex.put(Integer.valueOf(k.channel), Integer.valueOf(i));
       _keyboardPanels.add(kp);

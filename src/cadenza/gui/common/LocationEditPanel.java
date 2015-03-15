@@ -83,7 +83,7 @@ public class LocationEditPanel extends JPanel {
     }
     
     _rangePanel = new JPanel(null);
-    setSelectedLocation(initialLocation == null ? new Location(getSelectedKeyboard(), true) : initialLocation);
+    setSelectedLocation(initialLocation == null ? new Location(getSelectedKeyboard(), false) : initialLocation);
     
     _resetButton = SwingUtils.button("Use Entire Keyboard", e -> setSelectedLocation(new Location(getSelectedKeyboard(), true)));
     
