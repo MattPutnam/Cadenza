@@ -40,7 +40,7 @@ public class PreferencesDialog extends OKCancelDialog {
   private SynthConfigPanel _defaultSynthPanel;
   private DefaultMIDIPortsPanel _midiPortsPanel;
   private MIDIInputPrefPanel _midiInputPrefPanel;
-  private PatchSearchOptionsPanel _patchSearchModePanel;
+  private PatchSearchOptionsPanel _patchSearchOptionsPanel;
 
   public PreferencesDialog(Component parent) {
     super(parent);
@@ -52,13 +52,13 @@ public class PreferencesDialog extends OKCancelDialog {
     _defaultSynthPanel = new SynthConfigPanel(new ArrayList<Synthesizer>(0), null);
     _midiPortsPanel = new DefaultMIDIPortsPanel();
     _midiInputPrefPanel = new MIDIInputPrefPanel();
-    _patchSearchModePanel = new PatchSearchOptionsPanel();
+    _patchSearchOptionsPanel = new PatchSearchOptionsPanel();
     
     loadPreferences();
     
     return new CardPanel(
-        Arrays.asList(SwingUtils.hugNorth(_defaultKeyboardPanel), _defaultSynthPanel, _midiPortsPanel, _midiInputPrefPanel, _patchSearchModePanel),
-        Arrays.asList("Default Keyboard", "Default Synthesizer", "Default MIDI Ports", "MIDI Input Preferences", "Patch Search Mode"));
+        Arrays.asList(SwingUtils.hugNorth(_defaultKeyboardPanel), _defaultSynthPanel, _midiPortsPanel, _midiInputPrefPanel, _patchSearchOptionsPanel),
+        Arrays.asList("Default Keyboard", "Default Synthesizer", "Default MIDI Ports", "MIDI Input Preferences", "Patch Search Options"));
   }
   
   private void loadPreferences() {
@@ -82,7 +82,7 @@ public class PreferencesDialog extends OKCancelDialog {
         _defaultSynthPanel.match(synth);
         _midiPortsPanel.match(midiPorts);
         _midiInputPrefPanel.match(inputPrefs);
-        _patchSearchModePanel.setSelectedOptions(patchSearchOptions);
+        _patchSearchOptionsPanel.setSelectedOptions(patchSearchOptions);
       }, true);
     }).start();
   }
@@ -93,7 +93,7 @@ public class PreferencesDialog extends OKCancelDialog {
       PreferencesLoader.commitDefaultSynthesizer(_preferences, _defaultSynthPanel.getSynthesizer());
       PreferencesLoader.commitDefaultMIDIPorts(_preferences, _midiPortsPanel.getSelectedPorts());
       PreferencesLoader.commitInputOptions(_preferences, _midiInputPrefPanel.getSelectedOptions());
-      PreferencesLoader.commitPatchSearchOptions(_preferences, _patchSearchModePanel.getSelectedOptions());
+      PreferencesLoader.commitPatchSearchOptions(_preferences, _patchSearchOptionsPanel.getSelectedOptions());
       
       try {
         PreferencesLoader.writePreferences(_preferences);

@@ -36,5 +36,6 @@ final class Keys {
   static class PatchSearch {
     static String MODE           = "patchsearch.mode";
     static String CASE_SENSITIVE = "patchsearch.casesensitive";
+    static String EXCLUDE_USER   = "patchsearch.excludeuser";
   }
 }

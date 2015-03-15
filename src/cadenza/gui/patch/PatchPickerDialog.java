@@ -53,9 +53,17 @@ public class PatchPickerDialog extends OKCancelDialog {
   
   @Override
   protected JComponent buildContent() {
-    final List<Patch> patches = _synthesizers.stream()
-                                             .flatMap(Synthesizers::streamPatches)
-                                             .collect(Collectors.toList());
+    final List<Patch> patches;
+    if (Preferences.getPatchSearchOptions().isExcludeUser()) {
+      patches = _synthesizers.stream()
+                             .flatMap(Synthesizers::streamPatches)
+                             .filter(patch -> !patch.bank.toLowerCase().equals("user"))
+                             .collect(Collectors.toList());
+    } else {
+      patches = _synthesizers.stream()
+                             .flatMap(Synthesizers::streamPatches)
+                             .collect(Collectors.toList());
+    }
     
     _resultList = new JList<>();
     _resultList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

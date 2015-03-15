@@ -19,12 +19,15 @@ public class PatchSearchOptions {
   
   private PatchSearchMode _searchMode;
   private boolean _caseSensitive;
+  private boolean _excludeUser;
   
-  public PatchSearchOptions(PatchSearchMode searchMode, boolean caseSensitive) {
+  public PatchSearchOptions(PatchSearchMode searchMode, boolean caseSensitive, boolean excludeUser) {
     _searchMode = searchMode;
     _caseSensitive = caseSensitive;
+    _excludeUser = excludeUser;
   }
   
   public PatchSearchMode getSearchMode() { return _searchMode; }
   public boolean isCaseSensitive() { return _caseSensitive; }
+  public boolean isExcludeUser() { return _excludeUser; }
 }
