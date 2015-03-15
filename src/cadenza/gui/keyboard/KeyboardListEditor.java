@@ -91,6 +91,8 @@ public class KeyboardListEditor extends JPanel implements CustomWizardComponent 
   
   public void doRemap() {
     for (final Cue cue : _data.cues) {
+      boolean modified = false;
+      
       /*
        * Copy all locations to new keyboards, if that works.  If the keyboard
        * size changed and locations fall off the edited keyboards, remove the
@@ -106,6 +108,8 @@ public class KeyboardListEditor extends JPanel implements CustomWizardComponent 
             patchUsage.location = opt.get();
           else
             puIterator.remove();
+          
+          modified = true;
         }
       }
       
@@ -116,7 +120,7 @@ public class KeyboardListEditor extends JPanel implements CustomWizardComponent 
                                                         .filter(p -> p instanceof HasLocation)
                                                         .map(p -> ((HasLocation) p))
                                                         .collect(Collectors.toList());
-        hls.forEach(hl -> {
+        for (final HasLocation hl : hls) {
           final Location curLoc = hl.getLocation();
           final Keyboard newKeyboard = _remap.get(curLoc.getKeyboard());
           final Optional<Location> opt = curLoc.copyTo(newKeyboard, false);
@@ -124,10 +128,16 @@ public class KeyboardListEditor extends JPanel implements CustomWizardComponent 
             hl.setLocation(opt.get());
           else
             trigger.predicates.remove(hl);
-        });
+          
+          modified = true;
+        }
         
         if (trigger.predicates.isEmpty())
           triggerIterator.remove();
+      }
+      
+      if (modified) {
+        _data.cues.notifyChange(cue);
       }
     }
     
