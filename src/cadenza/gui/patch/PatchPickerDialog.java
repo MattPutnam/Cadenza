@@ -20,10 +20,10 @@ import javax.swing.event.DocumentEvent;
 import cadenza.core.Patch;
 import cadenza.core.Synthesizer;
 import cadenza.gui.CadenzaFrame;
+import cadenza.gui.ImageStore;
 import cadenza.preferences.PatchSearchOptions.PatchSearchMode;
 import cadenza.preferences.Preferences;
 import cadenza.synths.Synthesizers;
-
 import common.swing.DocumentAdapter;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
@@ -37,7 +37,8 @@ public class PatchPickerDialog extends OKCancelDialog {
   
   private JList<Patch> _resultList;
   private JList<Patch> _suggestionList;
-  private JTextField _nameField;
+  private JTextField _renameField;
+  private JLabel _regexErrorLabel;
   
   public PatchPickerDialog(CadenzaFrame frame, List<Synthesizer> synthesizers) {
     this(frame, synthesizers, null);
@@ -91,7 +92,9 @@ public class PatchPickerDialog extends OKCancelDialog {
         _frame.quickPreview(selected);
     });
     
-    _nameField = new JTextField(16);
+    _renameField = new JTextField(16);
+    
+    _regexErrorLabel = new JLabel();
     
     final JTextField searchField = new JTextField(16);
     searchField.getDocument().addDocumentListener(new FilterListener(patches, searchField));
@@ -100,6 +103,8 @@ public class PatchPickerDialog extends OKCancelDialog {
     final Box search = Box.createHorizontalBox();
     search.add(new JLabel("Filter text:"));
     search.add(searchField);
+    search.add(_regexErrorLabel);
+    
     final JPanel top = new JPanel(new BorderLayout());
     top.add(search, BorderLayout.SOUTH);
     if (_hasSuggestions) {
@@ -109,7 +114,7 @@ public class PatchPickerDialog extends OKCancelDialog {
     
     final Box bottom = Box.createHorizontalBox();
     bottom.add(new JLabel("Rename:"));
-    bottom.add(_nameField);
+    bottom.add(_renameField);
     
     final JPanel panel = new JPanel(new BorderLayout());
     panel.add(top, BorderLayout.NORTH);
@@ -148,7 +153,7 @@ public class PatchPickerDialog extends OKCancelDialog {
       selected = _resultList.getSelectedValue();
     }
     
-    final String text = _nameField.getText();
+    final String text = _renameField.getText();
     if (!text.isEmpty())
       selected.name = text;
     
@@ -207,8 +212,13 @@ public class PatchPickerDialog extends OKCancelDialog {
         try {
           pattern = Pattern.compile(searchText);
         } catch (PatternSyntaxException ex) {
+          _regexErrorLabel.setIcon(ImageStore.ERROR);
+          _regexErrorLabel.setToolTipText(ex.getLocalizedMessage());
           return;
         }
+        
+        _regexErrorLabel.setIcon(null);
+        _regexErrorLabel.setToolTipText(null);
         _resultList.setListData(_patches.stream()
                                         .filter(patch -> pattern.matcher(patch.name).matches())
                                         .toArray(Patch[]::new));
