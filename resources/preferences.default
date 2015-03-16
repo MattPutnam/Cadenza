@@ -15,5 +15,6 @@ input.patchusage.single = false
 input.patchusage.range = true
 input.patchusage.whole = true
 patchsearch.mode = PIPES
+patchsearch.regexwrap = true
 patchsearch.casesensitive = false
-patchsearch.excludeuser = false;
+patchsearch.excludeuser = false

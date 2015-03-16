@@ -188,6 +188,7 @@ public final class PreferencesLoader {
   public static PatchSearchOptions buildPatchSearchOptions(Map<String, String> loadedPrefs) {
     return new PatchSearchOptions(
         PatchSearchMode.valueOf(loadedPrefs.get(Keys.PatchSearch.MODE)),
+        Boolean.parseBoolean(loadedPrefs.get(Keys.PatchSearch.REGEX_WRAP)),
         Boolean.parseBoolean(loadedPrefs.get(Keys.PatchSearch.CASE_SENSITIVE)),
         Boolean.parseBoolean(loadedPrefs.get(Keys.PatchSearch.EXCLUDE_USER)));
   }
@@ -265,9 +266,10 @@ public final class PreferencesLoader {
    * @param mode the patch search mode
    */
   public static void commitPatchSearchOptions(Map<String, String> preferences, PatchSearchOptions options) {
-    preferences.put(Keys.PatchSearch.MODE, options.getSearchMode().name());
+    preferences.put(Keys.PatchSearch.MODE,           options.getSearchMode().name());
+    preferences.put(Keys.PatchSearch.REGEX_WRAP,     Boolean.toString(options.isRegexWrap()));
     preferences.put(Keys.PatchSearch.CASE_SENSITIVE, Boolean.toString(options.isCaseSensitive()));
-    preferences.put(Keys.PatchSearch.EXCLUDE_USER, Boolean.toString(options.isExcludeUser()));
+    preferences.put(Keys.PatchSearch.EXCLUDE_USER,   Boolean.toString(options.isExcludeUser()));
     
     Preferences._patchSearchOptions = options;
   }

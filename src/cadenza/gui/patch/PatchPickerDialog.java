@@ -210,7 +210,9 @@ public class PatchPickerDialog extends OKCancelDialog {
       } else { // mode == Preferences.REGEX
         final Pattern pattern;
         try {
-          pattern = Pattern.compile(searchText);
+          pattern = Pattern.compile(
+              Preferences.getPatchSearchOptions().isRegexWrap()
+                  ? ".*" + searchText + ".*" : searchText);
         } catch (PatternSyntaxException ex) {
           _regexErrorLabel.setIcon(ImageStore.ERROR);
           _regexErrorLabel.setToolTipText(ex.getLocalizedMessage());
