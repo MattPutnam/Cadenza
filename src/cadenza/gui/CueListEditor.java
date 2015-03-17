@@ -36,7 +36,6 @@ import cadenza.core.patchusage.PatchUsage;
 import cadenza.gui.common.CadenzaTable;
 import cadenza.gui.cue.CueEditDialog;
 import cadenza.gui.song.SongEditDialog;
-
 import common.Comparators;
 import common.Utils;
 import common.collection.ListAdapter;
@@ -253,6 +252,12 @@ public class CueListEditor extends JPanel {
       });
     }
     
+    /*
+     * We have to be horribly clunky like this because the song column spans
+     * the full width of the table.  If you try to give separate renderers
+     * to the various column types, the types conflict with each other when
+     * dealing with the song rows.
+     */
     private class CueTableRenderer extends SimpleTableCellRenderer<Object> {
       @Override
       protected void processLabel(JLabel label, JTable table, Object value,
@@ -281,6 +286,13 @@ public class CueListEditor extends JPanel {
             final Pair<Boolean, String> warning = getWarning(cue);
             label.setIcon(warning == null ? null : warning._1().booleanValue() ? ImageStore.ERROR : ImageStore.WARNING);
             label.setToolTipText(warning == null ? text : warning._2());
+          } else if (column == Col.TRIGGERS || column == Col.CONTROL_MAP || column == Col.EFFECTS) {
+            @SuppressWarnings("unchecked")
+            final Pair<List<?>, String> pair = (Pair<List<?>, String>) value;
+            label.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
+            label.setText(Utils.countItems(pair._1(), pair._2()));
+            label.setToolTipText(Utils.mkString(pair._1(), "<html>", "<br>", "</html>"));
+            label.setIcon(null);
           } else {
             label.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
             label.setToolTipText(null);
@@ -364,9 +376,9 @@ public class CueListEditor extends JPanel {
             switch (column) {
               case Col.MEASURE:     return "m. " + row.cue.measureNumber;
               case Col.PATCHES:     return row; // Renderer handles this
-              case Col.TRIGGERS:    return Utils.countItems(row.cue.triggers, "trigger");
-              case Col.CONTROL_MAP: return Utils.countItems(row.cue.getControlMap(), "mapped control");
-              case Col.EFFECTS:     return Utils.countItems(row.cue.effects, "effect");
+              case Col.TRIGGERS:    return Pair.make(row.cue.triggers, "trigger");
+              case Col.CONTROL_MAP: return Pair.make(row.cue.getControlMap(), "mapped control");
+              case Col.EFFECTS:     return Pair.make(row.cue.effects, "effect");
               default: throw new IllegalStateException("Unknown Column!");
             }
           } else {

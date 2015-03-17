@@ -1,12 +1,10 @@
 package cadenza.core;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import cadenza.core.patchusage.PatchUsage;
-
-import common.Utils;
 
 public class ControlMapEntry implements Serializable {
   private static final long serialVersionUID = 2L;
@@ -22,19 +20,22 @@ public class ControlMapEntry implements Serializable {
   }
   
   public String getDestCCString() {
-    final List<String> tokens = new ArrayList<>(destCCs.size());
-    for (final Integer i : destCCs)
-      tokens.add(i + ": " + ControlNames.getName(i));
-    return Utils.mkString(tokens);
+    return destCCs.stream()
+                  .map(i -> i + ": " + ControlNames.getName(i))
+                  .collect(Collectors.joining(", "));
   }
   
   public String getDestPatchesString() {
     if (destPatches.get(0).equals(PatchUsage.ALL))
       return "ALL";
     
-    final List<String> tokens = new ArrayList<>(destPatches.size());
-    for (final PatchUsage pu : destPatches)
-      tokens.add(pu.patch.name + " " + pu.location.toString(true));
-    return Utils.mkString(tokens);
+    return destPatches.stream()
+                      .map(pu -> pu.patch.name + " " + pu.location.toString(true))
+                      .collect(Collectors.joining(", "));
+  }
+  
+  @Override
+  public String toString() {
+    return sourceCC + ": " + ControlNames.getName(sourceCC) + " -> " + getDestCCString() + " for " + getDestPatchesString();
   }
 }

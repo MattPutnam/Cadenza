@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.sound.midi.MidiMessage;
 
+import common.Utils;
+
 import cadenza.control.PerformanceController;
 import cadenza.core.trigger.actions.TriggerAction;
 import cadenza.core.trigger.predicates.TriggerPredicate;
@@ -91,6 +93,11 @@ public class Trigger implements Serializable {
       for (final TriggerAction action : actions)
         action.takeAction(controller);
     }).start();
+  }
+  
+  @Override
+  public String toString() {
+    return Utils.mkString(predicates) + " -> " + Utils.mkString(actions);
   }
 
 }
