@@ -35,6 +35,7 @@ import cadenza.gui.common.KeyboardSelector;
 import cadenza.gui.common.LocationEditPanel;
 import cadenza.gui.keyboard.KeyboardPanel;
 import cadenza.preferences.Preferences;
+
 import common.swing.IntField;
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
@@ -327,12 +328,10 @@ public class TriggerPredicateEditDialog extends OKCancelDialog implements Accept
     }
     
     private void updateDisplay() {
-      for (final KeyboardPanel kp : _keyboardPanels)
-        kp.unhighlightAll();
+      _keyboardPanels.forEach(KeyboardPanel::unhighlightAll);
       
-      for (final Pair<Keyboard, Integer> p : _notes)
-        _keyboardPanels.get(_keyboards.indexOf(p._1())).
-            highlightNote(Note.valueOf(p._2().intValue()), KeyboardPanel.HIGHLIGHT_COLOR);
+      _notes.forEach(p -> _keyboardPanels.get(_keyboards.indexOf(p._1()))
+                                         .highlightNote(Note.valueOf(p._2().intValue())));
     }
     
     @Override
@@ -438,7 +437,7 @@ public class TriggerPredicateEditDialog extends OKCancelDialog implements Accept
         _keyboards.stream()
                   .filter(kbd -> kbd.channel == channel)
                   .findFirst()
-                  .ifPresent(kbd -> _keyboardSelector.setSelectedItem(kbd));
+                  .ifPresent(_keyboardSelector::setSelectedItem);
       }
     }
     
