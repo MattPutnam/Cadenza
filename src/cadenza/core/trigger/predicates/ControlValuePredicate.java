@@ -48,7 +48,11 @@ public class ControlValuePredicate implements TriggerPredicate {
   
   @Override
   public String toString() {
-    return "control " + _cc + " (" + ControlNames.getName(_cc) + ") on kbd '" + _keyboard.name + "' in range [" + _low + ", " + "]";
+    final String prefix = "control " + _cc + " (" + ControlNames.getName(_cc) + ") on kbd '" + _keyboard.name;
+    if (_low == _high)
+      return prefix + "' with value " + _low;
+    else
+      return prefix + "' in range [" + _low + ", " + _high + "]";
   }
   
   public Keyboard getKeyboard() {

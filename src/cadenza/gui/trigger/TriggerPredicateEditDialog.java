@@ -13,6 +13,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
@@ -32,6 +33,7 @@ import cadenza.gui.common.KeyboardSelector;
 import cadenza.gui.common.LocationEditPanel;
 import cadenza.gui.keyboard.KeyboardPanel;
 import cadenza.preferences.Preferences;
+
 import common.swing.IntField;
 import common.swing.SimpleGrid;
 import common.swing.SwingUtils;
@@ -339,23 +341,44 @@ public class TriggerPredicateEditDialog extends OKCancelDialog implements Accept
   
   private class ControlValuePredicatePane extends PredicatePane<ControlValuePredicate> {
     private final ControlCombo _controlCombo;
-    private final IntField _valueField;
-    private final KeyboardSelector _keyboardSelector;
     
-    private int _lowCache;
-    private int _highCache;
+    private final IntField _singleValueField;
+    private final IntField _minField;
+    private final IntField _maxField;
+    private final JRadioButton _singleButton;
+    private final JRadioButton _rangeButton;
+    
+    private final KeyboardSelector _keyboardSelector;
     
     public ControlValuePredicatePane() {
       super();
       
       _controlCombo = new ControlCombo(null);
-      _valueField = new IntField(0, 0, 127);
-      _valueField.setColumns(3);
+      
+      _singleValueField = new IntField(0, 0, 127);
+      _singleValueField.setColumns(3);
+      _minField = new IntField(0, 0, 127);
+      _minField.setColumns(3);
+      _maxField = new IntField(0, 0, 127);
+      _maxField.setColumns(3);
+      
+      _singleButton = new JRadioButton("Single Value:");
+      _rangeButton = new JRadioButton("Range:");
+      SwingUtils.groupAndSelectFirst(_singleButton, _rangeButton);
+      
       _keyboardSelector = new KeyboardSelector(_keyboards);
+      
+      final Box valueBox = Box.createHorizontalBox();
+      valueBox.add(_singleButton);
+      valueBox.add(_singleValueField);
+      valueBox.add(_rangeButton);
+      valueBox.add(_minField);
+      valueBox.add(new JLabel(" to "));
+      valueBox.add(_maxField);
       
       add(new SimpleGrid(new JComponent[][] {
         { new JLabel("Control Change #"), _controlCombo },
-        { new JLabel("With value"), _valueField },
+        { new JLabel("With value"), valueBox },
         { new JLabel("From"), SwingUtils.hugWest(_keyboardSelector) }
       }, Alignment.CENTER, Alignment.LEADING));
     }
@@ -368,15 +391,18 @@ public class TriggerPredicateEditDialog extends OKCancelDialog implements Accept
       final int low = initial.getLow();
       final int high = initial.getHigh();
       if (low == high) {
-        _valueField.setText(String.valueOf(low));
+        _singleValueField.setInt(low);
+        _singleButton.setSelected(true);
       } else {
-        _valueField.setText(low + "-" + high);
+        _minField.setInt(low);
+        _maxField.setInt(high);
+        _rangeButton.setSelected(true);
       }
     }
     
     public void receive(int channel, int ccNumber, int value) {
       _controlCombo.setSelectedIndex(ccNumber);
-      _valueField.setInt(value);
+      _singleValueField.setInt(value);
       
       if (_keyboards.size() > 1) {
         _keyboards.stream()
@@ -387,34 +413,19 @@ public class TriggerPredicateEditDialog extends OKCancelDialog implements Accept
     }
     
     @Override
-    public void verify() throws VerificationException {
-      final String text = _valueField.getText().trim();
-      final int hyphen = text.indexOf("-");
-      if (hyphen == -1) {
-        try {
-          _lowCache = _highCache = Integer.parseInt(text);
-        } catch (NumberFormatException e) {
-          throw new VerificationException(
-              "Enter a number or two numbers separated by a hyphen", _valueField);
-        }
-      } else {
-        try {
-          _lowCache = Integer.parseInt(text.substring(0, hyphen));
-          _highCache = Integer.parseInt(text.substring(hyphen+1));
-        } catch (NumberFormatException e) {
-          throw new VerificationException(
-              "Enter a number or two numbers separated by a hyphen", _valueField);
-        }
-      }
-      if (_lowCache > _highCache || _lowCache < 0 || _highCache > 127)
-        throw new VerificationException(
-            "High must be greater than low, and both must be between 0 and 127", _valueField);
-    }
-    
-    @Override
     public ControlValuePredicate createPredicate() {
-      return new ControlValuePredicate(_keyboardSelector.getSelectedKeyboard(),
-          _controlCombo.getSelectedIndex(), _lowCache, _highCache);
+      final Keyboard k = _keyboardSelector.getSelectedKeyboard();
+      final int c = _controlCombo.getSelectedIndex();
+      if (_singleButton.isSelected()) {
+        return new ControlValuePredicate(k,  c, _singleValueField.getInt());
+      } else {
+        final int x = _minField.getInt();
+        final int y = _maxField.getInt();
+        if (x < y)
+          return new ControlValuePredicate(k, c, x, y);
+        else
+          return new ControlValuePredicate(k, c, y, x);
+      }
     }
   }
 }
