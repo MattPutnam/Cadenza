@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
@@ -34,7 +35,6 @@ import cadenza.gui.common.KeyboardSelector;
 import cadenza.gui.common.LocationEditPanel;
 import cadenza.gui.keyboard.KeyboardPanel;
 import cadenza.preferences.Preferences;
-
 import common.swing.IntField;
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
@@ -298,10 +298,12 @@ public class TriggerPredicateEditDialog extends OKCancelDialog implements Accept
           }
         });
         
-        add(new JLabel(keyboard.name));
+        add(SwingUtils.buildCenteredRow(new JLabel(keyboard.name)));
         add(panel);
         add(Box.createVerticalStrut(8));
       }
+      
+      setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
     }
     
     @Override
@@ -407,6 +409,8 @@ public class TriggerPredicateEditDialog extends OKCancelDialog implements Accept
           .addGroup(layout.createParallelGroup(Alignment.BASELINE)
               .addComponent(fromLabel)
               .addComponent(_keyboardSelector)));
+      
+      setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
     }
 
     @Override
