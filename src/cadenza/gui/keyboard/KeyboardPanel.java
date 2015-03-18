@@ -65,6 +65,7 @@ public final class KeyboardPanel extends JPanel {
       ADVANCE.put(PitchClass.Gs, Integer.valueOf(CUT_MIDHALF));
     ADVANCE.put(PitchClass.A, Integer.valueOf(WHITE_WIDTH - CUT_NEGHALF));
       ADVANCE.put(PitchClass.As, Integer.valueOf(CUT_NEGHALF));
+      ADVANCE.put(PitchClass.Bb, Integer.valueOf(CUT_NEGHALF));
     ADVANCE.put(PitchClass.B, Integer.valueOf(WHITE_WIDTH));
   }
   
@@ -81,6 +82,7 @@ public final class KeyboardPanel extends JPanel {
       WHITE_ORDINAL.put(PitchClass.Gs, Integer.valueOf(5));
     WHITE_ORDINAL.put(PitchClass.A, Integer.valueOf(6));
       WHITE_ORDINAL.put(PitchClass.As, Integer.valueOf(6));
+      WHITE_ORDINAL.put(PitchClass.Bb, Integer.valueOf(6));
     WHITE_ORDINAL.put(PitchClass.B, Integer.valueOf(7));
   }
   

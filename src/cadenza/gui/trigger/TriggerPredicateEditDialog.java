@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -35,7 +36,6 @@ import cadenza.gui.keyboard.KeyboardPanel;
 import cadenza.preferences.Preferences;
 
 import common.swing.IntField;
-import common.swing.SimpleGrid;
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
@@ -368,25 +368,51 @@ public class TriggerPredicateEditDialog extends OKCancelDialog implements Accept
       
       _keyboardSelector = new KeyboardSelector(_keyboards);
       
-      final Box valueBox = Box.createHorizontalBox();
-      valueBox.add(_singleButton);
-      valueBox.add(_singleValueField);
-      valueBox.add(_rangeButton);
-      valueBox.add(_minField);
-      valueBox.add(new JLabel(" to "));
-      valueBox.add(_maxField);
+      final JLabel ccNumLabel = new JLabel("Control Change #");
+      final JLabel valueLabel = new JLabel("With value:");
+      final JLabel fromLabel = new JLabel("On Keyboard:");
+      final JLabel toLabel = new JLabel(" to ");
       
-      add(new SimpleGrid(new JComponent[][] {
-        { new JLabel("Control Change #"), _controlCombo },
-        { new JLabel("With value"), valueBox },
-        { new JLabel("From"), SwingUtils.hugWest(_keyboardSelector) }
-      }, Alignment.CENTER, Alignment.LEADING));
+      final GroupLayout layout = new GroupLayout(this);
+      this.setLayout(layout);
+      
+      layout.setHorizontalGroup(layout.createSequentialGroup()
+          .addGroup(layout.createParallelGroup(Alignment.TRAILING)
+              .addComponent(ccNumLabel)
+              .addComponent(valueLabel)
+              .addComponent(fromLabel))
+          .addGroup(layout.createParallelGroup()
+              .addComponent(_controlCombo)
+              .addGroup(layout.createSequentialGroup()
+                  .addComponent(_singleButton)
+                  .addComponent(_singleValueField)
+                  .addComponent(_rangeButton)
+                  .addComponent(_minField)
+                  .addComponent(toLabel)
+                  .addComponent(_maxField))
+              .addComponent(_keyboardSelector)));
+      
+      layout.setVerticalGroup(layout.createSequentialGroup()
+          .addGroup(layout.createParallelGroup(Alignment.BASELINE)
+              .addComponent(ccNumLabel)
+              .addComponent(_controlCombo))
+          .addGroup(layout.createParallelGroup(Alignment.BASELINE)
+              .addComponent(valueLabel)
+              .addComponent(_singleButton)
+              .addComponent(_singleValueField)
+              .addComponent(_rangeButton)
+              .addComponent(_minField)
+              .addComponent(toLabel)
+              .addComponent(_maxField))
+          .addGroup(layout.createParallelGroup(Alignment.BASELINE)
+              .addComponent(fromLabel)
+              .addComponent(_keyboardSelector)));
     }
 
     @Override
     public void initialize(ControlValuePredicate initial) {
       _controlCombo.setSelectedIndex(initial.getControlNumber());
-      _keyboardSelector.setSelectedKeyboard(initial.getKeyboard());
+      _keyboardSelector.setSelectedItem(initial.getKeyboard());
       
       final int low = initial.getLow();
       final int high = initial.getHigh();
@@ -408,7 +434,7 @@ public class TriggerPredicateEditDialog extends OKCancelDialog implements Accept
         _keyboards.stream()
                   .filter(kbd -> kbd.channel == channel)
                   .findFirst()
-                  .ifPresent(kbd -> _keyboardSelector.setSelectedKeyboard(kbd));
+                  .ifPresent(kbd -> _keyboardSelector.setSelectedItem(kbd));
       }
     }
     

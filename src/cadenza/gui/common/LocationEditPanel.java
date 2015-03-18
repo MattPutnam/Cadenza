@@ -109,7 +109,7 @@ public class LocationEditPanel extends JPanel {
   public void setSelectedLocation(Location location) {
     _selectedLocation = location;
     if (_keyboardSelector != null)
-      _keyboardSelector.setSelectedKeyboard(location.getKeyboard());
+      _keyboardSelector.setSelectedItem(location.getKeyboard());
     
     updateRangeDisplay();
     
@@ -131,7 +131,7 @@ public class LocationEditPanel extends JPanel {
   
   public void highlightKey(Keyboard keyboard, int noteNumber) {
     if (_keyboardSelector != null)
-      _keyboardSelector.setSelectedKeyboard(keyboard);
+      _keyboardSelector.setSelectedItem(keyboard);
     _keyboardPanels.get(_keyboards.indexOf(keyboard)).accessKeyboardPanel().highlightNote(Note.valueOf(noteNumber));
   }
   
