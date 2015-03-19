@@ -8,7 +8,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
 
 import cadenza.core.CadenzaData;
 import cadenza.core.trigger.actions.AdvanceAction;
@@ -18,6 +17,7 @@ import cadenza.core.trigger.actions.PanicAction;
 import cadenza.core.trigger.actions.ReverseAction;
 import cadenza.core.trigger.actions.TriggerAction;
 import cadenza.core.trigger.actions.WaitAction;
+import cadenza.gui.common.LocationField;
 import cadenza.gui.song.SongPanel;
 
 import common.swing.IntField;
@@ -145,11 +145,11 @@ public class TriggerActionEditDialog extends OKCancelDialog {
   
   private class GotoPane extends ActionPane<GotoAction> {
     private SongPanel _songPanel;
-    private JTextField _measureField;
+    private LocationField _measureField;
     
     public GotoPane() {
       _songPanel = new SongPanel(_data.songs, true);
-      _measureField = new JTextField(16);
+      _measureField = new LocationField();
       
       add(new JLabel("Go to "));
       add(_songPanel);
@@ -160,19 +160,18 @@ public class TriggerActionEditDialog extends OKCancelDialog {
     @Override
     public void initialize(GotoAction initial) {
       _songPanel.setSelectedSong(initial.getSong());
-      _measureField.setText(initial.getMeasure());
+      _measureField.setLocationNumber(initial.getMeasure());
     }
     
     @Override
     public void verify() throws VerificationException {
       _songPanel.verify();
-      if (_measureField.getText().trim().isEmpty())
-        throw new VerificationException("Please enter a measure", _measureField);
+      _measureField.verify();
     }
     
     @Override
     public GotoAction createAction() {
-      return new GotoAction(_songPanel.getSelectedSong(), _measureField.getText().trim());
+      return new GotoAction(_songPanel.getSelectedSong(), _measureField.getLocationNumber());
     }
   }
   

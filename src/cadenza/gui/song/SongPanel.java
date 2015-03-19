@@ -11,6 +11,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import cadenza.core.LocationNumber;
 import cadenza.core.Song;
 
 import common.swing.SwingUtils;
@@ -30,7 +31,7 @@ public class SongPanel extends JPanel {
     _songCombo = new JComboBox<>(_songs.toArray(new Song[_songs.size()]));
     _label = new JLabel("Song: ");
     final JButton addButton = SwingUtils.button("Add new song", e -> {
-      final Song newSong = new Song("", "");
+      final Song newSong = new Song(LocationNumber.TEMP, "");
       OKCancelDialog.showDialog(new SongEditDialog(SongPanel.this, newSong), dialog -> {
         _songs.add(newSong);
         _songs.sort(null);

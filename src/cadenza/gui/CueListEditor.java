@@ -29,6 +29,7 @@ import cadenza.control.PerformanceController;
 import cadenza.core.CadenzaData;
 import cadenza.core.Cue;
 import cadenza.core.Keyboard;
+import cadenza.core.LocationNumber;
 import cadenza.core.Patch;
 import cadenza.core.Song;
 import cadenza.core.Synthesizer;
@@ -36,7 +37,7 @@ import cadenza.core.patchusage.PatchUsage;
 import cadenza.gui.common.CadenzaTable;
 import cadenza.gui.cue.CueEditDialog;
 import cadenza.gui.song.SongEditDialog;
-import common.Comparators;
+
 import common.Utils;
 import common.collection.ListAdapter;
 import common.collection.ListEvent;
@@ -199,7 +200,7 @@ public class CueListEditor extends JPanel {
       return cue != null;
     }
     
-    private String getSongNumber() {
+    private LocationNumber getSongNumber() {
       if (song != null)
         return song.number;
       else
@@ -208,7 +209,7 @@ public class CueListEditor extends JPanel {
     
     @Override
     public int compareTo(CueTableEntry other) {
-      final int val = Comparators.NUMERO_ALPHA.compare(getSongNumber(), other.getSongNumber());
+      final int val = getSongNumber().compareTo(other.getSongNumber());
       if (val != 0)
         return val;
       
@@ -219,7 +220,7 @@ public class CueListEditor extends JPanel {
       else if (other.isSong())
         return 1;
       else
-        return Comparators.NUMERO_ALPHA.compare(cue.measureNumber, other.cue.measureNumber);
+        return cue.measureNumber.compareTo(other.cue.measureNumber);
     }
   }
   
@@ -391,7 +392,7 @@ public class CueListEditor extends JPanel {
 
     @Override
     protected void takeActionOnAdd() {
-      final Cue newCue = new Cue(null, "");
+      final Cue newCue = new Cue(null, LocationNumber.TEMP);
       newCue.song = suggestSong();
       
       OKCancelDialog.showDialog(new CueEditDialog(_cadenzaFrame, newCue, _data), dialog -> {

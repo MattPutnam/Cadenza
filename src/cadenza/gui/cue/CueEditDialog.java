@@ -2,8 +2,6 @@ package cadenza.gui.cue;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +10,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
@@ -28,6 +25,7 @@ import cadenza.core.Location;
 import cadenza.core.Note;
 import cadenza.core.patchusage.PatchUsage;
 import cadenza.gui.CadenzaFrame;
+import cadenza.gui.common.LocationField;
 import cadenza.gui.controlmap.ControlMapPanel;
 import cadenza.gui.effects.edit.EffectChainViewerEditor;
 import cadenza.gui.patchusage.PatchUsagePanel;
@@ -51,7 +49,7 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider,
   private final CadenzaData _data;
   
   private SongPanel _songPanel;
-  private JTextField _measureField;
+  private LocationField _measureField;
   
   private PatchUsagePanel _patchUsagePanel;
   private TriggerPanel _triggerPanel;
@@ -89,7 +87,7 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider,
     if (_cue.song != null)
       _songPanel.setSelectedSong(_cue.song);
     
-    _measureField = new JTextField(_cue.measureNumber, 8);
+    _measureField = new LocationField(_cue.measureNumber);
     
     _patchUsagePanel = new PatchUsagePanel(_frame, _cue, _data);
     _triggerPanel = new TriggerPanel(_cue, _data);
@@ -99,14 +97,6 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider,
     _disableGlobalTriggersCheckBox = new JCheckBox("Disable global triggers", _cue.disableGlobalTriggers);
     _disableGlobalControlCheckBox = new JCheckBox("Disable global control map", _cue.disableGlobalControlMap);
     _disableGlobalEffectsCheckBox = new JCheckBox("Disable global effects", _cue.disableGlobalEffects);
-    
-    _measureField.addFocusListener(new FocusAdapter() {
-      @Override
-      public void focusLost(FocusEvent e) {
-        if (_measureField.getText().isEmpty())
-          _measureField.setText("1");
-      }
-    });
     
     final JPanel tp = new JPanel(new BorderLayout());
     tp.add(_disableGlobalTriggersCheckBox, BorderLayout.NORTH);
@@ -166,7 +156,7 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider,
   @Override
   protected void takeActionOnOK() {
     _cue.song = _songPanel.getSelectedSong();
-    _cue.measureNumber = _measureField.getText().trim();
+    _cue.measureNumber = _measureField.getLocationNumber();
     _cue.patches = _patchUsagePanel.getPatchUsages();
     _cue.triggers = _triggerPanel.getTriggers();
     _cue.disableGlobalTriggers = _disableGlobalTriggersCheckBox.isSelected();
@@ -189,17 +179,7 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider,
   @Override
   protected void verify() throws VerificationException {
     _songPanel.verify();
-    
-    final String measure = _measureField.getText().trim();
-    
-    if (measure.isEmpty())
-      throw new VerificationException("Please specify a measure number", _measureField);
-    
-    for (Cue cue : _otherCues) {
-      if (_songPanel.getSelectedSong().equals(cue.song) && measure.equals(cue.measureNumber)) {
-        throw new VerificationException("A Cue with this song/measure already exists");
-      }
-    }
+    _measureField.verify();
   }
 
   @Override

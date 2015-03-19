@@ -12,7 +12,7 @@ import cadenza.core.effects.Effect;
 import cadenza.core.patchusage.PatchUsage;
 import cadenza.core.trigger.Trigger;
 import cadenza.gui.trigger.HasTriggers;
-import common.Comparators;
+
 import common.Utils;
 
 /**
@@ -28,7 +28,7 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
   public Song song;
   
   /** The measure number */
-  public String measureNumber;
+  public LocationNumber measureNumber;
   
   /** The patches used */
   public List<PatchUsage> patches;
@@ -55,7 +55,7 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
    * @param songNumber - the song number
    * @param measureNumber - the measure number
    */
-  public Cue(Song song, String measureNumber) {
+  public Cue(Song song, LocationNumber measureNumber) {
     this.song = song;
     this.measureNumber = measureNumber;
     patches = new ArrayList<>();
@@ -123,12 +123,11 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
   // Sort by song, then measure for organization/display
   @Override
   public int compareTo(Cue cue) {
-    final int temp = Comparators.NUMERO_ALPHA.compare(song.number, cue.song.number);
-    if (temp == 0) {
-      return Comparators.NUMERO_ALPHA.compare(measureNumber, cue.measureNumber);
-    } else {
+    final int temp = song.number.compareTo(cue.song.number);
+    if (temp != 0)
       return temp;
-    }
+    
+    return measureNumber.compareTo(cue.measureNumber);
   }
   
   @Override
@@ -160,8 +159,8 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
     return hashCode;
   }
   
-  public static int findCueIndex(List<Cue> cues, Song song, String measure) {
-    if (measure == null || measure.trim().isEmpty()) {
+  public static int findCueIndex(List<Cue> cues, Song song, LocationNumber measure) {
+    if (measure == null) {
       // no measure specified, go to first cue with the given song or later
       int i;
       for (i = 0; i < cues.size(); ++i) {
@@ -186,7 +185,7 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
     return i-1;
   }
   
-  public static Cue findCue(List<Cue> cues, Song song, String measure) {
+  public static Cue findCue(List<Cue> cues, Song song, LocationNumber measure) {
     return cues.get(findCueIndex(cues, song, measure));
   }
 

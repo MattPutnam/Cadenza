@@ -20,6 +20,7 @@ import cadenza.core.CadenzaData;
 import cadenza.core.ControlMapEntry;
 import cadenza.core.Cue;
 import cadenza.core.Keyboard;
+import cadenza.core.LocationNumber;
 import cadenza.core.Patch;
 import cadenza.core.Song;
 import cadenza.core.Synthesizer;
@@ -107,7 +108,7 @@ public final class PerformanceController extends CadenzaController {
       return i.intValue();
   }
   
-  public synchronized void goTo(Song song, String measure) {
+  public synchronized void goTo(Song song, LocationNumber measure) {
     final int oldIndex = _position;
     _position = Cue.findCueIndex(getData().cues, song, measure);
     

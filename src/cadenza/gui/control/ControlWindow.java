@@ -22,12 +22,12 @@ import cadenza.control.PerformanceController;
 import cadenza.core.CadenzaData;
 import cadenza.core.Cue;
 import cadenza.core.Keyboard;
+import cadenza.core.LocationNumber;
 import cadenza.core.Patch;
 import cadenza.core.metronome.Metronome;
 import cadenza.core.metronome.MetronomeListener;
 import cadenza.core.patchusage.PatchUsage;
 import cadenza.gui.song.SongPanel;
-
 import common.Utils;
 import common.swing.SwingUtils;
 
@@ -66,7 +66,9 @@ public class ControlWindow extends JFrame implements MetronomeListener {
   }
   
   private void buildContent() {  
-    final ActionListener gotoAction = e -> _controller.goTo(_songPanel.getSelectedSong(), _measureField.getText());
+    final ActionListener gotoAction = e ->
+      LocationNumber.tryParse(_measureField.getText())
+                    .ifPresent(ln -> _controller.goTo(_songPanel.getSelectedSong(), ln));
     
     _topLabel = new JLabel("", JLabel.CENTER);
     _topLabel.setForeground(FG);

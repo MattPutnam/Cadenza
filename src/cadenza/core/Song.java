@@ -2,15 +2,13 @@ package cadenza.core;
 
 import java.io.Serializable;
 
-import common.Comparators;
-
 public class Song implements Comparable<Song>, Serializable {
   private static final long serialVersionUID = 2L;
   
-  public String number;
+  public LocationNumber number;
   public String name;
   
-  public Song(String number, String name) {
+  public Song(LocationNumber number, String name) {
     this.number = number;
     this.name = name;
   }
@@ -34,6 +32,6 @@ public class Song implements Comparable<Song>, Serializable {
   
   @Override
   public int compareTo(Song other) {
-    return Comparators.NUMERO_ALPHA.compare(number, other.number);
+    return number.compareTo(other.number);
   }
 }

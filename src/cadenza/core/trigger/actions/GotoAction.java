@@ -1,6 +1,7 @@
 package cadenza.core.trigger.actions;
 
 import cadenza.control.PerformanceController;
+import cadenza.core.LocationNumber;
 import cadenza.core.Song;
 
 /**
@@ -12,9 +13,9 @@ public class GotoAction implements TriggerAction {
   private static final long serialVersionUID = 2L;
   
   private final Song _song;
-  private final String _measure;
+  private final LocationNumber _measure;
   
-  public GotoAction(Song song, String measure) {
+  public GotoAction(Song song, LocationNumber measure) {
     _song = song;
     _measure = measure;
   }
@@ -33,7 +34,7 @@ public class GotoAction implements TriggerAction {
     return _song;
   }
   
-  public String getMeasure() {
+  public LocationNumber getMeasure() {
     return _measure;
   }
 
