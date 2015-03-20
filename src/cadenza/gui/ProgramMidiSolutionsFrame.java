@@ -8,6 +8,7 @@ import java.util.List;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
@@ -18,6 +19,7 @@ import cadenza.control.MidiSolutionsMessageSender;
 import common.midi.MidiUtilities;
 import common.swing.CardPanel;
 import common.swing.IntField;
+import common.swing.SimpleGrid;
 import common.swing.SwingUtils;
 import common.swing.dialog.Dialog;
 
@@ -36,7 +38,7 @@ public class ProgramMidiSolutionsFrame extends JFrame {
     setVisible(true);
   }
   
-  ////////////////////////////////////// MAIN //////////////////////////////////////
+  //////////////////////////////// MAIN //////////////////////////////////////
   
   private List<Component> buildMainContents() {
     final List<Component> result = new ArrayList<>(2);
@@ -52,58 +54,65 @@ public class ProgramMidiSolutionsFrame extends JFrame {
     return result;
   }
   
-  ////////////////////////////////////// FOOTSWITCH //////////////////////////////////////
+  //////////////////////////////// FOOTSWITCH ////////////////////////////////
   
   private List<Component> buildFootswitchContents() {
     final List<Component> result = new ArrayList<>();
     
-    result.add(buildPanel(new String[] {"Note", "Channel"}, (inputFields, msms) -> {
-      msms.sendFootswitchNoteOnMessage(
-          extractNoteNumber(inputFields[0]),
-          extractChannel(inputFields[1]));
-    }));
+    result.add(buildPanel(new String[] {"Note", "Channel"},
+        (inputFields, msms) -> msms.sendFootswitchNoteOnMessage(
+            extractNoteNumber(inputFields[0]),
+            extractChannel(inputFields[1]))
+    ));
     
-    result.add(buildPanel(new String[] {"CC#", "Value", "Channel"}, (inputFields, msms) -> {
-      msms.sendFootswitchControlChangeMessage(
-          extractInt(inputFields[0]),
-          extractInt(inputFields[1]),
-          extractChannel(inputFields[2]));
-    }));
+    result.add(buildPanel(new String[] {"CC#", "Value", "Channel"},
+        (inputFields, msms) -> msms.sendFootswitchControlChangeMessage(
+            extractInt(inputFields[0]),
+            extractInt(inputFields[1]),
+            extractChannel(inputFields[2]))
+    ));
     
-    result.add(buildPanel(new String[] {}, (fields, msms) -> msms.sendFootswitchMidiStartMessage()));
+    result.add(buildPanel(new String[] {}, (fields, msms) ->
+        msms.sendFootswitchMidiStartMessage()));
     
-    result.add(buildPanel(new String[] {}, (fields, msms) -> msms.sendFootswitchMidiStopMessage()));
+    result.add(buildPanel(new String[] {}, (fields, msms) ->
+        msms.sendFootswitchMidiStopMessage()));
     
-    result.add(buildPanel(new String[] {}, (fields, msms) -> msms.sendFootswitchMidiStartStopMessage()));
+    result.add(buildPanel(new String[] {}, (fields, msms) ->
+        msms.sendFootswitchMidiStartStopMessage()));
     
-    result.add(buildPanel(new String[] {"LSB", "MSB", "Channel"}, (inputFields, msms) -> {
-      msms.sendFootswitchPitchBendMessage(
-          extractInt(inputFields[0]),
-          extractInt(inputFields[1]),
-          extractChannel(inputFields[2]));
-    }));
+    result.add(buildPanel(new String[] {"LSB", "MSB", "Channel"},
+        (inputFields, msms) -> msms.sendFootswitchPitchBendMessage(
+            extractInt(inputFields[0]),
+            extractInt(inputFields[1]),
+            extractChannel(inputFields[2]))
+    ));
     
-    result.add(buildPanel(new String[] {"Program #", "Channel"}, (inputFields, msms) -> {
-      msms.sendFootswitchProgramChangeMessage(
-          extractInt(inputFields[0]),
-          extractChannel(inputFields[1]));
-    }));
+    result.add(buildPanel(new String[] {"Program #", "Channel"},
+        (inputFields, msms) -> msms.sendFootswitchProgramChangeMessage(
+            extractInt(inputFields[0]),
+            extractChannel(inputFields[1]))
+    ));
     
-    result.add(buildPanel(new String[] {"Bank MSB", "Bank LSB", "Program #", "Channel"}, (inputFields, msms) -> {
-      msms.sendFootswitchProgramChangeMessage(
-          extractInt(inputFields[0]),
-          extractInt(inputFields[1]),
-          extractInt(inputFields[2]),
-          extractChannel(inputFields[3]));
-    }));
+    result.add(buildPanel(new String[] {"Bank MSB", "Bank LSB", "Program #", "Channel"},
+        (inputFields, msms) -> msms.sendFootswitchProgramChangeMessage(
+            extractInt(inputFields[0]),
+            extractInt(inputFields[1]),
+            extractInt(inputFields[2]),
+            extractChannel(inputFields[3]))
+    ));
     
-    result.add(buildPanel(new String[] {}, (inputFields, msms) -> msms.sendFootswitchProgramChangeCaptureMessage()));
+    result.add(buildPanel(new String[] {}, (inputFields, msms) ->
+        msms.sendFootswitchProgramChangeCaptureMessage()));
     
-    result.add(buildPanel(new String[] {"Channel"}, (inputFields, msms) -> msms.sendFootswitchINCMessage(extractChannel(inputFields[0]))));
+    result.add(buildPanel(new String[] {"Channel"}, (inputFields, msms) ->
+        msms.sendFootswitchINCMessage(extractChannel(inputFields[0]))));
     
-    result.add(buildPanel(new String[] {"Channel"}, (inputFields, msms) -> msms.sendFootswitchDECMessage(extractChannel(inputFields[0]))));
+    result.add(buildPanel(new String[] {"Channel"}, (inputFields, msms) ->
+        msms.sendFootswitchDECMessage(extractChannel(inputFields[0]))));
     
-    result.add(buildPanel(new String[] {}, (inputFields, msms) -> msms.sendFootswitchPanicMessage()));
+    result.add(buildPanel(new String[] {}, (inputFields, msms) ->
+        msms.sendFootswitchPanicMessage()));
     
     return result;
   }
@@ -120,7 +129,6 @@ public class ProgramMidiSolutionsFrame extends JFrame {
   private List<Component> buildPedalContents() {
     final List<Component> result = new ArrayList<>();
     
-    final Box deviceParametersPanel = Box.createHorizontalBox();
     {
       final JCheckBox echoCheckBox = new JCheckBox("Echo MIDI in", true);
       final IntField curveAmountField = buildIntField();
@@ -137,29 +145,18 @@ public class ProgramMidiSolutionsFrame extends JFrame {
               nrBottomField.getInt(),
               nrTopField.getInt());
         } catch (Throwable t) {
-          Dialog.error(deviceParametersPanel, t.getLocalizedMessage());
+          Dialog.error(this, t.getLocalizedMessage());
         }
       });
-      
-      deviceParametersPanel.add(Box.createHorizontalStrut(8));
-      deviceParametersPanel.add(echoCheckBox);
-      deviceParametersPanel.add(Box.createHorizontalStrut(8));
-      deviceParametersPanel.add(new JLabel("Curvature amount: "));
-      deviceParametersPanel.add(curveAmountField);
-      deviceParametersPanel.add(Box.createHorizontalStrut(8));
-      deviceParametersPanel.add(curveUpCheckBox);
-      deviceParametersPanel.add(Box.createHorizontalStrut(8));
-      deviceParametersPanel.add(new JLabel("Neutral range bottom: "));
-      deviceParametersPanel.add(nrBottomField);
-      deviceParametersPanel.add(Box.createHorizontalStrut(8));
-      deviceParametersPanel.add(new JLabel("Neutral range top: "));
-      deviceParametersPanel.add(nrTopField);
-      deviceParametersPanel.add(Box.createHorizontalStrut(8));
-      deviceParametersPanel.add(sendButton);
-      deviceParametersPanel.add(Box.createHorizontalGlue());
+      result.add(new SimpleGrid(new JComponent[][] {
+          { echoCheckBox,                        null             },
+          { new JLabel("Curvature amount:"),     curveAmountField },
+          { curveUpCheckBox,                     null             },
+          { new JLabel("Neutral range bottom:"), nrBottomField    },
+          { new JLabel("Neutral range top:"),    nrTopField       },
+          { sendButton,                          null             }
+      }));
     }
-    
-    result.add(deviceParametersPanel);
     
     return result;
   }
