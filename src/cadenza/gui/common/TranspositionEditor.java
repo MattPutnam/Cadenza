@@ -8,8 +8,8 @@ import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
+import common.swing.IntField;
 import common.swing.SwingUtils;
 
 @SuppressWarnings("serial")
@@ -36,12 +36,12 @@ public class TranspositionEditor extends JPanel {
   
   private final JComboBox<String> _direction;
   private final JComboBox<String> _interval;
-  private final JTextField _octaveField;
+  private final IntField _octaveField;
 
   public TranspositionEditor(int initialValue) {
     _direction = new JComboBox<>(DIRECTIONS);
     _interval = new JComboBox<>(INTERVALS);
-    _octaveField = new JFormattedTextField(NumberFormat.getIntegerInstance());
+    _octaveField = new IntField(initialValue, 0, 10);
     _octaveField.setColumns(4);
     SwingUtils.freezeSize(_octaveField);
     
@@ -62,13 +62,11 @@ public class TranspositionEditor extends JPanel {
     _direction.setSelectedIndex(value < 0 ? 1 : 0);
     value = Math.abs(value);
     _interval.setSelectedIndex(value % 12);
-    _octaveField.setText(String.valueOf(value / 12));
+    _octaveField.setInt(value / 12);
   }
   
   public int getTransposition() {
-    final String octave = _octaveField.getText();
-    int transposition = (octave.isEmpty() ? 0 : 12*Integer.parseInt(octave));
-    transposition += _interval.getSelectedIndex();
+    int transposition = 12*_octaveField.getInt() + _interval.getSelectedIndex();
     if (_direction.getSelectedIndex() == 1)
       transposition *= -1;
     
