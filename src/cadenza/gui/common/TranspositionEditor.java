@@ -1,11 +1,8 @@
 package cadenza.gui.common;
 
-import java.text.NumberFormat;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
