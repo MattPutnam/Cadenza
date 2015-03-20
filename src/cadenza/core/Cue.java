@@ -1,12 +1,10 @@
 package cadenza.core;
 
-
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import cadenza.core.effects.Effect;
 import cadenza.core.patchusage.PatchUsage;
@@ -79,23 +77,14 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
   }
   
   public List<PatchUsage> getPatchUsagesByKeyboard(Keyboard keyboard) {
-    final List<PatchUsage> result = new LinkedList<>();
-    for (final PatchUsage patchUsage : patches) {
-      if (patchUsage.location.getKeyboard() == keyboard)
-        result.add(patchUsage);
-    }
-    return result;
+    return patches.stream()
+                  .filter(pu -> pu.location.getKeyboard() == keyboard)
+                  .collect(Collectors.toList());
   }
   
   public Map<Keyboard, List<PatchUsage>> getPatchUsagesByKeyboard(List<Keyboard> keyboards) {
-    final Map<Keyboard, List<PatchUsage>> result = new LinkedHashMap<>();
-    for (final Keyboard keyboard : keyboards) {
-      final List<PatchUsage> patchUsages = getPatchUsagesByKeyboard(keyboard);
-      if (!patchUsages.isEmpty())
-        result.put(keyboard, patchUsages);
-    }
-    
-    return result;
+    return keyboards.stream()
+                    .collect(Collectors.toMap(k -> k, this::getPatchUsagesByKeyboard));
   }
   
   public String buildMappingDisplay() {
