@@ -57,119 +57,53 @@ public class ProgramMidiSolutionsFrame extends JFrame {
   private List<Component> buildFootswitchContents() {
     final List<Component> result = new ArrayList<>();
     
-    result.add(buildPanel(new String[] {"Note", "Channel"}, new ButtonAction() {
-      @Override
-      public void onClick(JTextField[] inputFields,
-          MidiSolutionsMessageSender msms) {
-        msms.sendFootswitchNoteOnMessage(
-            extractNoteNumber(inputFields[0]),
-            extractChannel(inputFields[1]));
-      }
+    result.add(buildPanel(new String[] {"Note", "Channel"}, (inputFields, msms) -> {
+      msms.sendFootswitchNoteOnMessage(
+          extractNoteNumber(inputFields[0]),
+          extractChannel(inputFields[1]));
     }));
     
-    result.add(buildPanel(new String[] {"CC#", "Value", "Channel"},
-        new ButtonAction() {
-      @Override
-      public void onClick(JTextField[] inputFields,
-          MidiSolutionsMessageSender msms) {
-        msms.sendFootswitchControlChangeMessage(
-            extractInt(inputFields[0]),
-            extractInt(inputFields[1]),
-            extractChannel(inputFields[2]));
-      }
+    result.add(buildPanel(new String[] {"CC#", "Value", "Channel"}, (inputFields, msms) -> {
+      msms.sendFootswitchControlChangeMessage(
+          extractInt(inputFields[0]),
+          extractInt(inputFields[1]),
+          extractChannel(inputFields[2]));
     }));
     
-    result.add(buildPanel(new String[] {}, new ButtonAction() {
-      @Override
-      public void onClick(JTextField[] inputFields,
-          MidiSolutionsMessageSender msms) {
-        msms.sendFootswitchMidiStartMessage();
-      }
+    result.add(buildPanel(new String[] {}, (fields, msms) -> msms.sendFootswitchMidiStartMessage()));
+    
+    result.add(buildPanel(new String[] {}, (fields, msms) -> msms.sendFootswitchMidiStopMessage()));
+    
+    result.add(buildPanel(new String[] {}, (fields, msms) -> msms.sendFootswitchMidiStartStopMessage()));
+    
+    result.add(buildPanel(new String[] {"LSB", "MSB", "Channel"}, (inputFields, msms) -> {
+      msms.sendFootswitchPitchBendMessage(
+          extractInt(inputFields[0]),
+          extractInt(inputFields[1]),
+          extractChannel(inputFields[2]));
     }));
     
-    result.add(buildPanel(new String[] {}, new ButtonAction() {
-      @Override
-      public void onClick(JTextField[] inputFields,
-          MidiSolutionsMessageSender msms) {
-        msms.sendFootswitchMidiStopMessage();
-      }
+    result.add(buildPanel(new String[] {"Program #", "Channel"}, (inputFields, msms) -> {
+      msms.sendFootswitchProgramChangeMessage(
+          extractInt(inputFields[0]),
+          extractChannel(inputFields[1]));
     }));
     
-    result.add(buildPanel(new String[] {}, new ButtonAction() {
-      @Override
-      public void onClick(JTextField[] inputFields,
-          MidiSolutionsMessageSender msms) {
-        msms.sendFootswitchMidiStartStopMessage();
-      }
+    result.add(buildPanel(new String[] {"Bank MSB", "Bank LSB", "Program #", "Channel"}, (inputFields, msms) -> {
+      msms.sendFootswitchProgramChangeMessage(
+          extractInt(inputFields[0]),
+          extractInt(inputFields[1]),
+          extractInt(inputFields[2]),
+          extractChannel(inputFields[3]));
     }));
     
-    result.add(buildPanel(new String[] {"LSB", "MSB", "Channel"},
-        new ButtonAction() {
-      @Override
-      public void onClick(JTextField[] inputFields,
-          MidiSolutionsMessageSender msms) {
-        msms.sendFootswitchPitchBendMessage(
-            extractInt(inputFields[0]),
-            extractInt(inputFields[1]),
-            extractChannel(inputFields[2]));
-      }
-    }));
+    result.add(buildPanel(new String[] {}, (inputFields, msms) -> msms.sendFootswitchProgramChangeCaptureMessage()));
     
-    result.add(buildPanel(new String[] {"Program #", "Channel"},
-        new ButtonAction() {
-      @Override
-      public void onClick(JTextField[] inputFields,
-          MidiSolutionsMessageSender msms) {
-        msms.sendFootswitchProgramChangeMessage(
-            extractInt(inputFields[0]),
-            extractChannel(inputFields[1]));
-      }
-    }));
+    result.add(buildPanel(new String[] {"Channel"}, (inputFields, msms) -> msms.sendFootswitchINCMessage(extractChannel(inputFields[0]))));
     
-    result.add(buildPanel(new String[] {"Bank MSB", "Bank LSB", "Program #", "Channel"},
-        new ButtonAction() {
-      @Override
-      public void onClick(JTextField[] inputFields,
-          MidiSolutionsMessageSender msms) {
-        msms.sendFootswitchProgramChangeMessage(
-            extractInt(inputFields[0]),
-            extractInt(inputFields[1]),
-            extractInt(inputFields[2]),
-            extractChannel(inputFields[3]));
-      }
-    }));
+    result.add(buildPanel(new String[] {"Channel"}, (inputFields, msms) -> msms.sendFootswitchDECMessage(extractChannel(inputFields[0]))));
     
-    result.add(buildPanel(new String[] {}, new ButtonAction() {
-      @Override
-      public void onClick(JTextField[] inputFields,
-          MidiSolutionsMessageSender msms) {
-        msms.sendFootswitchProgramChangeCaptureMessage();
-      }
-    }));
-    
-    result.add(buildPanel(new String[] {"Channel"}, new ButtonAction() {
-      @Override
-      public void onClick(JTextField[] inputFields,
-          MidiSolutionsMessageSender msms) {
-        msms.sendFootswitchINCMessage(extractChannel(inputFields[0]));
-      }
-    }));
-    
-    result.add(buildPanel(new String[] {"Channel"}, new ButtonAction() {
-      @Override
-      public void onClick(JTextField[] inputFields,
-          MidiSolutionsMessageSender msms) {
-        msms.sendFootswitchDECMessage(extractChannel(inputFields[0]));
-      }
-    }));
-    
-    result.add(buildPanel(new String[] {}, new ButtonAction() {
-      @Override
-      public void onClick(JTextField[] inputFields,
-          MidiSolutionsMessageSender msms) {
-        msms.sendFootswitchPanicMessage();
-      }
-    }));
+    result.add(buildPanel(new String[] {}, (inputFields, msms) -> msms.sendFootswitchPanicMessage()));
     
     return result;
   }
@@ -297,6 +231,7 @@ public class ProgramMidiSolutionsFrame extends JFrame {
     return -1;
   }
   
+  @FunctionalInterface
   private static interface ButtonAction {
     public void onClick(JTextField[] inputFields, MidiSolutionsMessageSender msms);
   }
