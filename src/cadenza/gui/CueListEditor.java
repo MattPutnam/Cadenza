@@ -275,6 +275,7 @@ public class CueListEditor extends JPanel {
             final Map<Keyboard, List<PatchUsage>> map = cue.getPatchUsagesByKeyboard(_data.keyboards);
             final String text = "<html>" +
                 map.entrySet().stream()
+                              .filter(k_lpu -> !k_lpu.getValue().isEmpty())
                               .map(k_lpu -> k_lpu.getValue().stream()
                                                             .map(pu -> pu.toString(false, true))
                                                             .collect(Collectors.joining(", "))
@@ -292,7 +293,7 @@ public class CueListEditor extends JPanel {
             final Pair<List<?>, String> pair = (Pair<List<?>, String>) value;
             label.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
             label.setText(Utils.countItems(pair._1(), pair._2()));
-            label.setToolTipText(Utils.mkString(pair._1(), "<html>", "<br>", "</html>"));
+            label.setToolTipText(pair._1().isEmpty() ? null : Utils.mkString(pair._1(), "<html>", "<br>", "</html>"));
             label.setIcon(null);
           } else {
             label.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());

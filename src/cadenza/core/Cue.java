@@ -46,6 +46,7 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
   /** The effects used */
   public List<Effect> effects;
   
+  /** Whether or not to disable the global effects for this cue */
   public boolean disableGlobalEffects = false;
   
   /**
