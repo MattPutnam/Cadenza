@@ -322,7 +322,7 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
     public GhostNotePatchUsagePane(PatchUsage startingPatchUsage, LocationEditPanel locationSelector) {
       _editor = new GhostNotePatchUsageEditor(startingPatchUsage);
       
-      locationSelector.addLocationListener(newLocation -> _editor.setLocation(newLocation));
+      locationSelector.addLocationListener(_editor::setLocation);
       
       add(_editor);
     }

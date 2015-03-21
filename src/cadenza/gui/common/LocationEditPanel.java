@@ -113,8 +113,7 @@ public class LocationEditPanel extends JPanel {
     
     updateRangeDisplay();
     
-    for (final LocationListener listener : _listeners)
-      listener.locationChanged(_selectedLocation);
+    _listeners.forEach(l -> l.locationChanged(_selectedLocation));
   }
   
   public Location getSelectedLocation() {
