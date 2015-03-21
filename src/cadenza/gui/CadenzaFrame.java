@@ -17,6 +17,7 @@ import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
+import javax.sound.midi.ShortMessage;
 import javax.swing.AbstractAction;
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
@@ -46,6 +47,8 @@ import cadenza.core.Song;
 import cadenza.core.Synthesizer;
 import cadenza.core.effects.Effect;
 import cadenza.core.metronome.Metronome;
+import cadenza.core.tracker.CCTracker;
+import cadenza.core.tracker.VelocityTracker;
 import cadenza.core.trigger.Trigger;
 import cadenza.gui.control.ControlWindow;
 import cadenza.gui.controlmap.ControlMapPanel;
@@ -55,11 +58,11 @@ import cadenza.gui.preferences.PreferencesDialog;
 import cadenza.gui.synthesizer.SynthesizerListEditor;
 import cadenza.gui.trigger.TriggerPanel;
 import cadenza.preferences.Preferences;
-
 import common.collection.ListAdapter;
 import common.collection.ListEvent;
 import common.io.IOUtils;
 import common.midi.MidiPortFinder;
+import common.midi.MidiUtilities;
 import common.swing.SwingUtils;
 import common.swing.dialog.Dialog;
 import common.swing.dialog.OKCancelDialog;
@@ -165,6 +168,14 @@ public class CadenzaFrame extends JFrame implements Receiver {
   
   @Override
   public void send(MidiMessage message, long timestamp) {
+    if (message instanceof ShortMessage) {
+      final ShortMessage sm = (ShortMessage) message;
+      if (MidiUtilities.isNoteOn(sm))
+        VelocityTracker.getInstance().notify(sm.getChannel(), sm.getData2());
+      else if (MidiUtilities.isControlChange(sm))
+        CCTracker.getInstance().notify(sm.getChannel(), sm.getData1(), sm.getData2());
+    }
+    
     if (Preferences.getMIDIInputOptions().allowMIDIInput() && MIDIInputControlCenter.getInstance().isActive())
       MIDIInputControlCenter.getInstance().send(message);
     else if (_mode == Mode.PERFORM)
