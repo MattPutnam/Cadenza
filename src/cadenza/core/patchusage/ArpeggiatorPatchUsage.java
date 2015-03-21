@@ -186,8 +186,4 @@ public class ArpeggiatorPatchUsage extends PatchUsage implements MetronomeListen
       default: throw new IllegalStateException("Unknown pattern type");
     }
   }
-  
-  @Override public void bpmSet(int bpm)    { /* no op */ }
-  @Override public void metronomeStarted() { /* no op */ }
-  @Override public void metronomeStopped() { /* no op */ }
 }
