@@ -273,7 +273,7 @@ public class CueListEditor extends JPanel {
           if (column == Col.PATCHES) {
             final Cue cue = ((CueTableEntry) value).cue;
             final Map<Keyboard, List<PatchUsage>> map = cue.getPatchUsagesByKeyboard(_data.keyboards);
-            final String text = "<html>" +
+            final String initialText =
                 map.entrySet().stream()
                               .filter(k_lpu -> !k_lpu.getValue().isEmpty())
                               .map(k_lpu -> k_lpu.getValue().stream()
@@ -281,8 +281,9 @@ public class CueListEditor extends JPanel {
                                                             .collect(Collectors.joining(", "))
                                             + (_data.keyboards.size() > 1 ? " on " + k_lpu.getKey().name
                                                                           : ""))
-                              .collect(Collectors.joining(", ")) + "</html>";
+                              .collect(Collectors.joining(", "));
             
+            final String text = initialText.isEmpty() ? null : "<html>" + initialText + "</html>";
             label.setText(text);
             
             final Pair<Boolean, String> warning = getWarning(cue);
