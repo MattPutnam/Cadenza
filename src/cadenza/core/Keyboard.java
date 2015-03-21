@@ -4,8 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * A keyboard as used in Cadenza.  Keyboards have a name, a high and low note,
- * and a flag indicating if they're the main keyboard.
+ * A keyboard as used in Cadenza.  Keyboards have a name, a high and low note
+ * of their total range, a high and low sounding note, a flag indicating if
+ * they're the main keyboard, and an input channel.
  * 
  * @author Matt Putnam
  */
@@ -18,8 +19,10 @@ public class Keyboard implements Serializable {
   /** The high note on the keyboard */
   public Note high;
   
+  /** The low sounding note */
   public Note soundingLow;
   
+  /** The high sounding note */
   public Note soundingHigh;
   
   /** The display name of the keyboard */
@@ -28,6 +31,7 @@ public class Keyboard implements Serializable {
   /** Whether or not this is a main keyboard */
   public boolean isMain;
   
+  /** The channel */
   public int channel;
   
   public Keyboard(int channel) {
