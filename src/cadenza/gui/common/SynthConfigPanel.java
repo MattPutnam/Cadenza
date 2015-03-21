@@ -28,16 +28,16 @@ import common.tuple.Pair;
 @SuppressWarnings("serial")
 public class SynthConfigPanel extends JPanel {
   private static final String NONE = "[none]";
-  private static final String HELP_TEXT = "<html>"
-      + "List the channels to be used by this synthesizer, as a<br>"
-      + "comma-separated list (with hyphens for a range, e.g.<br>"
-      + "\"0-3, 5\" specifies channels 0, 1, 2, 3, and 5)<br>"
-      + "<br>"
-      + "You will need at least as many channels as you plan<br>"
-      + "to have simultaneous patches.  You may specify more<br>"
-      + "channels than needed; this will allow Cadenza to load<br>"
-      + "the next patches in unused channels, allowing you to<br>"
-      + "hold over notes into the next cue.</html>";
+  private static final String HELP_TEXT = Utils.renderForSwingHTML(
+      "List the channels to be used by this synthesizer, as a\n" +
+      "comma-separated list (with hyphens for a range, e.g.\n" +
+      "\"0-3, 5\" specifies channels 0, 1, 2, 3, and 5)\n" +
+      "\n" +
+      "You will need at least as many channels as you plan\n" +
+      "to have simultaneous patches.  You may specify more\n" +
+      "channels than needed; this will allow Cadenza to load\n" +
+      "the next patches in unused channels, allowing you to\n" +
+      "hold over notes into the next cue.");
   
   private final List<Synthesizer> _otherSynthesizers;
   

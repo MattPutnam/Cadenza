@@ -10,6 +10,7 @@ import java.util.Optional;
 import cadenza.core.effects.Compressor;
 import cadenza.gui.effects.edit.CompressorEditor;
 import cadenza.gui.effects.edit.EffectEditor;
+import common.Utils;
 import common.swing.GraphicsUtils;
 import common.swing.SwingUtils;
 import common.swing.Tooltip;
@@ -31,9 +32,10 @@ public class CompressorView extends EffectView {
       if (x >= MARGIN && x < SIZE-MARGIN) {
         final int velocity = x - MARGIN;
         final int output = _compressor.process(0, velocity);
-        return Optional.of("<html>Threshold=" + _compressor.getThreshold() + " / Ratio=" +
-            FORMAT.format(_compressor.getRatio()) +
-            "<br>Input=" + velocity + " / Output=" + output);
+        return Optional.of(Utils.renderForSwingHTML(
+            "Threshold=" + _compressor.getThreshold() +
+                " / Ratio=" + FORMAT.format(_compressor.getRatio()) +
+            "\nInput=" + velocity + " / Output=" + output));
       } else {
         return Optional.empty();
       }
