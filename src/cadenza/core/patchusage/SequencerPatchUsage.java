@@ -55,7 +55,7 @@ public class SequencerPatchUsage extends PatchUsage implements MetronomeListener
   }
   
   @Override
-  public void prepare(PerformanceController controller) {
+  void prepare_additional(PerformanceController controller) {
     Metronome.getInstance().addMetronomeListener(this);
     _controller = controller;
     _channel = _controller.getCurrentlyAssignedChannel(this);

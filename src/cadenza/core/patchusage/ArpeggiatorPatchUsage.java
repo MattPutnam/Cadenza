@@ -99,7 +99,7 @@ public class ArpeggiatorPatchUsage extends PatchUsage implements MetronomeListen
   }
   
   @Override
-  public void prepare(PerformanceController controller) {
+  void prepare_additional(PerformanceController controller) {
     _currentNotes = new ArrayList<>();
     Metronome.getInstance().addMetronomeListener(this);
     _controller = controller;
