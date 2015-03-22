@@ -21,6 +21,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 
 import cadenza.core.CadenzaData;
 import cadenza.core.Cue;
@@ -31,6 +32,7 @@ import cadenza.core.Patch;
 import cadenza.core.patchusage.PatchUsage;
 import cadenza.core.patchusage.SimplePatchUsage;
 import cadenza.gui.CadenzaFrame;
+import cadenza.gui.ImageStore;
 import cadenza.gui.keyboard.KeyboardAdapter;
 import cadenza.gui.keyboard.SingleKeyboardPanel;
 import cadenza.gui.patch.PatchSelector;
@@ -38,7 +40,6 @@ import cadenza.gui.patch.PatchSelector;
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
-import common.swing.icon.DeleteIcon;
 
 @SuppressWarnings("serial")
 public class PatchUsagePanel extends JPanel {
@@ -209,33 +210,38 @@ public class PatchUsagePanel extends JPanel {
       label.setForeground(patchUsage.patch.getTextColor());
       add(label);
       
-      final JButton deleteButton = new JButton(new DeleteIcon(10));
-      deleteButton.addActionListener(e -> {
-        _patchUsages.remove(_patchUsage);
-        refreshDisplay();
-      });
-      deleteButton.setBounds(width-12, 2, 10, 10);
-      deleteButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-      add(deleteButton);
-      
       setBackground(patchUsage.patch.getDisplayColor());
       setBorder(BorderFactory.createLineBorder(PATCH_BORDER));
       setToolTipText(_patchUsage.toString(false));
       
+      setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+      
       addMouseListener(new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
-          if (e.getClickCount() == 2) {
-            e.consume();
-            OKCancelDialog.showDialog(new PatchUsageEditDialog(
-                _frame, _patchUsage, _data), dialog -> {
-                  _patchUsages.remove(_patchUsage);
-                  _patchUsages.add(dialog.getPatchUsage());
-                  refreshDisplay();
-                });
-          }
+          final PopupMenu menu = new PopupMenu();
+          menu.show(e.getComponent(), e.getX(), e.getY());
         }
       });
+    }
+    
+    private class PopupMenu extends JPopupMenu {
+      private PopupMenu() {
+        add(SwingUtils.menuItem("Edit", ImageStore.EDIT, e -> {
+          OKCancelDialog.showDialog(new PatchUsageEditDialog(_frame, _patchUsage, _data), dialog -> {
+            _patchUsages.remove(_patchUsage);
+            _patchUsages.add(dialog.getPatchUsage());
+            refreshDisplay();
+          });
+        }));
+        
+        addSeparator();
+        
+        add(SwingUtils.menuItem("Delete", ImageStore.DELETE, e -> {
+          _patchUsages.remove(_patchUsage);
+          refreshDisplay();
+        }));
+      }
     }
   }
   
