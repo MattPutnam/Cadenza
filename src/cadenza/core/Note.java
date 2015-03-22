@@ -161,6 +161,14 @@ public class Note implements Comparable<Note>, Serializable {
     return ALL_NOTES[midiNumber];
   }
   
+  public static Note max(Note n1, Note n2) {
+    return n1.getMidiNumber() > n2.getMidiNumber() ? n1 : n2;
+  }
+  
+  public static Note min(Note n1, Note n2) {
+    return n1.getMidiNumber() < n2.getMidiNumber() ? n1 : n2;
+  }
+  
   public PitchClass getPitchClass() {
     return _pitchClass;
   }

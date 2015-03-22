@@ -43,6 +43,14 @@ public class Location implements Serializable {
          soundingOnly ? keyboard.soundingHigh : keyboard.high);
   }
   
+  public static Location union(Location l1, Location l2) {
+    if (l1._keyboard != l2._keyboard)
+      throw new IllegalArgumentException("Locations are from different keyboards");
+    
+    return new Location(l1._keyboard, Note.min(l1._lower, l2._lower),
+                                      Note.max(l1._upper, l2._upper));
+  }
+  
   /**
    * Copies this range to a new keyboard.  If the new keyboard's range is less
    * than this, the resulting range is shrunk.  If the resulting range is empty,

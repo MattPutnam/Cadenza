@@ -94,6 +94,9 @@ public abstract class PatchUsage implements Serializable {
     if (other.location.getKeyboard() != location.getKeyboard())
       throw new IllegalArgumentException("The two patch usages are on different keyboards");
     
+    final Location newLocation = Location.union(location, other.location);
+    location = other.location = newLocation;
+    
     other.splitTwin = this;
     splitTwin = other;
     
