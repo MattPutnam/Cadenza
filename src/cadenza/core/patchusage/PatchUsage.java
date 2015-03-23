@@ -70,6 +70,13 @@ public abstract class PatchUsage implements Serializable {
     final int[] values = _buffer.getValues();
     return Arrays.stream(values).sum() / values.length;
   }
+  
+  public void copySplitDataFrom(PatchUsage other) {
+    splitTwin = other.splitTwin;
+    splitAbove = other.splitAbove;
+    startSplit = other.startSplit;
+    currentSplit = other.currentSplit;
+  }
   // End smart split section
   /////////////////////////////////////////////////////////////////////////////
   
@@ -191,6 +198,43 @@ public abstract class PatchUsage implements Serializable {
       sb.append(" at " + volume);
     
     return sb.toString() + toString_additional();
+  }
+  
+  public final String buildSplitName(boolean includeKeyboardInfo, boolean highlightPatchName) {
+    if (!isSplit())
+      throw new IllegalStateException();
+    
+    if (!splitAbove) {
+      final StringBuilder sb = new StringBuilder();
+      
+      String bgColorHTML = ColorUtils.getHTMLColorString(patch.getDisplayColor());
+      String fgColorHTML = ColorUtils.getHTMLColorString(patch.getTextColor());
+      
+      if (highlightPatchName) sb.append("<span style='color:" + fgColorHTML + ";background:" + bgColorHTML + "'>");
+      sb.append(patch.name);
+      if (highlightPatchName) sb.append("</span>");
+      if (volume != patch.defaultVolume)
+        sb.append(" at " + volume);
+      
+      sb.append(" / ");
+      
+      final Patch twin = splitTwin.patch;
+      
+      bgColorHTML = ColorUtils.getHTMLColorString(twin.getDisplayColor());
+      fgColorHTML = ColorUtils.getHTMLColorString(twin.getTextColor());
+      
+      if (highlightPatchName) sb.append("<span style='color:" + fgColorHTML + ";background:" + bgColorHTML + "'>");
+      sb.append(twin.name);
+      if (highlightPatchName) sb.append("</span>");
+      if (splitTwin.volume != twin.defaultVolume)
+        sb.append(" at " + splitTwin.volume);
+      
+      sb.append(" with smart split ").append(location.toString(includeKeyboardInfo));
+      
+      return sb.toString();
+    } else {
+      return splitTwin.buildSplitName(includeKeyboardInfo, highlightPatchName);
+    }
   }
   
   /**
