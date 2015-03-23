@@ -184,9 +184,9 @@ public class Synthesizers {
       if (line.startsWith("#")) {
         bank = new Bank(line.substring(1).trim());
         
-        if (bank.equals("GM") || bank.equals("GM1"))
+        if (bank.equals(Bank.GM1_BANK))
           result.addAll(GeneralMIDI.getGM1Patches(synthesizer));
-        else if (bank.equals("GM2"))
+        else if (bank.equals(Bank.GM2_BANK))
           result.addAll(GeneralMIDI.getGM2Patches(synthesizer));
       } else {
         final int spaceIndex = StringUtils.indexOfAny(line, ' ', '\t');

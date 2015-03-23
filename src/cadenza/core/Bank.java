@@ -9,6 +9,9 @@ public class Bank implements Serializable {
   private final String _name;
   private final String _selector;
   
+  public static final Bank GM1_BANK = new Bank("GM");
+  public static final Bank GM2_BANK = new Bank("GM2");
+  
   public Bank(String name) {
     this(name, name);
   }

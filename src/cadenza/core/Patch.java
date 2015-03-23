@@ -2,6 +2,7 @@ package cadenza.core;
 
 import java.awt.Color;
 import java.io.Serializable;
+import java.util.Objects;
 
 import common.swing.ColorUtils;
 
@@ -114,25 +115,15 @@ public class Patch implements Comparable<Patch>, Serializable {
     if (obj == null) return false;
     if (obj == this) return true;
     final Patch p = (Patch) obj;
-    // foreground color is a function of display color
     return this._synthesizer.equals(p._synthesizer) &&
          this.bank.equals(p.bank) &&
          this.name.equals(p.name) &&
-         this.number == p.number &&
-         this.defaultVolume == p.defaultVolume &&
-         this._displayColor.equals(p._displayColor);
+         this.number == p.number;
   }
   
   @Override
   public int hashCode() {
-    // foreground color is a function of display color
-    int hashCode = _synthesizer.hashCode();
-    hashCode = 31*hashCode + (bank == null ? 0 : bank.hashCode());
-    hashCode = 31*hashCode + name.hashCode();
-    hashCode = 31*hashCode + number;
-    hashCode = 31*hashCode + defaultVolume;
-    hashCode = 31*hashCode + _displayColor.hashCode();
-    return hashCode;
+    return Objects.hash(_synthesizer, name, bank, Integer.valueOf(number));
   }
   
   @Override

@@ -58,6 +58,8 @@ import cadenza.gui.preferences.PreferencesDialog;
 import cadenza.gui.synthesizer.SynthesizerListEditor;
 import cadenza.gui.trigger.TriggerPanel;
 import cadenza.preferences.Preferences;
+import cadenza.synths.Synthesizers;
+
 import common.collection.ListAdapter;
 import common.collection.ListEvent;
 import common.io.IOUtils;
@@ -369,26 +371,25 @@ public class CadenzaFrame extends JFrame implements Receiver {
       final SynthesizerListEditor editor = new SynthesizerListEditor(_data.synthesizers);
       if (OKCancelDialog.showInDialog(CadenzaFrame.this, "Reconfigure Synthesizers", editor)) {
         final List<Synthesizer> newSynths = editor.getSynthesizers();
-        final List<Patch> orphaned = new ArrayList<>();
         
-        // This code smells.  Commenting out auto-remap until this gets audited
-//        final Map<Patch, Synthesizer> auto = new HashMap<>();
+        final List<Patch> orphaned = new ArrayList<>();
+        final Map<Patch, Synthesizer> auto = new HashMap<>();
         
         patch:
         for (final Patch patch : _data.patches) {
-//          final Synthesizer patchSynth = patch.getSynthesizer();
-//          synthesizer:
-//          for (final Synthesizer newSynth : newSynths) {
-//            if (!patchSynth.getName().equals(newSynth.getName()))
-//              continue synthesizer;
-//            
-//            if (newSynth.getBanks().contains(patch.bank) ||
-//                newSynth.getExpansions().keySet().contains(patch.bank)) {
-//              auto.put(patch, newSynth);
-//              patch.setSynthesizer(newSynth);
-//              continue patch;
-//            }
-//          }
+          final Synthesizer patchSynth = patch.getSynthesizer();
+          for (final Synthesizer newSynth : newSynths) {
+            if (patchSynth.getName().equals(newSynth.getName())) {
+              if (Synthesizers.streamPatches(newSynth)
+                              .filter(p -> p.bank.equals(patch.bank))
+                              .filter(p -> p.name.equals(patch.name))
+                              .filter(p -> p.number == patch.number)
+                              .findAny().isPresent()) {
+                auto.put(patch, newSynth);
+                continue patch;
+              }
+            }
+          }
           
           orphaned.add(patch);
         }
@@ -401,15 +402,10 @@ public class CadenzaFrame extends JFrame implements Receiver {
           _data.synthesizers.clear();
           _data.synthesizers.addAll(newSynths);
         } else {
-          final OrphanedPatchRemapper remapper = new OrphanedPatchRemapper(CadenzaFrame.this,
-              _data, orphaned, newSynths);
-          remapper.showDialog();
-          // dialog handles its own logic on ok
-//          if (remapper.okPressed()) {
-//            for (final Map.Entry<Patch, Synthesizer> entry : auto.entrySet()) {
-//              entry.getKey().setSynthesizer(entry.getValue());
-//            }
-//          }
+          OKCancelDialog.showDialog(new OrphanedPatchRemapper(CadenzaFrame.this,
+              _data, orphaned, newSynths), dialog ->
+            auto.entrySet().forEach(entry -> entry.getKey().setSynthesizer(entry.getValue()))
+          );
         }
       }
     }

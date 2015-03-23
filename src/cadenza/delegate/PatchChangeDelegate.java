@@ -15,10 +15,10 @@ import javax.sound.midi.SysexMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import cadenza.core.Bank;
 import cadenza.core.Patch;
 import cadenza.delegate.DelegateEntry.MessageType;
 import cadenza.synths.GeneralMIDI;
-
 import common.io.IOUtils;
 import common.tuple.Pair;
 import common.tuple.Triple;
@@ -81,11 +81,10 @@ public class PatchChangeDelegate {
   }
   
   private void sendPatchChange(Receiver receiver, Patch patch, int channel) throws InvalidMidiDataException {
-    final String bank = patch.bank.getSelector();
     final int patchNum = patch.number;
     final ShortMessage msg = new ShortMessage();
     
-    if (bank.equals("GM")) {
+    if (patch.bank.equals(Bank.GM1_BANK)) {
       msg.setMessage(ShortMessage.CONTROL_CHANGE, channel, 0, 121);
       receiver.send(msg, -1);
       
@@ -94,7 +93,7 @@ public class PatchChangeDelegate {
       
       msg.setMessage(ShortMessage.PROGRAM_CHANGE, channel, patchNum-1, 0);
       receiver.send(msg, -1);
-    } else if (bank.equals("GM2")) {
+    } else if (patch.bank.equals(Bank.GM2_BANK)) {
       final Pair<Integer, Integer> GM2_PCNum_LSB = GeneralMIDI.getGM2_PCNum_LSB(patchNum);
       
       msg.setMessage(ShortMessage.CONTROL_CHANGE, channel, 0, 121);
@@ -106,9 +105,10 @@ public class PatchChangeDelegate {
       msg.setMessage(ShortMessage.PROGRAM_CHANGE, channel, GM2_PCNum_LSB._1().intValue()-1, 0);
       receiver.send(msg, -1);
     } else {
+      final String selector = patch.bank.getSelector();
       DelegateEntry entry = null;
       for (final DelegateEntry e : _entries) {
-        if (e.bankName.equals(bank) && e.minNum <= patchNum && patchNum <= e.maxNum) {
+        if (e.bankName.equals(selector) && e.minNum <= patchNum && patchNum <= e.maxNum) {
           entry = e;
           break;
         }

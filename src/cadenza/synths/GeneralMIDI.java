@@ -22,9 +22,6 @@ public class GeneralMIDI {
   private static final List<Patch> GM1_PATCHES = new ArrayList<>(128);
   private static final List<Patch> GM2_PATCHES = new ArrayList<>(256);
   
-  private static final Bank GM1_BANK = new Bank("GM");
-  private static final Bank GM2_BANK = new Bank("GM2");
-  
   private static final List<Pair<Integer, Integer>> GM2_DATA = new ArrayList<>();
   
   private static boolean GM_VALID = false;
@@ -45,9 +42,9 @@ public class GeneralMIDI {
         final String name = line.substring(6);
         
         if (GM2num == 0)
-          GM1_PATCHES.add(new Patch(Synthesizer.TEMP, name, GM1_BANK, PCnum));
+          GM1_PATCHES.add(new Patch(Synthesizer.TEMP, name, Bank.GM1_BANK, PCnum));
         
-        GM2_PATCHES.add(new Patch(Synthesizer.TEMP, name, GM2_BANK, num));
+        GM2_PATCHES.add(new Patch(Synthesizer.TEMP, name, Bank.GM2_BANK, num));
         GM2_DATA.add(Pair.make(Integer.valueOf(PCnum), Integer.valueOf(GM2num)));
         num++;
       }
