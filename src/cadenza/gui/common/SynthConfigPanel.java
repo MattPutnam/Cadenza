@@ -130,7 +130,7 @@ public class SynthConfigPanel extends JPanel {
   
   private String buildInitialChannels() {
     final List<Integer> possibleChannels = new ArrayList<>(16);
-    for (int i = 1; i <= 16; ++i)
+    for (int i = 0; i <= 15; ++i)
       possibleChannels.add(Integer.valueOf(i));
     
     for (final Synthesizer other : _otherSynthesizers)
@@ -170,8 +170,8 @@ public class SynthConfigPanel extends JPanel {
     try {
       final List<Integer> ints = buildList();
       for (final int i : ints) {
-        if (i < 0)
-          throw new VerificationException("Channels must be >= 0", _channelField);
+        if (i < 0 || i > 15)
+          throw new VerificationException("Channels must be between 0 and 15 (inclusive)", _channelField);
         for (final Synthesizer synth : _otherSynthesizers)
           if (synth.getChannels().contains(Integer.valueOf(i)))
             throw new VerificationException("Another synthesizer already uses channel " + i, _channelField);
