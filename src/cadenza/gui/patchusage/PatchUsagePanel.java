@@ -8,10 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -39,6 +38,7 @@ import cadenza.gui.patch.PatchSelector;
 
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
+import common.swing.dialog.Dialog;
 import common.swing.dialog.OKCancelDialog;
 
 @SuppressWarnings("serial")
@@ -92,8 +92,7 @@ public class PatchUsagePanel extends JPanel {
   }
   
   private void refreshDisplay() {
-    for (final PatchUsageArea pua : _patchUsageAreas)
-      pua.clearEntities();
+    _patchUsageAreas.forEach(PatchUsageArea::clearEntities);
     
     final Map<Keyboard, List<PatchUsage>> map = sortByKeyboard(_patchUsages);
     
@@ -134,17 +133,7 @@ public class PatchUsagePanel extends JPanel {
   }
   
   private static Map<Keyboard, List<PatchUsage>> sortByKeyboard(List<PatchUsage> patchUsages) {
-    final Map<Keyboard, List<PatchUsage>> result = new HashMap<>();
-    for (final PatchUsage pu : patchUsages) {
-      List<PatchUsage> list = result.get(pu.location.getKeyboard());
-      if (list == null) {
-        list = new LinkedList<>();
-        result.put(pu.location.getKeyboard(), list);
-      }
-      list.add(pu);
-    }
-    
-    return result;
+    return patchUsages.stream().collect(Collectors.groupingBy(pu -> pu.location.getKeyboard()));
   }
   
   private static PatchUsage findNext(List<PatchUsage> patchUsages, PatchUsage last) {
@@ -156,10 +145,10 @@ public class PatchUsagePanel extends JPanel {
         return findWithLowestHigh(patchUsages);
     }
     
-    final List<PatchUsage> nonConflicting = new LinkedList<>();
-    for (final PatchUsage pu : patchUsages)
-      if (pu.location.getLower().above(last.location.getUpper()))
-        nonConflicting.add(pu);
+    final List<PatchUsage> nonConflicting =
+        patchUsages.stream()
+                   .filter(pu -> pu.location.getLower().above(last.location.getUpper()))
+                   .collect(Collectors.toList());
     
     if (nonConflicting.isEmpty())
       return findWithLowestHigh(patchUsages);
@@ -189,7 +178,7 @@ public class PatchUsagePanel extends JPanel {
         if (pu1 == pu2) continue;
         
         if (pu1.location.getUpper().below(pu2.location.getLower()) ||
-          pu2.location.getUpper().below(pu1.location.getLower())) // non-conflicting
+            pu2.location.getUpper().below(pu1.location.getLower())) // non-conflicting
           continue outer;
       }
       return pu1;
@@ -235,13 +224,46 @@ public class PatchUsagePanel extends JPanel {
           });
         }));
         
+        final List<PatchUsage> others = buildOthers(_patchUsage);
+        if (!others.isEmpty()) {
+          if (_patchUsage.isSplit()) {
+            add(SwingUtils.menuItem("Edit smart split properties...", null, e -> {
+              OKCancelDialog.showDialog(new SmartSplitDialog(_frame, _patchUsage, others), dialog -> {
+                refreshDisplay();
+              });
+            }));
+            
+            add(SwingUtils.menuItem("Detach from smart split", null, e -> _patchUsage.unsplit()));
+            
+          } else {
+            add(SwingUtils.menuItem("Create smart split with...", null, e -> {
+              OKCancelDialog.showDialog(new SmartSplitDialog(_frame, _patchUsage, others), dialog -> {
+                refreshDisplay();
+              });
+            }));
+          }
+        }
+        
         addSeparator();
         
-        add(SwingUtils.menuItem("Delete", ImageStore.DELETE, e -> {
-          _patchUsages.remove(_patchUsage);
-          refreshDisplay();
-        }));
+        add(SwingUtils.menuItem("Delete", ImageStore.DELETE, e ->
+          Dialog.confirm(this, "Are you sure you want to delete this patch?", () -> {
+            _patchUsages.remove(_patchUsage);
+            if (_patchUsage.isSplit())
+              Dialog.askYesNo(this, "Delete split partner as well?", "",
+                  (/* Yes */) -> _patchUsages.remove(_patchUsage.splitTwin),
+                  (/* No  */) -> _patchUsage.unsplit());
+            refreshDisplay();
+          })
+        ));
       }
+    }
+    
+    private List<PatchUsage> buildOthers(PatchUsage target) {
+      return _patchUsages.stream()
+                         .filter(pu -> pu.location.getKeyboard() == target.location.getKeyboard())
+                         .filter(pu -> pu != target)
+                         .collect(Collectors.toList());
     }
   }
   

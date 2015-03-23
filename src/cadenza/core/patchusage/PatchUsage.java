@@ -62,7 +62,7 @@ public abstract class PatchUsage implements Serializable {
   
   private transient FixedSizeIntBuffer _buffer = new FixedSizeIntBuffer(10);
   
-  private boolean isSplit() {
+  public boolean isSplit() {
     return splitTwin != null;
   }
   
@@ -212,6 +212,8 @@ public abstract class PatchUsage implements Serializable {
         center = (location.getLower().getMidiNumber() + startSplit) / 2;
       else
         center = (location.getUpper().getMidiNumber() + startSplit) / 2;
+      
+      _buffer = new FixedSizeIntBuffer(10);
       _buffer.fill(center);
     }
     
