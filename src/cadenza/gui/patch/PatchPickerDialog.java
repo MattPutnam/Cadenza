@@ -58,7 +58,7 @@ public class PatchPickerDialog extends OKCancelDialog {
     if (Preferences.getPatchSearchOptions().isExcludeUser()) {
       patches = _synthesizers.stream()
                              .flatMap(Synthesizers::streamPatches)
-                             .filter(patch -> !patch.bank.toLowerCase().equals("user"))
+                             .filter(patch -> !patch.bank.getName().toLowerCase().equals("user"))
                              .collect(Collectors.toList());
     } else {
       patches = _synthesizers.stream()

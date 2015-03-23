@@ -6,15 +6,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.Box;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import cadenza.core.Bank;
 import cadenza.core.Patch;
 import cadenza.core.Synthesizer;
 import cadenza.gui.common.VolumeField;
-
+import cadenza.synths.Synthesizers;
 import common.swing.ColorPreviewPanel;
 import common.swing.IntField;
 import common.swing.SwingUtils;
@@ -25,7 +27,7 @@ import common.swing.dialog.OKCancelDialog;
 public class PatchEditDialog extends OKCancelDialog {
   private JComboBox<Synthesizer> _synthesizerCombo;
   private JTextField _nameField;
-  private JTextField _bankField;
+  private JComboBox<Bank> _bankField;
   private IntField _numField;
   private VolumeField _volumeField;
   private ColorPreviewPanel _colorChooser;
@@ -52,10 +54,18 @@ public class PatchEditDialog extends OKCancelDialog {
   
   @Override
   protected JComponent buildContent() {
+    _bankField = new JComboBox<>();
+    
     _synthesizerCombo = new JComboBox<>(_synthesizers.toArray(new Synthesizer[_synthesizers.size()]));
-    if (_patch != null) _synthesizerCombo.setSelectedItem(_patch.getSynthesizer());
+    if (_patch != null) 
+    _synthesizerCombo.addActionListener(e -> {
+      final Bank[] allBanks = Synthesizers.getAllBanks((Synthesizer) _synthesizerCombo.getSelectedItem()).toArray(Bank[]::new);
+      _bankField.setModel(new DefaultComboBoxModel<>(allBanks));
+    });
+    _synthesizerCombo.actionPerformed(null);
+    
     _nameField = new JTextField(16);
-    _bankField = new JTextField(8);
+    
     _numField = new IntField(1, 0, Integer.MAX_VALUE);
     _numField.setColumns(4);
     _volumeField = new VolumeField(_patch == null ? 100 : _patch.defaultVolume);
@@ -75,8 +85,10 @@ public class PatchEditDialog extends OKCancelDialog {
   @Override
   protected void initialize() {
     if (_patch != null) {
+      _synthesizerCombo.setSelectedItem(_patch.getSynthesizer());
       _nameField.setText(_patch.name);
-      _bankField.setText(_patch.bank);
+//      _bankField.setText(_patch.bank);
+      _bankField.setSelectedItem(_patch.bank);
       _numField.setInt(_patch.number);
     }
     
@@ -101,14 +113,15 @@ public class PatchEditDialog extends OKCancelDialog {
       }
     }
     
-    if (_bankField.getText().trim().isEmpty())
-      throw new VerificationException("Please specify a Patch bank", _bankField);
+//    if (_bankField.getText().trim().isEmpty())
+//      throw new VerificationException("Please specify a Patch bank", _bankField);
   }
   
   public Patch getPatch() {
     final Patch result = new Patch((Synthesizer) _synthesizerCombo.getSelectedItem(),
                      _nameField.getText(),
-                     _bankField.getText(),
+//                     _bankField.getText(),
+                     (Bank) _bankField.getSelectedItem(),
                      _numField.getInt(),
                      _volumeField.getVolume());
     result.setDisplayColor(_colorChooser.getSelectedColor());

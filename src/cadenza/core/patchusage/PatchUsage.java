@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import cadenza.control.PerformanceController;
+import cadenza.core.Bank;
 import cadenza.core.Location;
 import cadenza.core.Patch;
 import cadenza.core.Synthesizer;
@@ -85,7 +86,7 @@ public abstract class PatchUsage implements Serializable {
    * the global mapping editor
    */
   public static final PatchUsage ALL = new SimplePatchUsage(
-      new Patch(Synthesizer.TEMP, "ALL", "TEMP", 0),
+      new Patch(Synthesizer.TEMP, "ALL", new Bank("TEMP"), 0),
             new Location(null, null, null), 100, 0, false, -1, true, 0);
   
   public PatchUsage(Patch patch, Location location, int volume) {

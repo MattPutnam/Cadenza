@@ -15,14 +15,14 @@ public class Synthesizer implements Serializable {
   
   private static final String EXP_STRING_MAP_ARROW = " -> ";
   
-  public static final Synthesizer TEMP = new Synthesizer("TEMP", new ArrayList<String>(),
+  public static final Synthesizer TEMP = new Synthesizer("TEMP", new ArrayList<Bank>(),
       new HashMap<String, String>(), new ArrayList<Integer>());
   
   /** The name of the synthesizer */
   private final String _name;
   
   /** The list of banks */
-  private final List<String> _banks;
+  private final List<Bank> _banks;
   
   /** The expansion cards: Slot name -> card type */
   private final Map<String, String> _expansions;
@@ -31,7 +31,7 @@ public class Synthesizer implements Serializable {
   
   private List<Integer> _channels;
   
-  public Synthesizer(String name, List<String> banks, Map<String, String> expansions, List<Integer> channels) {
+  public Synthesizer(String name, List<Bank> banks, Map<String, String> expansions, List<Integer> channels) {
     if (name == null || name.trim().isEmpty())
       throw new IllegalArgumentException("Name cannot be null or blank");
     
@@ -57,7 +57,7 @@ public class Synthesizer implements Serializable {
     return _name;
   }
   
-  public List<String> getBanks() {
+  public List<Bank> getBanks() {
     return new ArrayList<>(_banks);
   }
   

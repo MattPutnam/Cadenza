@@ -24,7 +24,7 @@ public class Patch implements Comparable<Patch>, Serializable {
   public String name;
   
   /** The bank */
-  public String bank;
+  public Bank bank;
   
   /** The number in the bank */
   public int number;
@@ -45,7 +45,7 @@ public class Patch implements Comparable<Patch>, Serializable {
    * @param bank - the patch bank that the patch is in (null for synthesizers with no bank)
    * @param number - the program number of the patch within the bank
    */
-  public Patch(Synthesizer synthesizer, String name, String bank, int number) {
+  public Patch(Synthesizer synthesizer, String name, Bank bank, int number) {
     this(synthesizer, name, bank, number, 100);
   }
   
@@ -57,7 +57,7 @@ public class Patch implements Comparable<Patch>, Serializable {
    * @param number - the program number of the patch within the bank
    * @param defaultVolume - the default volume for the patch
    */
-  public Patch(Synthesizer synthesizer, String name, String bank, int number, int defaultVolume) {
+  public Patch(Synthesizer synthesizer, String name, Bank bank, int number, int defaultVolume) {
     if (synthesizer == null)
       throw new IllegalArgumentException("Synthesizer cannot be null");
     

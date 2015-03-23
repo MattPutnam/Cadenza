@@ -81,7 +81,7 @@ public class PatchChangeDelegate {
   }
   
   private void sendPatchChange(Receiver receiver, Patch patch, int channel) throws InvalidMidiDataException {
-    final String bank = patch.bank;
+    final String bank = patch.bank.getSelector();
     final int patchNum = patch.number;
     final ShortMessage msg = new ShortMessage();
     

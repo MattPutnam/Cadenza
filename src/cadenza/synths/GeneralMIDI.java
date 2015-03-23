@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import cadenza.core.Bank;
 import cadenza.core.Patch;
 import cadenza.core.Synthesizer;
 
@@ -20,6 +21,9 @@ public class GeneralMIDI {
   
   private static final List<Patch> GM1_PATCHES = new ArrayList<>(128);
   private static final List<Patch> GM2_PATCHES = new ArrayList<>(256);
+  
+  private static final Bank GM1_BANK = new Bank("GM");
+  private static final Bank GM2_BANK = new Bank("GM2");
   
   private static final List<Pair<Integer, Integer>> GM2_DATA = new ArrayList<>();
   
@@ -41,9 +45,9 @@ public class GeneralMIDI {
         final String name = line.substring(6);
         
         if (GM2num == 0)
-          GM1_PATCHES.add(new Patch(Synthesizer.TEMP, name, "GM", PCnum));
+          GM1_PATCHES.add(new Patch(Synthesizer.TEMP, name, GM1_BANK, PCnum));
         
-        GM2_PATCHES.add(new Patch(Synthesizer.TEMP, name, "GM2", num));
+        GM2_PATCHES.add(new Patch(Synthesizer.TEMP, name, GM2_BANK, num));
         GM2_DATA.add(Pair.make(Integer.valueOf(PCnum), Integer.valueOf(GM2num)));
         num++;
       }

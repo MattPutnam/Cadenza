@@ -17,9 +17,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import cadenza.core.Bank;
 import cadenza.core.Patch;
 import cadenza.core.Synthesizer;
-
 import common.io.IOUtils;
 import common.tuple.Pair;
 
@@ -41,7 +41,7 @@ public class Synthesizers {
   private static final Map<String, Pair<File, Map<String, String>>> _SYNTH_FILES = new LinkedHashMap<>();
   
   /** Synth name -> list of banks */
-  private static final Map<String, List<String>> _SYNTH_BANKS = new LinkedHashMap<>();
+  private static final Map<String, List<Bank>> _SYNTH_BANKS = new LinkedHashMap<>();
   
   /** Card name -> (Card type, File) */
   private static final Map<String, Pair<String, File>> _EXPANSION_FILES = new TreeMap<>();
@@ -79,14 +79,14 @@ public class Synthesizers {
     
     // load banks for all synth files
     for (final Entry<String, Pair<File, Map<String, String>>> entry : _SYNTH_FILES.entrySet()) {
-      final List<String> banks = new ArrayList<>();
+      final List<Bank> banks = new ArrayList<>();
       final File file = entry.getValue()._1();
       
       try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
         String str;
         while ((str = reader.readLine()) != null) {
           if (str.startsWith("#"))
-            banks.add(str.substring(1));
+            banks.add(new Bank(str.substring(1)));
         }
       } catch (IOException e) {
         LOG.error("Error loading banks for synth file", e);
@@ -128,7 +128,7 @@ public class Synthesizers {
     return new LinkedHashMap<>(_SYNTH_FILES.get(synthname)._2());
   }
   
-  public static List<String> getBanksForSynth(String synthname) {
+  public static List<Bank> getBanksForSynth(String synthname) {
     return new ArrayList<>(_SYNTH_BANKS.get(synthname));
   }
   
@@ -175,14 +175,14 @@ public class Synthesizers {
       mainLines = new String[0];
     }
     
-    String bank = null;
+    Bank bank = null;
     for (int i = 2; i < mainLines.length; ++i) {
       final String line = mainLines[i];
       if (line.trim().isEmpty())
         continue;
       
       if (line.startsWith("#")) {
-        bank = line.substring(1).trim();
+        bank = new Bank(line.substring(1).trim());
         
         if (bank.equals("GM") || bank.equals("GM1"))
           result.addAll(GeneralMIDI.getGM1Patches(synthesizer));
@@ -216,7 +216,7 @@ public class Synthesizers {
         final int spaceIndex = line.indexOf(' ');
         final String num = line.substring(0, spaceIndex).trim();
         final String name = line.substring(spaceIndex + 1).trim();
-        result.add(new Patch(synthesizer, name, getBankName(synthesizer.getName(), slot, synthesizer.getExpansions()), Integer.parseInt(num)));
+        result.add(new Patch(synthesizer, name, new Bank(slot, getSelector(synthesizer.getName(), slot, synthesizer.getExpansions())), Integer.parseInt(num)));
       }
     }
     
@@ -228,7 +228,11 @@ public class Synthesizers {
     return loadPatches(synthesizer).stream();
   }
   
-  private static String getBankName(String synthname, String slotName, Map<String, String> expansions) {
+  public static Stream<Bank> getAllBanks(Synthesizer synthesizer) {
+    return streamPatches(synthesizer).map(p -> p.bank).distinct();
+  }
+  
+  private static String getSelector(String synthname, String slotName, Map<String, String> expansions) {
     if (synthname.equals("Roland XV-5080") || synthname.equals("Roland XV-3080")) {
       // The XV-5080 and 3080 banks depend on the card; Cadenza uses the card number
       // example: "SR-JV80-01", "SRX-03"
