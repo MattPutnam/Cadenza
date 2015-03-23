@@ -371,23 +371,24 @@ public class CadenzaFrame extends JFrame implements Receiver {
         final List<Synthesizer> newSynths = editor.getSynthesizers();
         final List<Patch> orphaned = new ArrayList<>();
         
-        final Map<Patch, Synthesizer> auto = new HashMap<>();
+        // This code smells.  Commenting out auto-remap until this gets audited
+//        final Map<Patch, Synthesizer> auto = new HashMap<>();
         
         patch:
         for (final Patch patch : _data.patches) {
-          final Synthesizer patchSynth = patch.getSynthesizer();
-          synthesizer:
-          for (final Synthesizer newSynth : newSynths) {
-            if (!patchSynth.getName().equals(newSynth.getName()))
-              continue synthesizer;
-            
-            if (newSynth.getBanks().contains(patch.bank) ||
-              newSynth.getExpansions().keySet().contains(patch.bank)) {
-              auto.put(patch, newSynth);
-              patch.setSynthesizer(newSynth);
-              continue patch;
-            }
-          }
+//          final Synthesizer patchSynth = patch.getSynthesizer();
+//          synthesizer:
+//          for (final Synthesizer newSynth : newSynths) {
+//            if (!patchSynth.getName().equals(newSynth.getName()))
+//              continue synthesizer;
+//            
+//            if (newSynth.getBanks().contains(patch.bank) ||
+//                newSynth.getExpansions().keySet().contains(patch.bank)) {
+//              auto.put(patch, newSynth);
+//              patch.setSynthesizer(newSynth);
+//              continue patch;
+//            }
+//          }
           
           orphaned.add(patch);
         }
@@ -404,11 +405,11 @@ public class CadenzaFrame extends JFrame implements Receiver {
               _data, orphaned, newSynths);
           remapper.showDialog();
           // dialog handles its own logic on ok
-          if (remapper.okPressed()) {
-            for (final Map.Entry<Patch, Synthesizer> entry : auto.entrySet()) {
-              entry.getKey().setSynthesizer(entry.getValue());
-            }
-          }
+//          if (remapper.okPressed()) {
+//            for (final Map.Entry<Patch, Synthesizer> entry : auto.entrySet()) {
+//              entry.getKey().setSynthesizer(entry.getValue());
+//            }
+//          }
         }
       }
     }
