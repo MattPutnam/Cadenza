@@ -12,7 +12,6 @@ import java.util.IdentityHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -201,7 +200,7 @@ public class CueListEditor extends JPanel {
     }
     
     private LocationNumber getSongNumber() {
-      if (song != null)
+      if (isSong())
         return song.number;
       else
         return cue.song.number;
@@ -272,17 +271,7 @@ public class CueListEditor extends JPanel {
           label.setHorizontalAlignment(SwingConstants.LEFT);
           if (column == Col.PATCHES) {
             final Cue cue = ((CueTableEntry) value).cue;
-            final Map<Keyboard, List<PatchUsage>> map = cue.getPatchUsagesByKeyboard(_data.keyboards);
-            final String initialText =
-                map.entrySet().stream()
-                              .filter(k_lpu -> !k_lpu.getValue().isEmpty())
-                              .map(k_lpu -> k_lpu.getValue().stream()
-                                                            .map(pu -> pu.toString(false, true))
-                                                            .collect(Collectors.joining(", "))
-                                            + (_data.keyboards.size() > 1 ? " on " + k_lpu.getKey().name
-                                                                          : ""))
-                              .collect(Collectors.joining(", "));
-            
+            final String initialText = getPatchDisplay(cue);
             final String text = initialText.isEmpty() ? null : "<html>" + initialText + "</html>";
             label.setText(text);
             
@@ -302,6 +291,39 @@ public class CueListEditor extends JPanel {
             label.setIcon(null);
           }
         }
+      }
+      
+      private String getPatchDisplay(Cue cue) {
+        final List<String> keyboardStrings = new LinkedList<>();
+        final boolean multiple = _data.keyboards.size() > 1;
+        
+        for (final Keyboard keyboard : _data.keyboards) {
+          final List<PatchUsage> list = cue.getPatchUsagesByKeyboard(keyboard);
+          
+          if (list != null && !list.isEmpty()) {
+            final List<String> puStrings = new LinkedList<>();
+            final List<PatchUsage> skip = new ArrayList<>();
+            
+            for (final PatchUsage pu : list) {
+              if (skip.contains(pu)) {
+                skip.remove(pu);
+                continue;
+              }
+              
+              if (pu.isSplit()) {
+                skip.add(pu.splitTwin);
+                puStrings.add(pu.buildSplitName(false, true));
+              } else {
+                puStrings.add(pu.toString(false, true));
+              }
+            }
+            
+            keyboardStrings.add(Utils.mkString(puStrings) +
+                (multiple ? " on " + keyboard.name : ""));
+          }
+        }
+        
+        return Utils.mkString(keyboardStrings);
       }
       
       private Pair<Boolean, String> getWarning(Cue cue) {
