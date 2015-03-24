@@ -198,7 +198,7 @@ public class PatchUsagePanel extends JPanel {
       setLayout(null);
       final JLabel label;
       if (patchUsage.isSplit()) {
-        final String text = "<html><nobr>" + patchUsage.toString(false, true) + "</nobr></html>";
+        final String text = "<html><nobr>" + patchUsage.buildSplitName(false, true) + "</nobr></html>";
         label = new JLabel(text, JLabel.CENTER);
         
         setBackground(Color.WHITE);
