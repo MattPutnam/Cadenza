@@ -12,7 +12,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
 import javax.swing.table.TableColumnModel;
 
 import cadenza.control.PreviewController;
@@ -82,18 +81,7 @@ public class PatchEditor extends JPanel {
     _data.patches.addListener(new ListAdapter<Patch>() {
       @Override
       public void anyChange(ListEvent<Patch> e) {
-        // save selection...
-        final List<Patch> selected = _table.getSelectedRows();
-        
-        // because this blasts it...
         _table.accessTableModel().setList(_data.patches);
-        
-        // and reselect:
-        final ListSelectionModel selectionModel = _table.accessTable().getSelectionModel();
-        for (final Patch p : selected) {
-          final int i = _data.patches.indexOf(p);
-          selectionModel.addSelectionInterval(i, i);
-        }
       }
     });
   }
