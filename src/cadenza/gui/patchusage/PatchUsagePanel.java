@@ -228,61 +228,63 @@ public class PatchUsagePanel extends JPanel {
     private class PopupMenu extends JPopupMenu {
       private PopupMenu() {
         final List<PatchUsage> others = buildOthers(_patchUsage);
-        if (!others.isEmpty()) {
-          if (_patchUsage.isSplit()) {
-            final PatchUsage lower = _patchUsage.splitAbove ? _patchUsage.splitTwin : _patchUsage;
-            final PatchUsage upper = _patchUsage.splitAbove ? _patchUsage : _patchUsage.splitTwin;
-            
-            add(SwingUtils.menuItem("Edit lower (" + lower.patch.name + ")", ImageStore.EDIT, e ->
-              OKCancelDialog.showDialog(new PatchUsageEditDialog(_frame, lower, _data), dialog -> {
-                final PatchUsage newLower = dialog.getPatchUsage();
-                final Location newLocation = newLower.location;
-                
-                newLower.copySplitDataFrom(lower);
-                upper.splitTwin = newLower;
-                upper.location = newLocation;
-                
-                _patchUsages.remove(_patchUsage);
-                _patchUsages.add(newLower);
-                refreshDisplay();
-              })
-            ));
-            
-            add(SwingUtils.menuItem("Edit upper (" + upper.patch.name + ")", ImageStore.EDIT, e ->
-              OKCancelDialog.showDialog(new PatchUsageEditDialog(_frame, lower, _data), dialog -> {
-                final PatchUsage newUpper = dialog.getPatchUsage();
-                final Location newLocation = newUpper.location;
-                
-                newUpper.copySplitDataFrom(upper);
-                lower.splitTwin = newUpper;
-                lower.location = newLocation;
-                
-                _patchUsages.remove(_patchUsage);
-                _patchUsages.add(newUpper);
-                refreshDisplay();
-              })
-            ));
-            
-            add(SwingUtils.menuItem("Edit smart split properties...", null, e ->
-              OKCancelDialog.showDialog(new SmartSplitDialog(_frame, _patchUsage, others), dialog ->
-                refreshDisplay()
-              )
-            ));
-            
-            add(SwingUtils.menuItem("Detach from smart split", null, e -> {
-              _patchUsage.unsplit();
+        
+        // EDIT OPTIONS
+        if (_patchUsage.isSplit()) {
+          final PatchUsage lower = _patchUsage.splitAbove ? _patchUsage.splitTwin : _patchUsage;
+          final PatchUsage upper = _patchUsage.splitAbove ? _patchUsage : _patchUsage.splitTwin;
+          
+          add(SwingUtils.menuItem("Edit lower (" + lower.patch.name + ")", ImageStore.EDIT, e ->
+            OKCancelDialog.showDialog(new PatchUsageEditDialog(_frame, lower, _data), dialog -> {
+              final PatchUsage newLower = dialog.getPatchUsage();
+              final Location newLocation = newLower.location;
+              
+              newLower.copySplitDataFrom(lower);
+              upper.splitTwin = newLower;
+              upper.location = newLocation;
+              
+              _patchUsages.remove(_patchUsage);
+              _patchUsages.add(newLower);
               refreshDisplay();
-            }));
-            
-          } else {
-            add(SwingUtils.menuItem("Edit", ImageStore.EDIT, e ->
-              OKCancelDialog.showDialog(new PatchUsageEditDialog(_frame, _patchUsage, _data), dialog -> {
-                _patchUsages.remove(_patchUsage);
-                _patchUsages.add(dialog.getPatchUsage());
-                refreshDisplay();
-              })
-            ));
-            
+            })
+          ));
+          
+          add(SwingUtils.menuItem("Edit upper (" + upper.patch.name + ")", ImageStore.EDIT, e ->
+            OKCancelDialog.showDialog(new PatchUsageEditDialog(_frame, lower, _data), dialog -> {
+              final PatchUsage newUpper = dialog.getPatchUsage();
+              final Location newLocation = newUpper.location;
+              
+              newUpper.copySplitDataFrom(upper);
+              lower.splitTwin = newUpper;
+              lower.location = newLocation;
+              
+              _patchUsages.remove(_patchUsage);
+              _patchUsages.add(newUpper);
+              refreshDisplay();
+            })
+          ));
+          
+          add(SwingUtils.menuItem("Edit smart split properties...", null, e ->
+            OKCancelDialog.showDialog(new SmartSplitDialog(_frame, _patchUsage, others), dialog ->
+              refreshDisplay()
+            )
+          ));
+          
+          add(SwingUtils.menuItem("Detach from smart split", null, e -> {
+            _patchUsage.unsplit();
+            refreshDisplay();
+          }));
+        } else {
+          // edit options -> not splitting
+          add(SwingUtils.menuItem("Edit", ImageStore.EDIT, e ->
+            OKCancelDialog.showDialog(new PatchUsageEditDialog(_frame, _patchUsage, _data), dialog -> {
+              _patchUsages.remove(_patchUsage);
+              _patchUsages.add(dialog.getPatchUsage());
+              refreshDisplay();
+            })
+          ));
+          
+          if (others.size() > 0) {
             add(SwingUtils.menuItem("Create smart split with...", null, e ->
               OKCancelDialog.showDialog(new SmartSplitDialog(_frame, _patchUsage, others), dialog ->
                 refreshDisplay()
@@ -307,6 +309,7 @@ public class PatchUsagePanel extends JPanel {
     private List<PatchUsage> buildOthers(PatchUsage target) {
       return _patchUsages.stream()
                          .filter(pu -> pu.location.getKeyboard() == target.location.getKeyboard())
+                         .filter(pu -> !pu.isSplit())
                          .filter(pu -> pu != target)
                          .collect(Collectors.toList());
     }
