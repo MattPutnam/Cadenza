@@ -93,7 +93,9 @@ public class Location implements Serializable {
   }
   
   public String toString(boolean includeKeyboardInfo) {
-    return _lower.toString() + "-" + _upper.toString() + (includeKeyboardInfo ? " on " + _keyboard.name : "");
+    final String s = _lower.equals(_upper) ? _lower.toString()
+                                           : _lower.toString() + "-" + _upper.toString();
+    return s + (includeKeyboardInfo ? " on " + _keyboard.name : "");
   }
   
   @Override
