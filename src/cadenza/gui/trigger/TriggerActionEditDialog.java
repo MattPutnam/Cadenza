@@ -10,17 +10,17 @@ import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
 
 import cadenza.core.CadenzaData;
-import cadenza.core.trigger.actions.AdvanceAction;
+import cadenza.core.trigger.actions.CueStepAction;
 import cadenza.core.trigger.actions.GotoAction;
 import cadenza.core.trigger.actions.MetronomeAction;
 import cadenza.core.trigger.actions.PanicAction;
-import cadenza.core.trigger.actions.ReverseAction;
 import cadenza.core.trigger.actions.TriggerAction;
 import cadenza.core.trigger.actions.WaitAction;
 import cadenza.gui.common.LocationField;
 import cadenza.gui.song.SongPanel;
 
 import common.swing.IntField;
+import common.swing.RadioButtonPanel;
 import common.swing.SimpleGrid;
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
@@ -32,8 +32,7 @@ public class TriggerActionEditDialog extends OKCancelDialog {
   private final TriggerAction _initial;
   
   private JTabbedPane _tabbedPane;
-  private AdvancePane _advancePane;
-  private ReversePane _reversePane;
+  private StepPane _stepPane;
   private GotoPane _gotoPane;
   private WaitPane _waitPane;
   private PanicPane _panicPane;
@@ -48,15 +47,13 @@ public class TriggerActionEditDialog extends OKCancelDialog {
   @Override
   protected JComponent buildContent() {
     _tabbedPane = new JTabbedPane();
-    _advancePane = new AdvancePane();
-    _reversePane = new ReversePane();
+    _stepPane = new StepPane();
     _gotoPane = new GotoPane();
     _waitPane = new WaitPane();
     _panicPane = new PanicPane();
     _metronomePane = new MetronomePane();
     
-    _tabbedPane.addTab("Advance", _advancePane);
-    _tabbedPane.addTab("Reverse", _reversePane);
+    _tabbedPane.addTab("Step cue", _stepPane);
     _tabbedPane.addTab("Go To", _gotoPane);
     _tabbedPane.addTab("Wait", _waitPane);
     _tabbedPane.addTab("Panic", _panicPane);
@@ -70,12 +67,9 @@ public class TriggerActionEditDialog extends OKCancelDialog {
     if (_initial == null)
       return;
     
-    if (_initial instanceof AdvanceAction) {
-      _tabbedPane.setSelectedComponent(_advancePane);
-      _advancePane.initialize((AdvanceAction) _initial);
-    } else if (_initial instanceof ReverseAction) {
-      _tabbedPane.setSelectedComponent(_reversePane);
-      _reversePane.initialize((ReverseAction) _initial);
+    if (_initial instanceof CueStepAction) {
+      _tabbedPane.setSelectedComponent(_stepPane);
+      _stepPane.initialize((CueStepAction) _initial);
     } else if (_initial instanceof GotoAction) {
       _tabbedPane.setSelectedComponent(_gotoPane);
       _gotoPane.initialize((GotoAction) _initial);
@@ -121,25 +115,23 @@ public class TriggerActionEditDialog extends OKCancelDialog {
     public abstract T createAction();
   }
   
-  private class AdvancePane extends ActionPane<AdvanceAction> {
-    public AdvancePane() {
-      add(new JLabel("Advance to the next cue"));
+  private class StepPane extends ActionPane<CueStepAction> {
+    private RadioButtonPanel<CueStepAction.Type> _buttonPanel;
+    
+    public StepPane() {
+      _buttonPanel = new RadioButtonPanel<>(CueStepAction.Type.values(), CueStepAction.Type.ADVANCE, true);
+      
+      add(_buttonPanel);
     }
     
     @Override
-    public AdvanceAction createAction() {
-      return new AdvanceAction();
-    }
-  }
-  
-  private class ReversePane extends ActionPane<ReverseAction> {
-    public ReversePane() {
-      add(new JLabel("Reverse to the previous cue"));
+    public void initialize(CueStepAction initial) {
+      _buttonPanel.setSelectedValue(initial.getType());
     }
     
     @Override
-    public ReverseAction createAction() {
-      return new ReverseAction();
+    public CueStepAction createAction() {
+      return new CueStepAction(_buttonPanel.getSelectedValue());
     }
   }
   
