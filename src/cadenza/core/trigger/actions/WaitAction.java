@@ -30,7 +30,8 @@ public class WaitAction implements TriggerAction {
       } catch (InterruptedException e) {
         LOG.warn("Exception during wait action", e);
       }
-    } else if (Metronome.getInstance().isRunning()) {
+    } else {
+      Metronome.getInstance().start();
       _beatCounter = 0;
       final MetronomeListener clickCounter = subdivision -> {
         if (subdivision == 0)
