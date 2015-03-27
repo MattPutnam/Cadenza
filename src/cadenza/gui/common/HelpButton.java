@@ -11,8 +11,6 @@ public class HelpButton extends JButton {
     super(ImageStore.HELP);
     
     setBorder(null);
-    addActionListener(e -> {
-      new BalloonTip(HelpButton.this, message);
-    });
+    addActionListener(e -> new BalloonTip(HelpButton.this, message));
   }
 }
