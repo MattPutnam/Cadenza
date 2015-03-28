@@ -3,6 +3,7 @@ package cadenza.gui.trigger;
 import java.awt.Component;
 
 import javax.swing.Box;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -10,6 +11,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
 
 import cadenza.core.CadenzaData;
+import cadenza.core.metronome.Metronome.Subdivision;
 import cadenza.core.trigger.actions.CueStepAction;
 import cadenza.core.trigger.actions.GotoAction;
 import cadenza.core.trigger.actions.MetronomeAction;
@@ -173,17 +175,22 @@ public class TriggerActionEditDialog extends OKCancelDialog {
     private JRadioButton _millisButton;
     private JRadioButton _beatsButton;
     
+    private JComboBox<Subdivision> _subdivisionCombo;
+    
     public WaitPane() {
       _field = new IntField(1, 0, Integer.MAX_VALUE);
       _field.setColumns(6);
       
       _millisButton = new JRadioButton("milliseconds");
-      _beatsButton = new JRadioButton("beats");
+      _beatsButton = new JRadioButton();
       SwingUtils.groupAndSelectFirst(_millisButton, _beatsButton);
       
+      _subdivisionCombo = new JComboBox<>(Subdivision.values());
+      final Box beatsBox = SwingUtils.buildLeftAlignedRow(_beatsButton, _subdivisionCombo);
+      
       final Box box = Box.createVerticalBox();
-      box.add(_millisButton);
-      box.add(_beatsButton);
+      box.add(SwingUtils.buildLeftAlignedRow(_millisButton));
+      box.add(beatsBox);
       
       add(new JLabel("Wait "));
       add(_field);
@@ -193,15 +200,21 @@ public class TriggerActionEditDialog extends OKCancelDialog {
     @Override
     public void initialize(WaitAction initial) {
       _field.setInt(initial.getNum());
-      if (initial.isMillis())
+      if (initial.isMillis()) {
         _millisButton.setSelected(true);
-      else
+      } else {
         _beatsButton.setSelected(true);
+        _subdivisionCombo.setSelectedItem(initial.getSubdivision());
+      }
     }
     
     @Override
     public WaitAction createAction() {
-      return new WaitAction(_field.getInt(), _millisButton.isSelected());
+      if (_millisButton.isSelected()) {
+        return WaitAction.millis(_field.getInt());
+      } else {
+        return WaitAction.beats(_field.getInt(), (Subdivision) _subdivisionCombo.getSelectedItem());
+      }
     }
   }
   

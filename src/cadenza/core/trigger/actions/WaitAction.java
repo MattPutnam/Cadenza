@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import cadenza.control.PerformanceController;
 import cadenza.core.metronome.Metronome;
+import cadenza.core.metronome.Metronome.Subdivision;
 import cadenza.core.metronome.MetronomeListener;
 
 public class WaitAction implements TriggerAction {
@@ -14,12 +15,26 @@ public class WaitAction implements TriggerAction {
   
   private final int _num;
   private final boolean _isMillis;
+  private final Subdivision _subdivision;
   
   private volatile int _beatCounter;
   
-  public WaitAction(int num, boolean isMillis) {
+  private WaitAction(int num, boolean isMillis, Subdivision subdivision) {
     _num = num;
     _isMillis = isMillis;
+    _subdivision = subdivision;
+  }
+  
+  public static WaitAction millis(int millis) {
+    return new WaitAction(millis, true, null);
+  }
+  
+  public static WaitAction beats(int num, Subdivision subdivision) {
+    return new WaitAction(num, false, subdivision);
+  }
+  
+  public Subdivision getSubdivision() {
+    return _subdivision;
   }
 
   @Override
@@ -34,7 +49,7 @@ public class WaitAction implements TriggerAction {
       Metronome.getInstance().start();
       _beatCounter = 0;
       final MetronomeListener clickCounter = subdivision -> {
-        if (subdivision == 0)
+        if (_subdivision.matches(subdivision))
           ++_beatCounter;
       };
       Metronome.getInstance().addMetronomeListener(clickCounter);
@@ -46,7 +61,7 @@ public class WaitAction implements TriggerAction {
   
   @Override
   public String toString() {
-    return "wait " + _num + (_isMillis ? " milliseconds" : " beats");
+    return "wait " + _num + (_isMillis ? " milliseconds" : " " + _subdivision.toString());
   }
   
   public int getNum() {
