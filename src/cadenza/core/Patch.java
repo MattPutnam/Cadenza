@@ -118,12 +118,15 @@ public class Patch implements Comparable<Patch>, Serializable {
     return this._synthesizer.equals(p._synthesizer) &&
          this.bank.equals(p.bank) &&
          this.name.equals(p.name) &&
-         this.number == p.number;
+         this.number == p.number &&
+         this.defaultVolume == p.defaultVolume &&
+         this._displayColor.equals(p._displayColor);
   }
   
   @Override
   public int hashCode() {
-    return Objects.hash(_synthesizer, name, bank, Integer.valueOf(number));
+    return Objects.hash(_synthesizer, name, bank, Integer.valueOf(number),
+        Integer.valueOf(defaultVolume), _displayColor);
   }
   
   @Override
