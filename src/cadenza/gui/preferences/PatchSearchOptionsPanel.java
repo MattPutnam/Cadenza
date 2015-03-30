@@ -19,6 +19,7 @@ public class PatchSearchOptionsPanel extends JPanel {
   
   private final JCheckBox _caseSensitiveBox;
   private final JCheckBox _excludeUserBox;
+  private final JCheckBox _excludeGMBox;
   
   public PatchSearchOptionsPanel() {
     _radioButtonPanel = new RadioButtonPanel<>(PatchSearchMode.values(), PatchSearchMode.PIPES, true);
@@ -26,6 +27,7 @@ public class PatchSearchOptionsPanel extends JPanel {
     
     _caseSensitiveBox = new JCheckBox("Case sensitive (not applicable for regex search)");
     _excludeUserBox = new JCheckBox("Exclude the 'user' bank from search results");
+    _excludeGMBox = new JCheckBox("Exclude the GM/GM2 bank from search results");
     
     _radioButtonPanel.addSelectionListener(e -> _regexWrapBox.setEnabled(e.getSelectedValue() == PatchSearchMode.REGEX));
     
@@ -35,6 +37,7 @@ public class PatchSearchOptionsPanel extends JPanel {
     box.add(Box.createVerticalStrut(16));
     box.add(SwingUtils.buildLeftAlignedRow(_caseSensitiveBox));
     box.add(SwingUtils.buildLeftAlignedRow(_excludeUserBox));
+    box.add(SwingUtils.buildLeftAlignedRow(_excludeGMBox));
     
     setLayout(new BorderLayout());
     add(SwingUtils.hugNorth(box), BorderLayout.WEST);
@@ -45,12 +48,14 @@ public class PatchSearchOptionsPanel extends JPanel {
     _regexWrapBox.setSelected(options.isRegexWrap());
     _caseSensitiveBox.setSelected(options.isCaseSensitive());
     _excludeUserBox.setSelected(options.isExcludeUser());
+    _excludeGMBox.setSelected(options.isExcludeGM());
   }
   
   public PatchSearchOptions getSelectedOptions() {
     return new PatchSearchOptions(_radioButtonPanel.getSelectedValue(),
                                   _regexWrapBox.isSelected(),
                                   _caseSensitiveBox.isSelected(),
-                                  _excludeUserBox.isSelected());
+                                  _excludeUserBox.isSelected(),
+                                  _excludeGMBox.isSelected());
   }
 }

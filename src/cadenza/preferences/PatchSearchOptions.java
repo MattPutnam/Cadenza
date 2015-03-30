@@ -21,17 +21,20 @@ public class PatchSearchOptions {
   private boolean _regexWrap;
   private boolean _caseSensitive;
   private boolean _excludeUser;
+  private boolean _excludeGM;
   
   public PatchSearchOptions(PatchSearchMode searchMode,
-      boolean regexWrap, boolean caseSensitive, boolean excludeUser) {
+      boolean regexWrap, boolean caseSensitive, boolean excludeUser, boolean excludeGM) {
     _searchMode = searchMode;
     _regexWrap = regexWrap;
     _caseSensitive = caseSensitive;
     _excludeUser = excludeUser;
+    _excludeGM = excludeGM;
   }
   
   public PatchSearchMode getSearchMode() { return _searchMode; }
   public boolean isRegexWrap() { return _regexWrap; }
   public boolean isCaseSensitive() { return _caseSensitive; }
   public boolean isExcludeUser() { return _excludeUser; }
+  public boolean isExcludeGM() { return _excludeGM; }
 }

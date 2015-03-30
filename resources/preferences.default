@@ -18,3 +18,4 @@ patchsearch.mode = PIPES
 patchsearch.regexwrap = true
 patchsearch.casesensitive = false
 patchsearch.excludeuser = false
+patchsearch.excludegm = false

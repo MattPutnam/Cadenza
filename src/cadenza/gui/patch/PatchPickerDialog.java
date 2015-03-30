@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.swing.Box;
 import javax.swing.JComponent;
@@ -24,6 +25,7 @@ import cadenza.gui.ImageStore;
 import cadenza.preferences.PatchSearchOptions.PatchSearchMode;
 import cadenza.preferences.Preferences;
 import cadenza.synths.Synthesizers;
+
 import common.swing.DocumentAdapter;
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
@@ -54,17 +56,13 @@ public class PatchPickerDialog extends OKCancelDialog {
   
   @Override
   protected JComponent buildContent() {
-    final List<Patch> patches;
-    if (Preferences.getPatchSearchOptions().isExcludeUser()) {
-      patches = _synthesizers.stream()
-                             .flatMap(Synthesizers::streamPatches)
-                             .filter(patch -> !patch.bank.getName().toLowerCase().equals("user"))
-                             .collect(Collectors.toList());
-    } else {
-      patches = _synthesizers.stream()
-                             .flatMap(Synthesizers::streamPatches)
-                             .collect(Collectors.toList());
-    }
+    Stream<Patch> patchStream = _synthesizers.stream().flatMap(Synthesizers::streamPatches);
+    if (Preferences.getPatchSearchOptions().isExcludeUser())
+      patchStream = patchStream.filter(patch -> !patch.bank.getName().toLowerCase().equals("user"));
+    if (Preferences.getPatchSearchOptions().isExcludeGM())
+      patchStream = patchStream.filter(patch -> !patch.bank.getName().contains("GM"));
+    
+    final List<Patch> patches = patchStream.collect(Collectors.toList());
     
     _resultList = new JList<>();
     _resultList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

@@ -190,7 +190,8 @@ public final class PreferencesLoader {
         PatchSearchMode.valueOf(loadedPrefs.get(Keys.PatchSearch.MODE)),
         Boolean.parseBoolean(loadedPrefs.get(Keys.PatchSearch.REGEX_WRAP)),
         Boolean.parseBoolean(loadedPrefs.get(Keys.PatchSearch.CASE_SENSITIVE)),
-        Boolean.parseBoolean(loadedPrefs.get(Keys.PatchSearch.EXCLUDE_USER)));
+        Boolean.parseBoolean(loadedPrefs.get(Keys.PatchSearch.EXCLUDE_USER)),
+        Boolean.parseBoolean(loadedPrefs.get(Keys.PatchSearch.EXCLUDE_GM)));
   }
   
   /////////////////////////////////////////////////////////////////////////////
@@ -270,6 +271,7 @@ public final class PreferencesLoader {
     preferences.put(Keys.PatchSearch.REGEX_WRAP,     Boolean.toString(options.isRegexWrap()));
     preferences.put(Keys.PatchSearch.CASE_SENSITIVE, Boolean.toString(options.isCaseSensitive()));
     preferences.put(Keys.PatchSearch.EXCLUDE_USER,   Boolean.toString(options.isExcludeUser()));
+    preferences.put(Keys.PatchSearch.EXCLUDE_GM,     Boolean.toString(options.isExcludeGM()));
     
     Preferences._patchSearchOptions = options;
   }
