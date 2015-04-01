@@ -35,6 +35,7 @@ import cadenza.gui.ImageStore;
 import cadenza.gui.keyboard.KeyboardAdapter;
 import cadenza.gui.keyboard.SingleKeyboardPanel;
 import cadenza.gui.patch.PatchSelector;
+import cadenza.gui.patchusage.merge.MergePatchDialog;
 
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
@@ -275,11 +276,11 @@ public class PatchUsagePanel extends JPanel {
           ));
           
           if (others.size() > 0) {
-            add(SwingUtils.menuItem("Create smart split with...", null, e ->
-              OKCancelDialog.showDialog(new SmartSplitDialog(_frame, _patchUsage, others), dialog ->
-                refreshDisplay()
-              )
-            ));
+            add(SwingUtils.menuItem("Create Merged Patch with...", null, e -> {
+              OKCancelDialog.showDialog(new MergePatchDialog(_frame, null, _patchUsage, others), dialog -> {
+                // TODO: add merge, remove individuals
+              });
+            }));
           }
         }
         
