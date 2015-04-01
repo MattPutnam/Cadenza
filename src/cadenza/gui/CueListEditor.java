@@ -12,6 +12,7 @@ import java.util.IdentityHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -36,7 +37,6 @@ import cadenza.core.patchusage.PatchUsage;
 import cadenza.gui.common.CadenzaTable;
 import cadenza.gui.cue.CueEditDialog;
 import cadenza.gui.song.SongEditDialog;
-
 import common.Utils;
 import common.collection.ListAdapter;
 import common.collection.ListEvent;
@@ -301,25 +301,10 @@ public class CueListEditor extends JPanel {
           final List<PatchUsage> list = cue.getPatchUsagesByKeyboard(keyboard);
           
           if (list != null && !list.isEmpty()) {
-            final List<String> puStrings = new LinkedList<>();
-            final List<PatchUsage> skip = new ArrayList<>();
-            
-            for (final PatchUsage pu : list) {
-              if (skip.contains(pu)) {
-                skip.remove(pu);
-                continue;
-              }
-              
-              if (pu.isSplit()) {
-                skip.add(pu.splitTwin);
-                puStrings.add(pu.buildSplitName(false, true));
-              } else {
-                puStrings.add(pu.toString(false, true));
-              }
-            }
-            
-            keyboardStrings.add(Utils.mkString(puStrings) +
-                (multiple ? " on " + keyboard.name : ""));
+            final String s = list.stream()
+                                 .map(pu -> pu.toString(false, true))
+                                 .collect(Collectors.joining(", "));
+            keyboardStrings.add(s + (multiple ? " on " + keyboard.name : ""));
           }
         }
         

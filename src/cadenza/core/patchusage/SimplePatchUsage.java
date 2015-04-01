@@ -59,7 +59,7 @@ public class SimplePatchUsage extends PatchUsage {
   }
   
   @Override
-  void prepare_additional(PerformanceController controller) {
+  public void prepare(PerformanceController controller) {
     _controller = controller;
     _channel = _controller.getCurrentlyAssignedChannel(this);
   }

@@ -430,7 +430,6 @@ public final class PerformanceController extends CadenzaController {
           puEffects.addAll(patchUsage.effects);
           puEffects.addAll(_currentGlobalCueEffects);
           if (patchUsage.respondsTo(inputMidiNumber, inputVelocity)) {
-            patchUsage.notifyNotePressed(inputMidiNumber);
             for (final int[] note : patchUsage.getNotes(inputMidiNumber, inputVelocity)) {
               int midiNumber = note[0];
               int velocity = note[1];

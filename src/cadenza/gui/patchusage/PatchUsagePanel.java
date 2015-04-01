@@ -106,8 +106,8 @@ public class PatchUsagePanel extends JPanel {
         final PatchUsage pu = findNext(list, last);
         last = pu;
         list.remove(pu);
-        if (pu.isSplit())
-          list.remove(pu.splitTwin);
+//        if (pu.isSplit())
+//          list.remove(pu.splitTwin);
         
         _patchUsageAreas.get(index).addPatchUsage(pu);
       }
@@ -196,20 +196,10 @@ public class PatchUsagePanel extends JPanel {
       _patchUsage = patchUsage;
       
       setLayout(null);
-      final JLabel label;
-      if (patchUsage.isSplit()) {
-        final String text = "<html><nobr>" + patchUsage.buildSplitName(false, true) + "</nobr></html>";
-        label = new JLabel(text, JLabel.CENTER);
-        
-        setBackground(Color.WHITE);
-        setToolTipText(text);
-      } else {
-        label = new JLabel(patchUsage.patch.name, JLabel.CENTER);
-        label.setForeground(patchUsage.patch.getTextColor());
-        
-        setBackground(patchUsage.patch.getDisplayColor());
-        setToolTipText(_patchUsage.toString(false));
-      }
+      final JLabel label = new JLabel(patchUsage.patch.name, JLabel.CENTER);
+      label.setForeground(patchUsage.patch.getTextColor());
+      setBackground(patchUsage.patch.getDisplayColor());
+      setToolTipText(_patchUsage.toString(false));
       label.setBounds(0, 0, width, height);
       add(label);
       
@@ -230,7 +220,7 @@ public class PatchUsagePanel extends JPanel {
         final List<PatchUsage> others = buildOthers(_patchUsage);
         
         // EDIT OPTIONS
-        if (_patchUsage.isSplit()) {
+        /*if (_patchUsage.isSplit()) {
           final PatchUsage lower = _patchUsage.splitAbove ? _patchUsage.splitTwin : _patchUsage;
           final PatchUsage upper = _patchUsage.splitAbove ? _patchUsage : _patchUsage.splitTwin;
           
@@ -274,7 +264,7 @@ public class PatchUsagePanel extends JPanel {
             _patchUsage.unsplit();
             refreshDisplay();
           }));
-        } else {
+        } else*/ {
           // edit options -> not splitting
           add(SwingUtils.menuItem("Edit", ImageStore.EDIT, e ->
             OKCancelDialog.showDialog(new PatchUsageEditDialog(_frame, _patchUsage, _data), dialog -> {
@@ -298,8 +288,6 @@ public class PatchUsagePanel extends JPanel {
         add(SwingUtils.menuItem("Delete", ImageStore.DELETE, e ->
           Dialog.confirm(this, "Are you sure you want to delete this patch?", () -> {
             _patchUsages.remove(_patchUsage);
-            if (_patchUsage.isSplit())
-              _patchUsages.remove(_patchUsage.splitTwin);
             refreshDisplay();
           })
         ));
@@ -309,7 +297,6 @@ public class PatchUsagePanel extends JPanel {
     private List<PatchUsage> buildOthers(PatchUsage target) {
       return _patchUsages.stream()
                          .filter(pu -> pu.location.getKeyboard() == target.location.getKeyboard())
-                         .filter(pu -> !pu.isSplit())
                          .filter(pu -> pu != target)
                          .collect(Collectors.toList());
     }

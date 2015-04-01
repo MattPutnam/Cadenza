@@ -2,7 +2,6 @@ package cadenza.core.patchusage;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +13,6 @@ import cadenza.core.Patch;
 import cadenza.core.Synthesizer;
 import cadenza.core.effects.Effect;
 
-import common.collection.buffer.FixedSizeIntBuffer;
 import common.swing.ColorUtils;
 
 /**
@@ -47,40 +45,6 @@ public abstract class PatchUsage implements Serializable {
    */
   public Map<Integer, Integer> initialControlSends = new HashMap<>();
   
-  /////////////////////////////////////////////////////////////////////////////
-  // Smart split section
-  /** The other PatchUsage in the split, or null if not splitting */
-  public PatchUsage splitTwin;
-  
-  /** True for splitting above the smart split point, false for below */
-  public boolean splitAbove;
-  
-  /** The starting split point (inclusive on upper split) */
-  public int startSplit;
-  
-  /** The current split point (inclusive on upper split) */
-  public int currentSplit;
-  
-  private transient FixedSizeIntBuffer _buffer = new FixedSizeIntBuffer(10);
-  
-  public boolean isSplit() {
-    return splitTwin != null;
-  }
-  
-  private int getCenter() {
-    final int[] values = _buffer.getValues();
-    return Arrays.stream(values).sum() / values.length;
-  }
-  
-  public void copySplitDataFrom(PatchUsage other) {
-    splitTwin = other.splitTwin;
-    splitAbove = other.splitAbove;
-    startSplit = other.startSplit;
-    currentSplit = other.currentSplit;
-  }
-  // End smart split section
-  /////////////////////////////////////////////////////////////////////////////
-  
   /**
    * A PatchUsage singleton representing all patch usages, used for
    * the global mapping editor
@@ -93,33 +57,6 @@ public abstract class PatchUsage implements Serializable {
     this.patch = patch;
     this.location = location;
     this.volume = volume;
-  }
-  
-  public void splitWith(PatchUsage other, boolean thisIsAbove, int initialSplit) {
-    if (isSplit())
-      throw new IllegalStateException("This patch usage is already split");
-    
-    if (other.location.getKeyboard() != location.getKeyboard())
-      throw new IllegalArgumentException("The two patch usages are on different keyboards");
-    
-    final Location newLocation = Location.union(location, other.location);
-    location = other.location = newLocation;
-    
-    other.splitTwin = this;
-    splitTwin = other;
-    
-    splitAbove = thisIsAbove;
-    other.splitAbove = !thisIsAbove;
-    
-    startSplit = other.startSplit = initialSplit;
-  }
-  
-  public void unsplit() {
-    if (!isSplit())
-      throw new IllegalStateException("Can only unsplit smart-split patches");
-    
-    splitTwin.splitTwin = null;
-    splitTwin = null;
   }
   
   /**
@@ -141,13 +78,6 @@ public abstract class PatchUsage implements Serializable {
   public final boolean respondsTo(int midiNumber, int velocity) {
     if (!location.contains(midiNumber))
       return false;
-    
-    if (isSplit()) {
-      if (splitAbove && midiNumber < currentSplit)
-        return false;
-      else if (!splitAbove && midiNumber >= currentSplit)
-        return false;
-    }
     
     return respondsTo_additional(midiNumber, velocity);
   }
@@ -201,43 +131,6 @@ public abstract class PatchUsage implements Serializable {
     return sb.toString() + toString_additional();
   }
   
-  public final String buildSplitName(boolean includeKeyboardInfo, boolean highlightPatchName) {
-    if (!isSplit())
-      throw new IllegalStateException();
-    
-    if (!splitAbove) {
-      final StringBuilder sb = new StringBuilder();
-      
-      String bgColorHTML = ColorUtils.getHTMLColorString(patch.getDisplayColor());
-      String fgColorHTML = ColorUtils.getHTMLColorString(patch.getTextColor());
-      
-      if (highlightPatchName) sb.append("<span style='color:" + fgColorHTML + ";background:" + bgColorHTML + "'>");
-      sb.append(patch.name);
-      if (highlightPatchName) sb.append("</span>");
-      if (volume != patch.defaultVolume)
-        sb.append(" at " + volume);
-      
-      sb.append(" / ");
-      
-      final Patch twin = splitTwin.patch;
-      
-      bgColorHTML = ColorUtils.getHTMLColorString(twin.getDisplayColor());
-      fgColorHTML = ColorUtils.getHTMLColorString(twin.getTextColor());
-      
-      if (highlightPatchName) sb.append("<span style='color:" + fgColorHTML + ";background:" + bgColorHTML + "'>");
-      sb.append(twin.name);
-      if (highlightPatchName) sb.append("</span>");
-      if (splitTwin.volume != twin.defaultVolume)
-        sb.append(" at " + splitTwin.volume);
-      
-      sb.append(" with smart split ").append(location.toString(includeKeyboardInfo));
-      
-      return sb.toString();
-    } else {
-      return splitTwin.buildSplitName(includeKeyboardInfo, highlightPatchName);
-    }
-  }
-  
   /**
    * Appended to the end of the baseline toString information.
    * @return additional info for the toString value
@@ -246,39 +139,10 @@ public abstract class PatchUsage implements Serializable {
   
   /**
    * Called by the CadenzaController when the PatchUsage is loaded.
-   * @param controller the controller
-   */
-  public final void prepare(PerformanceController controller) {
-    if (isSplit()) {
-      currentSplit = startSplit;
-      
-      final int center;
-      if (splitAbove)
-        center = (location.getLower().getMidiNumber() + startSplit) / 2;
-      else
-        center = (location.getUpper().getMidiNumber() + startSplit) / 2;
-      
-      _buffer = new FixedSizeIntBuffer(10);
-      _buffer.fill(center);
-    }
-    
-    prepare_additional(controller);
-  }
-  
-  public final void notifyNotePressed(int noteNumber) {
-    if (isSplit()) {
-      _buffer.add(noteNumber);
-      final int newSplit = (getCenter() + splitTwin.getCenter()) / 2;
-      currentSplit = splitTwin.currentSplit = newSplit;
-    }
-  }
-  
-  /**
-   * Called by the CadenzaController when the PatchUsage is loaded.
    * Default implementation does nothing, override to perform any needed setup.
    * @param controller the controller
    */
-  void prepare_additional(PerformanceController controller) {}
+  public void prepare(PerformanceController controller) {}
   
   /**
    * Called by the CadenzaController when the PatchUsage is left.
