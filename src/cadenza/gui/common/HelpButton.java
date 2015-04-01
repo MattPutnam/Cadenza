@@ -1,5 +1,7 @@
 package cadenza.gui.common;
 
+import java.awt.Cursor;
+
 import javax.swing.JButton;
 
 import net.java.balloontip.BalloonTip;
@@ -11,6 +13,7 @@ public class HelpButton extends JButton {
     super(ImageStore.HELP);
     
     setBorder(null);
+    setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     addActionListener(e -> new BalloonTip(HelpButton.this, message));
   }
 }
