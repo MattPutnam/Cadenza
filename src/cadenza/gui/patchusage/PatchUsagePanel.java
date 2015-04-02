@@ -28,6 +28,8 @@ import cadenza.core.Keyboard;
 import cadenza.core.Location;
 import cadenza.core.Note;
 import cadenza.core.Patch;
+import cadenza.core.PatchAssignmentEntity;
+import cadenza.core.patchmerge.PatchMerge;
 import cadenza.core.patchusage.PatchUsage;
 import cadenza.core.patchusage.SimplePatchUsage;
 import cadenza.gui.CadenzaFrame;
@@ -47,20 +49,20 @@ public class PatchUsagePanel extends JPanel {
   private static final Color PATCH_BORDER = Color.DARK_GRAY;
   
   private final CadenzaFrame _frame;
-  private final Cue _cue;
   private final CadenzaData _data;
   
   private final List<PatchUsage> _patchUsages;
+  private final List<PatchMerge> _patchMerges;
   private final List<SingleKeyboardPanel> _keyboardPanels;
   private final List<PatchUsageArea> _patchUsageAreas;
   
   public PatchUsagePanel(CadenzaFrame frame, Cue cue, CadenzaData data) {
     super();
     _frame = frame;
-    _cue = cue;
     _data = data;
     
-    _patchUsages = new ArrayList<>(_cue.patches);
+    _patchUsages = new ArrayList<>(cue.patches);
+    _patchMerges = new ArrayList<>(cue.merges);
     _keyboardPanels = new ArrayList<>(_data.keyboards.size());
     _patchUsageAreas = new ArrayList<>(_data.keyboards.size());
     
@@ -92,25 +94,30 @@ public class PatchUsagePanel extends JPanel {
     return _patchUsages;
   }
   
+  public List<PatchMerge> getPatchMerges() {
+    return _patchMerges;
+  }
+  
   private void refreshDisplay() {
     _patchUsageAreas.forEach(PatchUsageArea::clearEntities);
     
-    final Map<Keyboard, List<PatchUsage>> map = sortByKeyboard(_patchUsages);
+    final List<PatchAssignmentEntity> allEntities = new ArrayList<>();
+    allEntities.addAll(_patchUsages);
+    allEntities.addAll(_patchMerges);
+    final Map<Keyboard, List<PatchAssignmentEntity>> map = sortByKeyboard(allEntities);
     
     for (Keyboard keyboard : _data.keyboards) {
       final int index = _data.keyboards.indexOf(keyboard);
-      final List<PatchUsage> list = map.get(keyboard);
+      final List<PatchAssignmentEntity> list = map.get(keyboard);
       if (list == null) continue;
       
-      PatchUsage last = null;
+      PatchAssignmentEntity last = null;
       while (!list.isEmpty()) {
-        final PatchUsage pu = findNext(list, last);
-        last = pu;
-        list.remove(pu);
-//        if (pu.isSplit())
-//          list.remove(pu.splitTwin);
+        final PatchAssignmentEntity pae = findNext(list, last);
+        last = pae;
+        list.remove(pae);
         
-        _patchUsageAreas.get(index).addPatchUsage(pu);
+        _patchUsageAreas.get(index).addPatchAssignmentEntity(pae);
       }
     }
     
@@ -135,38 +142,38 @@ public class PatchUsagePanel extends JPanel {
     }, false);
   }
   
-  private static Map<Keyboard, List<PatchUsage>> sortByKeyboard(List<PatchUsage> patchUsages) {
-    return patchUsages.stream().collect(Collectors.groupingBy(pu -> pu.location.getKeyboard()));
+  private static Map<Keyboard, List<PatchAssignmentEntity>> sortByKeyboard(List<PatchAssignmentEntity> patchAssignments) {
+    return patchAssignments.stream().collect(Collectors.groupingBy(pae -> pae.getLocation().getKeyboard()));
   }
   
-  private static PatchUsage findNext(List<PatchUsage> patchUsages, PatchUsage last) {
+  private static PatchAssignmentEntity findNext(List<PatchAssignmentEntity> patchAssignments, PatchAssignmentEntity last) {
     if (last == null) {
-      final PatchUsage giant = findConflictingWithAll(patchUsages);
+      final PatchAssignmentEntity giant = findConflictingWithAll(patchAssignments);
       if (giant != null)
         return giant;
       else
-        return findWithLowestHigh(patchUsages);
+        return findWithLowestHigh(patchAssignments);
     }
     
-    final List<PatchUsage> nonConflicting =
-        patchUsages.stream()
-                   .filter(pu -> pu.location.getLower().above(last.location.getUpper()))
+    final List<PatchAssignmentEntity> nonConflicting =
+        patchAssignments.stream()
+                   .filter(pu -> pu.getLocation().getLower().above(last.getLocation().getUpper()))
                    .collect(Collectors.toList());
     
     if (nonConflicting.isEmpty())
-      return findWithLowestHigh(patchUsages);
+      return findWithLowestHigh(patchAssignments);
     else
       return findWithLowestHigh(nonConflicting);
   }
   
-  private static PatchUsage findWithLowestHigh(List<PatchUsage> patchUsages) {
-    PatchUsage found = patchUsages.get(0);
-    Note foundHigh = found.location.getUpper();
-    for (int i = 1; i < patchUsages.size(); ++i) {
-      final PatchUsage pu = patchUsages.get(i);
-      final Note high = pu.location.getUpper();
+  private static PatchAssignmentEntity findWithLowestHigh(List<PatchAssignmentEntity> patchAssignments) {
+    PatchAssignmentEntity found = patchAssignments.get(0);
+    Note foundHigh = found.getLocation().getUpper();
+    for (int i = 1; i < patchAssignments.size(); ++i) {
+      final PatchAssignmentEntity pae = patchAssignments.get(i);
+      final Note high = pae.getLocation().getUpper();
       if (high.below(foundHigh)) {
-        found = pu;
+        found = pae;
         foundHigh = high;
       }
     }
@@ -174,23 +181,23 @@ public class PatchUsagePanel extends JPanel {
     return found;
   }
   
-  private static PatchUsage findConflictingWithAll(List<PatchUsage> patchUsages) {
+  private static PatchAssignmentEntity findConflictingWithAll(List<PatchAssignmentEntity> patchAssignments) {
     outer:
-    for (final PatchUsage pu1 : patchUsages) {
-      for (final PatchUsage pu2 : patchUsages) {
-        if (pu1 == pu2) continue;
+    for (final PatchAssignmentEntity pae1 : patchAssignments) {
+      for (final PatchAssignmentEntity pae2 : patchAssignments) {
+        if (pae1 == pae2) continue;
         
-        if (pu1.location.getUpper().below(pu2.location.getLower()) ||
-            pu2.location.getUpper().below(pu1.location.getLower())) // non-conflicting
+        if (pae1.getLocation().getUpper().below(pae2.getLocation().getLower()) ||
+            pae2.getLocation().getUpper().below(pae1.getLocation().getLower())) // non-conflicting
           continue outer;
       }
-      return pu1;
+      return pae1;
     }
     return null;
   }
   
   private class PatchUsageEntity extends JPanel {
-    private PatchUsage _patchUsage;
+    private final PatchUsage _patchUsage;
     
     public PatchUsageEntity(PatchUsage patchUsage, int width, int height) {
       super();
@@ -218,70 +225,24 @@ public class PatchUsagePanel extends JPanel {
     
     private class PopupMenu extends JPopupMenu {
       private PopupMenu() {
-        final List<PatchUsage> others = buildOthers(_patchUsage);
-        
-        // EDIT OPTIONS
-        /*if (_patchUsage.isSplit()) {
-          final PatchUsage lower = _patchUsage.splitAbove ? _patchUsage.splitTwin : _patchUsage;
-          final PatchUsage upper = _patchUsage.splitAbove ? _patchUsage : _patchUsage.splitTwin;
-          
-          add(SwingUtils.menuItem("Edit lower (" + lower.patch.name + ")", ImageStore.EDIT, e ->
-            OKCancelDialog.showDialog(new PatchUsageEditDialog(_frame, lower, _data), dialog -> {
-              final PatchUsage newLower = dialog.getPatchUsage();
-              final Location newLocation = newLower.location;
-              
-              newLower.copySplitDataFrom(lower);
-              upper.splitTwin = newLower;
-              upper.location = newLocation;
-              
-              _patchUsages.remove(_patchUsage);
-              _patchUsages.add(newLower);
-              refreshDisplay();
-            })
-          ));
-          
-          add(SwingUtils.menuItem("Edit upper (" + upper.patch.name + ")", ImageStore.EDIT, e ->
-            OKCancelDialog.showDialog(new PatchUsageEditDialog(_frame, lower, _data), dialog -> {
-              final PatchUsage newUpper = dialog.getPatchUsage();
-              final Location newLocation = newUpper.location;
-              
-              newUpper.copySplitDataFrom(upper);
-              lower.splitTwin = newUpper;
-              lower.location = newLocation;
-              
-              _patchUsages.remove(_patchUsage);
-              _patchUsages.add(newUpper);
-              refreshDisplay();
-            })
-          ));
-          
-          add(SwingUtils.menuItem("Edit smart split properties...", null, e ->
-            OKCancelDialog.showDialog(new SmartSplitDialog(_frame, _patchUsage, others), dialog ->
-              refreshDisplay()
-            )
-          ));
-          
-          add(SwingUtils.menuItem("Detach from smart split", null, e -> {
-            _patchUsage.unsplit();
+        add(SwingUtils.menuItem("Edit", ImageStore.EDIT, e ->
+          OKCancelDialog.showDialog(new PatchUsageEditDialog(_frame, _patchUsage, _data), dialog -> {
+            _patchUsages.remove(_patchUsage);
+            _patchUsages.add(dialog.getPatchUsage());
             refreshDisplay();
-          }));
-        } else*/ {
-          // edit options -> not splitting
-          add(SwingUtils.menuItem("Edit", ImageStore.EDIT, e ->
-            OKCancelDialog.showDialog(new PatchUsageEditDialog(_frame, _patchUsage, _data), dialog -> {
-              _patchUsages.remove(_patchUsage);
-              _patchUsages.add(dialog.getPatchUsage());
+          })
+        ));
+        
+        final List<PatchUsage> others = buildOthers();
+        if (others.size() > 0) {
+          add(SwingUtils.menuItem("Create Merged Patch with...", null, e -> {
+            OKCancelDialog.showDialog(new MergePatchDialog(_frame, null, _patchUsage, others), dialog -> {
+              final PatchMerge merge = dialog.getPatchMerge();
+              _patchMerges.add(merge);
+              _patchUsages.removeAll(merge.accessPatchUsages());
               refreshDisplay();
-            })
-          ));
-          
-          if (others.size() > 0) {
-            add(SwingUtils.menuItem("Create Merged Patch with...", null, e -> {
-              OKCancelDialog.showDialog(new MergePatchDialog(_frame, null, _patchUsage, others), dialog -> {
-                // TODO: add merge, remove individuals
-              });
-            }));
-          }
+            });
+          }));
         }
         
         addSeparator();
@@ -295,10 +256,84 @@ public class PatchUsagePanel extends JPanel {
       }
     }
     
-    private List<PatchUsage> buildOthers(PatchUsage target) {
+    private List<PatchUsage> buildOthers() {
       return _patchUsages.stream()
-                         .filter(pu -> pu.location.getKeyboard() == target.location.getKeyboard())
-                         .filter(pu -> pu != target)
+                         .filter(pu -> pu.location.getKeyboard() == _patchUsage.location.getKeyboard())
+                         .filter(pu -> pu != _patchUsage)
+                         .collect(Collectors.toList());
+    }
+  }
+  
+  private class PatchMergeEntity extends JPanel {
+    private final PatchMerge _patchMerge;
+    
+    public PatchMergeEntity(PatchMerge merge, int width, int height) {
+      _patchMerge = merge;
+      
+      setLayout(null);
+      final String text = "<html>" + merge.toString(false, true) + "</html>";
+      final JLabel label = new JLabel(text, JLabel.CENTER);
+      setBackground(Color.WHITE);
+      setToolTipText(text);
+      label.setBounds(0, 0, width, height);
+      add(label);
+      
+      setBorder(BorderFactory.createLineBorder(PATCH_BORDER));
+      setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+      
+      addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+          final PopupMenu menu = new PopupMenu();
+          menu.show(e.getComponent(), e.getX(), e.getY());
+        }
+      });
+    }
+    
+    private class PopupMenu extends JPopupMenu {
+      private PopupMenu() {
+        int index = 0;
+        for (final PatchUsage pu : _patchMerge.accessPatchUsages()) {
+          final int findex = index++;
+          add(SwingUtils.menuItem("Edit " + pu.toString(false, false), null, e -> {
+            OKCancelDialog.showDialog(new PatchUsageEditDialog(_frame, pu, _data), dialog -> {
+              _patchMerge.accessPatchUsages().set(findex, dialog.getPatchUsage());
+              refreshDisplay();
+            });
+          }));
+        }
+        
+        final List<PatchUsage> editOthers = buildOthers();
+        editOthers.addAll(_patchMerge.accessPatchUsages());
+        editOthers.remove(_patchMerge.accessPrimary());
+        add(SwingUtils.menuItem("Edit merge properties", ImageStore.EDIT, e -> {
+          OKCancelDialog.showDialog(new MergePatchDialog(_frame, _patchMerge, _patchMerge.accessPrimary(), editOthers), dialog -> {
+            _patchMerges.remove(_patchMerge);
+            _patchMerges.add(dialog.getPatchMerge());
+            refreshDisplay();
+          });
+        }));
+        
+        addSeparator();
+        
+        add(SwingUtils.menuItem("Detach merged items", null, e -> {
+          _patchUsages.addAll(_patchMerge.accessPatchUsages());
+          _patchMerges.remove(_patchMerge);
+          refreshDisplay();
+        }));
+        
+        addSeparator();
+        
+        add(SwingUtils.menuItem("Delete (including contained patches)", ImageStore.DELETE, e -> {
+          _patchMerges.remove(_patchMerge);
+          refreshDisplay();
+        }));
+      }
+    }
+    
+    private List<PatchUsage> buildOthers() {
+      return _patchUsages.stream()
+                         .filter(pu -> pu.location.getKeyboard() == _patchMerge.accessLocation().getKeyboard())
                          .collect(Collectors.toList());
     }
   }
@@ -322,22 +357,29 @@ public class PatchUsagePanel extends JPanel {
       SwingUtils.freezeHeight(this, HEIGHT + GAP);
     }
     
-    public void addPatchUsage(PatchUsage patchUsage) {
-      if (rightMostNote != null && !rightMostNote.below(patchUsage.location.getLower())) {
+    public void addPatchAssignmentEntity(PatchAssignmentEntity entity) {
+      if (rightMostNote != null && !rightMostNote.below(entity.getLocation().getLower())) {
         rightMostNote = null;
         yPos += HEIGHT + GAP;
         SwingUtils.freezeHeight(this, yPos + HEIGHT);
       }
       
-      final int x = _keyboardPanel.accessKeyboardPanel().getKeyPosition(patchUsage.location.getLower()).x;
-      final Rectangle r = _keyboardPanel.accessKeyboardPanel().getKeyPosition(patchUsage.location.getUpper());
+      final int x = _keyboardPanel.accessKeyboardPanel().getKeyPosition(entity.getLocation().getLower()).x;
+      final Rectangle r = _keyboardPanel.accessKeyboardPanel().getKeyPosition(entity.getLocation().getUpper());
       final int width = r.x + r.width - x;
       
-      final PatchUsageEntity pue = new PatchUsageEntity(patchUsage, width, HEIGHT);
-      pue.setBounds(x, yPos, width, HEIGHT);
-      add(pue);
+      final JPanel brick;
+      if (entity instanceof PatchUsage) {
+        brick = new PatchUsageEntity((PatchUsage) entity, width, HEIGHT);
+      } else if (entity instanceof PatchMerge) {
+        brick = new PatchMergeEntity((PatchMerge) entity, width, HEIGHT);
+      } else {
+        throw new IllegalStateException("Unknown PatchAssignmentEntity subtype");
+      }
+      brick.setBounds(x, yPos, width, HEIGHT);
+      add(brick);
       repaint();
-      rightMostNote = patchUsage.location.getUpper();
+      rightMostNote = entity.getLocation().getUpper();
     }
     
     public void clearEntities() {

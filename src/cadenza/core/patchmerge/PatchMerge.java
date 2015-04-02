@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import cadenza.core.Location;
+import cadenza.core.PatchAssignmentEntity;
 import cadenza.core.patchusage.PatchUsage;
 
 /**
@@ -14,7 +15,7 @@ import cadenza.core.patchusage.PatchUsage;
  * 
  * @author Matt Putnam
  */
-public abstract class PatchMerge {
+public abstract class PatchMerge implements PatchAssignmentEntity {
   /**
    * Response object for determining which constituent PatchUsage should
    * receive an incoming MIDI message.
@@ -90,6 +91,13 @@ public abstract class PatchMerge {
   }
   
   /**
+   * Each subclass must declare one of its constituent PatchUsages to be the "primary",
+   * for editing purposes.
+   * @return the primary PatchUsage
+   */
+  public abstract PatchUsage accessPrimary();
+  
+  /**
    * @return the merged Location for this merge
    */
   public Location accessLocation() {
@@ -123,13 +131,20 @@ public abstract class PatchMerge {
     return toString(includeLocationInfo, false);
   }
   
+  @Override
   public final String toString(boolean includeLocationInfo, boolean highlightPatchNames) {
     return _patchUsages.stream()
                        .map(pu -> pu.toString(false, highlightPatchNames))
-                       .collect(Collectors.joining(" / ")) +
+                       .collect(Collectors.joining(" / ")) + 
            toString_additional() +
            (includeLocationInfo ? " " + accessLocation().toString(true) : "");
   }
   
   protected abstract String toString_additional();
+  
+  // Compliance
+  @Override
+  public Location getLocation() {
+    return accessLocation();
+  }
 }

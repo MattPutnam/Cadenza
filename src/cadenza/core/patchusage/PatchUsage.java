@@ -10,9 +10,9 @@ import cadenza.control.PerformanceController;
 import cadenza.core.Bank;
 import cadenza.core.Location;
 import cadenza.core.Patch;
+import cadenza.core.PatchAssignmentEntity;
 import cadenza.core.Synthesizer;
 import cadenza.core.effects.Effect;
-
 import common.swing.ColorUtils;
 
 /**
@@ -21,7 +21,7 @@ import common.swing.ColorUtils;
  * 
  * @author Matt Putnam
  */
-public abstract class PatchUsage implements Serializable {
+public abstract class PatchUsage implements PatchAssignmentEntity, Serializable {
   private static final long serialVersionUID = 2L;
   
   /** The patch to play */
@@ -111,6 +111,7 @@ public abstract class PatchUsage implements Serializable {
    * with its display color
    * @return a String representation of this PatchUsage
    */
+  @Override
   public final String toString(boolean includeKeyboardInfo, boolean highlightPatchName) {
     if (this.equals(ALL))
       return "ALL";
@@ -157,4 +158,10 @@ public abstract class PatchUsage implements Serializable {
    * @param midiNumber the MIDI number of the released note
    */
   public void noteReleased(int midiNumber) {}
+  
+  // Compliance
+  @Override
+  public Location getLocation() {
+    return location;
+  }
 }

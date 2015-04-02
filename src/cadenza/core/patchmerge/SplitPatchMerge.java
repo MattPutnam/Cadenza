@@ -18,6 +18,8 @@ import common.collection.buffer.FixedSizeIntBuffer;
  * @author Matt Putnam
  */
 public class SplitPatchMerge extends PatchMerge {
+  public static final int DEFAULT_BUFFER_SIZE = 10;
+  
   private final int _bufferSize;
   private final FixedSizeIntBuffer _lowerBuffer;
   private final FixedSizeIntBuffer _upperBuffer;
@@ -61,6 +63,18 @@ public class SplitPatchMerge extends PatchMerge {
     return accessPatchUsages().get(1);
   }
   
+  @Override
+  public PatchUsage accessPrimary() {
+    return getLower();
+  }
+  
+  /**
+   * @return the starting split point (MIDI note number)
+   */
+  public int getStartSplit() {
+    return _startSplit;
+  }
+  
   /**
    * @return the buffer size
    */
@@ -102,6 +116,6 @@ public class SplitPatchMerge extends PatchMerge {
   
   @Override
   protected String toString_additional() {
-    return "Smart Split at " + Note.valueOf(_startSplit).toString();
+    return " Smart Split at " + Note.valueOf(_startSplit).toString();
   }
 }

@@ -253,7 +253,7 @@ public final class PerformanceController extends CadenzaController {
     final Map<PatchUsage, Integer> newAssignments = new HashMap<>();
     
     final List<PatchUsage> oldPatchUsages = oldCue == null ? Collections.emptyList()
-                                 : oldCue.getPatchUsages();
+                                                           : oldCue.getPatchUsages();
     final List<PatchUsage> newPatchUsages = newCue.getPatchUsages();
     
     final Map<Synthesizer, List<Integer>> availableChannels = new HashMap<>();

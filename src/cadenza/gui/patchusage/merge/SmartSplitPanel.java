@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -17,15 +18,24 @@ import cadenza.core.Location;
 import cadenza.core.Note;
 import cadenza.core.patchmerge.SplitPatchMerge;
 import cadenza.core.patchusage.PatchUsage;
+import cadenza.gui.common.HelpButton;
 import cadenza.gui.keyboard.KeyboardAdapter;
 import cadenza.gui.keyboard.SingleKeyboardPanel;
-
+import common.Utils;
+import common.swing.IntField;
 import common.swing.SwingUtils;
 
 @SuppressWarnings("serial")
 public class SmartSplitPanel extends MergePanel<SplitPatchMerge> {
+  private static final String BUFFER_HELP_TEXT = Utils.renderForSwingHTML(
+      "The size of the buffer used to group key presses on either side of the split.\n\n"
+      + "Smaller values track your notes more closely, larger values cause the split\n"
+      + "point to change more gradually."
+      );
+  
   private JComboBox<PatchUsage> _patchUsageCombo;
   private JCheckBox _aboveBox;
+  private IntField _bufferField;
   private SingleKeyboardPanel _keyboardPanel;
   private JPanel _rangePanel;
   
@@ -44,6 +54,10 @@ public class SmartSplitPanel extends MergePanel<SplitPatchMerge> {
     _aboveBox = new JCheckBox("Make this the top patch");
     _aboveBox.addActionListener(e -> update());
     
+    _bufferField = new IntField(SplitPatchMerge.DEFAULT_BUFFER_SIZE, 1, Integer.MAX_VALUE);
+    _bufferField.setColumns(6);
+    SwingUtils.freezeSize(_bufferField);
+    
     _keyboardPanel = new SingleKeyboardPanel(kbd.low, kbd.high);
     _keyboardPanel.addKeyboardListener(new KeyboardAdapter() {
       @Override
@@ -58,7 +72,7 @@ public class SmartSplitPanel extends MergePanel<SplitPatchMerge> {
       public void keyDragged(Note startNote, Note endNote) {
         final Note lower = Note.min(startNote, endNote);
         final Note upper = Note.max(startNote, endNote);
-        _union = new Location(primary.location.getKeyboard(), lower, upper);
+        _union = new Location(kbd, lower, upper);
         _currentSplit = Note.valueOf((lower.getMidiNumber() + upper.getMidiNumber()) / 2);
         update();
       };
@@ -70,10 +84,14 @@ public class SmartSplitPanel extends MergePanel<SplitPatchMerge> {
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     add(SwingUtils.buildCenteredRow(new JLabel("Merge with:"), _patchUsageCombo));
     add(SwingUtils.buildCenteredRow(_aboveBox));
+    add(SwingUtils.buildCenteredRow(new JLabel("Buffer size:"), _bufferField, new HelpButton(BUFFER_HELP_TEXT)));
     add(SwingUtils.buildCenteredRow(new JLabel("Click to select initial split point, drag to define total range:")));
     add(SwingUtils.buildCenteredRow(_keyboardPanel));
     add(SwingUtils.buildCenteredRow(_rangePanel));
+    add(Box.createVerticalGlue());
     
+    // put this on the end of the event queue so that we wait for some other
+    // initialization finishes first
     SwingUtilities.invokeLater(() -> {
       SwingUtils.freezeSize(_rangePanel, _keyboardPanel.getWidth(), 26);
       notifyChange();
@@ -82,14 +100,31 @@ public class SmartSplitPanel extends MergePanel<SplitPatchMerge> {
 
   @Override
   public void initialize(SplitPatchMerge initial) {
-    // TODO Auto-generated method stub
+    if (initial.getLower() == accessPrimary()) {
+      _aboveBox.setSelected(false);
+      _patchUsageCombo.setSelectedItem(initial.getUpper());
+    } else {
+      _aboveBox.setSelected(true);
+      _patchUsageCombo.setSelectedItem(initial.getLower());
+    }
     
+    // put this on the end of the event queue so that some other initialization
+    // that would blast this happens first
+    SwingUtilities.invokeLater(() -> {
+      _union = initial.accessLocation();
+      _currentSplit = Note.valueOf(initial.getStartSplit());
+      _bufferField.setInt(initial.getBufferSize());
+      
+      update();
+    });
   }
 
   @Override
   public SplitPatchMerge getPatchMerge() {
-    // TODO Auto-generated method stub
-    return null;
+    final boolean above = _aboveBox.isSelected();
+    final PatchUsage lower = above ? _other : accessPrimary();
+    final PatchUsage upper = above ? accessPrimary() : _other;
+    return new SplitPatchMerge(lower, upper, _currentSplit.getMidiNumber(), _bufferField.getInt());
   }
   
   private PatchUsage getSelectedItem() {

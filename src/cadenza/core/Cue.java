@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import cadenza.core.effects.Effect;
+import cadenza.core.patchmerge.PatchMerge;
 import cadenza.core.patchusage.PatchUsage;
 import cadenza.core.trigger.Trigger;
 import cadenza.gui.trigger.HasTriggers;
@@ -30,6 +31,9 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
   
   /** The patches used */
   public List<PatchUsage> patches;
+  
+  /** The merges used */
+  public List<PatchMerge> merges;
   
   /** The triggers used */
   public List<Trigger> triggers;
@@ -58,6 +62,7 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
     this.song = song;
     this.measureNumber = measureNumber;
     patches = new ArrayList<>();
+    merges = new ArrayList<>();
     triggers = new ArrayList<>();
     _controlMapping = new ArrayList<>();
     effects = new ArrayList<>();
@@ -71,6 +76,7 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
     this.song = other.song;
     this.measureNumber = other.measureNumber;
     this.patches = other.patches;
+    this.merges = other.merges;
     this.triggers = other.triggers;
     this.disableGlobalTriggers = other.disableGlobalTriggers;
     this._controlMapping = other._controlMapping;
