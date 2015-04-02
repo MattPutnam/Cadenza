@@ -113,9 +113,18 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
     _controlMapping.addAll(controlMap);
   }
   
+  /**
+   * This method is used by the PerformanceController to allocate channels to
+   * patches, and by the ControlMap framework to determine target patches.
+   * In accordance, this method returns the union of the normal PatchUsage
+   * entries and the PatchUsages contained within all PatchMerge entries.
+   */
   @Override
   public List<PatchUsage> getPatchUsages() {
-    return patches;
+    final List<PatchUsage> result = new ArrayList<>();
+    result.addAll(patches);
+    merges.forEach(pm -> result.addAll(pm.accessPatchUsages()));
+    return result;
   }
 
   // Sort by song, then measure for organization/display

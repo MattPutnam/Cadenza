@@ -20,17 +20,18 @@ import cadenza.core.CadenzaData;
 import cadenza.core.ControlMapEntry;
 import cadenza.core.Cue;
 import cadenza.core.Keyboard;
+import cadenza.core.Location;
 import cadenza.core.LocationNumber;
 import cadenza.core.Patch;
 import cadenza.core.Song;
 import cadenza.core.Synthesizer;
 import cadenza.core.effects.Effect;
+import cadenza.core.patchmerge.PatchMerge;
 import cadenza.core.patchusage.PatchUsage;
 import cadenza.core.trigger.Trigger;
 import cadenza.delegate.PatchChangeDelegate;
 import cadenza.gui.CadenzaFrame;
 import cadenza.gui.EffectMonitor;
-
 import common.midi.MidiUtilities;
 import common.tuple.Pair;
 
@@ -301,16 +302,13 @@ public final class PerformanceController extends CadenzaController {
       PatchChangeDelegate.performPatchChange(getReceiver(), pu.patch, channel.intValue());
     }
     
-    for (final PatchUsage pu : newPatchUsages) {
-      sendCC(7, pu.volume, newAssignments.get(pu).intValue());
-    }
+    newPatchUsages.forEach(pu -> sendCC(7, pu.volume, newAssignments.get(pu).intValue()));
     
     _currentAssignments = newAssignments;
     _currentCue = newCue;
     
-    for (final PatchUsage pu : _currentAssignments.keySet()) {
-      pu.prepare(this);
-    }
+    _currentCue.patches.forEach(pu -> pu.prepare(this));
+    _currentCue.merges.forEach(merge -> merge.reset());
     
     _currentTriggers = new ArrayList<>();
     if (!newCue.disableGlobalTriggers)
@@ -345,17 +343,13 @@ public final class PerformanceController extends CadenzaController {
     if (keyboard == null)
       return;
     
-    for (final Trigger trigger : _currentTriggers) {
-      trigger.receive(sm, this);
-    }
+    _currentTriggers.forEach(t -> t.receive(sm,  this));
     
     // send note info:
     noteorCC:
     if (MidiUtilities.isNoteOff(sm)) {
       final int midiNumber = sm.getData1();
-      for (final PatchUsage pu : _currentCue.patches) {
-        pu.noteReleased(midiNumber);
-      }
+      _currentCue.patches.forEach(pu -> pu.noteReleased(midiNumber));
       
       final Pair<Keyboard, Integer> key = Pair.make(keyboard, Integer.valueOf(midiNumber));
       final Set<Pair<Integer, Integer>> notes = _currentNotes.get(key);
@@ -365,8 +359,8 @@ public final class PerformanceController extends CadenzaController {
           final int outNumber = entry._2().intValue();
 
           sendNoteOff(outNumber, outChannel);
-          _currentNotes.remove(key);
         }
+        _currentNotes.remove(key);
       }
     } else if (MidiUtilities.isControlChange(sm)) {
       final int control = sm.getData1();
@@ -422,6 +416,30 @@ public final class PerformanceController extends CadenzaController {
       final int inputVelocity = sm.getData2();
       final Set<Pair<Integer, Integer>> noteEntry = new HashSet<>();
       
+      for (final PatchMerge patchMerge : _currentCue.merges) {
+        final Location location = patchMerge.accessLocation();
+        if (location.getKeyboard() == keyboard && location.contains(inputMidiNumber)) {
+          final PatchMerge.Response response = patchMerge.receive(inputMidiNumber, inputVelocity);
+          final PatchUsage pu = response.getPatchUsage();
+          final Integer outputChannel = _currentAssignments.get(pu);
+          
+          final List<Effect> effects = new LinkedList<>();
+          effects.addAll(pu.effects);
+          effects.addAll(_currentGlobalCueEffects);
+          
+          for (final int[] note : response.getNotes()) {
+            final int midiNumber = note[0];
+            int velocity = note[1];
+            
+            for (final Effect effect : effects)
+              velocity = MidiUtilities.clamp(effect.process(midiNumber, velocity));
+            
+            sendNoteOn(midiNumber, velocity, outputChannel.intValue());
+            noteEntry.add(Pair.make(outputChannel, Integer.valueOf(midiNumber)));
+          }
+        }
+      }
+      
       for (final PatchUsage patchUsage : _currentCue.patches) {
         if (patchUsage.location.getKeyboard() == keyboard && patchUsage.location.contains(inputMidiNumber)) {
           final Integer outputChannel = _currentAssignments.get(patchUsage);
@@ -431,7 +449,7 @@ public final class PerformanceController extends CadenzaController {
           puEffects.addAll(_currentGlobalCueEffects);
           if (patchUsage.respondsTo(inputMidiNumber, inputVelocity)) {
             for (final int[] note : patchUsage.getNotes(inputMidiNumber, inputVelocity)) {
-              int midiNumber = note[0];
+              final int midiNumber = note[0];
               int velocity = note[1];
               
               for (final Effect effect : puEffects) {
