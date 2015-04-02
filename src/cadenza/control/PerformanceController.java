@@ -101,14 +101,6 @@ public final class PerformanceController extends CadenzaController {
     }
   }
   
-  public synchronized int getCurrentlyAssignedChannel(PatchUsage patch) {
-    final Integer i = _currentAssignments.get(patch);
-    if (i == null)
-      return -1;
-    else
-      return i.intValue();
-  }
-  
   public synchronized void goTo(Song song, LocationNumber measure) {
     final int oldIndex = _position;
     _position = Cue.findCueIndex(getData().cues, song, measure);
@@ -168,7 +160,7 @@ public final class PerformanceController extends CadenzaController {
     updatePerformanceLocation();
   }
   
-  public synchronized void sendCC(int cc, int value, int channel) {
+  private synchronized void sendCC(int cc, int value, int channel) {
     if (!receiverReady())
       return;
     
@@ -181,11 +173,11 @@ public final class PerformanceController extends CadenzaController {
     }
   }
   
-  public synchronized void sendCC(int cc, int value, PatchUsage patch) {
+  private synchronized void sendCC(int cc, int value, PatchUsage patch) {
     sendCC(cc, value, _currentAssignments.get(patch).intValue());
   }
   
-  public synchronized void sendNoteOn(int midiNumber, int velocity, int channel) {
+  private synchronized void sendNoteOn(int midiNumber, int velocity, int channel) {
     if (!receiverReady())
       return;
     
@@ -202,7 +194,7 @@ public final class PerformanceController extends CadenzaController {
     sendNoteOn(midiNumber, velocity, _currentAssignments.get(patch).intValue());
   }
   
-  public synchronized void sendNoteOff(int midiNumber, int channel) {
+  private synchronized void sendNoteOff(int midiNumber, int channel) {
     if (!receiverReady())
       return;
     
@@ -242,13 +234,14 @@ public final class PerformanceController extends CadenzaController {
       return;
     }
     
-    for (final PatchUsage pu : _currentAssignments.keySet()) {
-      pu.cleanup(this);
-    }
-    
     final Cue oldCue = (_shouldIgnoreOldPosition || oldPosition == -1) ? null : getData().cues.get(oldPosition);
     _shouldIgnoreOldPosition = false;
     final Cue newCue = getData().cues.get(newPosition);
+    
+    if (oldCue != null) {
+      oldCue.patches.forEach(pu -> pu.cleanup(this));
+      oldCue.merges.forEach(merge -> merge.cleanup(this));
+    }
     
     final Map<PatchUsage, Integer> oldAssignments = _currentAssignments;
     final Map<PatchUsage, Integer> newAssignments = new HashMap<>();
@@ -308,7 +301,7 @@ public final class PerformanceController extends CadenzaController {
     _currentCue = newCue;
     
     _currentCue.patches.forEach(pu -> pu.prepare(this));
-    _currentCue.merges.forEach(merge -> merge.reset());
+    _currentCue.merges.forEach(merge -> merge.prepare(this));
     
     _currentTriggers = new ArrayList<>();
     if (!newCue.disableGlobalTriggers)
@@ -350,6 +343,7 @@ public final class PerformanceController extends CadenzaController {
     if (MidiUtilities.isNoteOff(sm)) {
       final int midiNumber = sm.getData1();
       _currentCue.patches.forEach(pu -> pu.noteReleased(midiNumber));
+      _currentCue.merges.forEach(merge -> merge.noteReleased(midiNumber));
       
       final Pair<Keyboard, Integer> key = Pair.make(keyboard, Integer.valueOf(midiNumber));
       final Set<Pair<Integer, Integer>> notes = _currentNotes.get(key);
@@ -490,7 +484,7 @@ public final class PerformanceController extends CadenzaController {
     }
   }
   
-  public synchronized void allNotesOff(int channel) {
+  private synchronized void allNotesOff(int channel) {
     sendCC(120, 0, channel);
   }
 }

@@ -2,9 +2,11 @@ package cadenza.core.patchmerge;
 
 import java.util.Arrays;
 
+import cadenza.control.PerformanceController;
 import cadenza.core.Location;
 import cadenza.core.Note;
 import cadenza.core.patchusage.PatchUsage;
+
 import common.collection.buffer.FixedSizeIntBuffer;
 
 /**
@@ -104,7 +106,7 @@ public class SplitPatchMerge extends PatchMerge {
   }
   
   @Override
-  public void reset() {
+  protected void prepare_additional(PerformanceController controller) {
     _currentSplit = _startSplit;
     final Location l = accessLocation();
     _lowerCenter = (l.getLower().getMidiNumber() + _currentSplit) / 2;

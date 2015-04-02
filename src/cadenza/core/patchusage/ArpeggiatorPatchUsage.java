@@ -61,7 +61,6 @@ public class ArpeggiatorPatchUsage extends PatchUsage implements MetronomeListen
   
   private transient volatile List<Integer> _currentNotes;
   private transient PerformanceController _controller;
-  private transient int _channel;
   private transient volatile int _index = -1;
   private transient volatile int _currentlyPlayingNote = -1;
   private transient volatile boolean _up;
@@ -103,7 +102,6 @@ public class ArpeggiatorPatchUsage extends PatchUsage implements MetronomeListen
     _currentNotes = new ArrayList<>();
     Metronome.getInstance().addMetronomeListener(this);
     _controller = controller;
-    _channel = _controller.getCurrentlyAssignedChannel(this);
     _random = new Random();
     _turnOffMetronomeOnExit = !Metronome.getInstance().isRunning();
   }
@@ -113,7 +111,7 @@ public class ArpeggiatorPatchUsage extends PatchUsage implements MetronomeListen
     Metronome.getInstance().removeMetronomeListener(this);
     _currentNotes.clear();
     if (_currentlyPlayingNote != -1)
-      _controller.sendNoteOff(_currentlyPlayingNote, _channel);
+      _controller.sendNoteOff(_currentlyPlayingNote, this);
     if (_turnOffMetronomeOnExit)
       Metronome.getInstance().stop();
   }
@@ -132,7 +130,7 @@ public class ArpeggiatorPatchUsage extends PatchUsage implements MetronomeListen
   public void metronomeClicked(int clickSubdivision) {
     if (subdivision.matches(clickSubdivision)) {
       if (_currentlyPlayingNote != -1)
-        _controller.sendNoteOff(_currentlyPlayingNote, _channel);
+        _controller.sendNoteOff(_currentlyPlayingNote, this);
       
       if (_currentNotes.size() < minSize) {
         _index = -1;
@@ -142,7 +140,7 @@ public class ArpeggiatorPatchUsage extends PatchUsage implements MetronomeListen
 
       _index = nextIndex();
       _currentlyPlayingNote = _currentNotes.get(_index).intValue();
-      _controller.sendNoteOn(_currentlyPlayingNote, volume, _channel);
+      _controller.sendNoteOn(_currentlyPlayingNote, volume, this);
     }
   }
   

@@ -41,7 +41,6 @@ public class SimplePatchUsage extends PatchUsage {
   
   private transient int _currentNote;
   private transient PerformanceController _controller;
-  private transient int _channel;
 
   public SimplePatchUsage(Patch patch, Location location, int volume,
       int transposition, boolean monophonic,
@@ -61,13 +60,12 @@ public class SimplePatchUsage extends PatchUsage {
   @Override
   public void prepare(PerformanceController controller) {
     _controller = controller;
-    _channel = _controller.getCurrentlyAssignedChannel(this);
   }
 
   @Override
   public int[][] getNotes(int midiNumber, int velocity) {
     if (monophonic) {
-      _controller.sendNoteOff(_currentNote, _channel);
+      _controller.sendNoteOff(_currentNote, this);
     }
     
     _currentNote = midiNumber + transposition;

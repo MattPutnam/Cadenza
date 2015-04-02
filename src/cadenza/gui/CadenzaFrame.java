@@ -32,6 +32,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.apache.commons.lang3.SystemUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import cadenza.control.MidiSolutionsMessageSender;
 import cadenza.control.PerformanceController;
@@ -59,7 +61,6 @@ import cadenza.gui.synthesizer.SynthesizerListEditor;
 import cadenza.gui.trigger.TriggerPanel;
 import cadenza.preferences.Preferences;
 import cadenza.synths.Synthesizers;
-
 import common.collection.ListAdapter;
 import common.collection.ListEvent;
 import common.io.IOUtils;
@@ -71,6 +72,8 @@ import common.swing.dialog.OKCancelDialog;
 
 @SuppressWarnings("serial")
 public class CadenzaFrame extends JFrame implements Receiver {
+  private static final Logger LOG = LogManager.getLogger(CadenzaFrame.class);
+  
   private static final String MAC_OSX_MIDI_BUG_INFO =
       "There is a bug in the Mac OS X Java implementation that prevents the system\n" +
       "from refreshing the list of available MIDI devices once that list has been\n" +
@@ -170,25 +173,31 @@ public class CadenzaFrame extends JFrame implements Receiver {
   
   @Override
   public void send(MidiMessage message, long timestamp) {
-    if (message instanceof ShortMessage) {
-      final ShortMessage sm = (ShortMessage) message;
-      if (MidiUtilities.isNoteOn(sm))
-        VelocityTracker.getInstance().notify(sm.getChannel(), sm.getData2());
-      else if (MidiUtilities.isControlChange(sm))
-        CCTracker.getInstance().notify(sm.getChannel(), sm.getData1(), sm.getData2());
+    // This gets called from a thread in the MIDI system, any runtime
+    // exception that gets thrown gets swallowed.  Catch them here:
+    try {
+      if (message instanceof ShortMessage) {
+        final ShortMessage sm = (ShortMessage) message;
+        if (MidiUtilities.isNoteOn(sm))
+          VelocityTracker.getInstance().notify(sm.getChannel(), sm.getData2());
+        else if (MidiUtilities.isControlChange(sm))
+          CCTracker.getInstance().notify(sm.getChannel(), sm.getData1(), sm.getData2());
+      }
+      
+      if (Preferences.getMIDIInputOptions().allowMIDIInput() && MIDIInputControlCenter.getInstance().isActive())
+        MIDIInputControlCenter.getInstance().send(message);
+      else if (_mode == Mode.PERFORM)
+        _performanceController.send(message);
+      else if (_mode == Mode.PREVIEW)
+        _previewController.send(message);
+      else if (_mode == Mode.QUICK_PREVIEW)
+        _quickPreviewer.send(message);
+      
+      if (_inputMonitor != null)
+        _inputMonitor.send(message);
+    } catch (Exception e) {
+      LOG.error("Error encountered on MIDI message receipt", e);
     }
-    
-    if (Preferences.getMIDIInputOptions().allowMIDIInput() && MIDIInputControlCenter.getInstance().isActive())
-      MIDIInputControlCenter.getInstance().send(message);
-    else if (_mode == Mode.PERFORM)
-      _performanceController.send(message);
-    else if (_mode == Mode.PREVIEW)
-      _previewController.send(message);
-    else if (_mode == Mode.QUICK_PREVIEW)
-      _quickPreviewer.send(message);
-    
-    if (_inputMonitor != null)
-      _inputMonitor.send(message);
   }
   
   @Override

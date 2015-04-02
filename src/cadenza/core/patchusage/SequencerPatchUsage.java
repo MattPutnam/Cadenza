@@ -16,7 +16,6 @@ public class SequencerPatchUsage extends PatchUsage implements MetronomeListener
   public final Sequencer sequencer;
   
   private transient PerformanceController _controller;
-  private transient int _channel;
   private transient boolean _turnOffMetronomeOnExit;
   
   private transient volatile int _activeDepressedNote;
@@ -58,7 +57,6 @@ public class SequencerPatchUsage extends PatchUsage implements MetronomeListener
   public void prepare(PerformanceController controller) {
     Metronome.getInstance().addMetronomeListener(this);
     _controller = controller;
-    _channel = _controller.getCurrentlyAssignedChannel(this);
     _turnOffMetronomeOnExit = !Metronome.getInstance().isRunning();
     
     _activeDepressedNote = -1;
@@ -95,14 +93,14 @@ public class SequencerPatchUsage extends PatchUsage implements MetronomeListener
   
   private void sendNotesOn() {
     for (final Integer i : _currentSoundingNotes) {
-      _controller.sendNoteOn(i.intValue(), volume, _channel);
+      _controller.sendNoteOn(i.intValue(), volume, this);
     }
   }
   
   private void sendNotesOff() {
     if (_currentSoundingNotes != null) {
       for (final Integer i : _currentSoundingNotes) {
-        _controller.sendNoteOff(i.intValue(), _channel);
+        _controller.sendNoteOff(i.intValue(), this);
       }
     }
   }
