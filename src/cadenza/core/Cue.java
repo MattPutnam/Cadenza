@@ -83,15 +83,17 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
     this.effects = other.effects;
   }
   
-  public List<PatchUsage> getPatchUsagesByKeyboard(Keyboard keyboard) {
-    return patches.stream()
-                  .filter(pu -> pu.location.getKeyboard() == keyboard)
-                  .collect(Collectors.toList());
+  public List<PatchAssignmentEntity> getAssignmentsByKeyboard(Keyboard keyboard) {
+    final List<PatchAssignmentEntity> list = new ArrayList<>(patches);
+    list.addAll(merges);
+    return list.stream()
+                .filter(pae -> pae.getLocation().getKeyboard() == keyboard)
+                .collect(Collectors.toList());
   }
   
-  public Map<Keyboard, List<PatchUsage>> getPatchUsagesByKeyboard(List<Keyboard> keyboards) {
+  public Map<Keyboard, List<PatchAssignmentEntity>> getAssignmentsByKeyboard(List<Keyboard> keyboards) {
     return keyboards.stream()
-                    .collect(Collectors.toMap(k -> k, this::getPatchUsagesByKeyboard));
+                    .collect(Collectors.toMap(k -> k, this::getAssignmentsByKeyboard));
   }
   
   public String buildMappingDisplay() {

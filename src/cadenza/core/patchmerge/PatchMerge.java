@@ -1,5 +1,6 @@
 package cadenza.core.patchmerge;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,7 +16,9 @@ import cadenza.core.patchusage.PatchUsage;
  * 
  * @author Matt Putnam
  */
-public abstract class PatchMerge implements PatchAssignmentEntity {
+public abstract class PatchMerge implements PatchAssignmentEntity, Serializable {
+  private static final long serialVersionUID = 2L;
+
   /**
    * Response object for determining which constituent PatchUsage should
    * receive an incoming MIDI message.
@@ -124,20 +127,16 @@ public abstract class PatchMerge implements PatchAssignmentEntity {
   
   @Override
   public final String toString() {
-    return toString(true, false);
-  }
-  
-  public final String toString(boolean includeLocationInfo) {
-    return toString(includeLocationInfo, false);
+    return toString(true, false, false);
   }
   
   @Override
-  public final String toString(boolean includeLocationInfo, boolean highlightPatchNames) {
+  public final String toString(boolean includeLocation, boolean includeKeyboardInfo, boolean highlightPatchNames) {
     return _patchUsages.stream()
-                       .map(pu -> pu.toString(false, highlightPatchNames))
+                       .map(pu -> pu.toString(false, false, highlightPatchNames))
                        .collect(Collectors.joining(" / ")) + 
            toString_additional() +
-           (includeLocationInfo ? " " + accessLocation().toString(true) : "");
+           (includeLocation ? " " + accessLocation().toString(includeKeyboardInfo) : "");
   }
   
   protected abstract String toString_additional();

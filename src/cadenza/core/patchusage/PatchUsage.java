@@ -95,24 +95,11 @@ public abstract class PatchUsage implements PatchAssignmentEntity, Serializable 
   
   @Override
   public final String toString() {
-    return toString(true, false);
-  }
-
-  public final String toString(boolean includeKeyboardInfo) {
-    return toString(includeKeyboardInfo, false);
+    return toString(true, true, false);
   }
   
-  /**
-   * Returns a String representation of this PatchUsage.  Contains the patch
-   * name, the location, and the volume if it differs from the patch default.
-   * @param includeKeyboardInfo whether or not to include the keyboard names
-   * in the location info
-   * @param highlightPatchName whether or not to highlight the patch name
-   * with its display color
-   * @return a String representation of this PatchUsage
-   */
   @Override
-  public final String toString(boolean includeKeyboardInfo, boolean highlightPatchName) {
+  public final String toString(boolean includeLocation, boolean includeKeyboardInfo, boolean highlightPatchName) {
     if (this.equals(ALL))
       return "ALL";
     
@@ -121,11 +108,11 @@ public abstract class PatchUsage implements PatchAssignmentEntity, Serializable 
     
     final StringBuilder sb = new StringBuilder();
     
-    if (highlightPatchName) sb.append("<span style='color:" + fgColorHTML + ";background:" + bgColorHTML + "'>");
+    if (highlightPatchName) sb.append("<html><span style='color:" + fgColorHTML + ";background:" + bgColorHTML + "'>");
     sb.append(patch.name);
     if (highlightPatchName) sb.append("</span>");
     
-    sb.append(" ").append(location.toString(includeKeyboardInfo));
+    if (includeLocation) sb.append(" ").append(location.toString(includeKeyboardInfo));
     if (volume != patch.defaultVolume)
       sb.append(" at " + volume);
     

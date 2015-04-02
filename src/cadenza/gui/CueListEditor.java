@@ -31,6 +31,7 @@ import cadenza.core.Cue;
 import cadenza.core.Keyboard;
 import cadenza.core.LocationNumber;
 import cadenza.core.Patch;
+import cadenza.core.PatchAssignmentEntity;
 import cadenza.core.Song;
 import cadenza.core.Synthesizer;
 import cadenza.core.patchusage.PatchUsage;
@@ -298,11 +299,11 @@ public class CueListEditor extends JPanel {
         final boolean multiple = _data.keyboards.size() > 1;
         
         for (final Keyboard keyboard : _data.keyboards) {
-          final List<PatchUsage> list = cue.getPatchUsagesByKeyboard(keyboard);
+          final List<PatchAssignmentEntity> list = cue.getAssignmentsByKeyboard(keyboard);
           
           if (list != null && !list.isEmpty()) {
             final String s = list.stream()
-                                 .map(pu -> pu.toString(false, true))
+                                 .map(pae -> pae.toString(false, false, true))
                                  .collect(Collectors.joining(", "));
             keyboardStrings.add(s + (multiple ? " on " + keyboard.name : ""));
           }

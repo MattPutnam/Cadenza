@@ -207,7 +207,7 @@ public class PatchUsagePanel extends JPanel {
       final JLabel label = new JLabel(patchUsage.patch.name, JLabel.CENTER);
       label.setForeground(patchUsage.patch.getTextColor());
       setBackground(patchUsage.patch.getDisplayColor());
-      setToolTipText(_patchUsage.toString(false));
+      setToolTipText(_patchUsage.toString(false, false, true));
       label.setBounds(0, 0, width, height);
       add(label);
       
@@ -271,7 +271,7 @@ public class PatchUsagePanel extends JPanel {
       _patchMerge = merge;
       
       setLayout(null);
-      final String text = "<html>" + merge.toString(false, true) + "</html>";
+      final String text = "<html>" + merge.toString(false, false, true) + "</html>";
       final JLabel label = new JLabel(text, JLabel.CENTER);
       setBackground(Color.WHITE);
       setToolTipText(text);
@@ -295,7 +295,7 @@ public class PatchUsagePanel extends JPanel {
         int index = 0;
         for (final PatchUsage pu : _patchMerge.accessPatchUsages()) {
           final int findex = index++;
-          add(SwingUtils.menuItem("Edit " + pu.toString(false, false), null, e -> {
+          add(SwingUtils.menuItem("Edit " + pu.toString(false, false, false), null, e -> {
             OKCancelDialog.showDialog(new PatchUsageEditDialog(_frame, pu, _data), dialog -> {
               _patchMerge.accessPatchUsages().set(findex, dialog.getPatchUsage());
               refreshDisplay();

@@ -6,10 +6,10 @@ import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -24,10 +24,11 @@ import cadenza.core.Cue;
 import cadenza.core.Keyboard;
 import cadenza.core.LocationNumber;
 import cadenza.core.Patch;
+import cadenza.core.PatchAssignmentEntity;
 import cadenza.core.metronome.Metronome;
 import cadenza.core.metronome.MetronomeListener;
-import cadenza.core.patchusage.PatchUsage;
 import cadenza.gui.song.SongPanel;
+
 import common.Utils;
 import common.swing.SwingUtils;
 
@@ -118,8 +119,7 @@ public class ControlWindow extends JFrame implements MetronomeListener {
     
     final JPanel toolbar = new JPanel();
     toolbar.setLayout(new BoxLayout(toolbar, BoxLayout.X_AXIS));
-    for (final Component c : _toolbarComponents)
-      toolbar.add(c);
+    _toolbarComponents.forEach(toolbar::add);
     toolbar.setBackground(BG);
     
     final JPanel south = new JPanel(new BorderLayout());
@@ -145,9 +145,7 @@ public class ControlWindow extends JFrame implements MetronomeListener {
     final String songDisplay = buildSongDisplay(cue, nextCue);
     final String patchDisplay = buildPatchDisplay(cue);
     SwingUtils.doInSwing(() -> {
-      for (final Component c : _toolbarComponents)
-        c.setEnabled(true);
-      
+      _toolbarComponents.forEach(c -> c.setEnabled(true));
       _topLabel.setText(songDisplay);
       _mainLabel.setText(patchDisplay);
     }, false);
@@ -171,24 +169,21 @@ public class ControlWindow extends JFrame implements MetronomeListener {
   private String buildPatchDisplay(Cue cue) {
     final StringBuilder sb = new StringBuilder();
     
-    final Map<Keyboard, List<PatchUsage>> map = cue.getPatchUsagesByKeyboard(_data.keyboards);
+    final Map<Keyboard, List<PatchAssignmentEntity>> map = cue.getAssignmentsByKeyboard(_data.keyboards);
     if (map.size() == 0) {
       sb.append("No patches");
     } else if (_data.keyboards.size() == 1) {
-      final List<PatchUsage> patchUsages = map.values().iterator().next();
-      final List<String> tokens = new ArrayList<>(patchUsages.size());
-      for (final PatchUsage pu : patchUsages)
-        tokens.add(pu.toString(false));
-      sb.append(Utils.mkString(tokens, ", "));
+      sb.append(map.values().iterator().next().stream()
+                                              .map(pae -> pae.toString(false, false, true))
+                                              .collect(Collectors.joining(", ")));
     } else {
-      for (Map.Entry<Keyboard, List<PatchUsage>> entry : map.entrySet()) {
-        sb.append(entry.getKey().name).append(":<br>");
-        final List<PatchUsage> patchUsages = entry.getValue();
-        final List<String> tokens = new ArrayList<>(patchUsages.size());
-        for (final PatchUsage pu : patchUsages)
-          tokens.add(pu.toString(false));
-        sb.append(Utils.mkString(tokens, ", ")).append("<br>");
-      }
+      map.forEach((k, lpae) -> {
+        sb.append(k.name).append(":<br>").append(
+          lpae.stream()
+              .map(pae -> pae.toString(false, false, true))
+              .collect(Collectors.joining(", ")))
+        .append("<br>");
+      });
     }
     
     return wrapHTML(sb.toString());
@@ -199,9 +194,7 @@ public class ControlWindow extends JFrame implements MetronomeListener {
     final String mainText = wrapHTML("Previewing:<br>" + Utils.mkString(patches, "<br>"));
     
     SwingUtils.doInSwing(() -> {
-      for (final Component c : _toolbarComponents)
-        c.setEnabled(false);
-      
+      _toolbarComponents.forEach(c -> c.setEnabled(false));
       _topLabel.setText(topText);
       _mainLabel.setText(mainText);
     }, false);
@@ -219,7 +212,7 @@ public class ControlWindow extends JFrame implements MetronomeListener {
   @Override
   public void metronomeClicked(int subdivision) {
     if (subdivision == 0) {
-      _metronomeArea.setBackground(Color.GREEN);
+      SwingUtils.doInSwing(() -> _metronomeArea.setBackground(Color.GREEN), false);
       SwingUtils.doDelayedInSwing(() -> _metronomeArea.setBackground(BG), 100);
     }
   }

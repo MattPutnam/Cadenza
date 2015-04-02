@@ -18,21 +18,24 @@ import common.collection.buffer.FixedSizeIntBuffer;
  * @author Matt Putnam
  */
 public class SplitPatchMerge extends PatchMerge {
+  private static final long serialVersionUID = 2L;
+
   public static final int DEFAULT_BUFFER_SIZE = 10;
   
   private final int _bufferSize;
-  private final FixedSizeIntBuffer _lowerBuffer;
-  private final FixedSizeIntBuffer _upperBuffer;
+  private final int _startSplit;
   
-  private int _startSplit;
   private int _currentSplit;
   private int _lowerCenter;
   private int _upperCenter;
   
+  private transient FixedSizeIntBuffer _lowerBuffer;
+  private transient FixedSizeIntBuffer _upperBuffer;
+  
   /**
    * Creates a SplitPatchMerge
    * @param lower the lower PatchUsage
-   * @param upper the upper Patchusage
+   * @param upper the upper PatchUsage
    * @param startSplit the starting split point, which is set when the cue
    *                   containing this merge is loaded.
    * @param bufferSize the size of the buffer used to cluster notes into the
@@ -43,10 +46,7 @@ public class SplitPatchMerge extends PatchMerge {
   public SplitPatchMerge(PatchUsage lower, PatchUsage upper, int startSplit, int bufferSize) {
     super(lower, upper);
     _startSplit = startSplit;
-    
     _bufferSize = bufferSize;
-    _lowerBuffer = new FixedSizeIntBuffer(_bufferSize);
-    _upperBuffer = new FixedSizeIntBuffer(_bufferSize);
   }
   
   /**
@@ -110,7 +110,10 @@ public class SplitPatchMerge extends PatchMerge {
     _lowerCenter = (l.getLower().getMidiNumber() + _currentSplit) / 2;
     _upperCenter = (_currentSplit + l.getUpper().getMidiNumber()) / 2;
     
+    _lowerBuffer = new FixedSizeIntBuffer(_bufferSize);
     _lowerBuffer.fill(_lowerCenter);
+    
+    _upperBuffer = new FixedSizeIntBuffer(_bufferSize);
     _upperBuffer.fill(_upperCenter);
   }
   

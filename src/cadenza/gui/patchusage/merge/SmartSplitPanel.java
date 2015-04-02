@@ -91,7 +91,7 @@ public class SmartSplitPanel extends MergePanel<SplitPatchMerge> {
     add(Box.createVerticalGlue());
     
     // put this on the end of the event queue so that we wait for some other
-    // initialization finishes first
+    // initialization to finish first
     SwingUtilities.invokeLater(() -> {
       SwingUtils.freezeSize(_rangePanel, _keyboardPanel.getWidth(), 26);
       notifyChange();
@@ -154,7 +154,7 @@ public class SmartSplitPanel extends MergePanel<SplitPatchMerge> {
     lowerPanel.setBackground(pu.patch.getDisplayColor());
     lowerPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     
-    final JLabel lowerLabel = new JLabel(pu.toString(false), JLabel.CENTER);
+    final JLabel lowerLabel = new JLabel("<html>" + pu.toString(false, false, true) + "</html>", JLabel.CENTER);
     lowerLabel.setForeground(pu.patch.getTextColor());
     lowerLabel.setBounds(0, 0, width, 24);
     lowerPanel.add(lowerLabel);
@@ -169,7 +169,7 @@ public class SmartSplitPanel extends MergePanel<SplitPatchMerge> {
     upperPanel.setBackground(pu.patch.getDisplayColor());
     upperPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     
-    final JLabel upperLabel = new JLabel(pu.toString(false), JLabel.CENTER);
+    final JLabel upperLabel = new JLabel("<html>" + pu.toString(false, false, true) + "</html>", JLabel.CENTER);
     upperLabel.setForeground(pu.patch.getTextColor());
     upperLabel.setBounds(0, 0, width, 24);
     upperPanel.add(upperLabel);
