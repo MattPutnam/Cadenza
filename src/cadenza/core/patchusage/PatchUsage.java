@@ -6,13 +6,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cadenza.control.PerformanceController;
 import cadenza.core.Bank;
 import cadenza.core.Location;
 import cadenza.core.Patch;
 import cadenza.core.PatchAssignmentEntity;
 import cadenza.core.Synthesizer;
 import cadenza.core.effects.Effect;
+
 import common.swing.ColorUtils;
 
 /**
@@ -124,27 +124,6 @@ public abstract class PatchUsage implements PatchAssignmentEntity, Serializable 
    * @return additional info for the toString value
    */
   abstract String toString_additional();
-  
-  /**
-   * Called by the CadenzaController when the PatchUsage is loaded.
-   * Default implementation does nothing, override to perform any needed setup.
-   * @param controller the controller
-   */
-  public void prepare(PerformanceController controller) {}
-  
-  /**
-   * Called by the CadenzaController when the PatchUsage is left.
-   * Default implementation does nothing, override to perform any needed cleanup.
-   * @param controller the controller
-   */
-  public void cleanup(PerformanceController controller) {}
-  
-  /**
-   * Called by the CadenzaController when a note from this PatchUsage
-   * is released.  Default implementation does nothing.
-   * @param midiNumber the MIDI number of the released note
-   */
-  public void noteReleased(int midiNumber) {}
   
   // Compliance
   @Override

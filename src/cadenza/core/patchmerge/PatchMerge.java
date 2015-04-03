@@ -119,13 +119,7 @@ public abstract class PatchMerge implements PatchAssignmentEntity, Serializable 
    */
   public abstract Response receive(int midiNumber, int velocity);
   
-  /**
-   * Called by the CadenzaController when the PatchMerge is loaded.  Prepares
-   * the underlying PatchUsages and defers to
-   * {@link #prepare_additional(PerformanceController)} for any additional
-   * work needed.
-   * @param controller the PerformanceController
-   */
+  @Override
   public final void prepare(PerformanceController controller) {
     _patchUsages.forEach(pu -> pu.prepare(controller));
     prepare_additional(controller);
@@ -138,13 +132,7 @@ public abstract class PatchMerge implements PatchAssignmentEntity, Serializable 
    */
   protected void prepare_additional(PerformanceController controller) {}
   
-  /**
-   * Called by the CadenzaController when the PatchMerge is left.  Cleans up
-   * the underlying PatchUsages and defers to
-   * {@link #cleanup_additional(PerformanceController)} for any additional work
-   * needed.
-   * @param controller the PerformanceController
-   */
+  @Override
   public final void cleanup(PerformanceController controller) {
     _patchUsages.forEach(pu -> pu.cleanup(controller));
     cleanup_additional(controller);
@@ -157,14 +145,8 @@ public abstract class PatchMerge implements PatchAssignmentEntity, Serializable 
    */
   protected void cleanup_additional(PerformanceController controller) {}
   
-  /**
-   * Called by the CadenzaController when a note from this PatchMerge
-   * is released.  Calls {@link PatchUsage#noteReleased(int)} on the underlying
-   * PatchUsages and defers to {@link #noteReleased_additional(int)} for any
-   * additional work needed.
-   * @param midiNumber the MIDI number of the released note
-   */
-  public void noteReleased(int midiNumber) {
+  @Override
+  public final void noteReleased(int midiNumber) {
     _patchUsages.forEach(pu -> pu.noteReleased(midiNumber));
     noteReleased_additional(midiNumber);
   }
@@ -175,6 +157,20 @@ public abstract class PatchMerge implements PatchAssignmentEntity, Serializable 
    * @param midiNumber the MIDI number of the released note
    */
   protected void noteReleased_additional(int midiNumber) {}
+  
+  @Override
+  public final void controlChanged(int ccNum, int ccVal) {
+    _patchUsages.forEach(pu -> pu.controlChanged(ccNum, ccVal));
+    controlChanged_additional(ccNum, ccVal);
+  }
+  
+  /**
+   * Do any additional work to handle a control change.  Default implementation
+   * does nothing.
+   * @param ccNum the control change number
+   * @param ccVal the new control value
+   */
+  protected void controlChanged_additional(int ccNum, int ccVal) {}
   
   @Override
   public final String toString() {

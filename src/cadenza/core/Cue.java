@@ -126,6 +126,16 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
     merges.forEach(pm -> result.addAll(pm.accessPatchUsages()));
     return result;
   }
+  
+  /**
+   * @return a list of all PatchUsages and PatchMerges
+   */
+  public List<PatchAssignmentEntity> getAllAssignments() {
+    final List<PatchAssignmentEntity> list = new ArrayList<>();
+    list.addAll(patches);
+    list.addAll(merges);
+    return list;
+  }
 
   // Sort by song, then measure for organization/display
   @Override

@@ -10,10 +10,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import cadenza.core.patchmerge.ControlPatchMerge;
 import cadenza.core.patchmerge.PatchMerge;
 import cadenza.core.patchmerge.SplitPatchMerge;
 import cadenza.core.patchmerge.VelocityPatchMerge;
 import cadenza.core.patchusage.PatchUsage;
+
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
 
@@ -40,9 +42,11 @@ public class MergePatchDialog extends OKCancelDialog {
     
     final SmartSplitPanel ssp = new SmartSplitPanel(_primary, _others);
     final VelocityMergePanel vmp = new VelocityMergePanel(_primary, _others);
+    final ControlMergePanel cmp = new ControlMergePanel(_primary, _others);
     
     _tabbedPane.addTab("Smart Split Point", ssp);
     _tabbedPane.addTab("Velocity Split", vmp);
+    _tabbedPane.addTab("Control Split", cmp);
     
     if (_initial instanceof SplitPatchMerge) {
       ssp.initialize((SplitPatchMerge) _initial);
@@ -50,6 +54,9 @@ public class MergePatchDialog extends OKCancelDialog {
     } else if (_initial instanceof VelocityPatchMerge) {
       vmp.initialize((VelocityPatchMerge) _initial);
       _tabbedPane.setSelectedIndex(1);
+    } else if (_initial instanceof ControlPatchMerge) {
+      cmp.initialize((ControlPatchMerge) _initial);
+      _tabbedPane.setSelectedIndex(2);
     }
     
     final JLabel top = new JLabel(TOP_TEXT, JLabel.CENTER);

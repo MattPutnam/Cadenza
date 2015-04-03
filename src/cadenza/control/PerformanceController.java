@@ -239,8 +239,7 @@ public final class PerformanceController extends CadenzaController {
     final Cue newCue = getData().cues.get(newPosition);
     
     if (oldCue != null) {
-      oldCue.patches.forEach(pu -> pu.cleanup(this));
-      oldCue.merges.forEach(merge -> merge.cleanup(this));
+      oldCue.getAllAssignments().forEach(pae -> pae.cleanup(this));
     }
     
     final Map<PatchUsage, Integer> oldAssignments = _currentAssignments;
@@ -300,8 +299,7 @@ public final class PerformanceController extends CadenzaController {
     _currentAssignments = newAssignments;
     _currentCue = newCue;
     
-    _currentCue.patches.forEach(pu -> pu.prepare(this));
-    _currentCue.merges.forEach(merge -> merge.prepare(this));
+    _currentCue.getAllAssignments().forEach(pae -> pae.prepare(this));
     
     _currentTriggers = new ArrayList<>();
     if (!newCue.disableGlobalTriggers)
@@ -342,8 +340,7 @@ public final class PerformanceController extends CadenzaController {
     noteorCC:
     if (MidiUtilities.isNoteOff(sm)) {
       final int midiNumber = sm.getData1();
-      _currentCue.patches.forEach(pu -> pu.noteReleased(midiNumber));
-      _currentCue.merges.forEach(merge -> merge.noteReleased(midiNumber));
+      _currentCue.getAllAssignments().forEach(pu -> pu.noteReleased(midiNumber));
       
       final Pair<Keyboard, Integer> key = Pair.make(keyboard, Integer.valueOf(midiNumber));
       final Set<Pair<Integer, Integer>> notes = _currentNotes.get(key);
@@ -359,6 +356,9 @@ public final class PerformanceController extends CadenzaController {
     } else if (MidiUtilities.isControlChange(sm)) {
       final int control = sm.getData1();
       final int value = sm.getData2();
+      
+      _currentCue.getAssignmentsByKeyboard(_channelKeyboards.get(Integer.valueOf(channel)))
+                 .forEach(pae -> pae.controlChanged(control, value));
       
       if (control == 64) {
         // CC64 (damper) is speshul.  It needs to always be sent to all allocated channels.

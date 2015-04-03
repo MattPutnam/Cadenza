@@ -48,4 +48,10 @@ public abstract class MergePanel<T extends PatchMerge> extends JPanel {
   protected final JComboBox<PatchUsage> buildComboForOthers() {
     return new JComboBox<>(_others.toArray(new PatchUsage[_others.size()]));
   }
+  
+  protected final JComboBox<PatchUsage> buildComboForOthers(PatchUsage initial) {
+    final JComboBox<PatchUsage> result = buildComboForOthers();
+    result.setSelectedItem(initial);
+    return result;
+  }
 }
