@@ -297,7 +297,9 @@ public class PatchUsagePanel extends JPanel {
           final int findex = index++;
           add(SwingUtils.menuItem("Edit " + pu.toString(false, false, false), null, e -> {
             OKCancelDialog.showDialog(new PatchUsageEditDialog(_frame, pu, _data), dialog -> {
-              _patchMerge.accessPatchUsages().set(findex, dialog.getPatchUsage());
+              final PatchUsage newPU = dialog.getPatchUsage();
+              _patchMerge.accessPatchUsages().set(findex, newPU);
+              _patchMerge.accessPatchUsages().forEach(p -> p.location = newPU.location);
               refreshDisplay();
             });
           }));
@@ -443,7 +445,7 @@ public class PatchUsagePanel extends JPanel {
       OKCancelDialog.showDialog(new PatchSelectorDialog((JButton) e.getSource(), null), dialog -> {
         final Patch patch = dialog.getSelectedPatch();
         _patchUsages.add(new SimplePatchUsage(patch, new Location(_keyboard, true),
-            patch.defaultVolume, 0, false, -1, true, 0));
+            patch.defaultVolume, 0, false));
         refreshDisplay();
       });
     }

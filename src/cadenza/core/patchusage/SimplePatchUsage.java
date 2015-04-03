@@ -25,36 +25,18 @@ public class SimplePatchUsage extends PatchUsage {
    */
   public final boolean monophonic;
   
-  /** The volume limit, or -1 to not limit the volume */
-  public final int volumeLimit;
-  
-  /**
-   * True if the patch should sound below the limit,
-   * false if it should sound at or above the limit
-   */
-  public final boolean isLimitToBelow;
-  
-  /**
-   * The amount to reduce the volume, only valid when isLimitToBelow==false
-   */
-  public final int volumeReduction;
-  
   private transient int _currentNote;
   private transient PerformanceController _controller;
 
   public SimplePatchUsage(Patch patch, Location location, int volume,
-      int transposition, boolean monophonic,
-      int volumeLimit, boolean isLimitToBelow, int volumeReduction) {
+      int transposition, boolean monophonic) {
     super(patch, location, volume);
     this.transposition = transposition;
     this.monophonic = monophonic;
-    this.volumeLimit = volumeLimit;
-    this.isLimitToBelow = isLimitToBelow;
-    this.volumeReduction = volumeReduction;
   }
   
   public SimplePatchUsage(Patch patch, Location location) {
-    this(patch, location, patch.defaultVolume, 0, false, -1, false, 0);
+    this(patch, location, patch.defaultVolume, 0, false);
   }
   
   @Override
@@ -70,16 +52,7 @@ public class SimplePatchUsage extends PatchUsage {
     
     _currentNote = midiNumber + transposition;
     
-    if (volumeLimit == -1)
-      return new int[][] {{_currentNote, velocity}};
-    else {
-      if (isLimitToBelow && velocity < volumeLimit)
-        return new int[][] {{_currentNote, velocity}};
-      else if (!isLimitToBelow && velocity >= volumeLimit)
-        return new int[][] {{_currentNote, velocity - volumeReduction}};
-    }
-    
-    return new int[][] {};
+    return new int[][] {{_currentNote, velocity}};
   }
   
   @Override
@@ -91,11 +64,6 @@ public class SimplePatchUsage extends PatchUsage {
     
     if (transposition != 0)
       sb.append(" transposed ").append(transposition > 0 ? "+" : "").append(transposition);
-    
-    if (volumeLimit != -1)
-      sb.append(" limited to ").append(isLimitToBelow ? "below " : "above (and incl.) ").append(volumeLimit);
-    if (volumeLimit != -1 && !isLimitToBelow)
-      sb.append(" reduced by ").append(volumeReduction);
     
     return sb.toString();
   }
@@ -111,10 +79,7 @@ public class SimplePatchUsage extends PatchUsage {
          this.volume == spu.volume &&
          this.initialControlSends.equals(spu.initialControlSends) &&
          this.transposition == spu.transposition &&
-         this.monophonic == spu.monophonic &&
-         this.volumeLimit == spu.volumeLimit &&
-         this.isLimitToBelow == spu.isLimitToBelow &&
-         this.volumeReduction == spu.volumeReduction;
+         this.monophonic == spu.monophonic;
   }
   
   @Override
@@ -125,9 +90,6 @@ public class SimplePatchUsage extends PatchUsage {
     hashCode = 31*hashCode + initialControlSends.hashCode();
     hashCode = 31*hashCode + transposition;
     hashCode = 2*hashCode + (monophonic ? 1 : 0);
-    hashCode = 31*hashCode + volumeLimit;
-    hashCode = 2*hashCode + (isLimitToBelow ? 1 : 0);
-    hashCode = 31*hashCode + volumeReduction;
     
     return hashCode;
   }

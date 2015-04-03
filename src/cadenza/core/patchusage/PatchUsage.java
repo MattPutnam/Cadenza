@@ -51,7 +51,7 @@ public abstract class PatchUsage implements PatchAssignmentEntity, Serializable 
    */
   public static final PatchUsage ALL = new SimplePatchUsage(
       new Patch(Synthesizer.TEMP, "ALL", new Bank("TEMP"), 0),
-            new Location(null, null, null), 100, 0, false, -1, true, 0);
+            new Location(null, null, null), 100, 0, false);
   
   public PatchUsage(Patch patch, Location location, int volume) {
     this.patch = patch;

@@ -2,7 +2,6 @@ package cadenza.gui.patchusage;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -12,7 +11,6 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
@@ -236,42 +234,15 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
     
     private final JCheckBox _isMonophonicCheckBox;
     
-    private final JCheckBox _limitVolumeCheckBox;
-    private final JRadioButton _belowRadioButton;
-    private final JRadioButton _aboveRadioButton;
-    private final JLabel _reduceLabel;
-    private VolumeField _volumeLimitField;
-    private VolumeField _volumeReductionField;
-    
     public SimplePatchUsagePane() {
       _transpositionEditor = new TranspositionEditor(0);
       
       _isMonophonicCheckBox = new JCheckBox("Monophonic");
       
-      _limitVolumeCheckBox = new JCheckBox("Limit only to velocities");
-      _belowRadioButton = new JRadioButton("below");
-      _aboveRadioButton = new JRadioButton("above (and incl.)");
-      SwingUtils.groupAndSelectFirst(_belowRadioButton, _aboveRadioButton);
-      _reduceLabel = new JLabel(" and reduce by ");
-      _volumeLimitField = new VolumeField(120);
-      _volumeReductionField = new VolumeField(0);
-      
-      final ActionListener listener = e -> updateEnabledStates();
-      _limitVolumeCheckBox.addActionListener(listener);
-      _belowRadioButton.addActionListener(listener);
-      _aboveRadioButton.addActionListener(listener);
-      updateEnabledStates();
-      
-      final Box buttons = Box.createVerticalBox();
-      buttons.add(_belowRadioButton); buttons.add(_aboveRadioButton);
-      
       setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
       add(SwingUtils.buildCenteredRow(_transpositionEditor));
-      add(Box.createVerticalStrut(24));
+      add(Box.createVerticalStrut(8));
       add(SwingUtils.buildCenteredRow(_isMonophonicCheckBox));
-      add(Box.createVerticalStrut(24));
-      add(SwingUtils.buildCenteredRow(_limitVolumeCheckBox, buttons, _volumeLimitField));
-      add(SwingUtils.buildCenteredRow(_reduceLabel, _volumeReductionField));
       add(Box.createVerticalGlue());
     }
     
@@ -280,39 +251,13 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
       _transpositionEditor.setTransposition(initialPatchUsage.transposition);
       
       _isMonophonicCheckBox.setSelected(initialPatchUsage.monophonic);
-      
-      if (initialPatchUsage.volumeLimit != -1) {
-        _limitVolumeCheckBox.setSelected(true);
-        if (initialPatchUsage.isLimitToBelow)
-          _belowRadioButton.setSelected(true);
-        else
-          _aboveRadioButton.setSelected(true);
-        _volumeLimitField.setVolume(initialPatchUsage.volumeLimit);
-        _volumeReductionField.setVolume(initialPatchUsage.volumeReduction);
-      }
-      
-      updateEnabledStates();
-    }
-    
-    private void updateEnabledStates() {
-      final boolean limitEnabled = _limitVolumeCheckBox.isSelected();
-      final boolean reduceEnabled = _aboveRadioButton.isSelected();
-      
-      _belowRadioButton.setEnabled(limitEnabled);
-      _aboveRadioButton.setEnabled(limitEnabled);
-      _reduceLabel.setEnabled(limitEnabled && reduceEnabled);
-      _volumeLimitField.setEnabled(limitEnabled);
-      _volumeReductionField.setEnabled(limitEnabled && reduceEnabled);
     }
     
     @Override
     public SimplePatchUsage getPatchUsage(Patch patch, Location location, int volume) {
       return new SimplePatchUsage(patch, location, volume,
           _transpositionEditor.getTransposition(),
-          _isMonophonicCheckBox.isSelected(),
-          _limitVolumeCheckBox.isSelected() ? _volumeLimitField.getVolume() : -1,
-          _belowRadioButton.isSelected(),
-          _volumeReductionField.getVolume());
+          _isMonophonicCheckBox.isSelected());
     }
   }
   
