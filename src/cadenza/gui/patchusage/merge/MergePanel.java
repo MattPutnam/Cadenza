@@ -2,6 +2,7 @@ package cadenza.gui.patchusage.merge;
 
 import java.util.List;
 
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 import cadenza.core.patchmerge.PatchMerge;
@@ -43,4 +44,8 @@ public abstract class MergePanel<T extends PatchMerge> extends JPanel {
    * @return the PatchMerge represented by this panel
    */
   public abstract T getPatchMerge();
+  
+  protected final JComboBox<PatchUsage> buildComboForOthers() {
+    return new JComboBox<>(_others.toArray(new PatchUsage[_others.size()]));
+  }
 }

@@ -33,11 +33,11 @@ public class SmartSplitPanel extends MergePanel<SplitPatchMerge> {
       + "point to change more gradually."
       );
   
-  private JComboBox<PatchUsage> _patchUsageCombo;
-  private JCheckBox _aboveBox;
-  private IntField _bufferField;
-  private SingleKeyboardPanel _keyboardPanel;
-  private JPanel _rangePanel;
+  private final JComboBox<PatchUsage> _patchUsageCombo;
+  private final JCheckBox _aboveBox;
+  private final IntField _bufferField;
+  private final SingleKeyboardPanel _keyboardPanel;
+  private final JPanel _rangePanel;
   
   private PatchUsage _other;
   private Location _union;
@@ -46,7 +46,7 @@ public class SmartSplitPanel extends MergePanel<SplitPatchMerge> {
   public SmartSplitPanel(PatchUsage primary, List<PatchUsage> others) {
     super(primary, others);
     
-    _patchUsageCombo = new JComboBox<>(others.toArray(new PatchUsage[others.size()]));
+    _patchUsageCombo = buildComboForOthers();
     _patchUsageCombo.addActionListener(e -> notifyChange());
     
     final Keyboard kbd = primary.location.getKeyboard();
@@ -81,11 +81,14 @@ public class SmartSplitPanel extends MergePanel<SplitPatchMerge> {
     _rangePanel = new JPanel(null);
     SwingUtils.freezeHeight(_rangePanel, 26); // placeholder so dialog allocates enough height
     
+    final JLabel bottom = new JLabel("Click to select initial split point, drag to define total range:");
+    bottom.setBorder(BorderFactory.createEmptyBorder(0, 0, 8, 0));
+    
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     add(SwingUtils.buildCenteredRow(new JLabel("Merge with:"), _patchUsageCombo));
     add(SwingUtils.buildCenteredRow(_aboveBox));
     add(SwingUtils.buildCenteredRow(new JLabel("Buffer size:"), _bufferField, new HelpButton(BUFFER_HELP_TEXT)));
-    add(SwingUtils.buildCenteredRow(new JLabel("Click to select initial split point, drag to define total range:")));
+    add(SwingUtils.buildCenteredRow(bottom));
     add(SwingUtils.buildCenteredRow(_keyboardPanel));
     add(SwingUtils.buildCenteredRow(_rangePanel));
     add(Box.createVerticalGlue());

@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -11,8 +12,8 @@ import javax.swing.JTabbedPane;
 
 import cadenza.core.patchmerge.PatchMerge;
 import cadenza.core.patchmerge.SplitPatchMerge;
+import cadenza.core.patchmerge.VelocityPatchMerge;
 import cadenza.core.patchusage.PatchUsage;
-
 import common.swing.VerificationException;
 import common.swing.dialog.OKCancelDialog;
 
@@ -38,14 +39,24 @@ public class MergePatchDialog extends OKCancelDialog {
     _tabbedPane = new JTabbedPane();
     
     final SmartSplitPanel ssp = new SmartSplitPanel(_primary, _others);
+    final VelocityMergePanel vmp = new VelocityMergePanel(_primary, _others);
     
     _tabbedPane.addTab("Smart Split Point", ssp);
+    _tabbedPane.addTab("Velocity Split", vmp);
     
-    if (_initial instanceof SplitPatchMerge)
+    if (_initial instanceof SplitPatchMerge) {
       ssp.initialize((SplitPatchMerge) _initial);
+      _tabbedPane.setSelectedIndex(0);
+    } else if (_initial instanceof VelocityPatchMerge) {
+      vmp.initialize((VelocityPatchMerge) _initial);
+      _tabbedPane.setSelectedIndex(1);
+    }
+    
+    final JLabel top = new JLabel(TOP_TEXT, JLabel.CENTER);
+    top.setBorder(BorderFactory.createEmptyBorder(8, 0, 8, 0));
     
     final JPanel panel = new JPanel(new BorderLayout());
-    panel.add(new JLabel(TOP_TEXT), BorderLayout.NORTH);
+    panel.add(top, BorderLayout.NORTH);
     panel.add(_tabbedPane, BorderLayout.CENTER);
     return panel;
   }
