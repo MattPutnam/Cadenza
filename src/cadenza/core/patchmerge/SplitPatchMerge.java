@@ -27,9 +27,9 @@ public class SplitPatchMerge extends PatchMerge {
   private final int _bufferSize;
   private final int _startSplit;
   
-  private int _currentSplit;
-  private int _lowerCenter;
-  private int _upperCenter;
+  private transient int _currentSplit;
+  private transient int _lowerCenter;
+  private transient int _upperCenter;
   
   private transient FixedSizeIntBuffer _lowerBuffer;
   private transient FixedSizeIntBuffer _upperBuffer;
