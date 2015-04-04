@@ -17,7 +17,7 @@ import cadenza.core.ControlNames;
 import cadenza.core.patchusage.PatchUsage;
 import cadenza.gui.common.CadenzaTable;
 import cadenza.gui.common.HelpButton;
-
+import common.swing.dialog.OKCancelDialog;
 import common.swing.table.ListTableModel;
 
 @SuppressWarnings("serial")
@@ -93,12 +93,10 @@ public class ControlMapPanel extends JPanel implements CustomWizardComponent {
     @Override
     protected void takeActionOnEdit(ControlMapEntry item) {
       final int index = _selectedMapping.indexOf(item);
-      final ControlMapEditDialog editor = new ControlMapEditDialog(ControlMapPanel.this, _patchUsages, item);
-      editor.showDialog();
-      if (editor.okPressed()) {
-        _selectedMapping.set(index, editor.getEntry());
+      OKCancelDialog.showDialog(new ControlMapEditDialog(ControlMapPanel.this, _patchUsages, item), dialog -> {
+        _selectedMapping.set(index, dialog.getEntry());
         _selectedMapping.sort(COMPARATOR);
-      }
+      });
     }
   }
 
