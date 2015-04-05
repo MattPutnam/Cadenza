@@ -47,9 +47,11 @@ public class ControlMapEditDialog extends OKCancelDialog implements AcceptsKeybo
     _fromList = new JList<>(ints);
     _fromList.setCellRenderer(new ControlListRenderer());
     _fromList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    
     _toList = new JList<>(ints);
     _toList.setCellRenderer(new ControlListRenderer());
     _toList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+    
     _patchUsageList = new JList<>(_patchUsages == null
         ? new PatchUsage[] {PatchUsage.ALL}
         : _patchUsages.toArray(new PatchUsage[_patchUsages.size()]));

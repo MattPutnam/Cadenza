@@ -82,12 +82,10 @@ public class ControlMapPanel extends JPanel implements CustomWizardComponent {
     
     @Override
     protected void takeActionOnAdd() {
-      final ControlMapEditDialog editor = new ControlMapEditDialog(ControlMapPanel.this, _patchUsages, null);
-      editor.showDialog();
-      if (editor.okPressed()) {
-        _selectedMapping.add(editor.getEntry());
+      OKCancelDialog.showDialog(new ControlMapEditDialog(ControlMapPanel.this, _patchUsages, null), dialog -> {
+        _selectedMapping.add(dialog.getEntry());
         _selectedMapping.sort(COMPARATOR);
-      }
+      });
     }
     
     @Override
