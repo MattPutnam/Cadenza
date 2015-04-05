@@ -84,6 +84,7 @@ public class CueListEditor extends JPanel {
     _data.patches.addListener(new ListAdapter<Patch>() {
       @Override
       public void anyChange(ListEvent<Patch> event) {
+        _controller.clearOldCue();
         SwingUtils.doInSwing(() -> {
           revalidate();
           repaint();
