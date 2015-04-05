@@ -163,6 +163,7 @@ public class PatchEditor extends JPanel {
         
         patch.copyFrom(edit, true);
         _data.patches.sort(null);
+        _data.patches.notifyChange(patch);
       });
     }
     
