@@ -84,7 +84,7 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
   protected JComponent buildContent() {
     _patchSelector = new PatchSelector(_frame, _data.patches, _data.synthesizers, _startingPatchUsage.patch);
     _volumeField = new VolumeField(_startingPatchUsage.volume);
-    _locationSelector = new LocationEditPanel(_data.keyboards, _startingPatchUsage.location);
+    _locationSelector = new LocationEditPanel(_data.keyboards, _startingPatchUsage.location, true);
     _effectPanel = new EffectChainViewerEditor(_startingPatchUsage.effects, true);
     
     _patchSelector.accessCombo().addActionListener(e -> _volumeField.setVolume(_patchSelector.getSelectedPatch().defaultVolume));

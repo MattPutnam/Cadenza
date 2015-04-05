@@ -58,7 +58,7 @@ public class SmartSplitPanel extends MergePanel<SplitPatchMerge> {
     _bufferField.setColumns(6);
     SwingUtils.freezeSize(_bufferField);
     
-    _keyboardPanel = new SingleKeyboardPanel(kbd.low, kbd.high);
+    _keyboardPanel = new SingleKeyboardPanel(kbd.soundingLow, kbd.soundingHigh);
     _keyboardPanel.addKeyboardListener(new KeyboardAdapter() {
       @Override
       public void keyClicked(Note note) {

@@ -37,7 +37,7 @@ public class LocationEditPanel extends JPanel {
   
   private Location _selectedLocation;
   
-  public LocationEditPanel(List<Keyboard> keyboards, Location initialLocation) {
+  public LocationEditPanel(List<Keyboard> keyboards, Location initialLocation, boolean soundingOnly) {
     _keyboards = keyboards;
     _keyboardPanels = new ArrayList<>();
     
@@ -53,7 +53,12 @@ public class LocationEditPanel extends JPanel {
     } else if (_keyboards.size() == 1) {
       _keyboardSelector = null;
       final Keyboard kbd = _keyboards.get(0);
-      final SingleKeyboardPanel skp = new SingleKeyboardPanel(kbd.low, kbd.high);
+      final SingleKeyboardPanel skp;
+      if (soundingOnly)
+        skp = new SingleKeyboardPanel(kbd.soundingLow, kbd.soundingHigh);
+      else
+        skp = new SingleKeyboardPanel(kbd.low, kbd.high);
+      
       skp.addKeyboardListener(updater);
       components.add(new JLabel("Keyboard: " + kbd.name));
       components.add(skp);
@@ -63,7 +68,12 @@ public class LocationEditPanel extends JPanel {
       final JPanel keyboardPanel = new JPanel();
       int maxWidth = 0;
       for (final Keyboard keyboard : _keyboards) {
-        final SingleKeyboardPanel skp = new SingleKeyboardPanel(keyboard.low, keyboard.high);
+        final SingleKeyboardPanel skp;
+        if (soundingOnly)
+          skp = new SingleKeyboardPanel(keyboard.soundingLow, keyboard.soundingHigh);
+        else
+          skp = new SingleKeyboardPanel(keyboard.low, keyboard.high);
+        
         maxWidth = Math.max(maxWidth, skp.getSize().width);
         skp.addKeyboardListener(updater);
         _keyboardPanels.add(skp);

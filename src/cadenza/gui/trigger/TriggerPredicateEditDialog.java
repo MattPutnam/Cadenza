@@ -205,7 +205,7 @@ public class TriggerPredicateEditDialog extends OKCancelDialog implements Accept
     
     public NoteOnPredicatePane() {
       super();
-      _locationPanel = new LocationEditPanel(_keyboards, null);
+      _locationPanel = new LocationEditPanel(_keyboards, null, false);
       add(_locationPanel);
     }
     
@@ -240,7 +240,7 @@ public class TriggerPredicateEditDialog extends OKCancelDialog implements Accept
     
     public NoteOffPredicatePane() {
       super();
-      _locationPanel = new LocationEditPanel(_keyboards, null);
+      _locationPanel = new LocationEditPanel(_keyboards, null, false);
       add(_locationPanel);
     }
     
