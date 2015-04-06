@@ -3,6 +3,7 @@ package cadenza.gui.sequencer;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.JCheckBox;
@@ -13,11 +14,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import cadenza.core.Scale;
 import cadenza.core.metronome.Metronome.Subdivision;
 import cadenza.core.sequencer.Sequencer;
 import cadenza.core.sequencer.Sequencer.NoteChangeBehavior;
 import cadenza.gui.common.ScaleSelector;
-
 import common.swing.IntField;
 import common.swing.SwingUtils;
 import common.swing.VerificationException;
@@ -25,6 +26,15 @@ import common.swing.dialog.OKCancelDialog;
 
 @SuppressWarnings("serial")
 public class SequencerEditDialog extends OKCancelDialog {
+  @SuppressWarnings("rawtypes")
+  private static final List[] SCALES = new List[] {
+    Scale.Diatonic.ALL_MAJOR, Scale.Diatonic.ALL_MINOR, Scale.Diatonic.ALL_HARMONIC,
+    Scale.Modal.ALL, Scale.Blues.ALL, Scale.Pentatonic.ALL, Scale.Diminished.ALL, Scale.WholeTone.ALL
+  };
+  private static final String[] NAMES = new String[] {
+    "Major", "Minor", "Harmonic", "Modal", "Blues", "Pentatonic", "Diminished", "Whole Tone"
+  };
+  
   private final Sequencer _initial;
   
   private JTextField _nameField;
@@ -43,6 +53,8 @@ public class SequencerEditDialog extends OKCancelDialog {
     _initial = sequencer;
   }
   
+  
+  @SuppressWarnings("unchecked")
   @Override
   protected JComponent buildContent() {
     _nameField = new JTextField();
@@ -50,7 +62,7 @@ public class SequencerEditDialog extends OKCancelDialog {
     _noteChangeCombo = new JComboBox<>(NoteChangeBehavior.values());
     _startOnDownbeatBox = new JCheckBox("Start on a downbeat");
     
-    _scaleSelector = new ScaleSelector(_initial == null ? null : _initial.getScale());
+    _scaleSelector = new ScaleSelector(SCALES, NAMES, _initial == null ? null : _initial.getScale());
     
     if (_initial == null) {
       _gridPanel = new SequencerGridEditPanel(Sequencer.DEFAULT);

@@ -239,7 +239,7 @@ public final class Scale implements Serializable {
     public static final Scale  E_Locrian = new Scale( "E Locrian", Diatonic. F_Major);
     public static final Scale Es_Locrian = new Scale("E# Locrian", Diatonic.Fs_Major);
     public static final Scale  F_Locrian = new Scale( "F Locrian", Diatonic.Gb_Major);
-    public static final Scale Fs_Locrian = new Scale("Fs Locrian", Diatonic. G_Major);
+    public static final Scale Fs_Locrian = new Scale("F# Locrian", Diatonic. G_Major);
     public static final Scale  G_Locrian = new Scale( "G Locrian", Diatonic.Ab_Major);
     public static final Scale Gs_Locrian = new Scale("G# Locrian", Diatonic. A_Major);
     public static final Scale  A_Locrian = new Scale( "A Locrian", Diatonic.Bb_Major);
