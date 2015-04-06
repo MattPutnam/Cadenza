@@ -16,8 +16,9 @@ public class Sequencer implements Serializable {
   private static final long serialVersionUID = 2L;
   
   public static enum NoteChangeBehavior {
-    CONTINUE_SEQUENCE("Finish sequence"),
-    RESTART_SEQUENCE("Restart sequence");
+    CHANGE_NOTE("Continue the sequence with the new note"),
+    CONTINUE_SEQUENCE("Finish the sequence with the original note"),
+    RESTART_SEQUENCE("Immediately restart the sequence with the new note");
     
     private final String _displayName;
     
@@ -40,19 +41,21 @@ public class Sequencer implements Serializable {
   private final Scale _scale;
   private final Subdivision _subdivision;
   private final NoteChangeBehavior _noteChangeBehavior;
+  private final boolean _startOnDownbeat;
   
   private transient SequencerGridPreviewPanel _previewPanel;
   
   public static final Sequencer DEFAULT = new Sequencer("New Sequencer", 11,
       new int[] {5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5}, null,
-      Subdivision.SIXTEENTHS, NoteChangeBehavior.CONTINUE_SEQUENCE);
+      Subdivision.SIXTEENTHS, NoteChangeBehavior.CONTINUE_SEQUENCE, true);
   
   public Sequencer(String name, int length, int[] notes,
-      Scale scale, Subdivision subdivision, NoteChangeBehavior noteChangeBehavior) {
+      Scale scale, Subdivision subdivision, NoteChangeBehavior noteChangeBehavior, boolean startOnDownbeat) {
     _name = name;
     _length = length;
     _notes = notes;
     _noteChangeBehavior = noteChangeBehavior;
+    _startOnDownbeat = startOnDownbeat;
     
     _scale = scale;
     _subdivision = subdivision;
@@ -61,7 +64,7 @@ public class Sequencer implements Serializable {
   }
   
   public Sequencer(String name, boolean[][] grid, int[] notes,
-      Scale scale, Subdivision subdivision, NoteChangeBehavior noteChangeBehavior) {
+      Scale scale, Subdivision subdivision, NoteChangeBehavior noteChangeBehavior, boolean startOnDownbeat) {
     _name = name;
     _length = grid[0].length;
     _notes = notes;
@@ -69,6 +72,7 @@ public class Sequencer implements Serializable {
     _scale = scale;
     _subdivision = subdivision;
     _noteChangeBehavior = noteChangeBehavior;
+    _startOnDownbeat = startOnDownbeat;
     
     _grid = new boolean[_notes.length][_length];
     for (int note = 0; note < _notes.length; ++note) {
@@ -100,6 +104,10 @@ public class Sequencer implements Serializable {
   
   public NoteChangeBehavior getNoteChangeBehavior() {
     return _noteChangeBehavior;
+  }
+  
+  public boolean isStartOnDownbeat() {
+    return _startOnDownbeat;
   }
   
   public boolean isOn(int note, int index) {

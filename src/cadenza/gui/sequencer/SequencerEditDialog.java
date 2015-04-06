@@ -2,8 +2,10 @@ package cadenza.gui.sequencer;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.FlowLayout;
 
 import javax.swing.Box;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -28,6 +30,7 @@ public class SequencerEditDialog extends OKCancelDialog {
   private JTextField _nameField;
   private JComboBox<Subdivision> _subdivisionCombo;
   private JComboBox<NoteChangeBehavior> _noteChangeCombo;
+  private JCheckBox _startOnDownbeatBox;
   
   private ScaleSelector _scaleSelector;
   
@@ -45,6 +48,7 @@ public class SequencerEditDialog extends OKCancelDialog {
     _nameField = new JTextField();
     _subdivisionCombo = new JComboBox<>(Subdivision.values());
     _noteChangeCombo = new JComboBox<>(NoteChangeBehavior.values());
+    _startOnDownbeatBox = new JCheckBox("Start on a downbeat");
     
     _scaleSelector = new ScaleSelector(_initial == null ? null : _initial.getScale());
     
@@ -56,16 +60,18 @@ public class SequencerEditDialog extends OKCancelDialog {
       _nameField.setText(_initial.getName());
       _subdivisionCombo.setSelectedItem(_initial.getSubdivision());
       _noteChangeCombo.setSelectedItem(_initial.getNoteChangeBehavior());
+      _startOnDownbeatBox.setSelected(_initial.isStartOnDownbeat());
     }
     
     _columnsToAddField = new IntField(1, 1, Integer.MAX_VALUE);
     _columnsToAddField.setColumns(3);
     SwingUtils.freezeSize(_columnsToAddField);
     
-    final Box north = SwingUtils.buildLeftAlignedRow(
-        new JLabel("Name: "), _nameField,
-        new JLabel(" Subdivision: "), _subdivisionCombo,
-        new JLabel(" On note change: "), _noteChangeCombo);
+    final JPanel north = new JPanel(new FlowLayout());
+    north.add(new JLabel("Name: ")); north.add(_nameField);
+    north.add(new JLabel(" Subdivision: ")); north.add(_subdivisionCombo);
+    north.add(new JLabel(" On note change: ")); north.add(_noteChangeCombo);
+    north.add(_startOnDownbeatBox);
     
     final Box east = Box.createVerticalBox();
     east.add(SwingUtils.buildLeftAlignedRow(SwingUtils.button("Add columns: ", e -> _gridPanel.addColumns(_columnsToAddField.getInt())), _columnsToAddField));
@@ -92,7 +98,8 @@ public class SequencerEditDialog extends OKCancelDialog {
     return new Sequencer(_nameField.getText().trim(), _gridPanel.getGrid(),
         _gridPanel.getIntervals(), _scaleSelector.getSelectedScale(),
         (Subdivision) _subdivisionCombo.getSelectedItem(),
-        (NoteChangeBehavior) _noteChangeCombo.getSelectedItem());
+        (NoteChangeBehavior) _noteChangeCombo.getSelectedItem(),
+        _startOnDownbeatBox.isSelected());
   }
   
   @Override

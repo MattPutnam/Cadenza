@@ -1,6 +1,8 @@
 package cadenza.core.patchusage;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.OptionalInt;
 
 import cadenza.control.PerformanceController;
 import cadenza.core.Location;
@@ -18,8 +20,9 @@ public class SequencerPatchUsage extends PatchUsage implements MetronomeListener
   private transient PerformanceController _controller;
   private transient boolean _turnOffMetronomeOnExit;
   
-  private transient volatile int _activeDepressedNote;
-  private transient volatile int _noteForSounding;
+  private transient volatile boolean _waitingForDownbeat;
+  private transient volatile OptionalInt _activeDepressedNote;
+  private transient volatile OptionalInt _noteForSounding;
   private transient volatile List<Integer> _currentSoundingNotes;
   private transient volatile int _index;
 
@@ -32,13 +35,13 @@ public class SequencerPatchUsage extends PatchUsage implements MetronomeListener
   @Override
   public int[][] getNotes(int midiNumber, int velocity) {
     // abuse this just to get note input
-    _activeDepressedNote = midiNumber;
-    if (_noteForSounding == -1)
-      _noteForSounding = midiNumber;
-    if (isRestart()) {
+    _activeDepressedNote = OptionalInt.of(midiNumber);
+    
+    if (!_noteForSounding.isPresent() || isChangeNote())
+      _noteForSounding = _activeDepressedNote;
+    
+    if (isRestart())
       _index = 0;
-      Metronome.getInstance().restart();
-    }
     
     Metronome.getInstance().start();
     return new int[][] {};
@@ -46,11 +49,13 @@ public class SequencerPatchUsage extends PatchUsage implements MetronomeListener
   
   @Override
   public void noteReleased(int midiNumber) {
-    if (_activeDepressedNote == midiNumber) {
-      _activeDepressedNote = -1;
-      _noteForSounding = -1;
-      _index = 0;
-    }
+    _activeDepressedNote.ifPresent(m -> {
+      if (m == midiNumber) {
+        _activeDepressedNote = OptionalInt.empty();
+        _noteForSounding = OptionalInt.empty();
+        _index = 0;
+      }
+    });
   }
   
   @Override
@@ -59,9 +64,10 @@ public class SequencerPatchUsage extends PatchUsage implements MetronomeListener
     _controller = controller;
     _turnOffMetronomeOnExit = !Metronome.getInstance().isRunning();
     
-    _activeDepressedNote = -1;
-    _noteForSounding = -1;
-    _currentSoundingNotes = null;
+    _waitingForDownbeat = sequencer.isStartOnDownbeat();
+    _activeDepressedNote = OptionalInt.empty();
+    _noteForSounding = OptionalInt.empty();
+    _currentSoundingNotes = Collections.emptyList();
   }
   
   @Override
@@ -81,8 +87,17 @@ public class SequencerPatchUsage extends PatchUsage implements MetronomeListener
   public void metronomeClicked(int subdivision) {
     sendNotesOff();
     
-    if (sequencer.getSubdivision().matches(subdivision) && _activeDepressedNote != -1) {
-      _currentSoundingNotes = sequencer.receive(isContinue() ? _noteForSounding : _activeDepressedNote, _index);
+    if (_waitingForDownbeat) {
+      if (subdivision == 0)
+        _waitingForDownbeat = false;
+      else
+        return;
+    }
+    
+    if (sequencer.getSubdivision().matches(subdivision) && _activeDepressedNote.isPresent()) {
+      _currentSoundingNotes = sequencer.receive(isContinue() ? _noteForSounding.getAsInt()
+                                                             : _activeDepressedNote.getAsInt(),
+                                                _index);
       sendNotesOn();
       
       _index = (_index+1) % sequencer.getLength();
@@ -92,17 +107,15 @@ public class SequencerPatchUsage extends PatchUsage implements MetronomeListener
   }
   
   private void sendNotesOn() {
-    for (final Integer i : _currentSoundingNotes) {
-      _controller.sendNoteOn(i.intValue(), volume, this);
-    }
+    _currentSoundingNotes.forEach(i -> _controller.sendNoteOn(i.intValue(), volume, this));
   }
   
   private void sendNotesOff() {
-    if (_currentSoundingNotes != null) {
-      for (final Integer i : _currentSoundingNotes) {
-        _controller.sendNoteOff(i.intValue(), this);
-      }
-    }
+    _currentSoundingNotes.forEach(i -> _controller.sendNoteOff(i.intValue(), this));
+  }
+  
+  private boolean isChangeNote() {
+    return sequencer.getNoteChangeBehavior() == NoteChangeBehavior.CHANGE_NOTE;
   }
   
   private boolean isContinue() {
