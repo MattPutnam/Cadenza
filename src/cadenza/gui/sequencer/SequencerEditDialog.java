@@ -62,7 +62,7 @@ public class SequencerEditDialog extends OKCancelDialog {
     _noteChangeCombo = new JComboBox<>(NoteChangeBehavior.values());
     _startOnDownbeatBox = new JCheckBox("Start on a downbeat");
     
-    _scaleSelector = new ScaleSelector(SCALES, NAMES, _initial == null ? null : _initial.getScale());
+    _scaleSelector = new ScaleSelector(SCALES, NAMES, _initial == null ? null : _initial.getScale(), "Chromatic");
     
     if (_initial == null) {
       _gridPanel = new SequencerGridEditPanel(Sequencer.DEFAULT);
@@ -85,6 +85,10 @@ public class SequencerEditDialog extends OKCancelDialog {
     north.add(new JLabel(" On note change: ")); north.add(_noteChangeCombo);
     north.add(_startOnDownbeatBox);
     
+    final Box west = Box.createVerticalBox();
+    west.add(SwingUtils.hugWest(new JLabel("Scale:")));
+    west.add(_scaleSelector);
+    
     final Box east = Box.createVerticalBox();
     east.add(SwingUtils.buildLeftAlignedRow(SwingUtils.button("Add columns: ", e -> _gridPanel.addColumns(_columnsToAddField.getInt())), _columnsToAddField));
     east.add(SwingUtils.hugWest(SwingUtils.button("Trim unused columns", e -> _gridPanel.trimColumns())));
@@ -94,7 +98,7 @@ public class SequencerEditDialog extends OKCancelDialog {
     east.add(SwingUtils.hugWest(SwingUtils.button("Trim unused rows", e -> _gridPanel.trimUnusedRows())));
     
     final JPanel content = new JPanel(new BorderLayout());
-    content.add(SwingUtils.hugNorth(_scaleSelector), BorderLayout.WEST);
+    content.add(SwingUtils.hugNorth(west), BorderLayout.WEST);
     content.add(new JScrollPane(_gridPanel), BorderLayout.CENTER);
     content.add(SwingUtils.hugNorth(east), BorderLayout.EAST);
     content.add(north, BorderLayout.NORTH);

@@ -5,13 +5,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.event.ActionListener;
 import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.swing.Box;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,6 +18,7 @@ import cadenza.core.Note;
 import cadenza.core.Note.PitchClass;
 import cadenza.core.Scale;
 import cadenza.core.patchusage.CustomScalePatchUsage;
+import cadenza.gui.common.ScaleSelector;
 import cadenza.gui.keyboard.KeyboardPanel;
 import cadenza.gui.keyboard.MultipleKeyboardAdapter;
 import cadenza.gui.keyboard.MultipleKeyboardPanel;
@@ -29,6 +28,16 @@ import common.swing.SwingUtils;
 
 @SuppressWarnings("serial")
 public class CustomScalePatchUsageEditor extends JPanel {
+  @SuppressWarnings("rawtypes")
+  private static final List[] SCALES = new List[] {
+      Scale.Diatonic.ALL_MAJOR,
+      Scale.Diatonic.ALL_MINOR,
+      Scale.Diatonic.ALL_HARMONIC,
+      Scale.WholeTone.ALL };
+  private static final String[] NAMES = new String[] {
+      "Major", "Minor", "Harmonic", "Whole Tone"
+  };
+  
   private static final Note B4 = new Note(PitchClass.B, 4);
   private static final Note C3 = new Note(PitchClass.C, 3);
   private static final Note C6 = new Note(PitchClass.C, 6);
@@ -42,10 +51,7 @@ public class CustomScalePatchUsageEditor extends JPanel {
   private final KeyboardPanel _destPanel;
   private final KeyboardArea _keyboardArea;
   
-  private JComboBox<Scale> _majors;
-  private JComboBox<Scale> _minors;
-  private JComboBox<Scale> _harmonics;
-  private JComboBox<Scale> _wholes;
+  private ScaleSelector _scaleSelector;
   
   public CustomScalePatchUsageEditor() {
     _map = new IdentityHashMap<>();
@@ -66,12 +72,7 @@ public class CustomScalePatchUsageEditor extends JPanel {
     _map.putAll(template.map);
     _selectedScale = template.scale;
     
-    if (_selectedScale != null) {
-      _majors.setSelectedItem(_selectedScale);
-      _minors.setSelectedItem(_selectedScale);
-      _harmonics.setSelectedItem(_selectedScale);
-      _wholes.setSelectedItem(_selectedScale);
-    }
+    _scaleSelector.setSelectedScale(_selectedScale);
   }
   
   public Map<PitchClass, Integer> getMap() {
@@ -86,34 +87,27 @@ public class CustomScalePatchUsageEditor extends JPanel {
     return _selectedScale != null;
   }
   
+  @SuppressWarnings("unchecked")
   private JComponent buildSelectors() {
     final JPanel result = new JPanel(new BorderLayout());
     
-    _majors = new JComboBox<>(Scale.Diatonic.ALL_MAJOR.toArray(new Scale[0]));
-    _minors = new JComboBox<>(Scale.Diatonic.ALL_MINOR.toArray(new Scale[0]));
-    _harmonics = new JComboBox<>(Scale.Diatonic.ALL_HARMONIC.toArray(new Scale[0]));
-    _wholes = new JComboBox<>(Scale.WholeTone.ALL.toArray(new Scale[0]));
-    
-    final ActionListener action = e -> {
-      final JComboBox<?> combo = (JComboBox<?>) e.getSource();
-      _selectedScale = (Scale) combo.getSelectedItem();
+    _scaleSelector = new ScaleSelector(SCALES, NAMES, null, "Custom");
+    _scaleSelector.addListener(scale -> {
+      _selectedScale = scale;
+      
       _map.clear();
-      _map.putAll(_selectedScale.buildMapFromNaturals());
+      if (_selectedScale != null)
+        _map.putAll(_selectedScale.buildMapFromNaturals());
+      
       revalidate();
       repaint();
-    };
-    _majors.addActionListener(action);
-    _minors.addActionListener(action);
-    _harmonics.addActionListener(action);
-    _wholes.addActionListener(action);
-    
-    final Box scales = SwingUtils.buildCenteredRow(_majors, _minors, _harmonics, _wholes);
+    });
     
     final JLabel instructionLabel = new JLabel("Drag from the top keyboard " +
         "to the bottom keyboard or select a predefined scale");
     
     result.add(instructionLabel, BorderLayout.NORTH);
-    result.add(SwingUtils.hugNorth(scales), BorderLayout.CENTER);
+    result.add(SwingUtils.hugNorth(_scaleSelector), BorderLayout.CENTER);
     
     return result;
   }
