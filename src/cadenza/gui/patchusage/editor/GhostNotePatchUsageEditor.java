@@ -88,6 +88,7 @@ public class GhostNotePatchUsageEditor extends JPanel {
     _map.putAll(patchUsage.ghosts);
     
     rebuildSourceRow(patchUsage.noteRange);
+    rehighlight();
   }
   
   public Map<Integer, List<Integer>> getMap() {
