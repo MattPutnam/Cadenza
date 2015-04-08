@@ -15,12 +15,12 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
 import cadenza.control.midiinput.AcceptsKeyboardInput;
-import cadenza.control.midiinput.NoteRangeEntryTracker;
 import cadenza.control.midiinput.MIDIInputControlCenter;
+import cadenza.control.midiinput.NoteRangeEntryTracker;
 import cadenza.core.CadenzaData;
 import cadenza.core.Keyboard;
-import cadenza.core.NoteRange;
 import cadenza.core.Note;
+import cadenza.core.NoteRange;
 import cadenza.core.Patch;
 import cadenza.core.metronome.Metronome.Subdivision;
 import cadenza.core.patchusage.ArpeggiatorPatchUsage;
@@ -31,6 +31,7 @@ import cadenza.core.patchusage.PatchUsage;
 import cadenza.core.patchusage.SequencerPatchUsage;
 import cadenza.core.patchusage.SimplePatchUsage;
 import cadenza.gui.CadenzaFrame;
+import cadenza.gui.common.HelpButton;
 import cadenza.gui.common.NoteRangeEditPanel;
 import cadenza.gui.common.TranspositionEditor;
 import cadenza.gui.common.VolumeField;
@@ -230,8 +231,10 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
   }
   
   private static class SimplePatchUsagePane extends PatchUsageEditPane<SimplePatchUsage> {
-    private final TranspositionEditor _transpositionEditor;
+    private static final String MONOPHONIC_HELP = "<html>Monophonic patches play only one note at a time.<br>"
+        + "When a new note is played, the old note is terminated.</html>";
     
+    private final TranspositionEditor _transpositionEditor;
     private final JCheckBox _isMonophonicCheckBox;
     
     public SimplePatchUsagePane() {
@@ -242,7 +245,7 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
       setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
       add(SwingUtils.buildCenteredRow(_transpositionEditor));
       add(Box.createVerticalStrut(8));
-      add(SwingUtils.buildCenteredRow(_isMonophonicCheckBox));
+      add(SwingUtils.buildCenteredRow(_isMonophonicCheckBox, new HelpButton(MONOPHONIC_HELP)));
       add(Box.createVerticalGlue());
     }
     
