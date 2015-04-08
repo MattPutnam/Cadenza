@@ -87,7 +87,7 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
     final List<PatchAssignmentEntity> list = new ArrayList<>(patches);
     list.addAll(merges);
     return list.stream()
-                .filter(pae -> pae.getLocation().getKeyboard() == keyboard)
+                .filter(pae -> pae.getNoteRange().getKeyboard() == keyboard)
                 .collect(Collectors.toList());
   }
   

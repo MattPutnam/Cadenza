@@ -20,7 +20,7 @@ import cadenza.core.CadenzaData;
 import cadenza.core.ControlMapEntry;
 import cadenza.core.Cue;
 import cadenza.core.Keyboard;
-import cadenza.core.Location;
+import cadenza.core.NoteRange;
 import cadenza.core.LocationNumber;
 import cadenza.core.Patch;
 import cadenza.core.Song;
@@ -411,8 +411,8 @@ public final class PerformanceController extends CadenzaController {
       final Set<Pair<Integer, Integer>> noteEntry = new HashSet<>();
       
       for (final PatchMerge patchMerge : _currentCue.merges) {
-        final Location location = patchMerge.accessLocation();
-        if (location.getKeyboard() == keyboard && location.contains(inputMidiNumber)) {
+        final NoteRange noteRange = patchMerge.accessNoteRange();
+        if (noteRange.getKeyboard() == keyboard && noteRange.contains(inputMidiNumber)) {
           final PatchMerge.Response response = patchMerge.receive(inputMidiNumber, inputVelocity);
           final PatchUsage pu = response.getPatchUsage();
           final Integer outputChannel = _currentAssignments.get(pu);
@@ -435,7 +435,7 @@ public final class PerformanceController extends CadenzaController {
       }
       
       for (final PatchUsage patchUsage : _currentCue.patches) {
-        if (patchUsage.location.getKeyboard() == keyboard && patchUsage.location.contains(inputMidiNumber)) {
+        if (patchUsage.noteRange.getKeyboard() == keyboard && patchUsage.noteRange.contains(inputMidiNumber)) {
           final Integer outputChannel = _currentAssignments.get(patchUsage);
           
           final List<Effect> puEffects = new LinkedList<>();

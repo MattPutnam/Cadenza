@@ -3,7 +3,7 @@ package cadenza.core.patchmerge;
 import java.util.Arrays;
 
 import cadenza.control.PerformanceController;
-import cadenza.core.Location;
+import cadenza.core.NoteRange;
 import cadenza.core.Note;
 import cadenza.core.patchusage.PatchUsage;
 
@@ -12,7 +12,7 @@ import common.collection.buffer.FixedSizeIntBuffer;
 /**
  * PatchMerge implementation of a smart split point.  This type of merge
  * entails exactly two PatchUsages, designated the lower and upper, and defers
- * to them via a floating split point.  The average location of notes in each
+ * to them via a floating split point.  The average range of notes in each
  * PatchUsage is tracked and the split point is adjusted to be the midpoint of
  * the two running averages.  The buffer size can be adjusted to determine how
  * much "memory" the clustering has.
@@ -108,7 +108,7 @@ public class SplitPatchMerge extends PatchMerge {
   @Override
   protected void prepare_additional(PerformanceController controller) {
     _currentSplit = _startSplit;
-    final Location l = accessLocation();
+    final NoteRange l = accessNoteRange();
     _lowerCenter = (l.getLower().getMidiNumber() + _currentSplit) / 2;
     _upperCenter = (_currentSplit + l.getUpper().getMidiNumber()) / 2;
     

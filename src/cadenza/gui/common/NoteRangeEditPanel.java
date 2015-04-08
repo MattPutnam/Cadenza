@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import cadenza.core.Keyboard;
-import cadenza.core.Location;
+import cadenza.core.NoteRange;
 import cadenza.core.Note;
 import cadenza.gui.keyboard.KeyboardAdapter;
 import cadenza.gui.keyboard.SingleKeyboardPanel;
@@ -25,7 +25,7 @@ import cadenza.gui.keyboard.SingleKeyboardPanel;
 import common.swing.SwingUtils;
 
 @SuppressWarnings("serial")
-public class LocationEditPanel extends JPanel {
+public class NoteRangeEditPanel extends JPanel {
   private final List<Keyboard> _keyboards;
   private final List<SingleKeyboardPanel> _keyboardPanels;
   private final JPanel _rangePanel;
@@ -33,11 +33,11 @@ public class LocationEditPanel extends JPanel {
   private final KeyboardSelector _keyboardSelector;
   private final JButton _resetButton;
   
-  private final List<LocationListener> _listeners = new LinkedList<>();
+  private final List<NoteRangeListener> _listeners = new LinkedList<>();
   
-  private Location _selectedLocation;
+  private NoteRange _selectedNoteRange;
   
-  public LocationEditPanel(List<Keyboard> keyboards, Location initialLocation, boolean soundingOnly) {
+  public NoteRangeEditPanel(List<Keyboard> keyboards, NoteRange initialNoteRange, boolean soundingOnly) {
     _keyboards = keyboards;
     _keyboardPanels = new ArrayList<>();
     
@@ -93,9 +93,9 @@ public class LocationEditPanel extends JPanel {
     }
     
     _rangePanel = new JPanel(null);
-    setSelectedLocation(initialLocation == null ? new Location(getSelectedKeyboard(), false) : initialLocation);
+    setSelectedNoteRange(initialNoteRange == null ? new NoteRange(getSelectedKeyboard(), false) : initialNoteRange);
     
-    _resetButton = SwingUtils.button("Use Entire Keyboard", e -> setSelectedLocation(new Location(getSelectedKeyboard(), true)));
+    _resetButton = SwingUtils.button("Use Entire Keyboard", e -> setSelectedNoteRange(new NoteRange(getSelectedKeyboard(), true)));
     
     components.add(_rangePanel);
     components.add(_resetButton);
@@ -116,25 +116,25 @@ public class LocationEditPanel extends JPanel {
     SwingUtilities.invokeLater(() -> updateRangeDisplay());
   }
   
-  public void setSelectedLocation(Location location) {
-    _selectedLocation = location;
+  public void setSelectedNoteRange(NoteRange noteRange) {
+    _selectedNoteRange = noteRange;
     if (_keyboardSelector != null)
-      _keyboardSelector.setSelectedItem(location.getKeyboard());
+      _keyboardSelector.setSelectedItem(noteRange.getKeyboard());
     
     updateRangeDisplay();
     
-    _listeners.forEach(l -> l.locationChanged(_selectedLocation));
+    _listeners.forEach(l -> l.noteRangeChanged(_selectedNoteRange));
   }
   
-  public Location getSelectedLocation() {
-    return _selectedLocation;
+  public NoteRange getSelectedNoteRange() {
+    return _selectedNoteRange;
   }
   
-  public void addLocationListener(LocationListener listener) {
+  public void addNoteRangeListener(NoteRangeListener listener) {
     _listeners.add(listener);
   }
   
-  public void removeLocationListener(LocationListener listener) {
+  public void removeNoteRangeListener(NoteRangeListener listener) {
     _listeners.remove(listener);
   }
   
@@ -162,21 +162,21 @@ public class LocationEditPanel extends JPanel {
     if (_keyboards == null || _keyboards.size() == 1) {
       skp = _keyboardPanels.get(0);
     } else {
-      skp = _keyboardPanels.get(_keyboards.indexOf(_selectedLocation.getKeyboard()));
+      skp = _keyboardPanels.get(_keyboards.indexOf(_selectedNoteRange.getKeyboard()));
     }
     
     SwingUtils.freezeSize(_rangePanel, skp.getWidth(), 26);
     _rangePanel.removeAll();
     
     final JPanel range = new JPanel(null);
-    final int x = skp.accessKeyboardPanel().getKeyPosition(_selectedLocation.getLower()).x;
-    final Rectangle r = skp.accessKeyboardPanel().getKeyPosition(_selectedLocation.getUpper());
+    final int x = skp.accessKeyboardPanel().getKeyPosition(_selectedNoteRange.getLower()).x;
+    final Rectangle r = skp.accessKeyboardPanel().getKeyPosition(_selectedNoteRange.getUpper());
     final int width = r.x+r.width-x;
     range.setBounds(x, 1, width, 24);
     range.setBackground(Color.WHITE);
     range.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     
-    final JLabel label = new JLabel(_selectedLocation.toString(false), JLabel.CENTER);
+    final JLabel label = new JLabel(_selectedNoteRange.toString(false), JLabel.CENTER);
     label.setBounds(0, 0, width, 24);
     range.add(label);
     
@@ -188,7 +188,7 @@ public class LocationEditPanel extends JPanel {
   private class Updater extends KeyboardAdapter {
     @Override
     public void keyClicked(Note note) {
-      setSelectedLocation(new Location(getSelectedKeyboard(), note));
+      setSelectedNoteRange(new NoteRange(getSelectedKeyboard(), note));
     }
     
     @Override
@@ -202,7 +202,7 @@ public class LocationEditPanel extends JPanel {
         high = startNote;
       }
       
-      setSelectedLocation(new Location(getSelectedKeyboard(), low, high));
+      setSelectedNoteRange(new NoteRange(getSelectedKeyboard(), low, high));
     }
   }
 }

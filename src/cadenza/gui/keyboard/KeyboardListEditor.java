@@ -30,16 +30,16 @@ import org.apache.commons.lang3.text.WordUtils;
 import org.ciscavate.cjwizard.CustomWizardComponent;
 
 import cadenza.control.midiinput.AcceptsKeyboardInput;
-import cadenza.control.midiinput.LocationEntryTracker;
+import cadenza.control.midiinput.NoteRangeEntryTracker;
 import cadenza.control.midiinput.MIDIInputControlCenter;
 import cadenza.core.CadenzaData;
 import cadenza.core.Cue;
 import cadenza.core.Keyboard;
-import cadenza.core.Location;
+import cadenza.core.NoteRange;
 import cadenza.core.Note;
 import cadenza.core.patchusage.PatchUsage;
 import cadenza.core.trigger.Trigger;
-import cadenza.core.trigger.predicates.HasLocation;
+import cadenza.core.trigger.predicates.HasNoteRange;
 import cadenza.gui.common.CadenzaTable;
 import cadenza.gui.common.HelpButton;
 import cadenza.preferences.Preferences;
@@ -94,18 +94,18 @@ public class KeyboardListEditor extends JPanel implements CustomWizardComponent 
       boolean modified = false;
       
       /*
-       * Copy all locations to new keyboards, if that works.  If the keyboard
-       * size changed and locations fall off the edited keyboards, remove the
+       * Copy all note ranges to new keyboards, if that works.  If the keyboard
+       * size changed and ranges fall off the edited keyboards, remove the
        * corresponding items.
        */
       final Iterator<PatchUsage> puIterator = cue.patches.iterator();
       while (puIterator.hasNext()) {
         final PatchUsage patchUsage = puIterator.next();
-        final Keyboard newKeyboard = _remap.get(patchUsage.location.getKeyboard());
+        final Keyboard newKeyboard = _remap.get(patchUsage.noteRange.getKeyboard());
         if (newKeyboard != null) {
-          final Optional<Location> opt = patchUsage.location.copyTo(newKeyboard, true);
+          final Optional<NoteRange> opt = patchUsage.noteRange.copyTo(newKeyboard, true);
           if (opt.isPresent())
-            patchUsage.location = opt.get();
+            patchUsage.noteRange = opt.get();
           else
             puIterator.remove();
           
@@ -116,16 +116,16 @@ public class KeyboardListEditor extends JPanel implements CustomWizardComponent 
       final Iterator<Trigger> triggerIterator = cue.triggers.iterator();
       while (triggerIterator.hasNext()) {
         final Trigger trigger = triggerIterator.next();
-        final List<HasLocation> hls = trigger.predicates.stream()
-                                                        .filter(p -> p instanceof HasLocation)
-                                                        .map(p -> ((HasLocation) p))
+        final List<HasNoteRange> hls = trigger.predicates.stream()
+                                                        .filter(p -> p instanceof HasNoteRange)
+                                                        .map(p -> ((HasNoteRange) p))
                                                         .collect(Collectors.toList());
-        for (final HasLocation hl : hls) {
-          final Location curLoc = hl.getLocation();
+        for (final HasNoteRange hl : hls) {
+          final NoteRange curLoc = hl.getNoteRange();
           final Keyboard newKeyboard = _remap.get(curLoc.getKeyboard());
-          final Optional<Location> opt = curLoc.copyTo(newKeyboard, false);
+          final Optional<NoteRange> opt = curLoc.copyTo(newKeyboard, false);
           if (opt.isPresent())
-            hl.setLocation(opt.get());
+            hl.setNoteRange(opt.get());
           else
             trigger.predicates.remove(hl);
           
@@ -283,7 +283,7 @@ public class KeyboardListEditor extends JPanel implements CustomWizardComponent 
     private class KeyboardEditDialog extends OKCancelDialog implements AcceptsKeyboardInput {
       private final KeyboardEditPanel _panel;
       
-      private LocationTracker _locationTracker;
+      private NoteRangeTracker _noteRangeTracker;
       
       public KeyboardEditDialog(Keyboard keyboard) {
         super(KeyboardListEditor.this);
@@ -292,7 +292,7 @@ public class KeyboardListEditor extends JPanel implements CustomWizardComponent 
         
         if (Preferences.getMIDIInputOptions().allowMIDIInput()) {
           MIDIInputControlCenter.installWindowFocusGrabber(this);
-          _locationTracker = new LocationTracker(new Keyboard(
+          _noteRangeTracker = new NoteRangeTracker(new Keyboard(
               Note.MIN, Note.MAX, Note.MIN, Note.MAX, "dummy", true, 0));
         }
       }
@@ -325,7 +325,7 @@ public class KeyboardListEditor extends JPanel implements CustomWizardComponent 
       public void keyPressed(int channel, int midiNumber, int velocity) {
         SwingUtilities.invokeLater(() -> {
           _panel.accessKeyboardPanel().highlightNote(Note.valueOf(midiNumber));
-          _locationTracker.keyPressed(channel, midiNumber);
+          _noteRangeTracker.keyPressed(channel, midiNumber);
         });
       }
       
@@ -333,18 +333,18 @@ public class KeyboardListEditor extends JPanel implements CustomWizardComponent 
       public void keyReleased(int channel, int midiNumber) {
         SwingUtilities.invokeLater(() -> {
           _panel.accessKeyboardPanel().unhighlightNote(Note.valueOf(midiNumber));
-          _locationTracker.keyReleased(channel, midiNumber);
+          _noteRangeTracker.keyReleased(channel, midiNumber);
         });
       }
       
-      private class LocationTracker extends LocationEntryTracker {
-        public LocationTracker(Keyboard keyboard) {
+      private class NoteRangeTracker extends NoteRangeEntryTracker {
+        public NoteRangeTracker(Keyboard keyboard) {
           super(Collections.singletonList(keyboard));
         }
         
         @Override
         protected void rangePressed(Keyboard keyboard, int lowNumber, int highNumber) {
-          _panel.applyLocation(new Location(keyboard, Note.valueOf(lowNumber), Note.valueOf(highNumber)));
+          _panel.applyNoteRange(new NoteRange(keyboard, Note.valueOf(lowNumber), Note.valueOf(highNumber)));
         }
       }
     }

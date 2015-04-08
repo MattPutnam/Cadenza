@@ -5,7 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import cadenza.core.Location;
+import cadenza.core.NoteRange;
 import cadenza.core.Patch;
 
 /**
@@ -20,9 +20,9 @@ public class GhostNotePatchUsage extends PatchUsage {
   /** The map of notes to play when a note is pressed */
   public Map<Integer, List<Integer>> ghosts;
 
-  public GhostNotePatchUsage(Patch patch, Location location,
+  public GhostNotePatchUsage(Patch patch, NoteRange noteRange,
       int volume, Map<Integer, List<Integer>> ghosts) {
-    super(patch, location, volume);
+    super(patch, noteRange, volume);
     this.ghosts = Collections.unmodifiableMap(new LinkedHashMap<>(ghosts));
   }
 

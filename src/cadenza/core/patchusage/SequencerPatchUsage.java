@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.OptionalInt;
 
 import cadenza.control.PerformanceController;
-import cadenza.core.Location;
+import cadenza.core.NoteRange;
 import cadenza.core.Patch;
 import cadenza.core.metronome.Metronome;
 import cadenza.core.metronome.MetronomeListener;
@@ -26,9 +26,9 @@ public class SequencerPatchUsage extends PatchUsage implements MetronomeListener
   private transient volatile List<Integer> _currentSoundingNotes;
   private transient volatile int _index;
 
-  public SequencerPatchUsage(Patch patch, Location location, int volume,
+  public SequencerPatchUsage(Patch patch, NoteRange noteRange, int volume,
       Sequencer sequencer) {
-    super(patch, location, volume);
+    super(patch, noteRange, volume);
     this.sequencer = sequencer;
   }
 

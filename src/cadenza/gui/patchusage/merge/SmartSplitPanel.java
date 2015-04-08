@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import cadenza.core.Keyboard;
-import cadenza.core.Location;
+import cadenza.core.NoteRange;
 import cadenza.core.Note;
 import cadenza.core.patchmerge.SplitPatchMerge;
 import cadenza.core.patchusage.PatchUsage;
@@ -40,7 +40,7 @@ public class SmartSplitPanel extends MergePanel<SplitPatchMerge> {
   private final JPanel _rangePanel;
   
   private PatchUsage _other;
-  private Location _union;
+  private NoteRange _union;
   private Note _currentSplit;
   
   public SmartSplitPanel(PatchUsage primary, List<PatchUsage> others) {
@@ -49,7 +49,7 @@ public class SmartSplitPanel extends MergePanel<SplitPatchMerge> {
     _patchUsageCombo = buildComboForOthers();
     _patchUsageCombo.addActionListener(e -> notifyChange());
     
-    final Keyboard kbd = primary.location.getKeyboard();
+    final Keyboard kbd = primary.noteRange.getKeyboard();
     
     _aboveBox = new JCheckBox("Make this the top patch");
     _aboveBox.addActionListener(e -> update());
@@ -72,7 +72,7 @@ public class SmartSplitPanel extends MergePanel<SplitPatchMerge> {
       public void keyDragged(Note startNote, Note endNote) {
         final Note lower = Note.min(startNote, endNote);
         final Note upper = Note.max(startNote, endNote);
-        _union = new Location(kbd, lower, upper);
+        _union = new NoteRange(kbd, lower, upper);
         _currentSplit = Note.valueOf((lower.getMidiNumber() + upper.getMidiNumber()) / 2);
         update();
       };
@@ -114,7 +114,7 @@ public class SmartSplitPanel extends MergePanel<SplitPatchMerge> {
     // put this on the end of the event queue so that some other initialization
     // that would blast this happens first
     SwingUtilities.invokeLater(() -> {
-      _union = initial.accessLocation();
+      _union = initial.accessNoteRange();
       _currentSplit = Note.valueOf(initial.getStartSplit());
       _bufferField.setInt(initial.getBufferSize());
       
@@ -136,7 +136,7 @@ public class SmartSplitPanel extends MergePanel<SplitPatchMerge> {
   
   private void notifyChange() {
     _other = getSelectedItem();
-    _union = Location.union(accessPrimary().location, _other.location);
+    _union = NoteRange.union(accessPrimary().noteRange, _other.noteRange);
     _currentSplit = Note.valueOf((_union.getLower().getMidiNumber() + _union.getUpper().getMidiNumber()) / 2);
     update();
   }

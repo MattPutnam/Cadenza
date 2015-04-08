@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import cadenza.control.PerformanceController;
-import cadenza.core.Location;
+import cadenza.core.NoteRange;
 import cadenza.core.Patch;
 import cadenza.core.metronome.Metronome;
 import cadenza.core.metronome.Metronome.Subdivision;
@@ -72,15 +72,15 @@ public class ArpeggiatorPatchUsage extends PatchUsage implements MetronomeListen
    * Creates a new ArpeggiatorPatchUsage with the given PatchUsage basics,
    * the pattern, the subdivision, and the minimum size
    * @param patch the patch
-   * @param location the location
+   * @param noteRange the note range
    * @param volume the volume
    * @param pattern the arpeggiator pattern
    * @param subdivision the metronome subdivision
    * @param minSize the minimum size, must be at least 2
    */
-  public ArpeggiatorPatchUsage(Patch patch, Location location, int volume,
+  public ArpeggiatorPatchUsage(Patch patch, NoteRange noteRange, int volume,
       Pattern pattern, Subdivision subdivision, int minSize) {
-    super(patch, location, volume);
+    super(patch, noteRange, volume);
     if (minSize < 2)
       throw new IllegalArgumentException("minSize must be at least 2");
     this.pattern = pattern;

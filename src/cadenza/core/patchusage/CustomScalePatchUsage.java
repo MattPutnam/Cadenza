@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
-import cadenza.core.Location;
+import cadenza.core.NoteRange;
 import cadenza.core.Note;
 import cadenza.core.Note.PitchClass;
 import cadenza.core.Patch;
@@ -38,12 +38,12 @@ public class CustomScalePatchUsage extends PatchUsage {
    * the given PitchClass map.  If this map corresponds to any scale, that
    * scale name will not be reflected.
    * @param patch the patch
-   * @param location the location
+   * @param noteRange the note range
    * @param volume the volume
    * @param map the map of PitchClass to transposition
    */
-  public CustomScalePatchUsage(Patch patch, Location location, int volume, Map<PitchClass, Integer> map) {
-    super(patch, location, volume);
+  public CustomScalePatchUsage(Patch patch, NoteRange noteRange, int volume, Map<PitchClass, Integer> map) {
+    super(patch, noteRange, volume);
     this.map = Collections.unmodifiableMap(new IdentityHashMap<>(map));
     scale = null;
   }
@@ -56,12 +56,12 @@ public class CustomScalePatchUsage extends PatchUsage {
    * other types of scales with more than 7 notes.  You're free to try it
    * but you'll be missing some notes.
    * @param patch the patch
-   * @param location the location
+   * @param noteRange the note range
    * @param volume the volume
    * @param scale the Scale to derive the PitchClass->transposition map from
    */
-  public CustomScalePatchUsage(Patch patch, Location location, int volume, Scale scale) {
-    super(patch, location, volume);
+  public CustomScalePatchUsage(Patch patch, NoteRange noteRange, int volume, Scale scale) {
+    super(patch, noteRange, volume);
     map = Collections.unmodifiableMap(scale.buildMapFromNaturals());
     this.scale = scale;
   }

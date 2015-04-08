@@ -24,7 +24,7 @@ import common.swing.GraphicsUtils;
 /**
  * A component that displays a piano keyboard over a specified range of notes.
  * The dimensions of this keyboard are fixed.  This class can be queried for
- * the physical location of keys within the keyboard, or told to highlight
+ * the physical ranges of keys within the keyboard, or told to highlight
  * certain notes, but does not provide any other utilities.  For clicking /
  * dragging within one keyboard, see SingleKeyboardPanel; for clicking /
  * dragging between multiple keyboards, see MultipleKeyboardPanel.

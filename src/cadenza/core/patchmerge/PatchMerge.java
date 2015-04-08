@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import cadenza.control.PerformanceController;
-import cadenza.core.Location;
+import cadenza.core.NoteRange;
 import cadenza.core.PatchAssignmentEntity;
 import cadenza.core.patchusage.PatchUsage;
 
 /**
  * Represents a merging of two or more patch usages.  Merged patch usages share
- * the same Location, and an incoming message gets dispatched to one of the
+ * the same NoteRange, and an incoming message gets dispatched to one of the
  * constituent patch usages based on the subclass's specification.
  * 
  * @author Matt Putnam
@@ -70,11 +70,11 @@ public abstract class PatchMerge implements PatchAssignmentEntity, Serializable 
     
     _patchUsages = patchUsages;
     
-    final Location location = _patchUsages.stream()
-                                          .map(pu -> pu.location)
-                                          .reduce(Location::union)
-                                          .get();
-    _patchUsages.forEach(pu -> pu.location = location);
+    final NoteRange range = _patchUsages.stream()
+                                        .map(pu -> pu.noteRange)
+                                        .reduce(NoteRange::union)
+                                        .get();
+    _patchUsages.forEach(pu -> pu.noteRange = range);
   }
   
   /**
@@ -102,10 +102,10 @@ public abstract class PatchMerge implements PatchAssignmentEntity, Serializable 
   public abstract PatchUsage accessPrimary();
   
   /**
-   * @return the merged Location for this merge
+   * @return the merged NoteRange for this merge
    */
-  public Location accessLocation() {
-    return _patchUsages.get(0).location;
+  public NoteRange accessNoteRange() {
+    return _patchUsages.get(0).noteRange;
   }
   
   /**
@@ -178,19 +178,19 @@ public abstract class PatchMerge implements PatchAssignmentEntity, Serializable 
   }
   
   @Override
-  public final String toString(boolean includeLocation, boolean includeKeyboardInfo, boolean highlightPatchNames) {
+  public final String toString(boolean includeNoteRange, boolean includeKeyboardInfo, boolean highlightPatchNames) {
     return _patchUsages.stream()
                        .map(pu -> pu.toString(false, false, highlightPatchNames))
                        .collect(Collectors.joining(" / ")) + 
            toString_additional() +
-           (includeLocation ? " " + accessLocation().toString(includeKeyboardInfo) : "");
+           (includeNoteRange ? " " + accessNoteRange().toString(includeKeyboardInfo) : "");
   }
   
   protected abstract String toString_additional();
   
   // Compliance
   @Override
-  public Location getLocation() {
-    return accessLocation();
+  public NoteRange getNoteRange() {
+    return accessNoteRange();
   }
 }

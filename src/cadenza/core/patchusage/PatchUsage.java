@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import cadenza.core.Bank;
-import cadenza.core.Location;
+import cadenza.core.NoteRange;
 import cadenza.core.Patch;
 import cadenza.core.PatchAssignmentEntity;
 import cadenza.core.Synthesizer;
@@ -17,7 +17,7 @@ import common.swing.ColorUtils;
 
 /**
  * The usage of a patch as part of a cue.  This base class defines the patch,
- * the {@link Location}, and the volume level to set.
+ * the {@link NoteRange}, and the volume level to set.
  * 
  * @author Matt Putnam
  */
@@ -27,8 +27,8 @@ public abstract class PatchUsage implements PatchAssignmentEntity, Serializable 
   /** The patch to play */
   public Patch patch;
   
-  /** The location for the patch */
-  public Location location;
+  /** The note range for the patch */
+  public NoteRange noteRange;
   
   /** The volume to play the patch */
   public int volume;
@@ -51,11 +51,11 @@ public abstract class PatchUsage implements PatchAssignmentEntity, Serializable 
    */
   public static final PatchUsage ALL = new SimplePatchUsage(
       new Patch(Synthesizer.TEMP, "ALL", new Bank("TEMP"), 0),
-            new Location(null, null, null), 100, 0, false);
+            new NoteRange(null, null, null), 100, 0, false);
   
-  public PatchUsage(Patch patch, Location location, int volume) {
+  public PatchUsage(Patch patch, NoteRange noteRange, int volume) {
     this.patch = patch;
-    this.location = location;
+    this.noteRange = noteRange;
     this.volume = volume;
   }
   
@@ -70,13 +70,13 @@ public abstract class PatchUsage implements PatchAssignmentEntity, Serializable 
   
   /**
    * Determines if this patch usage should play the given note.  Uses the
-   * location and defers to the patch for further consideration
+   * note range and defers to the patch for further consideration
    * @param midiNumber the input note
    * @param velocity the input velocity
    * @return whether or not this patch usage plays the note
    */
   public final boolean respondsTo(int midiNumber, int velocity) {
-    if (!location.contains(midiNumber))
+    if (!noteRange.contains(midiNumber))
       return false;
     
     return respondsTo_additional(midiNumber, velocity);
@@ -99,7 +99,7 @@ public abstract class PatchUsage implements PatchAssignmentEntity, Serializable 
   }
   
   @Override
-  public final String toString(boolean includeLocation, boolean includeKeyboardInfo, boolean highlightPatchName) {
+  public final String toString(boolean includeNoteRange, boolean includeKeyboardInfo, boolean highlightPatchName) {
     if (this.equals(ALL))
       return "ALL";
     
@@ -112,7 +112,7 @@ public abstract class PatchUsage implements PatchAssignmentEntity, Serializable 
     sb.append(patch.name);
     if (highlightPatchName) sb.append("</span>");
     
-    if (includeLocation) sb.append(" ").append(location.toString(includeKeyboardInfo));
+    if (includeNoteRange) sb.append(" ").append(noteRange.toString(includeKeyboardInfo));
     if (volume != patch.defaultVolume)
       sb.append(" at " + volume);
     
@@ -127,7 +127,7 @@ public abstract class PatchUsage implements PatchAssignmentEntity, Serializable 
   
   // Compliance
   @Override
-  public Location getLocation() {
-    return location;
+  public NoteRange getNoteRange() {
+    return noteRange;
   }
 }

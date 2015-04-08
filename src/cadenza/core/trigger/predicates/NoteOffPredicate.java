@@ -3,17 +3,17 @@ package cadenza.core.trigger.predicates;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.ShortMessage;
 
-import cadenza.core.Location;
+import cadenza.core.NoteRange;
 
 import common.midi.MidiUtilities;
 
-public class NoteOffPredicate implements TriggerPredicate, HasLocation {
+public class NoteOffPredicate implements TriggerPredicate, HasNoteRange {
   private static final long serialVersionUID = 2L;
   
-  private Location _location;
+  private NoteRange _noteRange;
 
-  public NoteOffPredicate(Location location) {
-    _location = location;
+  public NoteOffPredicate(NoteRange noteRange) {
+    _noteRange = noteRange;
   }
 
   @Override
@@ -26,7 +26,7 @@ public class NoteOffPredicate implements TriggerPredicate, HasLocation {
       final int channel = sm.getChannel();
       final int midiNumber = sm.getData1();
       
-      return _location.getKeyboard().channel == channel && _location.contains(midiNumber);
+      return _noteRange.getKeyboard().channel == channel && _noteRange.contains(midiNumber);
     } else {
       return false;
     }
@@ -34,16 +34,16 @@ public class NoteOffPredicate implements TriggerPredicate, HasLocation {
   
   @Override
   public String toString() {
-    return _location.toString() + " released";
+    return _noteRange.toString() + " released";
   }
   
   @Override
-  public Location getLocation() {
-    return _location;
+  public NoteRange getNoteRange() {
+    return _noteRange;
   }
   
   @Override
-  public void setLocation(Location newLocation) {
-    _location = newLocation;
+  public void setNoteRange(NoteRange newNoteRange) {
+    _noteRange = newNoteRange;
   }
 }

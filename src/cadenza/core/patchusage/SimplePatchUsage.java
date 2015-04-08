@@ -1,7 +1,7 @@
 package cadenza.core.patchusage;
 
 import cadenza.control.PerformanceController;
-import cadenza.core.Location;
+import cadenza.core.NoteRange;
 import cadenza.core.Patch;
 
 /**
@@ -28,15 +28,15 @@ public class SimplePatchUsage extends PatchUsage {
   private transient int _currentNote;
   private transient PerformanceController _controller;
 
-  public SimplePatchUsage(Patch patch, Location location, int volume,
+  public SimplePatchUsage(Patch patch, NoteRange noteRange, int volume,
       int transposition, boolean monophonic) {
-    super(patch, location, volume);
+    super(patch, noteRange, volume);
     this.transposition = transposition;
     this.monophonic = monophonic;
   }
   
-  public SimplePatchUsage(Patch patch, Location location) {
-    this(patch, location, patch.defaultVolume, 0, false);
+  public SimplePatchUsage(Patch patch, NoteRange noteRange) {
+    this(patch, noteRange, patch.defaultVolume, 0, false);
   }
   
   @Override
@@ -75,7 +75,7 @@ public class SimplePatchUsage extends PatchUsage {
     
     final SimplePatchUsage spu = (SimplePatchUsage) obj;
     return this.patch.equals(spu.patch) &&
-         this.location.equals(spu.location) &&
+         this.noteRange.equals(spu.noteRange) &&
          this.volume == spu.volume &&
          this.initialControlSends.equals(spu.initialControlSends) &&
          this.transposition == spu.transposition &&
@@ -85,7 +85,7 @@ public class SimplePatchUsage extends PatchUsage {
   @Override
   public int hashCode() {
     int hashCode = patch.hashCode();
-    hashCode = 31*hashCode + location.hashCode();
+    hashCode = 31*hashCode + noteRange.hashCode();
     hashCode = 31*hashCode + volume;
     hashCode = 31*hashCode + initialControlSends.hashCode();
     hashCode = 31*hashCode + transposition;

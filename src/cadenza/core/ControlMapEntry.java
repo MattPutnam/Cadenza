@@ -30,7 +30,7 @@ public class ControlMapEntry implements Serializable {
       return "ALL";
     
     return destPatches.stream()
-                      .map(pu -> pu.patch.name + " " + pu.location.toString(true))
+                      .map(pu -> pu.patch.name + " " + pu.noteRange.toString(true))
                       .collect(Collectors.joining(", "));
   }
   

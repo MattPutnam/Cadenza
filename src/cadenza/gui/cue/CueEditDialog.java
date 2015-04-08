@@ -14,14 +14,14 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import cadenza.control.midiinput.AcceptsKeyboardInput;
-import cadenza.control.midiinput.LocationEntryTracker;
+import cadenza.control.midiinput.NoteRangeEntryTracker;
 import cadenza.control.midiinput.MIDIInputControlCenter;
 import cadenza.core.CadenzaData;
 import cadenza.core.ControlMapEntry;
 import cadenza.core.ControlMapProvider;
 import cadenza.core.Cue;
 import cadenza.core.Keyboard;
-import cadenza.core.Location;
+import cadenza.core.NoteRange;
 import cadenza.core.Note;
 import cadenza.core.patchusage.PatchUsage;
 import cadenza.gui.CadenzaFrame;
@@ -199,24 +199,24 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider,
     });
   }
   
-  private class PatchEnterer extends LocationEntryTracker {
+  private class PatchEnterer extends NoteRangeEntryTracker {
     public PatchEnterer() {
       super(_data.keyboards);
     }
     
     @Override
     protected void singlePressed(Keyboard keyboard, int noteNumber) {
-      _patchUsagePanel.addPatchUsage(new Location(keyboard, Note.valueOf(noteNumber)));
+      _patchUsagePanel.addPatchUsage(new NoteRange(keyboard, Note.valueOf(noteNumber)));
     }
     
     @Override
     protected void rangePressed(Keyboard keyboard, int lowNumber, int highNumber) {
-      _patchUsagePanel.addPatchUsage(new Location(keyboard, Note.valueOf(lowNumber), Note.valueOf(highNumber)));
+      _patchUsagePanel.addPatchUsage(new NoteRange(keyboard, Note.valueOf(lowNumber), Note.valueOf(highNumber)));
     }
     
     @Override
     protected void wholePressed(Keyboard keyboard) {
-      _patchUsagePanel.addPatchUsage(new Location(keyboard, true));
+      _patchUsagePanel.addPatchUsage(new NoteRange(keyboard, true));
     }
   }
 }

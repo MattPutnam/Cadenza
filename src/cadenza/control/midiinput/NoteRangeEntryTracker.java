@@ -11,20 +11,20 @@ import cadenza.core.Keyboard;
 import cadenza.preferences.Preferences;
 
 /**
- * Object that tracks key presses for the sake of generating Location entry
+ * Object that tracks key presses for the sake of generating NoteRange entry
  * events.  Keeps track of simultaneous key presses and once all keys are
  * released, fires the appropriate event.  If key presses come in from
  * multiple sources, the event is aborted.
  * 
  * @author Matt Putnam
  */
-public abstract class LocationEntryTracker {
+public abstract class NoteRangeEntryTracker {
   private final Map<Integer, Keyboard> _keyboardMap = new IdentityHashMap<>();
   private Keyboard _activeKeyboard = null;
   private final Set<Integer> _currentlyPressedKeys = new HashSet<>();
   private final Set<Integer> _accumulatedPressedKeys = new HashSet<>();
   
-  public LocationEntryTracker(List<Keyboard> keyboards) {
+  public NoteRangeEntryTracker(List<Keyboard> keyboards) {
     keyboards.forEach(kbd -> _keyboardMap.put(Integer.valueOf(kbd.channel), kbd));
   }
   

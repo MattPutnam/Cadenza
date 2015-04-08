@@ -9,21 +9,21 @@ import cadenza.control.PerformanceController;
  */
 public interface PatchAssignmentEntity {
   /**
-   * @return the location of this PatchUsage/PatchMerge
+   * @return the range of this PatchUsage/PatchMerge
    */
-  public Location getLocation();
+  public NoteRange getNoteRange();
   
   /**
    * Displays this PatchUsage/PatchMerge
-   * @param includeLocation whether or not to include the location
+   * @param includeRange whether or not to include the range
    * @param includeKeyboardInfo whether or not to include the keyboard in the
-   *                            location; ignored if <tt>includeLocation</tt>
+   *                            range; ignored if <tt>includeRange</tt>
    *                            is false.
    * @param highlightPatchName whether or not to mark up the patch name with
    *                           HTML spans to highlight it with its selected color
    * @return a display String
    */
-  public String toString(boolean includeLocation, boolean includeKeyboardInfo, boolean highlightPatchName);
+  public String toString(boolean includeRange, boolean includeKeyboardInfo, boolean highlightPatchName);
   
   /**
    * Called by the PerformanceController when the PatchUsage is loaded.

@@ -14,7 +14,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import cadenza.core.Location;
+import cadenza.core.NoteRange;
 import cadenza.core.Note;
 import cadenza.core.patchusage.GhostNotePatchUsage;
 import cadenza.core.patchusage.PatchUsage;
@@ -74,7 +74,7 @@ public class GhostNotePatchUsageEditor extends JPanel {
       }
     });
     
-    rebuildSourceRow(initial.location);
+    rebuildSourceRow(initial.noteRange);
     
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     add(SwingUtils.buildCenteredRow(new JLabel("When the following note is pressed:")));
@@ -87,7 +87,7 @@ public class GhostNotePatchUsageEditor extends JPanel {
     _map.clear();
     _map.putAll(patchUsage.ghosts);
     
-    rebuildSourceRow(patchUsage.location);
+    rebuildSourceRow(patchUsage.noteRange);
   }
   
   public Map<Integer, List<Integer>> getMap() {
@@ -95,13 +95,13 @@ public class GhostNotePatchUsageEditor extends JPanel {
     return _map;
   }
   
-  public void setLocation(Location location) {
-    rebuildSourceRow(location);
+  public void setNoteRange(NoteRange noteRange) {
+    rebuildSourceRow(noteRange);
   }
   
-  private void rebuildSourceRow(Location location) {
-    final Note low = location.getLower();
-    final Note high = location.getUpper();
+  private void rebuildSourceRow(NoteRange noteRange) {
+    final Note low = noteRange.getLower();
+    final Note high = noteRange.getUpper();
     _sourcePanel = new KeyboardPanel(low, high);
     
     final int sourceSpacer = _destPanel.getKeyPosition(low).x;
@@ -114,7 +114,7 @@ public class GhostNotePatchUsageEditor extends JPanel {
     
     final List<Integer> keysToRemove = new LinkedList<>();
     for (final Entry<Integer, List<Integer>> entry : _map.entrySet()) {
-      if (!location.contains(entry.getKey().intValue()))
+      if (!noteRange.contains(entry.getKey().intValue()))
         keysToRemove.add(entry.getKey());
     }
     for (final Integer key : keysToRemove)

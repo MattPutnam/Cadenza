@@ -20,10 +20,10 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
 import cadenza.control.midiinput.AcceptsKeyboardInput;
-import cadenza.control.midiinput.LocationEntryTracker;
+import cadenza.control.midiinput.NoteRangeEntryTracker;
 import cadenza.control.midiinput.MIDIInputControlCenter;
 import cadenza.core.Keyboard;
-import cadenza.core.Location;
+import cadenza.core.NoteRange;
 import cadenza.core.Note;
 import cadenza.core.trigger.predicates.ChordPredicate;
 import cadenza.core.trigger.predicates.ControlValuePredicate;
@@ -32,7 +32,7 @@ import cadenza.core.trigger.predicates.NoteOnPredicate;
 import cadenza.core.trigger.predicates.TriggerPredicate;
 import cadenza.gui.common.ControlCombo;
 import cadenza.gui.common.KeyboardSelector;
-import cadenza.gui.common.LocationEditPanel;
+import cadenza.gui.common.NoteRangeEditPanel;
 import cadenza.gui.keyboard.KeyboardPanel;
 import cadenza.preferences.Preferences;
 
@@ -146,24 +146,24 @@ public class TriggerPredicateEditDialog extends OKCancelDialog implements Accept
     ((PredicatePane<?>) _tabbedPane.getSelectedComponent()).verify();
   }
   
-  private class KeyPressTracker extends LocationEntryTracker {
+  private class KeyPressTracker extends NoteRangeEntryTracker {
     public KeyPressTracker(List<Keyboard> keyboards) {
       super(keyboards);
     }
     
     @Override
     protected void singlePressed(Keyboard keyboard, int noteNumber) {
-      getCurrentTab().setLocation(new Location(keyboard, Note.valueOf(noteNumber)));
+      getCurrentTab().setNoteRange(new NoteRange(keyboard, Note.valueOf(noteNumber)));
     }
     
     @Override
     protected void rangePressed(Keyboard keyboard, int lowNumber, int highNumber) {
-      getCurrentTab().setLocation(new Location(keyboard, Note.valueOf(lowNumber), Note.valueOf(highNumber)));
+      getCurrentTab().setNoteRange(new NoteRange(keyboard, Note.valueOf(lowNumber), Note.valueOf(highNumber)));
     }
     
     @Override
     protected void wholePressed(Keyboard keyboard) {
-      getCurrentTab().setLocation(new Location(keyboard, false));
+      getCurrentTab().setNoteRange(new NoteRange(keyboard, false));
     }
   }
   
@@ -179,11 +179,11 @@ public class TriggerPredicateEditDialog extends OKCancelDialog implements Accept
     public abstract T createPredicate();
     
     /**
-     * Sets the selected location, if that makes sense for this predicate.
+     * Sets the selected note range, if that makes sense for this predicate.
      * Default implementation does nothing.
-     * @param location the location
+     * @param noteRange the note range
      */
-    public void setLocation(Location location) {}
+    public void setNoteRange(NoteRange noteRange) {}
     
     /**
      * Notification that a note has been pressed.  Default does nothing.
@@ -201,72 +201,72 @@ public class TriggerPredicateEditDialog extends OKCancelDialog implements Accept
   }
   
   private class NoteOnPredicatePane extends PredicatePane<NoteOnPredicate> {
-    private final LocationEditPanel _locationPanel;
+    private final NoteRangeEditPanel _noteRangePanel;
     
     public NoteOnPredicatePane() {
       super();
-      _locationPanel = new LocationEditPanel(_keyboards, null, false);
-      add(_locationPanel);
+      _noteRangePanel = new NoteRangeEditPanel(_keyboards, null, false);
+      add(_noteRangePanel);
     }
     
     @Override
     public void initialize(NoteOnPredicate initial) {
-      _locationPanel.setSelectedLocation(initial.getLocation());
+      _noteRangePanel.setSelectedNoteRange(initial.getNoteRange());
     }
 
     @Override
     public NoteOnPredicate createPredicate() {
-      return new NoteOnPredicate(_locationPanel.getSelectedLocation());
+      return new NoteOnPredicate(_noteRangePanel.getSelectedNoteRange());
     }
     
     @Override
-    public void setLocation(Location location) {
-      _locationPanel.setSelectedLocation(location);
+    public void setNoteRange(NoteRange noteRange) {
+      _noteRangePanel.setSelectedNoteRange(noteRange);
     }
     
     @Override
     public void notifyKeyPress(Keyboard keyboard, int noteNumber) {
-      _locationPanel.highlightKey(keyboard, noteNumber);
+      _noteRangePanel.highlightKey(keyboard, noteNumber);
     }
     
     @Override
     public void notifyKeyRelease(Keyboard keyboard, int noteNumber) {
-      _locationPanel.unhighlightKey(keyboard, noteNumber);
+      _noteRangePanel.unhighlightKey(keyboard, noteNumber);
     }
   }
   
   private class NoteOffPredicatePane extends PredicatePane<NoteOffPredicate> {
-    private final LocationEditPanel _locationPanel;
+    private final NoteRangeEditPanel _noteRangePanel;
     
     public NoteOffPredicatePane() {
       super();
-      _locationPanel = new LocationEditPanel(_keyboards, null, false);
-      add(_locationPanel);
+      _noteRangePanel = new NoteRangeEditPanel(_keyboards, null, false);
+      add(_noteRangePanel);
     }
     
     @Override
     public void initialize(NoteOffPredicate initial) {
-      _locationPanel.setSelectedLocation(initial.getLocation());
+      _noteRangePanel.setSelectedNoteRange(initial.getNoteRange());
     }
 
     @Override
     public NoteOffPredicate createPredicate() {
-      return new NoteOffPredicate(_locationPanel.getSelectedLocation());
+      return new NoteOffPredicate(_noteRangePanel.getSelectedNoteRange());
     }
     
     @Override
-    public void setLocation(Location location) {
-      _locationPanel.setSelectedLocation(location);
+    public void setNoteRange(NoteRange noteRange) {
+      _noteRangePanel.setSelectedNoteRange(noteRange);
     }
     
     @Override
     public void notifyKeyPress(Keyboard keyboard, int noteNumber) {
-      _locationPanel.highlightKey(keyboard, noteNumber);
+      _noteRangePanel.highlightKey(keyboard, noteNumber);
     }
     
     @Override
     public void notifyKeyRelease(Keyboard keyboard, int noteNumber) {
-      _locationPanel.unhighlightKey(keyboard, noteNumber);
+      _noteRangePanel.unhighlightKey(keyboard, noteNumber);
     }
   }
   

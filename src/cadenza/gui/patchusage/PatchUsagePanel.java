@@ -25,7 +25,7 @@ import javax.swing.JPopupMenu;
 import cadenza.core.CadenzaData;
 import cadenza.core.Cue;
 import cadenza.core.Keyboard;
-import cadenza.core.Location;
+import cadenza.core.NoteRange;
 import cadenza.core.Note;
 import cadenza.core.Patch;
 import cadenza.core.PatchAssignmentEntity;
@@ -133,17 +133,17 @@ public class PatchUsagePanel extends JPanel {
     _keyboardPanels.get(keyboardIndex).accessKeyboardPanel().unhighlightNote(Note.valueOf(midiNum));
   }
   
-  public void addPatchUsage(Location location) {
+  public void addPatchUsage(NoteRange noteRange) {
     SwingUtils.doInSwing(() -> {
       OKCancelDialog.showDialog(new PatchSelectorDialog(this, null), dialog -> {
-        _patchUsages.add(new SimplePatchUsage(dialog.getSelectedPatch(), location));
+        _patchUsages.add(new SimplePatchUsage(dialog.getSelectedPatch(), noteRange));
         refreshDisplay();
       });
     }, false);
   }
   
   private static Map<Keyboard, List<PatchAssignmentEntity>> sortByKeyboard(List<PatchAssignmentEntity> patchAssignments) {
-    return patchAssignments.stream().collect(Collectors.groupingBy(pae -> pae.getLocation().getKeyboard()));
+    return patchAssignments.stream().collect(Collectors.groupingBy(pae -> pae.getNoteRange().getKeyboard()));
   }
   
   private static PatchAssignmentEntity findNext(List<PatchAssignmentEntity> patchAssignments, PatchAssignmentEntity last) {
@@ -157,7 +157,7 @@ public class PatchUsagePanel extends JPanel {
     
     final List<PatchAssignmentEntity> nonConflicting =
         patchAssignments.stream()
-                   .filter(pu -> pu.getLocation().getLower().above(last.getLocation().getUpper()))
+                   .filter(pu -> pu.getNoteRange().getLower().above(last.getNoteRange().getUpper()))
                    .collect(Collectors.toList());
     
     if (nonConflicting.isEmpty())
@@ -168,10 +168,10 @@ public class PatchUsagePanel extends JPanel {
   
   private static PatchAssignmentEntity findWithLowestHigh(List<PatchAssignmentEntity> patchAssignments) {
     PatchAssignmentEntity found = patchAssignments.get(0);
-    Note foundHigh = found.getLocation().getUpper();
+    Note foundHigh = found.getNoteRange().getUpper();
     for (int i = 1; i < patchAssignments.size(); ++i) {
       final PatchAssignmentEntity pae = patchAssignments.get(i);
-      final Note high = pae.getLocation().getUpper();
+      final Note high = pae.getNoteRange().getUpper();
       if (high.below(foundHigh)) {
         found = pae;
         foundHigh = high;
@@ -187,8 +187,8 @@ public class PatchUsagePanel extends JPanel {
       for (final PatchAssignmentEntity pae2 : patchAssignments) {
         if (pae1 == pae2) continue;
         
-        if (pae1.getLocation().getUpper().below(pae2.getLocation().getLower()) ||
-            pae2.getLocation().getUpper().below(pae1.getLocation().getLower())) // non-conflicting
+        if (pae1.getNoteRange().getUpper().below(pae2.getNoteRange().getLower()) ||
+            pae2.getNoteRange().getUpper().below(pae1.getNoteRange().getLower())) // non-conflicting
           continue outer;
       }
       return pae1;
@@ -204,7 +204,7 @@ public class PatchUsagePanel extends JPanel {
       _patchUsage = patchUsage;
       
       setLayout(null);
-      final JLabel label = new JLabel(patchUsage.patch.name, JLabel.CENTER);
+      final JLabel label = new JLabel(patchUsage.toString(false, false, false), JLabel.CENTER);
       label.setForeground(patchUsage.patch.getTextColor());
       setBackground(patchUsage.patch.getDisplayColor());
       setToolTipText(_patchUsage.toString(false, false, true));
@@ -258,7 +258,7 @@ public class PatchUsagePanel extends JPanel {
     
     private List<PatchUsage> buildOthers() {
       return _patchUsages.stream()
-                         .filter(pu -> pu.location.getKeyboard() == _patchUsage.location.getKeyboard())
+                         .filter(pu -> pu.noteRange.getKeyboard() == _patchUsage.noteRange.getKeyboard())
                          .filter(pu -> pu != _patchUsage)
                          .collect(Collectors.toList());
     }
@@ -299,7 +299,7 @@ public class PatchUsagePanel extends JPanel {
             OKCancelDialog.showDialog(new PatchUsageEditDialog(_frame, pu, _data), dialog -> {
               final PatchUsage newPU = dialog.getPatchUsage();
               _patchMerge.accessPatchUsages().set(findex, newPU);
-              _patchMerge.accessPatchUsages().forEach(p -> p.location = newPU.location);
+              _patchMerge.accessPatchUsages().forEach(p -> p.noteRange = newPU.noteRange);
               refreshDisplay();
             });
           }));
@@ -335,7 +335,7 @@ public class PatchUsagePanel extends JPanel {
     
     private List<PatchUsage> buildOthers() {
       return _patchUsages.stream()
-                         .filter(pu -> pu.location.getKeyboard() == _patchMerge.accessLocation().getKeyboard())
+                         .filter(pu -> pu.noteRange.getKeyboard() == _patchMerge.accessNoteRange().getKeyboard())
                          .collect(Collectors.toList());
     }
   }
@@ -360,14 +360,14 @@ public class PatchUsagePanel extends JPanel {
     }
     
     public void addPatchAssignmentEntity(PatchAssignmentEntity entity) {
-      if (rightMostNote != null && !rightMostNote.below(entity.getLocation().getLower())) {
+      if (rightMostNote != null && !rightMostNote.below(entity.getNoteRange().getLower())) {
         rightMostNote = null;
         yPos += HEIGHT + GAP;
         SwingUtils.freezeHeight(this, yPos + HEIGHT);
       }
       
-      final int x = _keyboardPanel.accessKeyboardPanel().getKeyPosition(entity.getLocation().getLower()).x;
-      final Rectangle r = _keyboardPanel.accessKeyboardPanel().getKeyPosition(entity.getLocation().getUpper());
+      final int x = _keyboardPanel.accessKeyboardPanel().getKeyPosition(entity.getNoteRange().getLower()).x;
+      final Rectangle r = _keyboardPanel.accessKeyboardPanel().getKeyPosition(entity.getNoteRange().getUpper());
       final int width = r.x + r.width - x;
       
       final JPanel brick;
@@ -381,7 +381,7 @@ public class PatchUsagePanel extends JPanel {
       brick.setBounds(x, yPos, width, HEIGHT);
       add(brick);
       repaint();
-      rightMostNote = entity.getLocation().getUpper();
+      rightMostNote = entity.getNoteRange().getUpper();
     }
     
     public void clearEntities() {
@@ -410,7 +410,7 @@ public class PatchUsagePanel extends JPanel {
     @Override
     public void keyClicked(Note note) {
       OKCancelDialog.showDialog(new PatchSelectorDialog(_anchor, null), dialog -> {
-        _patchUsages.add(new SimplePatchUsage(dialog.getSelectedPatch(), new Location(_keyboard, note)));
+        _patchUsages.add(new SimplePatchUsage(dialog.getSelectedPatch(), new NoteRange(_keyboard, note)));
         refreshDisplay();
       });
     }
@@ -426,7 +426,7 @@ public class PatchUsagePanel extends JPanel {
       }
       
       OKCancelDialog.showDialog(new PatchSelectorDialog(_anchor, null), dialog -> {
-        _patchUsages.add(new SimplePatchUsage(dialog.getSelectedPatch(), new Location(_keyboard, low, high)));
+        _patchUsages.add(new SimplePatchUsage(dialog.getSelectedPatch(), new NoteRange(_keyboard, low, high)));
         refreshDisplay();
       });
     }
@@ -444,7 +444,7 @@ public class PatchUsagePanel extends JPanel {
     public void actionPerformed(ActionEvent e) {
       OKCancelDialog.showDialog(new PatchSelectorDialog((JButton) e.getSource(), null), dialog -> {
         final Patch patch = dialog.getSelectedPatch();
-        _patchUsages.add(new SimplePatchUsage(patch, new Location(_keyboard, true),
+        _patchUsages.add(new SimplePatchUsage(patch, new NoteRange(_keyboard, true),
             patch.defaultVolume, 0, false));
         refreshDisplay();
       });

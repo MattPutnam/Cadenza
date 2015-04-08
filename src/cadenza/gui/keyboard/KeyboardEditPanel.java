@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import cadenza.core.Keyboard;
-import cadenza.core.Location;
+import cadenza.core.NoteRange;
 import cadenza.core.Note;
 
 import common.swing.IntField;
@@ -24,8 +24,8 @@ import common.swing.VerificationException;
 public class KeyboardEditPanel extends JPanel {
   private final Keyboard _keyboard;
   
-  private Location _selectedFullRange;
-  private Location _selectedSoundingRange;
+  private NoteRange _selectedFullRange;
+  private NoteRange _selectedSoundingRange;
   
   private final JTextField _nameField;
   private final IntField _channelField;
@@ -38,8 +38,8 @@ public class KeyboardEditPanel extends JPanel {
     super();
     
     _keyboard = keyboard;
-    _selectedFullRange = new Location(keyboard, keyboard.low, keyboard.high);
-    _selectedSoundingRange = new Location(keyboard, keyboard.soundingLow, keyboard.soundingHigh);
+    _selectedFullRange = new NoteRange(keyboard, keyboard.low, keyboard.high);
+    _selectedSoundingRange = new NoteRange(keyboard, keyboard.soundingLow, keyboard.soundingHigh);
     
     _nameField = new JTextField(keyboard.name);
     _channelField = new IntField(keyboard.channel, 0, Integer.MAX_VALUE);
@@ -60,7 +60,7 @@ public class KeyboardEditPanel extends JPanel {
     _keyboardPanel.addKeyboardListener(new KeyboardAdapter() {
       @Override
       public void keyDragged(Note startNote, Note endNote) {
-        applyLocation(new Location(_keyboard, startNote, endNote));
+        applyNoteRange(new NoteRange(_keyboard, startNote, endNote));
       }
     });
     rebuildLabels();
@@ -75,15 +75,15 @@ public class KeyboardEditPanel extends JPanel {
     add(content, BorderLayout.CENTER);
   }
   
-  public void applyLocation(Location location) {
+  public void applyNoteRange(NoteRange noteRange) {
     SwingUtils.throwIfNotEventThread();
     
     if (_combo.getSelectedIndex() == 0) {
-      _selectedFullRange = location;
+      _selectedFullRange = noteRange;
       _combo.setSelectedIndex(1);
       rebuildLabels();
     } else {
-      _selectedSoundingRange = location;
+      _selectedSoundingRange = noteRange;
       _combo.setSelectedIndex(0);
       rebuildLabels();
     }
@@ -167,8 +167,8 @@ public class KeyboardEditPanel extends JPanel {
     
     _nameField.setText(keyboard.name);
     _channelField.setInt(keyboard.channel);
-    _selectedFullRange = new Location(_keyboard, keyboard.low, keyboard.high);
-    _selectedSoundingRange = new Location(_keyboard, keyboard.soundingLow, keyboard.soundingHigh);
+    _selectedFullRange = new NoteRange(_keyboard, keyboard.low, keyboard.high);
+    _selectedSoundingRange = new NoteRange(_keyboard, keyboard.soundingLow, keyboard.soundingHigh);
     rebuildLabels();
   }
 }

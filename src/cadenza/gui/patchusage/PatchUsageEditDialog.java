@@ -15,11 +15,11 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
 import cadenza.control.midiinput.AcceptsKeyboardInput;
-import cadenza.control.midiinput.LocationEntryTracker;
+import cadenza.control.midiinput.NoteRangeEntryTracker;
 import cadenza.control.midiinput.MIDIInputControlCenter;
 import cadenza.core.CadenzaData;
 import cadenza.core.Keyboard;
-import cadenza.core.Location;
+import cadenza.core.NoteRange;
 import cadenza.core.Note;
 import cadenza.core.Patch;
 import cadenza.core.metronome.Metronome.Subdivision;
@@ -31,7 +31,7 @@ import cadenza.core.patchusage.PatchUsage;
 import cadenza.core.patchusage.SequencerPatchUsage;
 import cadenza.core.patchusage.SimplePatchUsage;
 import cadenza.gui.CadenzaFrame;
-import cadenza.gui.common.LocationEditPanel;
+import cadenza.gui.common.NoteRangeEditPanel;
 import cadenza.gui.common.TranspositionEditor;
 import cadenza.gui.common.VolumeField;
 import cadenza.gui.effects.edit.EffectChainViewerEditor;
@@ -54,7 +54,7 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
   
   private PatchSelector _patchSelector;
   private VolumeField _volumeField;
-  private LocationEditPanel _locationSelector;
+  private NoteRangeEditPanel _noteRangeSelector;
   private EffectChainViewerEditor _effectPanel;
   
   private JTabbedPane _tabbedPane;
@@ -64,7 +64,7 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
   private ArpeggiatorPatchUsagePane _arpeggiatorPane;
   private SequencerPatchUsagePane _sequencerPane;
   
-  private LocationEnterer _locationEnterer;
+  private NoteRangeEnterer _noteRangeEnterer;
 
   public PatchUsageEditDialog(CadenzaFrame frame, PatchUsage startingPatchUsage,
       CadenzaData data) {
@@ -76,7 +76,7 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
     
     if (Preferences.getMIDIInputOptions().allowMIDIInput()) {
       MIDIInputControlCenter.installWindowFocusGrabber(this);
-      _locationEnterer = new LocationEnterer();
+      _noteRangeEnterer = new NoteRangeEnterer();
     }
   }
 
@@ -84,16 +84,16 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
   protected JComponent buildContent() {
     _patchSelector = new PatchSelector(_frame, _data.patches, _data.synthesizers, _startingPatchUsage.patch);
     _volumeField = new VolumeField(_startingPatchUsage.volume);
-    _locationSelector = new LocationEditPanel(_data.keyboards, _startingPatchUsage.location, true);
+    _noteRangeSelector = new NoteRangeEditPanel(_data.keyboards, _startingPatchUsage.noteRange, true);
     _effectPanel = new EffectChainViewerEditor(_startingPatchUsage.effects, true);
     
     _patchSelector.accessCombo().addActionListener(e -> _volumeField.setVolume(_patchSelector.getSelectedPatch().defaultVolume));
-    _locationSelector.setBorder(BorderFactory.createTitledBorder("Location"));
+    _noteRangeSelector.setBorder(BorderFactory.createTitledBorder("Note Range"));
     _effectPanel.setBorder(BorderFactory.createTitledBorder("Effects"));
     
     _tabbedPane = new JTabbedPane();
     _simplePane = new SimplePatchUsagePane();
-    _ghostPane = new GhostNotePatchUsagePane(_startingPatchUsage, _locationSelector);
+    _ghostPane = new GhostNotePatchUsagePane(_startingPatchUsage, _noteRangeSelector);
     _scalePane = new CustomScalePatchUsagePane();
     _arpeggiatorPane = new ArpeggiatorPatchUsagePane();
     _sequencerPane = new SequencerPatchUsagePane();
@@ -125,7 +125,7 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
     
     final Box box = Box.createVerticalBox();
     box.add(SwingUtils.buildCenteredRow(_patchSelector, new JLabel("Volume: "), _volumeField));
-    box.add(_locationSelector);
+    box.add(_noteRangeSelector);
     box.add(_effectPanel);
     box.add(_tabbedPane);
     return box;
@@ -152,16 +152,16 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
   
   public PatchUsage getPatchUsage() {
     final Patch patch = _patchSelector.getSelectedPatch();
-    final Location location = _locationSelector.getSelectedLocation();
+    final NoteRange noteRange = _noteRangeSelector.getSelectedNoteRange();
     final int volume = _volumeField.getVolume();
     
     final PatchUsage newPatchUsage;
     switch (_tabbedPane.getSelectedIndex()) {
-      case 0: newPatchUsage = _simplePane.getPatchUsage(patch, location, volume); break;
-      case 1: newPatchUsage = _ghostPane.getPatchUsage(patch, location, volume); break;
-      case 2: newPatchUsage = _scalePane.getPatchUsage(patch, location, volume); break;
-      case 3: newPatchUsage = _arpeggiatorPane.getPatchUsage(patch, location, volume); break;
-      case 4: newPatchUsage = _sequencerPane.getPatchUsage(patch, location, volume); break;
+      case 0: newPatchUsage = _simplePane.getPatchUsage(patch, noteRange, volume); break;
+      case 1: newPatchUsage = _ghostPane.getPatchUsage(patch, noteRange, volume); break;
+      case 2: newPatchUsage = _scalePane.getPatchUsage(patch, noteRange, volume); break;
+      case 3: newPatchUsage = _arpeggiatorPane.getPatchUsage(patch, noteRange, volume); break;
+      case 4: newPatchUsage = _sequencerPane.getPatchUsage(patch, noteRange, volume); break;
       default: throw new IllegalStateException("Unknown Tab!");
     }
     
@@ -172,37 +172,37 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
   @Override
   public void keyPressed(int channel, int midiNumber, int velocity) {
     SwingUtilities.invokeLater(() -> {
-      final Keyboard kbd = _locationEnterer.keyPressed(channel, midiNumber);
-      _locationSelector.highlightKey(kbd, midiNumber);
+      final Keyboard kbd = _noteRangeEnterer.keyPressed(channel, midiNumber);
+      _noteRangeSelector.highlightKey(kbd, midiNumber);
     });
   }
   
   @Override
   public void keyReleased(int channel, int midiNumber) {
     SwingUtilities.invokeLater(() -> {
-      final Keyboard kbd = _locationEnterer.keyReleased(channel, midiNumber);
-      _locationSelector.unhighlightKey(kbd, midiNumber);
+      final Keyboard kbd = _noteRangeEnterer.keyReleased(channel, midiNumber);
+      _noteRangeSelector.unhighlightKey(kbd, midiNumber);
     });
   }
   
-  private class LocationEnterer extends LocationEntryTracker {
-    public LocationEnterer() {
+  private class NoteRangeEnterer extends NoteRangeEntryTracker {
+    public NoteRangeEnterer() {
       super(_data.keyboards);
     }
     
     @Override
     protected void singlePressed(Keyboard keyboard, int noteNumber) {
-      _locationSelector.setSelectedLocation(new Location(keyboard, Note.valueOf(noteNumber)));
+      _noteRangeSelector.setSelectedNoteRange(new NoteRange(keyboard, Note.valueOf(noteNumber)));
     }
     
     @Override
     protected void rangePressed(Keyboard keyboard, int lowNumber, int highNumber) {
-      _locationSelector.setSelectedLocation(new Location(keyboard, Note.valueOf(lowNumber), Note.valueOf(highNumber)));
+      _noteRangeSelector.setSelectedNoteRange(new NoteRange(keyboard, Note.valueOf(lowNumber), Note.valueOf(highNumber)));
     }
     
     @Override
     protected void wholePressed(Keyboard keyboard) {
-      _locationSelector.setSelectedLocation(new Location(keyboard, true));
+      _noteRangeSelector.setSelectedNoteRange(new NoteRange(keyboard, true));
     }
   }
   
@@ -222,11 +222,11 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
     /**
      * Gets the patch usage as defined by the GUI 
      * @param patch the selected patch, passed in from the general controls
-     * @param location the selected location, passed in from the general controls
+     * @param noteRange the selected note range, passed in from the general controls
      * @param volume the selected volume, passed in from the general controls
      * @return the patch usage as defined by the GUI
      */
-    public abstract T getPatchUsage(Patch patch, Location location, int volume);
+    public abstract T getPatchUsage(Patch patch, NoteRange noteRange, int volume);
   }
   
   private static class SimplePatchUsagePane extends PatchUsageEditPane<SimplePatchUsage> {
@@ -254,8 +254,8 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
     }
     
     @Override
-    public SimplePatchUsage getPatchUsage(Patch patch, Location location, int volume) {
-      return new SimplePatchUsage(patch, location, volume,
+    public SimplePatchUsage getPatchUsage(Patch patch, NoteRange noteRange, int volume) {
+      return new SimplePatchUsage(patch, noteRange, volume,
           _transpositionEditor.getTransposition(),
           _isMonophonicCheckBox.isSelected());
     }
@@ -264,10 +264,10 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
   private static class GhostNotePatchUsagePane extends PatchUsageEditPane<GhostNotePatchUsage> {
     private final GhostNotePatchUsageEditor _editor;
     
-    public GhostNotePatchUsagePane(PatchUsage startingPatchUsage, LocationEditPanel locationSelector) {
+    public GhostNotePatchUsagePane(PatchUsage startingPatchUsage, NoteRangeEditPanel noteRangeSelector) {
       _editor = new GhostNotePatchUsageEditor(startingPatchUsage);
       
-      locationSelector.addLocationListener(_editor::setLocation);
+      noteRangeSelector.addNoteRangeListener(_editor::setNoteRange);
       
       add(_editor);
     }
@@ -278,8 +278,8 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
     }
     
     @Override
-    public GhostNotePatchUsage getPatchUsage(Patch patch, Location location, int volume) {
-      return new GhostNotePatchUsage(patch, location, volume,  _editor.getMap());
+    public GhostNotePatchUsage getPatchUsage(Patch patch, NoteRange noteRange, int volume) {
+      return new GhostNotePatchUsage(patch, noteRange, volume,  _editor.getMap());
     }
   }
   
@@ -298,11 +298,11 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
     }
     
     @Override
-    public CustomScalePatchUsage getPatchUsage(Patch patch, Location location, int volume) {
+    public CustomScalePatchUsage getPatchUsage(Patch patch, NoteRange noteRange, int volume) {
       if (_editor.isScaleSelected())
-        return new CustomScalePatchUsage(patch, location, volume, _editor.getSelectedScale());
+        return new CustomScalePatchUsage(patch, noteRange, volume, _editor.getSelectedScale());
       else
-        return new CustomScalePatchUsage(patch, location, volume, _editor.getMap());
+        return new CustomScalePatchUsage(patch, noteRange, volume, _editor.getMap());
     }
   }
   
@@ -337,8 +337,8 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
     }
     
     @Override
-    public ArpeggiatorPatchUsage getPatchUsage(Patch patch, Location location, int volume) {
-      return new ArpeggiatorPatchUsage(patch, location, volume,
+    public ArpeggiatorPatchUsage getPatchUsage(Patch patch, NoteRange noteRange, int volume) {
+      return new ArpeggiatorPatchUsage(patch, noteRange, volume,
           (Pattern) _patternCombo.getSelectedItem(),
           (Subdivision) _subdivisionCombo.getSelectedItem(),
           _minNotesField.getInt());
@@ -369,8 +369,8 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
     }
     
     @Override
-    public SequencerPatchUsage getPatchUsage(Patch patch, Location location, int volume) {
-      return new SequencerPatchUsage(patch, location, volume, _editor.getSequencer());
+    public SequencerPatchUsage getPatchUsage(Patch patch, NoteRange noteRange, int volume) {
+      return new SequencerPatchUsage(patch, noteRange, volume, _editor.getSequencer());
     }
   }
 
