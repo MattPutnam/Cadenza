@@ -230,7 +230,7 @@ public final class PerformanceController extends CadenzaController {
    * @throws InvalidMidiDataException if any exception occurs setting messages (shouldn't happen)
    */
   private synchronized void updatePosition(int oldPosition, int newPosition) throws InvalidMidiDataException {
-    if (oldPosition == newPosition) {
+    if (oldPosition == newPosition && !_shouldIgnoreOldPosition) {
       return;
     }
     
