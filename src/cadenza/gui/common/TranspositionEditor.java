@@ -1,8 +1,14 @@
 package cadenza.gui.common;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout.ParallelGroup;
+import javax.swing.GroupLayout.SequentialGroup;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -44,15 +50,20 @@ public class TranspositionEditor extends JPanel {
     
     setTransposition(initialValue);
     
-    setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-    add(Box.createHorizontalGlue());
-    add(new JLabel("Transpose"));
-    add(_direction);
-    add(_interval);
-    add(new JLabel(" plus "));
-    add(_octaveField);
-    add(new JLabel(" octaves"));
-    add(Box.createHorizontalGlue());
+    final List<JComponent> components = Arrays.asList(new JLabel("Transpose"),
+        _direction, _interval, new JLabel(" plus "), _octaveField, new JLabel(" octaves"),
+        SwingUtils.button("Clear", e -> setTransposition(0)));
+    
+    final GroupLayout layout = new GroupLayout(this);
+    setLayout(layout);
+    
+    final SequentialGroup sg = layout.createSequentialGroup();
+    components.forEach(sg::addComponent);
+    final ParallelGroup pg = layout.createParallelGroup(Alignment.BASELINE);
+    components.forEach(pg::addComponent);
+    
+    layout.setHorizontalGroup(sg);
+    layout.setVerticalGroup(pg);
   }
   
   public void setTransposition(int value) {
