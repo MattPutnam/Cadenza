@@ -7,7 +7,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import cadenza.core.PatchAssignmentEntity;
+import cadenza.core.PatchAssignment;
 import cadenza.core.patchmerge.VelocityPatchMerge;
 
 import common.swing.IntField;
@@ -15,11 +15,11 @@ import common.swing.SimpleGrid;
 
 @SuppressWarnings("serial")
 public class VelocityMergePanel extends MergePanel<VelocityPatchMerge> {
-  private final JComboBox<PatchAssignmentEntity> _patchUsageCombo;
+  private final JComboBox<PatchAssignment> _patchUsageCombo;
   private final IntField _thresholdField;
   private final IntField _reductionField;
 
-  public VelocityMergePanel(PatchAssignmentEntity primary, List<PatchAssignmentEntity> others) {
+  public VelocityMergePanel(PatchAssignment primary, List<PatchAssignment> others) {
     super(primary, others);
     
     _patchUsageCombo = buildComboForOthers();
@@ -43,7 +43,7 @@ public class VelocityMergePanel extends MergePanel<VelocityPatchMerge> {
   @Override
   public VelocityPatchMerge getPatchMerge() {
     return new VelocityPatchMerge(accessPrimary(),
-        (PatchAssignmentEntity) _patchUsageCombo.getSelectedItem(),
+        (PatchAssignment) _patchUsageCombo.getSelectedItem(),
         _thresholdField.getInt(), _reductionField.getInt());
   }
 

@@ -9,7 +9,7 @@ import java.util.Map;
 import cadenza.core.Bank;
 import cadenza.core.NoteRange;
 import cadenza.core.Patch;
-import cadenza.core.PatchAssignmentEntity;
+import cadenza.core.PatchAssignment;
 import cadenza.core.Synthesizer;
 import cadenza.core.effects.Effect;
 
@@ -21,7 +21,7 @@ import common.swing.ColorUtils;
  * 
  * @author Matt Putnam
  */
-public abstract class PatchUsage implements PatchAssignmentEntity, Serializable {
+public abstract class PatchUsage implements PatchAssignment, Serializable {
   private static final long serialVersionUID = 2L;
   
   /** The patch to play */

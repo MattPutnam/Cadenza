@@ -10,7 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import cadenza.core.PatchAssignmentEntity;
+import cadenza.core.PatchAssignment;
 import cadenza.core.patchmerge.ControlPatchMerge;
 import cadenza.core.patchmerge.PatchMerge;
 import cadenza.core.patchmerge.SplitPatchMerge;
@@ -24,12 +24,12 @@ public class MergePatchDialog extends OKCancelDialog {
   private static final String TOP_TEXT = "Merge two patches into one by selecting a split rule:";
   
   private final PatchMerge _initial;
-  private final PatchAssignmentEntity _primary;
-  private final List<PatchAssignmentEntity> _others;
+  private final PatchAssignment _primary;
+  private final List<PatchAssignment> _others;
   
   private JTabbedPane _tabbedPane;
 
-  public MergePatchDialog(Component parent, PatchMerge patchMerge, PatchAssignmentEntity primary, List<PatchAssignmentEntity> others) {
+  public MergePatchDialog(Component parent, PatchMerge patchMerge, PatchAssignment primary, List<PatchAssignment> others) {
     super(parent);
     _initial = patchMerge;
     _primary = primary;

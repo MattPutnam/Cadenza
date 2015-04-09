@@ -30,7 +30,7 @@ import cadenza.core.Keyboard;
 import cadenza.core.Note;
 import cadenza.core.NoteRange;
 import cadenza.core.Patch;
-import cadenza.core.PatchAssignmentEntity;
+import cadenza.core.PatchAssignment;
 import cadenza.core.patchmerge.PatchMerge;
 import cadenza.core.patchusage.PatchUsage;
 import cadenza.core.patchusage.SimplePatchUsage;
@@ -53,7 +53,7 @@ public class PatchUsagePanel extends JPanel {
   private final CadenzaFrame _frame;
   private final CadenzaData _data;
   
-  private final List<PatchAssignmentEntity> _patchAssignments;
+  private final List<PatchAssignment> _patchAssignments;
   private final List<SingleKeyboardPanel> _keyboardPanels;
   private final List<PatchUsageArea> _patchUsageAreas;
   
@@ -90,27 +90,27 @@ public class PatchUsagePanel extends JPanel {
     return result;
   }
   
-  public List<PatchAssignmentEntity> getPatchAssignments() {
+  public List<PatchAssignment> getPatchAssignments() {
     return _patchAssignments;
   }
   
   private void refreshDisplay() {
-    _patchUsageAreas.forEach(PatchUsageArea::clearEntities);
+    _patchUsageAreas.forEach(PatchUsageArea::clearBricks);
     
-    final Map<Keyboard, List<PatchAssignmentEntity>> map = sortByKeyboard(_patchAssignments);
+    final Map<Keyboard, List<PatchAssignment>> map = sortByKeyboard(_patchAssignments);
     
     for (Keyboard keyboard : _data.keyboards) {
       final int index = _data.keyboards.indexOf(keyboard);
-      final List<PatchAssignmentEntity> list = map.get(keyboard);
+      final List<PatchAssignment> list = map.get(keyboard);
       if (list == null) continue;
       
-      PatchAssignmentEntity last = null;
+      PatchAssignment last = null;
       while (!list.isEmpty()) {
-        final PatchAssignmentEntity pae = findNext(list, last);
-        last = pae;
-        list.remove(pae);
+        final PatchAssignment pa = findNext(list, last);
+        last = pa;
+        list.remove(pa);
         
-        _patchUsageAreas.get(index).addPatchAssignmentEntity(pae);
+        _patchUsageAreas.get(index).addPatchAssignment(pa);
       }
     }
     
@@ -135,20 +135,20 @@ public class PatchUsagePanel extends JPanel {
     }, false);
   }
   
-  private static Map<Keyboard, List<PatchAssignmentEntity>> sortByKeyboard(List<PatchAssignmentEntity> patchAssignments) {
-    return patchAssignments.stream().collect(Collectors.groupingBy(pae -> pae.getNoteRange().getKeyboard()));
+  private static Map<Keyboard, List<PatchAssignment>> sortByKeyboard(List<PatchAssignment> patchAssignments) {
+    return patchAssignments.stream().collect(Collectors.groupingBy(pa -> pa.getNoteRange().getKeyboard()));
   }
   
-  private static PatchAssignmentEntity findNext(List<PatchAssignmentEntity> patchAssignments, PatchAssignmentEntity last) {
+  private static PatchAssignment findNext(List<PatchAssignment> patchAssignments, PatchAssignment last) {
     if (last == null) {
-      final PatchAssignmentEntity giant = findConflictingWithAll(patchAssignments);
+      final PatchAssignment giant = findConflictingWithAll(patchAssignments);
       if (giant != null)
         return giant;
       else
         return findWithLowestHigh(patchAssignments);
     }
     
-    final List<PatchAssignmentEntity> nonConflicting =
+    final List<PatchAssignment> nonConflicting =
         patchAssignments.stream()
                    .filter(pu -> pu.getNoteRange().getLower().above(last.getNoteRange().getUpper()))
                    .collect(Collectors.toList());
@@ -159,14 +159,14 @@ public class PatchUsagePanel extends JPanel {
       return findWithLowestHigh(nonConflicting);
   }
   
-  private static PatchAssignmentEntity findWithLowestHigh(List<PatchAssignmentEntity> patchAssignments) {
-    PatchAssignmentEntity found = patchAssignments.get(0);
+  private static PatchAssignment findWithLowestHigh(List<PatchAssignment> patchAssignments) {
+    PatchAssignment found = patchAssignments.get(0);
     Note foundHigh = found.getNoteRange().getUpper();
     for (int i = 1; i < patchAssignments.size(); ++i) {
-      final PatchAssignmentEntity pae = patchAssignments.get(i);
-      final Note high = pae.getNoteRange().getUpper();
+      final PatchAssignment pa = patchAssignments.get(i);
+      final Note high = pa.getNoteRange().getUpper();
       if (high.below(foundHigh)) {
-        found = pae;
+        found = pa;
         foundHigh = high;
       }
     }
@@ -174,25 +174,25 @@ public class PatchUsagePanel extends JPanel {
     return found;
   }
   
-  private static PatchAssignmentEntity findConflictingWithAll(List<PatchAssignmentEntity> patchAssignments) {
+  private static PatchAssignment findConflictingWithAll(List<PatchAssignment> patchAssignments) {
     outer:
-    for (final PatchAssignmentEntity pae1 : patchAssignments) {
-      for (final PatchAssignmentEntity pae2 : patchAssignments) {
-        if (pae1 == pae2) continue;
+    for (final PatchAssignment pa1 : patchAssignments) {
+      for (final PatchAssignment pa2 : patchAssignments) {
+        if (pa1 == pa2) continue;
         
-        if (pae1.getNoteRange().getUpper().below(pae2.getNoteRange().getLower()) ||
-            pae2.getNoteRange().getUpper().below(pae1.getNoteRange().getLower())) // non-conflicting
+        if (pa1.getNoteRange().getUpper().below(pa2.getNoteRange().getLower()) ||
+            pa2.getNoteRange().getUpper().below(pa1.getNoteRange().getLower())) // non-conflicting
           continue outer;
       }
-      return pae1;
+      return pa1;
     }
     return null;
   }
   
-  private class PatchUsageEntity extends JPanel {
+  private class PatchUsageBrick extends JPanel {
     private final PatchUsage _patchUsage;
     
-    public PatchUsageEntity(PatchUsage patchUsage, int width, int height) {
+    public PatchUsageBrick(PatchUsage patchUsage, int width, int height) {
       super();
       _patchUsage = patchUsage;
       
@@ -226,13 +226,13 @@ public class PatchUsagePanel extends JPanel {
           })
         ));
         
-        final List<PatchAssignmentEntity> others = buildOthers();
+        final List<PatchAssignment> others = buildOthers();
         if (others.size() > 0) {
           add(SwingUtils.menuItem("Merge with...", null, e -> {
             OKCancelDialog.showDialog(new MergePatchDialog(_frame, null, _patchUsage, others), dialog -> {
               final PatchMerge merge = dialog.getPatchMerge();
               _patchAssignments.add(merge);
-              _patchAssignments.removeAll(merge.accessPatchAssignmentEntities());
+              _patchAssignments.removeAll(merge.accessPatchAssignments());
               refreshDisplay();
             });
           }));
@@ -248,8 +248,8 @@ public class PatchUsagePanel extends JPanel {
         ));
       }
       
-      private List<PatchAssignmentEntity> buildOthers() {
-        final List<PatchAssignmentEntity> result = new ArrayList<>();
+      private List<PatchAssignment> buildOthers() {
+        final List<PatchAssignment> result = new ArrayList<>();
         result.addAll(_patchAssignments);
         result.remove(_patchUsage);
         return result;
@@ -257,10 +257,10 @@ public class PatchUsagePanel extends JPanel {
     }
   }
   
-  private class PatchMergeEntity extends JPanel {
+  private class PatchMergeBrick extends JPanel {
     private final PatchMerge _patchMerge;
     
-    public PatchMergeEntity(PatchMerge merge, int width, int height) {
+    public PatchMergeBrick(PatchMerge merge, int width, int height) {
       _patchMerge = merge;
       
       setLayout(null);
@@ -298,21 +298,21 @@ public class PatchUsagePanel extends JPanel {
         
         // first: edit items for constituents, including recursive submenus
         int index = -1;
-        for (final PatchAssignmentEntity pae : merge.accessPatchAssignmentEntities()) {
+        for (final PatchAssignment pa : merge.accessPatchAssignments()) {
           final int fi = ++index;
           
-          if (pae instanceof PatchUsage) {
-            final PatchUsage pu = (PatchUsage) pae;
+          if (pa instanceof PatchUsage) {
+            final PatchUsage pu = (PatchUsage) pa;
             result.add(SwingUtils.menuItem("Edit " + pu.toString(false, false, false), ImageStore.EDIT, e -> {
               OKCancelDialog.showDialog(new PatchUsageEditDialog(_frame, pu, _data), dialog -> {
                 final PatchUsage newPU = dialog.getPatchUsage();
-                _patchMerge.accessPatchAssignmentEntities().set(fi, newPU);
+                _patchMerge.accessPatchAssignments().set(fi, newPU);
                 _patchMerge.setNoteRange(newPU.noteRange);
               });
               refreshDisplay();
             }));
-          } else if (pae instanceof PatchMerge) {
-            final PatchMerge pm = (PatchMerge) pae;
+          } else if (pa instanceof PatchMerge) {
+            final PatchMerge pm = (PatchMerge) pa;
             final JMenu submenu = new JMenu("Edit " + pm.toString(false, false, false));
             buildMenuItems(merge, pm).forEach(item -> {
               if (item == null)
@@ -337,8 +337,8 @@ public class PatchUsagePanel extends JPanel {
               // sub level, replace in parent:
               parent.performReplace(merge, newPatchMerge);
             }
-            // remove newly merged PAEs from circulation:
-            _patchAssignments.removeAll(newPatchMerge.accessPatchAssignmentEntities());
+            // remove newly merged pas from circulation:
+            _patchAssignments.removeAll(newPatchMerge.accessPatchAssignments());
             refreshDisplay();
           });
         }));
@@ -349,13 +349,13 @@ public class PatchUsagePanel extends JPanel {
           
           // third: detach merges.
           result.add(SwingUtils.menuItem("Detach merged items", null, e -> {
-            merge.accessPatchAssignmentEntities().forEach(_patchAssignments::add);
+            merge.accessPatchAssignments().forEach(_patchAssignments::add);
             _patchAssignments.remove(merge);
             refreshDisplay();
           }));
           
           // fourth: compound merge
-          final List<PatchAssignmentEntity> mergeOthers = buildMergeOthers();
+          final List<PatchAssignment> mergeOthers = buildMergeOthers();
           if (mergeOthers.size() > 0) {
             result.add(SwingUtils.menuItem("Merge with...", null, e -> {
               OKCancelDialog.showDialog(new MergePatchDialog(_frame, null, merge, mergeOthers), dialog -> {
@@ -363,7 +363,7 @@ public class PatchUsagePanel extends JPanel {
                 
                 final PatchMerge newMerge = dialog.getPatchMerge();
                 _patchAssignments.add(newMerge);
-                _patchAssignments.removeAll(newMerge.accessPatchAssignmentEntities());
+                _patchAssignments.removeAll(newMerge.accessPatchAssignments());
                 refreshDisplay();
               });
             }));
@@ -384,18 +384,18 @@ public class PatchUsagePanel extends JPanel {
       private void performDelete(PatchMerge merge) {
         _patchAssignments.remove(merge);
         // add its stuff back into the pool:
-        merge.accessPatchAssignmentEntities().forEach(_patchAssignments::add);
+        merge.accessPatchAssignments().forEach(_patchAssignments::add);
       }
       
-      private List<PatchAssignmentEntity> buildEditOthers(PatchMerge merge) {
-        final List<PatchAssignmentEntity> result = buildMergeOthers();
-        result.addAll(merge.accessPatchAssignmentEntities());
+      private List<PatchAssignment> buildEditOthers(PatchMerge merge) {
+        final List<PatchAssignment> result = buildMergeOthers();
+        result.addAll(merge.accessPatchAssignments());
         result.remove(merge.accessPrimary());
         return result;
       }
       
-      private List<PatchAssignmentEntity> buildMergeOthers() {
-        final List<PatchAssignmentEntity> result = new ArrayList<>();
+      private List<PatchAssignment> buildMergeOthers() {
+        final List<PatchAssignment> result = new ArrayList<>();
         result.addAll(_patchAssignments);
         result.remove(_patchMerge);
         return result;
@@ -422,32 +422,32 @@ public class PatchUsagePanel extends JPanel {
       SwingUtils.freezeHeight(this, HEIGHT + GAP);
     }
     
-    public void addPatchAssignmentEntity(PatchAssignmentEntity entity) {
-      if (rightMostNote != null && !rightMostNote.below(entity.getNoteRange().getLower())) {
+    public void addPatchAssignment(PatchAssignment assignment) {
+      if (rightMostNote != null && !rightMostNote.below(assignment.getNoteRange().getLower())) {
         rightMostNote = null;
         yPos += HEIGHT + GAP;
         SwingUtils.freezeHeight(this, yPos + HEIGHT);
       }
       
-      final int x = _keyboardPanel.accessKeyboardPanel().getKeyPosition(entity.getNoteRange().getLower()).x;
-      final Rectangle r = _keyboardPanel.accessKeyboardPanel().getKeyPosition(entity.getNoteRange().getUpper());
+      final int x = _keyboardPanel.accessKeyboardPanel().getKeyPosition(assignment.getNoteRange().getLower()).x;
+      final Rectangle r = _keyboardPanel.accessKeyboardPanel().getKeyPosition(assignment.getNoteRange().getUpper());
       final int width = r.x + r.width - x;
       
       final JPanel brick;
-      if (entity instanceof PatchUsage) {
-        brick = new PatchUsageEntity((PatchUsage) entity, width, HEIGHT);
-      } else if (entity instanceof PatchMerge) {
-        brick = new PatchMergeEntity((PatchMerge) entity, width, HEIGHT);
+      if (assignment instanceof PatchUsage) {
+        brick = new PatchUsageBrick((PatchUsage) assignment, width, HEIGHT);
+      } else if (assignment instanceof PatchMerge) {
+        brick = new PatchMergeBrick((PatchMerge) assignment, width, HEIGHT);
       } else {
-        throw new IllegalStateException("Unknown PatchAssignmentEntity subtype");
+        throw new IllegalStateException("Unknown PatchAssignment subtype");
       }
       brick.setBounds(x, yPos, width, HEIGHT);
       add(brick);
       repaint();
-      rightMostNote = entity.getNoteRange().getUpper();
+      rightMostNote = assignment.getNoteRange().getUpper();
     }
     
-    public void clearEntities() {
+    public void clearBricks() {
       removeAll();
       repaint();
       rightMostNote = null;

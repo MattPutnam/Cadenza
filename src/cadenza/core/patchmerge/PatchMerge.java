@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import cadenza.control.PerformanceController;
 import cadenza.core.NoteRange;
 import cadenza.core.Patch;
-import cadenza.core.PatchAssignmentEntity;
+import cadenza.core.PatchAssignment;
 import cadenza.core.patchusage.PatchUsage;
 
 /**
@@ -18,82 +18,82 @@ import cadenza.core.patchusage.PatchUsage;
  * 
  * @author Matt Putnam
  */
-public abstract class PatchMerge implements PatchAssignmentEntity, Serializable {
+public abstract class PatchMerge implements PatchAssignment, Serializable {
   private static final long serialVersionUID = 2L;
   
-  private final List<PatchAssignmentEntity> _patchEntities;
+  private final List<PatchAssignment> _patchAssignments;
   
   /**
-   * Creates a PatchMerge of the given entities.  The list must have at
+   * Creates a PatchMerge of the given assignments.  The list must have at
    * least 2 elements.
-   * @param entities the PatchAssignmentEntities to merge
+   * @param assignments the PatchAssignments to merge
    * @throws IllegalArgumentException if the list has less than 2 elements
    */
-  public PatchMerge(List<PatchAssignmentEntity> entities) {
-    if (entities.size() < 2)
+  public PatchMerge(List<PatchAssignment> assignments) {
+    if (assignments.size() < 2)
       throw new IllegalArgumentException("Can only merge 2 or more patches");
     
-    _patchEntities = entities;
+    _patchAssignments = assignments;
     
-    final NoteRange range = _patchEntities.stream()
-                                          .map(PatchAssignmentEntity::getNoteRange)
-                                          .reduce(NoteRange::union)
-                                          .get();
-    _patchEntities.forEach(pu -> pu.setNoteRange(range));
+    final NoteRange range = _patchAssignments.stream()
+                                             .map(PatchAssignment::getNoteRange)
+                                             .reduce(NoteRange::union)
+                                             .get();
+    _patchAssignments.forEach(pu -> pu.setNoteRange(range));
   }
   
   /**
-   * Creates a PatchMerge of the given entities.  Must specify at least 2
+   * Creates a PatchMerge of the given assignments.  Must specify at least 2
    * elements.
-   * @param entities the PatchAssignmentEntities to merge
+   * @param assignments the PatchAssignments to merge
    * @throws IllegalArgumentException if given less than 2 elements
    */
-  public PatchMerge(PatchAssignmentEntity... entities) {
-    this(Arrays.asList(entities));
+  public PatchMerge(PatchAssignment... assignments) {
+    this(Arrays.asList(assignments));
   }
   
   @Override
   public final boolean contains(Patch patch) {
-    return _patchEntities.stream().anyMatch(pae -> pae.contains(patch));
+    return _patchAssignments.stream().anyMatch(pa -> pa.contains(patch));
   }
   
   @Override
   public boolean replace(Patch target, Patch replacement) {
-    return _patchEntities.stream().anyMatch(pae -> pae.replace(target, replacement));
+    return _patchAssignments.stream().anyMatch(pa -> pa.replace(target, replacement));
   }
   
   /**
-   * @return the list of PatchAssignmentEntities contained in this merge
+   * @return the list of PatchAssignments contained in this merge
    */
-  public List<PatchAssignmentEntity> accessPatchAssignmentEntities() {
-    return _patchEntities;
+  public List<PatchAssignment> accessPatchAssignments() {
+    return _patchAssignments;
   }
   
   /**
-   * Each subclass must declare one of its constituent PatchAssignmentEntities
+   * Each subclass must declare one of its constituent PatchAssignments
    * to be the "primary", for editing purposes.
    * @return the primary PatchUsage
    */
-  public abstract PatchAssignmentEntity accessPrimary();
+  public abstract PatchAssignment accessPrimary();
   
   /**
    * @return the merged NoteRange for this merge
    */
   public NoteRange accessNoteRange() {
-    return _patchEntities.get(0).getNoteRange();
+    return _patchAssignments.get(0).getNoteRange();
   }
   
-  public void performReplace(PatchAssignmentEntity original, PatchAssignmentEntity replacement) {
-    final int index = _patchEntities.indexOf(original);
+  public void performReplace(PatchAssignment original, PatchAssignment replacement) {
+    final int index = _patchAssignments.indexOf(original);
     if (index == -1)
       throw new IllegalStateException("Replacement failed, original was not a constituent of this");
     
-    _patchEntities.set(index, replacement);
+    _patchAssignments.set(index, replacement);
   }
   
   @Override
   public final void prepare(PerformanceController controller) {
-    _patchEntities.forEach(pae -> pae.prepare(controller));
+    _patchAssignments.forEach(pa -> pa.prepare(controller));
     prepare_additional(controller);
   }
   
@@ -106,7 +106,7 @@ public abstract class PatchMerge implements PatchAssignmentEntity, Serializable 
   
   @Override
   public final void cleanup(PerformanceController controller) {
-    _patchEntities.forEach(pae -> pae.cleanup(controller));
+    _patchAssignments.forEach(pa -> pa.cleanup(controller));
     cleanup_additional(controller);
   }
   
@@ -119,7 +119,7 @@ public abstract class PatchMerge implements PatchAssignmentEntity, Serializable 
   
   @Override
   public final void noteReleased(int midiNumber) {
-    _patchEntities.forEach(pae -> pae.noteReleased(midiNumber));
+    _patchAssignments.forEach(pa -> pa.noteReleased(midiNumber));
     noteReleased_additional(midiNumber);
   }
   
@@ -132,7 +132,7 @@ public abstract class PatchMerge implements PatchAssignmentEntity, Serializable 
   
   @Override
   public final void controlChanged(int ccNum, int ccVal) {
-    _patchEntities.forEach(pae -> pae.controlChanged(ccNum, ccVal));
+    _patchAssignments.forEach(pa -> pa.controlChanged(ccNum, ccVal));
     controlChanged_additional(ccNum, ccVal);
   }
   
@@ -151,12 +151,12 @@ public abstract class PatchMerge implements PatchAssignmentEntity, Serializable 
   
   @Override
   public final String toString(boolean includeNoteRange, boolean includeKeyboardInfo, boolean highlightPatchNames) {
-    return _patchEntities.stream()
-                         .map(pae -> {
-                           final String s = pae.toString(false, false, highlightPatchNames);
-                           return (pae instanceof PatchUsage) ? s : "(" + s + ")";
-                         })
-                         .collect(Collectors.joining(" / ")) + 
+    return _patchAssignments.stream()
+                            .map(pa -> {
+                              final String s = pa.toString(false, false, highlightPatchNames);
+                              return (pa instanceof PatchUsage) ? s : "(" + s + ")";
+                            })
+                            .collect(Collectors.joining(" / ")) + 
            toString_additional() +
            (includeNoteRange ? " " + accessNoteRange().toString(includeKeyboardInfo) : "");
   }
@@ -171,6 +171,6 @@ public abstract class PatchMerge implements PatchAssignmentEntity, Serializable 
   
   @Override
   public void setNoteRange(NoteRange newNoteRange) {
-    _patchEntities.forEach(pae -> pae.setNoteRange(newNoteRange));
+    _patchAssignments.forEach(pa -> pa.setNoteRange(newNoteRange));
   }
 }

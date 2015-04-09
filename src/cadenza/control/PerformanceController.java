@@ -23,8 +23,8 @@ import cadenza.core.Keyboard;
 import cadenza.core.LocationNumber;
 import cadenza.core.NoteRange;
 import cadenza.core.Patch;
-import cadenza.core.PatchAssignmentEntity;
-import cadenza.core.PatchAssignmentEntity.Response;
+import cadenza.core.PatchAssignment;
+import cadenza.core.PatchAssignment.Response;
 import cadenza.core.Song;
 import cadenza.core.Synthesizer;
 import cadenza.core.effects.Effect;
@@ -241,7 +241,7 @@ public final class PerformanceController extends CadenzaController {
     final Cue newCue = getData().cues.get(newPosition);
     
     if (oldCue != null) {
-      oldCue.getAllAssignments().forEach(pae -> pae.cleanup(this));
+      oldCue.getAllAssignments().forEach(pa -> pa.cleanup(this));
     }
     
     final Map<PatchUsage, Integer> oldAssignments = _currentAssignments;
@@ -301,7 +301,7 @@ public final class PerformanceController extends CadenzaController {
     _currentAssignments = newAssignments;
     _currentCue = newCue;
     
-    _currentCue.getAllAssignments().forEach(pae -> pae.prepare(this));
+    _currentCue.getAllAssignments().forEach(pa -> pa.prepare(this));
     
     _currentTriggers = new ArrayList<>();
     if (!newCue.disableGlobalTriggers)
@@ -360,7 +360,7 @@ public final class PerformanceController extends CadenzaController {
       final int value = sm.getData2();
       
       _currentCue.getAssignmentsByKeyboard(_channelKeyboards.get(Integer.valueOf(channel)))
-                 .forEach(pae -> pae.controlChanged(control, value));
+                 .forEach(pa -> pa.controlChanged(control, value));
       
       if (control == 64) {
         // CC64 (damper) is speshul.  It needs to always be sent to all allocated channels.
@@ -412,10 +412,10 @@ public final class PerformanceController extends CadenzaController {
       final int inputVelocity = sm.getData2();
       final Set<Pair<Integer, Integer>> noteEntry = new HashSet<>();
       
-      for (final PatchAssignmentEntity entity : _currentCue.patchAssignments) {
-        final NoteRange noteRange = entity.getNoteRange();
+      for (final PatchAssignment assignment : _currentCue.patchAssignments) {
+        final NoteRange noteRange = assignment.getNoteRange();
         if (noteRange.getKeyboard() == keyboard && noteRange.contains(inputMidiNumber)) {
-          final Response response = entity.receive(inputMidiNumber, inputVelocity);
+          final Response response = assignment.receive(inputMidiNumber, inputVelocity);
           final PatchUsage pu = response.getPatchUsage();
           final Integer outputChannel = _currentAssignments.get(pu);
           

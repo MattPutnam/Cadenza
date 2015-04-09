@@ -1,14 +1,19 @@
 package cadenza.core;
 
 import cadenza.control.PerformanceController;
+import cadenza.core.patchmerge.PatchMerge;
 import cadenza.core.patchusage.PatchUsage;
 
 /**
- * Joins PatchUsage and PatchMerge for display purposes.
+ * Generic assignment of patches to keyboards for performance.  Implemented by
+ * {@link PatchUsage} and {@link PatchMerge}, which together form a tree
+ * structure.  PatchUsage is the leaf, an assignment of a single patch to a
+ * given {@link NoteRange}, possibly with fanciness.  PatchMerge is the branch,
+ * unifying child nodes under some rule.
  * 
  * @author Matt Putnam
  */
-public interface PatchAssignmentEntity {
+public interface PatchAssignment {
   /**
    * Response object for determining which constituent PatchUsage should
    * receive an incoming MIDI message.

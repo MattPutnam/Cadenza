@@ -35,7 +35,7 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
 //  /** The merges used */
 //  public List<PatchMerge> merges;
   
-  public List<PatchAssignmentEntity> patchAssignments;
+  public List<PatchAssignment> patchAssignments;
   
   /** The triggers used */
   public List<Trigger> triggers;
@@ -87,14 +87,14 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
     this.effects = other.effects;
   }
   
-  public List<PatchAssignmentEntity> getAssignmentsByKeyboard(Keyboard keyboard) {
-    final List<PatchAssignmentEntity> list = new ArrayList<>(patchAssignments);
+  public List<PatchAssignment> getAssignmentsByKeyboard(Keyboard keyboard) {
+    final List<PatchAssignment> list = new ArrayList<>(patchAssignments);
     return list.stream()
-               .filter(pae -> pae.getNoteRange().getKeyboard() == keyboard)
+               .filter(pa -> pa.getNoteRange().getKeyboard() == keyboard)
                .collect(Collectors.toList());
   }
   
-  public Map<Keyboard, List<PatchAssignmentEntity>> getAssignmentsByKeyboard(List<Keyboard> keyboards) {
+  public Map<Keyboard, List<PatchAssignment>> getAssignmentsByKeyboard(List<Keyboard> keyboards) {
     return keyboards.stream()
                     .collect(Collectors.toMap(k -> k, this::getAssignmentsByKeyboard));
   }
@@ -125,23 +125,23 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
   @Override
   public List<PatchUsage> getPatchUsages() {
     final List<PatchUsage> result = new ArrayList<>();
-    patchAssignments.forEach(pae -> recursor(pae, result));
+    patchAssignments.forEach(pa -> recursor(pa, result));
     return result;
   }
   
-  private void recursor(PatchAssignmentEntity entity, List<PatchUsage> result) {
-    if (entity instanceof PatchUsage)
-      result.add((PatchUsage) entity);
+  private void recursor(PatchAssignment assignment, List<PatchUsage> result) {
+    if (assignment instanceof PatchUsage)
+      result.add((PatchUsage) assignment);
     else {
-      final PatchMerge merge = (PatchMerge) entity;
-      merge.accessPatchAssignmentEntities().forEach(pae -> recursor(pae, result));
+      final PatchMerge merge = (PatchMerge) assignment;
+      merge.accessPatchAssignments().forEach(pa -> recursor(pa, result));
     }
   }
   
   /**
    * @return a list of all PatchUsages and PatchMerges
    */
-  public List<PatchAssignmentEntity> getAllAssignments() {
+  public List<PatchAssignment> getAllAssignments() {
     return new ArrayList<>(patchAssignments);
   }
 

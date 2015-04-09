@@ -176,7 +176,7 @@ public class PatchEditor extends JPanel {
     protected void takeActionAfterDelete(List<Patch> removed) {
       removed.forEach(patch ->
         _data.cues.forEach(cue ->
-          cue.patchAssignments.removeIf(pae -> pae.contains(patch))));
+          cue.patchAssignments.removeIf(pa -> pa.contains(patch))));
     }
     
     private class PatchTableRenderer extends SimpleTableCellRenderer<Object> {
@@ -238,7 +238,7 @@ public class PatchEditor extends JPanel {
         
         _data.patches.sort(null);
         
-        _data.cues.forEach(cue -> cue.patchAssignments.forEach(pae -> pae.replace(patch, replacement)));
+        _data.cues.forEach(cue -> cue.patchAssignments.forEach(pa -> pa.replace(patch, replacement)));
       });
     }
   }

@@ -1,6 +1,6 @@
 package cadenza.core.patchmerge;
 
-import cadenza.core.PatchAssignmentEntity;
+import cadenza.core.PatchAssignment;
 
 /**
  * PatchMerge implementation that splits based on input velocity.  Velocities
@@ -25,7 +25,7 @@ public class VelocityPatchMerge extends PatchMerge {
    * @param threshold the input velocity to split around
    * @param reduction the volume to reduce the upper PatchUsage by
    */
-  public VelocityPatchMerge(PatchAssignmentEntity main, PatchAssignmentEntity high, int threshold, int reduction) {
+  public VelocityPatchMerge(PatchAssignment main, PatchAssignment high, int threshold, int reduction) {
     super(main, high);
     _threshold = threshold;
     _reduction = reduction;
@@ -35,15 +35,15 @@ public class VelocityPatchMerge extends PatchMerge {
    * @return the primary PatchUsage, below the threshold
    */
   @Override
-  public PatchAssignmentEntity accessPrimary() {
-    return accessPatchAssignmentEntities().get(0);
+  public PatchAssignment accessPrimary() {
+    return accessPatchAssignments().get(0);
   }
   
   /**
    * @return the upper PatchUsage, above the threshold
    */
-  public PatchAssignmentEntity accessSecondary() {
-    return accessPatchAssignmentEntities().get(1);
+  public PatchAssignment accessSecondary() {
+    return accessPatchAssignments().get(1);
   }
   
   /**

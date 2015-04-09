@@ -16,7 +16,7 @@ import javax.swing.SwingUtilities;
 import cadenza.core.Keyboard;
 import cadenza.core.Note;
 import cadenza.core.NoteRange;
-import cadenza.core.PatchAssignmentEntity;
+import cadenza.core.PatchAssignment;
 import cadenza.core.patchmerge.SplitPatchMerge;
 import cadenza.gui.common.HelpButton;
 import cadenza.gui.keyboard.KeyboardAdapter;
@@ -34,17 +34,17 @@ public class SmartSplitPanel extends MergePanel<SplitPatchMerge> {
       + "point to change more gradually."
       );
   
-  private final JComboBox<PatchAssignmentEntity> _patchUsageCombo;
+  private final JComboBox<PatchAssignment> _patchUsageCombo;
   private final JCheckBox _aboveBox;
   private final IntField _bufferField;
   private final SingleKeyboardPanel _keyboardPanel;
   private final JPanel _rangePanel;
   
-  private PatchAssignmentEntity _other;
+  private PatchAssignment _other;
   private NoteRange _union;
   private Note _currentSplit;
   
-  public SmartSplitPanel(PatchAssignmentEntity primary, List<PatchAssignmentEntity> others) {
+  public SmartSplitPanel(PatchAssignment primary, List<PatchAssignment> others) {
     super(primary, others);
     
     _patchUsageCombo = buildComboForOthers();
@@ -126,13 +126,13 @@ public class SmartSplitPanel extends MergePanel<SplitPatchMerge> {
   @Override
   public SplitPatchMerge getPatchMerge() {
     final boolean above = _aboveBox.isSelected();
-    final PatchAssignmentEntity lower = above ? _other : accessPrimary();
-    final PatchAssignmentEntity upper = above ? accessPrimary() : _other;
+    final PatchAssignment lower = above ? _other : accessPrimary();
+    final PatchAssignment upper = above ? accessPrimary() : _other;
     return new SplitPatchMerge(lower, upper, _currentSplit.getMidiNumber(), _bufferField.getInt());
   }
   
-  private PatchAssignmentEntity getSelectedItem() {
-    return (PatchAssignmentEntity) _patchUsageCombo.getSelectedItem();
+  private PatchAssignment getSelectedItem() {
+    return (PatchAssignment) _patchUsageCombo.getSelectedItem();
   }
   
   private void notifyChange() {
@@ -153,7 +153,7 @@ public class SmartSplitPanel extends MergePanel<SplitPatchMerge> {
     int x = _keyboardPanel.accessKeyboardPanel().getKeyPosition(_union.getLower()).x;
     int width = r.x - x;
     
-    PatchAssignmentEntity pu = _aboveBox.isSelected() ? _other : accessPrimary();
+    PatchAssignment pu = _aboveBox.isSelected() ? _other : accessPrimary();
     lowerPanel.setBounds(x, 1, width, 24);
     lowerPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     

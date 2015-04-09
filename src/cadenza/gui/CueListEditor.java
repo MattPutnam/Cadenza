@@ -31,7 +31,7 @@ import cadenza.core.Cue;
 import cadenza.core.Keyboard;
 import cadenza.core.LocationNumber;
 import cadenza.core.Patch;
-import cadenza.core.PatchAssignmentEntity;
+import cadenza.core.PatchAssignment;
 import cadenza.core.Song;
 import cadenza.core.Synthesizer;
 import cadenza.core.patchmerge.PatchMerge;
@@ -302,11 +302,11 @@ public class CueListEditor extends JPanel {
         final boolean multiple = _data.keyboards.size() > 1;
         
         for (final Keyboard keyboard : _data.keyboards) {
-          final List<PatchAssignmentEntity> list = cue.getAssignmentsByKeyboard(keyboard);
+          final List<PatchAssignment> list = cue.getAssignmentsByKeyboard(keyboard);
           
           if (list != null && !list.isEmpty()) {
             final String s = list.stream()
-                                 .map(pae -> pae.toString(false, false, true))
+                                 .map(pa -> pa.toString(false, false, true))
                                  .collect(Collectors.joining(", "));
             keyboardStrings.add(s + (multiple ? " on " + keyboard.name : ""));
           }
@@ -345,17 +345,17 @@ public class CueListEditor extends JPanel {
       
       private Map<Synthesizer, Integer> buildCounts(Cue cue) {
         final Map<Synthesizer, Integer> map = new HashMap<>();
-        cue.patchAssignments.forEach(pae -> recursor(map, pae));
+        cue.patchAssignments.forEach(pa -> recursor(map, pa));
         return map;
       }
       
-      private void recursor(Map<Synthesizer, Integer> counts, PatchAssignmentEntity entity) {
-        if (entity instanceof PatchUsage) {
-          final Synthesizer synth = ((PatchUsage) entity).patch.getSynthesizer();
+      private void recursor(Map<Synthesizer, Integer> counts, PatchAssignment assignment) {
+        if (assignment instanceof PatchUsage) {
+          final Synthesizer synth = ((PatchUsage) assignment).patch.getSynthesizer();
           final Integer integer = counts.get(synth);
           counts.put(synth, Integer.valueOf(integer == null ? 1 : integer.intValue()+1));
         } else {
-          ((PatchMerge) entity).accessPatchAssignmentEntities().forEach(pae -> recursor(counts, pae));
+          ((PatchMerge) assignment).accessPatchAssignments().forEach(pa -> recursor(counts, pa));
         }
       }
     }

@@ -5,26 +5,26 @@ import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
-import cadenza.core.PatchAssignmentEntity;
+import cadenza.core.PatchAssignment;
 import cadenza.core.patchmerge.PatchMerge;
 
 import common.swing.VerificationException;
 
 @SuppressWarnings("serial")
 public abstract class MergePanel<T extends PatchMerge> extends JPanel {
-  private final PatchAssignmentEntity _primary;
-  private final List<PatchAssignmentEntity> _others;
+  private final PatchAssignment _primary;
+  private final List<PatchAssignment> _others;
   
-  public MergePanel(PatchAssignmentEntity primary, List<PatchAssignmentEntity> others) {
+  public MergePanel(PatchAssignment primary, List<PatchAssignment> others) {
     _primary = primary;
     _others = others;
   }
   
-  protected PatchAssignmentEntity accessPrimary() {
+  protected PatchAssignment accessPrimary() {
     return _primary;
   }
   
-  protected List<PatchAssignmentEntity> accessOthers() {
+  protected List<PatchAssignment> accessOthers() {
     return _others;
   }
   
@@ -45,12 +45,12 @@ public abstract class MergePanel<T extends PatchMerge> extends JPanel {
    */
   public abstract T getPatchMerge();
   
-  protected final JComboBox<PatchAssignmentEntity> buildComboForOthers() {
-    return new JComboBox<>(_others.toArray(new PatchAssignmentEntity[_others.size()]));
+  protected final JComboBox<PatchAssignment> buildComboForOthers() {
+    return new JComboBox<>(_others.toArray(new PatchAssignment[_others.size()]));
   }
   
-  protected final JComboBox<PatchAssignmentEntity> buildComboForOthers(PatchAssignmentEntity initial) {
-    final JComboBox<PatchAssignmentEntity> result = buildComboForOthers();
+  protected final JComboBox<PatchAssignment> buildComboForOthers(PatchAssignment initial) {
+    final JComboBox<PatchAssignment> result = buildComboForOthers();
     result.setSelectedItem(initial);
     return result;
   }

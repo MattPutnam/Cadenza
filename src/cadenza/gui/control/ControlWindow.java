@@ -24,7 +24,7 @@ import cadenza.core.Cue;
 import cadenza.core.Keyboard;
 import cadenza.core.LocationNumber;
 import cadenza.core.Patch;
-import cadenza.core.PatchAssignmentEntity;
+import cadenza.core.PatchAssignment;
 import cadenza.core.metronome.Metronome;
 import cadenza.core.metronome.MetronomeListener;
 import cadenza.gui.song.SongPanel;
@@ -169,18 +169,18 @@ public class ControlWindow extends JFrame implements MetronomeListener {
   private String buildPatchDisplay(Cue cue) {
     final StringBuilder sb = new StringBuilder();
     
-    final Map<Keyboard, List<PatchAssignmentEntity>> map = cue.getAssignmentsByKeyboard(_data.keyboards);
+    final Map<Keyboard, List<PatchAssignment>> map = cue.getAssignmentsByKeyboard(_data.keyboards);
     if (map.size() == 0) {
       sb.append("No patches");
     } else if (_data.keyboards.size() == 1) {
       sb.append(map.values().iterator().next().stream()
-                                              .map(pae -> pae.toString(false, false, true))
+                                              .map(pa -> pa.toString(false, false, true))
                                               .collect(Collectors.joining(", ")));
     } else {
-      map.forEach((k, lpae) -> {
+      map.forEach((k, lpa) -> {
         sb.append(k.name).append(":<br>").append(
-          lpae.stream()
-              .map(pae -> pae.toString(false, false, true))
+          lpa.stream()
+              .map(pa -> pa.toString(false, false, true))
               .collect(Collectors.joining(", ")))
         .append("<br>");
       });

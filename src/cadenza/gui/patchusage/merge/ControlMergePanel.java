@@ -13,7 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import cadenza.core.PatchAssignmentEntity;
+import cadenza.core.PatchAssignment;
 import cadenza.core.patchmerge.ControlPatchMerge;
 import cadenza.gui.common.ControlCombo;
 
@@ -25,14 +25,14 @@ import common.swing.VerificationException;
 @SuppressWarnings("serial")
 public class ControlMergePanel extends MergePanel<ControlPatchMerge> {
 
-  private final List<JComboBox<PatchAssignmentEntity>> _patchCombos;
+  private final List<JComboBox<PatchAssignment>> _patchCombos;
   private final List<IntField> _splitFields;
   private final ControlCombo _ccNumCombo;
   
   private final JButton _addButton;
   private final JPanel _mainPanel;
   
-  public ControlMergePanel(PatchAssignmentEntity primary, List<PatchAssignmentEntity> others) {
+  public ControlMergePanel(PatchAssignment primary, List<PatchAssignment> others) {
     super(primary, others);
     
     _patchCombos = new ArrayList<>();
@@ -97,7 +97,7 @@ public class ControlMergePanel extends MergePanel<ControlPatchMerge> {
 
   @Override
   public void initialize(ControlPatchMerge initial) {
-    final PatchAssignmentEntity[] usages = initial.getPatchUsages();
+    final PatchAssignment[] usages = initial.getPatchUsages();
     final int[] breakpoints = initial.getBreakpoints();
     
     if (usages[0] != accessPrimary())
@@ -125,11 +125,11 @@ public class ControlMergePanel extends MergePanel<ControlPatchMerge> {
 
   @Override
   public ControlPatchMerge getPatchMerge() {
-    final List<PatchAssignmentEntity> entities = new ArrayList<>();
-    entities.add(accessPrimary());
-    _patchCombos.forEach(combo -> entities.add((PatchAssignmentEntity) combo.getSelectedItem()));
+    final List<PatchAssignment> assignments = new ArrayList<>();
+    assignments.add(accessPrimary());
+    _patchCombos.forEach(combo -> assignments.add((PatchAssignment) combo.getSelectedItem()));
     
-    return new ControlPatchMerge(entities.toArray(new PatchAssignmentEntity[entities.size()]),
+    return new ControlPatchMerge(assignments.toArray(new PatchAssignment[assignments.size()]),
                                  _splitFields.stream().mapToInt(IntField::getInt).toArray(),
                                  _ccNumCombo.getSelectedIndex());
   }

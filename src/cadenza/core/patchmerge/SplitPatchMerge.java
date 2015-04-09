@@ -5,7 +5,7 @@ import java.util.Arrays;
 import cadenza.control.PerformanceController;
 import cadenza.core.Note;
 import cadenza.core.NoteRange;
-import cadenza.core.PatchAssignmentEntity;
+import cadenza.core.PatchAssignment;
 
 import common.collection.buffer.FixedSizeIntBuffer;
 
@@ -45,7 +45,7 @@ public class SplitPatchMerge extends PatchMerge {
    *                   clusters more closely; use a larger buffer to make the
    *                   changes happen more gradually.
    */
-  public SplitPatchMerge(PatchAssignmentEntity lower, PatchAssignmentEntity upper, int startSplit, int bufferSize) {
+  public SplitPatchMerge(PatchAssignment lower, PatchAssignment upper, int startSplit, int bufferSize) {
     super(lower, upper);
     _startSplit = startSplit;
     _bufferSize = bufferSize;
@@ -54,19 +54,19 @@ public class SplitPatchMerge extends PatchMerge {
   /**
    * @return the lower PatchUsage
    */
-  public PatchAssignmentEntity getLower() {
-    return accessPatchAssignmentEntities().get(0);
+  public PatchAssignment getLower() {
+    return accessPatchAssignments().get(0);
   }
   
   /**
    * @return the upper PatchUsage
    */
-  public PatchAssignmentEntity getUpper() {
-    return accessPatchAssignmentEntities().get(1);
+  public PatchAssignment getUpper() {
+    return accessPatchAssignments().get(1);
   }
   
   @Override
-  public PatchAssignmentEntity accessPrimary() {
+  public PatchAssignment accessPrimary() {
     return getLower();
   }
   
