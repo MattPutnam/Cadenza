@@ -40,7 +40,7 @@ public abstract class PatchMerge extends PatchAssignment {
                                              .map(PatchAssignment::getNoteRange)
                                              .reduce(NoteRange::union)
                                              .get();
-    _patchAssignments.forEach(pu -> pu.setNoteRange(range));
+    _patchAssignments.forEach(pa -> pa.setNoteRange(range));
   }
   
   /**
@@ -51,6 +51,12 @@ public abstract class PatchMerge extends PatchAssignment {
    */
   public PatchMerge(PatchAssignment... assignments) {
     this(Arrays.asList(assignments));
+  }
+  
+  @Override
+  public void setNoteRange(NoteRange newNoteRange) {
+    super.setNoteRange(newNoteRange);
+    _patchAssignments.forEach(pa -> pa.setNoteRange(newNoteRange));
   }
   
   @Override

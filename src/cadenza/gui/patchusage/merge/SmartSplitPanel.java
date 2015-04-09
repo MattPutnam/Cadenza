@@ -128,7 +128,11 @@ public class SmartSplitPanel extends MergePanel<SplitPatchMerge> {
     final boolean above = _aboveBox.isSelected();
     final PatchAssignment lower = above ? _other : accessPrimary();
     final PatchAssignment upper = above ? accessPrimary() : _other;
-    return new SplitPatchMerge(lower, upper, _currentSplit.getMidiNumber(), _bufferField.getInt());
+    
+    final SplitPatchMerge result = new SplitPatchMerge(lower, upper,
+        _currentSplit.getMidiNumber(), _bufferField.getInt());
+    result.setNoteRange(_union);
+    return result;
   }
   
   private PatchAssignment getSelectedItem() {

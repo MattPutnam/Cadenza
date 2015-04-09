@@ -32,6 +32,8 @@ public class ControlMergePanel extends MergePanel<ControlPatchMerge> {
   private final JButton _addButton;
   private final JPanel _mainPanel;
   
+  private final MergeRangePanel _rangePanel;
+  
   public ControlMergePanel(PatchAssignment primary, List<PatchAssignment> others) {
     super(primary, others);
     
@@ -50,6 +52,8 @@ public class ControlMergePanel extends MergePanel<ControlPatchMerge> {
     
     _mainPanel = new JPanel();
     
+    _rangePanel = new MergeRangePanel(primary.getNoteRange());
+    
     final Box top = SwingUtils.buildCenteredRow(new JLabel("Select between patches using CC#"), _ccNumCombo);
     final JScrollPane center = new JScrollPane(_mainPanel);
     center.setBorder(null);
@@ -61,6 +65,7 @@ public class ControlMergePanel extends MergePanel<ControlPatchMerge> {
     setLayout(new BorderLayout());
     add(top, BorderLayout.NORTH);
     add(center, BorderLayout.CENTER);
+    add(_rangePanel, BorderLayout.SOUTH);
     
     update();
   }
@@ -129,9 +134,14 @@ public class ControlMergePanel extends MergePanel<ControlPatchMerge> {
     assignments.add(accessPrimary());
     _patchCombos.forEach(combo -> assignments.add((PatchAssignment) combo.getSelectedItem()));
     
-    return new ControlPatchMerge(assignments.toArray(new PatchAssignment[assignments.size()]),
-                                 _splitFields.stream().mapToInt(IntField::getInt).toArray(),
-                                 _ccNumCombo.getSelectedIndex());
+    final ControlPatchMerge result = new ControlPatchMerge(
+        assignments.toArray(new PatchAssignment[assignments.size()]),
+        _splitFields.stream().mapToInt(IntField::getInt).toArray(),
+        _ccNumCombo.getSelectedIndex());
+    
+    result.setNoteRange(_rangePanel.getNoteRange());
+    
+    return result;
   }
 
 }

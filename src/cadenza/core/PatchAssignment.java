@@ -63,7 +63,7 @@ public abstract class PatchAssignment implements Serializable {
   /**
    * @return the range of this PatchUsage/PatchMerge
    */
-  public final NoteRange getNoteRange() {
+  public NoteRange getNoteRange() {
     return _noteRange;
   }
   
@@ -71,7 +71,7 @@ public abstract class PatchAssignment implements Serializable {
    * Sets the note range
    * @param newNoteRange the new note range
    */
-  public final void setNoteRange(NoteRange newNoteRange) {
+  public void setNoteRange(NoteRange newNoteRange) {
     _noteRange = newNoteRange;
   }
   
