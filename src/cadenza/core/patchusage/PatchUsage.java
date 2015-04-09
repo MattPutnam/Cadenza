@@ -1,6 +1,5 @@
 package cadenza.core.patchusage;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +20,7 @@ import common.swing.ColorUtils;
  * 
  * @author Matt Putnam
  */
-public abstract class PatchUsage extends PatchAssignment implements Serializable {
+public abstract class PatchUsage extends PatchAssignment {
   private static final long serialVersionUID = 2L;
   
   /** The patch to play */

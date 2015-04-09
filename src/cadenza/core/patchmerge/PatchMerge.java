@@ -1,6 +1,5 @@
 package cadenza.core.patchmerge;
 
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +17,7 @@ import cadenza.core.patchusage.PatchUsage;
  * 
  * @author Matt Putnam
  */
-public abstract class PatchMerge extends PatchAssignment implements Serializable {
+public abstract class PatchMerge extends PatchAssignment {
   private static final long serialVersionUID = 2L;
   
   private final List<PatchAssignment> _patchAssignments;

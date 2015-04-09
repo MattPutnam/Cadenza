@@ -1,5 +1,7 @@
 package cadenza.core;
 
+import java.io.Serializable;
+
 import cadenza.control.PerformanceController;
 import cadenza.core.patchmerge.PatchMerge;
 import cadenza.core.patchusage.PatchUsage;
@@ -13,7 +15,9 @@ import cadenza.core.patchusage.PatchUsage;
  * 
  * @author Matt Putnam
  */
-public abstract class PatchAssignment {
+public abstract class PatchAssignment implements Serializable {
+  private static final long serialVersionUID = 2L;
+  
   /**
    * Response object for determining which constituent PatchUsage should
    * receive an incoming MIDI message.
