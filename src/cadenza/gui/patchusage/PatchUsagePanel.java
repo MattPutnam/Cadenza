@@ -219,7 +219,7 @@ public class PatchUsagePanel extends JPanel {
     private class PopupMenu extends JPopupMenu {
       private PopupMenu() {
         add(SwingUtils.menuItem("Edit", ImageStore.EDIT, e ->
-          OKCancelDialog.showDialog(new PatchUsageEditDialog(_frame, _patchUsage, _data), dialog -> {
+          OKCancelDialog.showDialog(new PatchUsageEditDialog(_frame, _patchUsage, _data, true), dialog -> {
             _patchAssignments.remove(_patchUsage);
             _patchAssignments.add(dialog.getPatchUsage());
             refreshDisplay();
@@ -304,7 +304,7 @@ public class PatchUsagePanel extends JPanel {
           if (pa instanceof PatchUsage) {
             final PatchUsage pu = (PatchUsage) pa;
             result.add(SwingUtils.menuItem("Edit " + pu.toString(false, false, false), ImageStore.EDIT, e -> {
-              OKCancelDialog.showDialog(new PatchUsageEditDialog(_frame, pu, _data), dialog -> {
+              OKCancelDialog.showDialog(new PatchUsageEditDialog(_frame, pu, _data, false), dialog -> {
                 final PatchUsage newPU = dialog.getPatchUsage();
                 _patchMerge.accessPatchAssignments().set(fi, newPU);
                 _patchMerge.setNoteRange(newPU.getNoteRange());

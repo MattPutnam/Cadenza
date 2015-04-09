@@ -52,6 +52,7 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
   private final CadenzaFrame _frame;
   private final PatchUsage _startingPatchUsage;
   private final CadenzaData _data;
+  private final boolean _allowRangeEdit;
   
   private PatchSelector _patchSelector;
   private VolumeField _volumeField;
@@ -68,12 +69,12 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
   private NoteRangeEnterer _noteRangeEnterer;
 
   public PatchUsageEditDialog(CadenzaFrame frame, PatchUsage startingPatchUsage,
-      CadenzaData data) {
+      CadenzaData data, boolean allowRangeEdit) {
     super(frame);
     _frame = frame;
     _startingPatchUsage = startingPatchUsage;
-    
     _data = data;
+    _allowRangeEdit = allowRangeEdit;
     
     if (Preferences.getMIDIInputOptions().allowMIDIInput()) {
       MIDIInputControlCenter.installWindowFocusGrabber(this);
@@ -126,7 +127,7 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
     
     final Box box = Box.createVerticalBox();
     box.add(SwingUtils.buildCenteredRow(_patchSelector, new JLabel("Volume: "), _volumeField));
-    box.add(_noteRangeSelector);
+    if (_allowRangeEdit) box.add(_noteRangeSelector);
     box.add(_effectPanel);
     box.add(_tabbedPane);
     return box;
