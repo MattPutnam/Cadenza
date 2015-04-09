@@ -79,6 +79,10 @@ public interface PatchAssignmentEntity {
    */
   public String toString(boolean includeRange, boolean includeKeyboardInfo, boolean highlightPatchName);
   
+  public boolean contains(Patch patch);
+  
+  public boolean replace(Patch target, Patch replacement);
+  
   /**
    * Called by the PerformanceController when the PatchUsage is loaded.
    * Default implementation does nothing, override to perform any needed setup.

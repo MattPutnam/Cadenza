@@ -20,18 +20,20 @@ import cadenza.core.CadenzaData;
 import cadenza.core.ControlMapEntry;
 import cadenza.core.Cue;
 import cadenza.core.Keyboard;
-import cadenza.core.NoteRange;
 import cadenza.core.LocationNumber;
+import cadenza.core.NoteRange;
 import cadenza.core.Patch;
+import cadenza.core.PatchAssignmentEntity;
+import cadenza.core.PatchAssignmentEntity.Response;
 import cadenza.core.Song;
 import cadenza.core.Synthesizer;
 import cadenza.core.effects.Effect;
-import cadenza.core.patchmerge.PatchMerge;
 import cadenza.core.patchusage.PatchUsage;
 import cadenza.core.trigger.Trigger;
 import cadenza.delegate.PatchChangeDelegate;
 import cadenza.gui.CadenzaFrame;
 import cadenza.gui.EffectMonitor;
+
 import common.midi.MidiUtilities;
 import common.tuple.Pair;
 
@@ -410,10 +412,10 @@ public final class PerformanceController extends CadenzaController {
       final int inputVelocity = sm.getData2();
       final Set<Pair<Integer, Integer>> noteEntry = new HashSet<>();
       
-      for (final PatchMerge patchMerge : _currentCue.merges) {
-        final NoteRange noteRange = patchMerge.accessNoteRange();
+      for (final PatchAssignmentEntity entity : _currentCue.patchAssignments) {
+        final NoteRange noteRange = entity.getNoteRange();
         if (noteRange.getKeyboard() == keyboard && noteRange.contains(inputMidiNumber)) {
-          final PatchMerge.Response response = patchMerge.receive(inputMidiNumber, inputVelocity);
+          final Response response = entity.receive(inputMidiNumber, inputVelocity);
           final PatchUsage pu = response.getPatchUsage();
           final Integer outputChannel = _currentAssignments.get(pu);
           
@@ -430,29 +432,6 @@ public final class PerformanceController extends CadenzaController {
             
             sendNoteOn(midiNumber, velocity, outputChannel.intValue());
             noteEntry.add(Pair.make(outputChannel, Integer.valueOf(midiNumber)));
-          }
-        }
-      }
-      
-      for (final PatchUsage patchUsage : _currentCue.patches) {
-        if (patchUsage.noteRange.getKeyboard() == keyboard && patchUsage.noteRange.contains(inputMidiNumber)) {
-          final Integer outputChannel = _currentAssignments.get(patchUsage);
-          
-          final List<Effect> puEffects = new LinkedList<>();
-          puEffects.addAll(patchUsage.effects);
-          puEffects.addAll(_currentGlobalCueEffects);
-          if (patchUsage.respondsTo(inputMidiNumber, inputVelocity)) {
-            for (final int[] note : patchUsage.receive(inputMidiNumber, inputVelocity).getNotes()) {
-              final int midiNumber = note[0];
-              int velocity = note[1];
-              
-              for (final Effect effect : puEffects) {
-                velocity = MidiUtilities.clamp(effect.process(midiNumber, velocity));
-              }
-              
-              sendNoteOn(midiNumber, velocity, outputChannel.intValue());
-              noteEntry.add(Pair.make(outputChannel, Integer.valueOf(midiNumber)));
-            }
           }
         }
       }

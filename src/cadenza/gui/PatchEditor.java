@@ -148,15 +148,15 @@ public class PatchEditor extends JPanel {
               "Choose", JOptionPane.YES_NO_OPTION);
           if (result == JOptionPane.OK_OPTION) {
             _data.cues.forEach(cue -> {
-              cue.patches.stream()
-                         .filter(pu -> pu.patch == patch && pu.volume == patch.defaultVolume)
-                         .forEach(pu -> pu.volume = edit.defaultVolume);
+              cue.getPatchUsages().stream()
+                                  .filter(pu -> pu.patch == patch && pu.volume == patch.defaultVolume)
+                                  .forEach(pu -> pu.volume = edit.defaultVolume);
               _data.cues.notifyChange(cue);
             });
           } else {
             // notify all cues with the given patch so they will update in cue editor
             _data.cues.stream()
-                      .filter(cue -> cue.patches.stream().anyMatch(pu -> pu.patch == patch))
+                      .filter(cue -> cue.getPatchUsages().stream().anyMatch(pu -> pu.patch == patch))
                       .forEach(_data.cues::notifyChange);
           }
         }
@@ -176,7 +176,7 @@ public class PatchEditor extends JPanel {
     protected void takeActionAfterDelete(List<Patch> removed) {
       removed.forEach(patch ->
         _data.cues.forEach(cue ->
-          cue.patches.removeIf(pu -> pu.patch == patch)));
+          cue.patchAssignments.removeIf(pae -> pae.contains(patch))));
     }
     
     private class PatchTableRenderer extends SimpleTableCellRenderer<Object> {
@@ -238,10 +238,7 @@ public class PatchEditor extends JPanel {
         
         _data.patches.sort(null);
         
-        _data.cues.forEach(cue ->
-          cue.patches.stream()
-                     .filter(patchUsage -> patchUsage.patch.equals(patch))
-                     .forEach(patchUsage -> patchUsage.patch = replacement));
+        _data.cues.forEach(cue -> cue.patchAssignments.forEach(pae -> pae.replace(patch, replacement)));
       });
     }
   }

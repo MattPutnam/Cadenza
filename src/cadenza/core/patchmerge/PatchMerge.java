@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import cadenza.control.PerformanceController;
 import cadenza.core.NoteRange;
+import cadenza.core.Patch;
 import cadenza.core.PatchAssignmentEntity;
 import cadenza.core.patchusage.PatchUsage;
 
@@ -49,6 +50,16 @@ public abstract class PatchMerge implements PatchAssignmentEntity, Serializable 
    */
   public PatchMerge(PatchAssignmentEntity... entities) {
     this(Arrays.asList(entities));
+  }
+  
+  @Override
+  public final boolean contains(Patch patch) {
+    return _patchEntities.stream().anyMatch(pae -> pae.contains(patch));
+  }
+  
+  @Override
+  public boolean replace(Patch target, Patch replacement) {
+    return _patchEntities.stream().anyMatch(pae -> pae.replace(target, replacement));
   }
   
   /**

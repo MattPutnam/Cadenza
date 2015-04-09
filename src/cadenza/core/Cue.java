@@ -29,11 +29,13 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
   /** The measure number */
   public LocationNumber measureNumber;
   
-  /** The patches used */
-  public List<PatchUsage> patches;
+//  /** The patches used */
+//  public List<PatchUsage> patches;
+//  
+//  /** The merges used */
+//  public List<PatchMerge> merges;
   
-  /** The merges used */
-  public List<PatchMerge> merges;
+  public List<PatchAssignmentEntity> patchAssignments;
   
   /** The triggers used */
   public List<Trigger> triggers;
@@ -61,8 +63,9 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
   public Cue(Song song, LocationNumber measureNumber) {
     this.song = song;
     this.measureNumber = measureNumber;
-    patches = new ArrayList<>();
-    merges = new ArrayList<>();
+//    patches = new ArrayList<>();
+//    merges = new ArrayList<>();
+    patchAssignments = new ArrayList<>();
     triggers = new ArrayList<>();
     _controlMapping = new ArrayList<>();
     effects = new ArrayList<>();
@@ -75,8 +78,9 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
   public void copyFrom(Cue other) {
     this.song = other.song;
     this.measureNumber = other.measureNumber;
-    this.patches = other.patches;
-    this.merges = other.merges;
+//    this.patches = other.patches;
+//    this.merges = other.merges;
+    this.patchAssignments = other.patchAssignments;
     this.triggers = other.triggers;
     this.disableGlobalTriggers = other.disableGlobalTriggers;
     this._controlMapping = other._controlMapping;
@@ -84,11 +88,10 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
   }
   
   public List<PatchAssignmentEntity> getAssignmentsByKeyboard(Keyboard keyboard) {
-    final List<PatchAssignmentEntity> list = new ArrayList<>(patches);
-    list.addAll(merges);
+    final List<PatchAssignmentEntity> list = new ArrayList<>(patchAssignments);
     return list.stream()
-                .filter(pae -> pae.getNoteRange().getKeyboard() == keyboard)
-                .collect(Collectors.toList());
+               .filter(pae -> pae.getNoteRange().getKeyboard() == keyboard)
+               .collect(Collectors.toList());
   }
   
   public Map<Keyboard, List<PatchAssignmentEntity>> getAssignmentsByKeyboard(List<Keyboard> keyboards) {
@@ -122,28 +125,24 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
   @Override
   public List<PatchUsage> getPatchUsages() {
     final List<PatchUsage> result = new ArrayList<>();
-    result.addAll(patches);
-    merges.forEach(pm -> recursor(pm, result));
+    patchAssignments.forEach(pae -> recursor(pae, result));
     return result;
   }
   
-  private void recursor(PatchMerge merge, List<PatchUsage> result) {
-    merge.accessPatchAssignmentEntities().forEach(pae -> {
-      if (pae instanceof PatchUsage)
-        result.add((PatchUsage) pae);
-      else
-        recursor((PatchMerge) pae, result);
-    });
+  private void recursor(PatchAssignmentEntity entity, List<PatchUsage> result) {
+    if (entity instanceof PatchUsage)
+      result.add((PatchUsage) entity);
+    else {
+      final PatchMerge merge = (PatchMerge) entity;
+      merge.accessPatchAssignmentEntities().forEach(pae -> recursor(pae, result));
+    }
   }
   
   /**
    * @return a list of all PatchUsages and PatchMerges
    */
   public List<PatchAssignmentEntity> getAllAssignments() {
-    final List<PatchAssignmentEntity> list = new ArrayList<>();
-    list.addAll(patches);
-    list.addAll(merges);
-    return list;
+    return new ArrayList<>(patchAssignments);
   }
 
   // Sort by song, then measure for organization/display
@@ -163,7 +162,7 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
     final Cue cue = (Cue) obj;
     return this.song.equals(cue.song) &&
          this.measureNumber.equals(cue.measureNumber) &&
-         this.patches.equals(cue.patches) &&
+         this.patchAssignments.equals(cue.patchAssignments) &&
          this.triggers.equals(cue.triggers) &&
          this.disableGlobalTriggers == cue.disableGlobalTriggers &&
          this._controlMapping.equals(cue._controlMapping) &&
@@ -175,7 +174,7 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
   public int hashCode() {
     int hashCode = song.hashCode();
     hashCode = 31*hashCode + measureNumber.hashCode();
-    hashCode = 31*hashCode + patches.hashCode();
+    hashCode = 31*hashCode + patchAssignments.hashCode();
     hashCode = 31*hashCode + triggers.hashCode();
     hashCode =  2*hashCode + (disableGlobalTriggers ? 1 : 0);
     hashCode = 31*hashCode + _controlMapping.hashCode();

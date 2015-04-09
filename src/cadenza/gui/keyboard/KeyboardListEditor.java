@@ -98,7 +98,7 @@ public class KeyboardListEditor extends JPanel implements CustomWizardComponent 
        * size changed and ranges fall off the edited keyboards, remove the
        * corresponding items.
        */
-      final Iterator<PatchUsage> puIterator = cue.patches.iterator();
+      final Iterator<PatchUsage> puIterator = cue.getPatchUsages().iterator();
       while (puIterator.hasNext()) {
         final PatchUsage patchUsage = puIterator.next();
         final Keyboard newKeyboard = _remap.get(patchUsage.noteRange.getKeyboard());

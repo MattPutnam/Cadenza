@@ -8,7 +8,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.IdentityHashMap;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -34,10 +34,12 @@ import cadenza.core.Patch;
 import cadenza.core.PatchAssignmentEntity;
 import cadenza.core.Song;
 import cadenza.core.Synthesizer;
+import cadenza.core.patchmerge.PatchMerge;
 import cadenza.core.patchusage.PatchUsage;
 import cadenza.gui.common.CadenzaTable;
 import cadenza.gui.cue.CueEditDialog;
 import cadenza.gui.song.SongEditDialog;
+
 import common.Utils;
 import common.collection.ListAdapter;
 import common.collection.ListEvent;
@@ -145,7 +147,7 @@ public class CueListEditor extends JPanel {
       final Cue selected = _entries.get(_table.accessTable().getSelectedRow()).cue;
       final Cue cloned = new Cue(selected.song, selected.measureNumber);
       
-      selected.patches.forEach(cloned.patches::add);
+      selected.patchAssignments.forEach(cloned.patchAssignments::add);
       selected.triggers.forEach(cloned.triggers::add);
       
       OKCancelDialog.showDialog(new CueEditDialog(_cadenzaFrame, cloned, _data), dialog -> {
@@ -316,13 +318,7 @@ public class CueListEditor extends JPanel {
       private Pair<Boolean, String> getWarning(Cue cue) {
         final List<String> messages = new LinkedList<>();
         
-        final Map<Synthesizer, Integer> counts = new IdentityHashMap<>();
-        for (final PatchUsage pu : cue.patches) {
-          final Synthesizer synth = pu.patch.getSynthesizer();
-          final Integer integer = counts.get(synth);
-          
-          counts.put(synth, Integer.valueOf(integer == null ? 1 : integer.intValue()+1));
-        }
+        final Map<Synthesizer, Integer> counts = buildCounts(cue);
         
         boolean isError = false;
         for (final Map.Entry<Synthesizer, Integer> entry : counts.entrySet()) {
@@ -345,6 +341,22 @@ public class CueListEditor extends JPanel {
           return null;
         else
           return Pair.make(Boolean.valueOf(isError), Utils.mkString(messages, "<html>", "<br>", "</html>"));
+      }
+      
+      private Map<Synthesizer, Integer> buildCounts(Cue cue) {
+        final Map<Synthesizer, Integer> map = new HashMap<>();
+        cue.patchAssignments.forEach(pae -> recursor(map, pae));
+        return map;
+      }
+      
+      private void recursor(Map<Synthesizer, Integer> counts, PatchAssignmentEntity entity) {
+        if (entity instanceof PatchUsage) {
+          final Synthesizer synth = ((PatchUsage) entity).patch.getSynthesizer();
+          final Integer integer = counts.get(synth);
+          counts.put(synth, Integer.valueOf(integer == null ? 1 : integer.intValue()+1));
+        } else {
+          ((PatchMerge) entity).accessPatchAssignmentEntities().forEach(pae -> recursor(counts, pae));
+        }
       }
     }
     

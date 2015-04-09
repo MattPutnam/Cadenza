@@ -60,6 +60,21 @@ public abstract class PatchUsage implements PatchAssignmentEntity, Serializable 
   }
   
   @Override
+  public final boolean contains(Patch other) {
+    return other == patch;
+  }
+  
+  @Override
+  public final boolean replace(Patch target, Patch replacement) {
+    if (target == patch) {
+      patch = replacement;
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
+  @Override
   public final Response receive(int midiNumber, int velocity) {
     return new Response(this, getNotes(midiNumber, velocity));
   }

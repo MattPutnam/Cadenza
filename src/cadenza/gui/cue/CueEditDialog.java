@@ -157,8 +157,7 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider,
   protected void takeActionOnOK() {
     _cue.song = _songPanel.getSelectedSong();
     _cue.measureNumber = _measureField.getLocationNumber();
-    _cue.patches = _patchUsagePanel.getPatchUsages();
-    _cue.merges = _patchUsagePanel.getPatchMerges();
+    _cue.patchAssignments = _patchUsagePanel.getPatchAssignments();
     _cue.triggers = _triggerPanel.getTriggers();
     _cue.disableGlobalTriggers = _disableGlobalTriggersCheckBox.isSelected();
     _cue.setControlMap(_controlPanel.getMapping());
@@ -174,7 +173,7 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider,
   
   @Override
   public List<PatchUsage> getPatchUsages() {
-    return _cue.patches;
+    return _cue.getPatchUsages();
   }
   
   @Override

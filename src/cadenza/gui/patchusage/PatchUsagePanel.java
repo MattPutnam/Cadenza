@@ -53,8 +53,7 @@ public class PatchUsagePanel extends JPanel {
   private final CadenzaFrame _frame;
   private final CadenzaData _data;
   
-  private final List<PatchUsage> _patchUsages;
-  private final List<PatchMerge> _patchMerges;
+  private final List<PatchAssignmentEntity> _patchAssignments;
   private final List<SingleKeyboardPanel> _keyboardPanels;
   private final List<PatchUsageArea> _patchUsageAreas;
   
@@ -63,8 +62,7 @@ public class PatchUsagePanel extends JPanel {
     _frame = frame;
     _data = data;
     
-    _patchUsages = new ArrayList<>(cue.patches);
-    _patchMerges = new ArrayList<>(cue.merges);
+    _patchAssignments = new ArrayList<>(cue.patchAssignments);
     _keyboardPanels = new ArrayList<>(_data.keyboards.size());
     _patchUsageAreas = new ArrayList<>(_data.keyboards.size());
     
@@ -92,21 +90,14 @@ public class PatchUsagePanel extends JPanel {
     return result;
   }
   
-  public List<PatchUsage> getPatchUsages() {
-    return _patchUsages;
-  }
-  
-  public List<PatchMerge> getPatchMerges() {
-    return _patchMerges;
+  public List<PatchAssignmentEntity> getPatchAssignments() {
+    return _patchAssignments;
   }
   
   private void refreshDisplay() {
     _patchUsageAreas.forEach(PatchUsageArea::clearEntities);
     
-    final List<PatchAssignmentEntity> allEntities = new ArrayList<>();
-    allEntities.addAll(_patchUsages);
-    allEntities.addAll(_patchMerges);
-    final Map<Keyboard, List<PatchAssignmentEntity>> map = sortByKeyboard(allEntities);
+    final Map<Keyboard, List<PatchAssignmentEntity>> map = sortByKeyboard(_patchAssignments);
     
     for (Keyboard keyboard : _data.keyboards) {
       final int index = _data.keyboards.indexOf(keyboard);
@@ -138,7 +129,7 @@ public class PatchUsagePanel extends JPanel {
   public void addPatchUsage(NoteRange noteRange) {
     SwingUtils.doInSwing(() -> {
       OKCancelDialog.showDialog(new PatchSelectorDialog(this, null), dialog -> {
-        _patchUsages.add(new SimplePatchUsage(dialog.getSelectedPatch(), noteRange));
+        _patchAssignments.add(new SimplePatchUsage(dialog.getSelectedPatch(), noteRange));
         refreshDisplay();
       });
     }, false);
@@ -198,17 +189,6 @@ public class PatchUsagePanel extends JPanel {
     return null;
   }
   
-//  private List<PatchAssignmentEntity> buildOthers(PatchAssignmentEntity pue) {
-//    final List<PatchAssignmentEntity> result = new ArrayList<>();
-//    result.addAll(_patchUsages);
-//    result.addAll(_patchMerges);
-//    
-//    result.remove(pue);
-//    if (pue instance)
-//    
-//    return result;
-//  }
-  
   private class PatchUsageEntity extends JPanel {
     private final PatchUsage _patchUsage;
     
@@ -240,8 +220,8 @@ public class PatchUsagePanel extends JPanel {
       private PopupMenu() {
         add(SwingUtils.menuItem("Edit", ImageStore.EDIT, e ->
           OKCancelDialog.showDialog(new PatchUsageEditDialog(_frame, _patchUsage, _data), dialog -> {
-            _patchUsages.remove(_patchUsage);
-            _patchUsages.add(dialog.getPatchUsage());
+            _patchAssignments.remove(_patchUsage);
+            _patchAssignments.add(dialog.getPatchUsage());
             refreshDisplay();
           })
         ));
@@ -251,11 +231,8 @@ public class PatchUsagePanel extends JPanel {
           add(SwingUtils.menuItem("Merge with...", null, e -> {
             OKCancelDialog.showDialog(new MergePatchDialog(_frame, null, _patchUsage, others), dialog -> {
               final PatchMerge merge = dialog.getPatchMerge();
-              _patchMerges.add(merge);
-              
-              final List<PatchAssignmentEntity> paes = merge.accessPatchAssignmentEntities();
-              _patchUsages.removeAll(paes);
-              _patchMerges.removeAll(paes);
+              _patchAssignments.add(merge);
+              _patchAssignments.removeAll(merge.accessPatchAssignmentEntities());
               refreshDisplay();
             });
           }));
@@ -265,7 +242,7 @@ public class PatchUsagePanel extends JPanel {
         
         add(SwingUtils.menuItem("Delete", ImageStore.DELETE, e ->
           Dialog.confirm(this, "Are you sure you want to delete this patch?", () -> {
-            _patchUsages.remove(_patchUsage);
+            _patchAssignments.remove(_patchUsage);
             refreshDisplay();
           })
         ));
@@ -273,8 +250,7 @@ public class PatchUsagePanel extends JPanel {
       
       private List<PatchAssignmentEntity> buildOthers() {
         final List<PatchAssignmentEntity> result = new ArrayList<>();
-        result.addAll(_patchUsages);
-        result.addAll(_patchMerges);
+        result.addAll(_patchAssignments);
         result.remove(_patchUsage);
         return result;
       }
@@ -355,16 +331,14 @@ public class PatchUsagePanel extends JPanel {
             if (parent == null) {
               // top level, so swap out with top level fields:
               performDelete(merge);
-              _patchMerges.add(newPatchMerge);
+              _patchAssignments.add(newPatchMerge);
               
             } else {
               // sub level, replace in parent:
               parent.performReplace(merge, newPatchMerge);
             }
             // remove newly merged PAEs from circulation:
-            final List<PatchAssignmentEntity> paes = newPatchMerge.accessPatchAssignmentEntities();
-            _patchUsages.removeAll(paes);
-            _patchMerges.removeAll(paes);
+            _patchAssignments.removeAll(newPatchMerge.accessPatchAssignmentEntities());
             refreshDisplay();
           });
         }));
@@ -375,13 +349,8 @@ public class PatchUsagePanel extends JPanel {
           
           // third: detach merges.
           result.add(SwingUtils.menuItem("Detach merged items", null, e -> {
-            merge.accessPatchAssignmentEntities().forEach(pae -> {
-              if (pae instanceof PatchUsage)
-                _patchUsages.add((PatchUsage) pae);
-              else if (pae instanceof PatchMerge)
-                _patchMerges.add((PatchMerge) pae);
-            });
-            _patchMerges.remove(merge);
+            merge.accessPatchAssignmentEntities().forEach(_patchAssignments::add);
+            _patchAssignments.remove(merge);
             refreshDisplay();
           }));
           
@@ -390,14 +359,11 @@ public class PatchUsagePanel extends JPanel {
           if (mergeOthers.size() > 0) {
             result.add(SwingUtils.menuItem("Merge with...", null, e -> {
               OKCancelDialog.showDialog(new MergePatchDialog(_frame, null, merge, mergeOthers), dialog -> {
-                _patchMerges.remove(merge);
+                _patchAssignments.remove(merge);
                 
                 final PatchMerge newMerge = dialog.getPatchMerge();
-                _patchMerges.add(newMerge);
-                
-                final List<PatchAssignmentEntity> paes = newMerge.accessPatchAssignmentEntities();
-                _patchUsages.removeAll(paes);
-                _patchMerges.removeAll(paes);
+                _patchAssignments.add(newMerge);
+                _patchAssignments.removeAll(newMerge.accessPatchAssignmentEntities());
                 refreshDisplay();
               });
             }));
@@ -416,14 +382,9 @@ public class PatchUsagePanel extends JPanel {
       }
       
       private void performDelete(PatchMerge merge) {
-        _patchMerges.remove(merge);
+        _patchAssignments.remove(merge);
         // add its stuff back into the pool:
-        merge.accessPatchAssignmentEntities().forEach(pae -> {
-          if (pae instanceof PatchUsage)
-            _patchUsages.add((PatchUsage) pae);
-          else
-            _patchMerges.add((PatchMerge) pae);
-        });
+        merge.accessPatchAssignmentEntities().forEach(_patchAssignments::add);
       }
       
       private List<PatchAssignmentEntity> buildEditOthers(PatchMerge merge) {
@@ -435,8 +396,7 @@ public class PatchUsagePanel extends JPanel {
       
       private List<PatchAssignmentEntity> buildMergeOthers() {
         final List<PatchAssignmentEntity> result = new ArrayList<>();
-        result.addAll(_patchUsages);
-        result.addAll(_patchMerges);
+        result.addAll(_patchAssignments);
         result.remove(_patchMerge);
         return result;
       }
@@ -513,7 +473,7 @@ public class PatchUsagePanel extends JPanel {
     @Override
     public void keyClicked(Note note) {
       OKCancelDialog.showDialog(new PatchSelectorDialog(_anchor, null), dialog -> {
-        _patchUsages.add(new SimplePatchUsage(dialog.getSelectedPatch(), new NoteRange(_keyboard, note)));
+        _patchAssignments.add(new SimplePatchUsage(dialog.getSelectedPatch(), new NoteRange(_keyboard, note)));
         refreshDisplay();
       });
     }
@@ -529,7 +489,7 @@ public class PatchUsagePanel extends JPanel {
       }
       
       OKCancelDialog.showDialog(new PatchSelectorDialog(_anchor, null), dialog -> {
-        _patchUsages.add(new SimplePatchUsage(dialog.getSelectedPatch(), new NoteRange(_keyboard, low, high)));
+        _patchAssignments.add(new SimplePatchUsage(dialog.getSelectedPatch(), new NoteRange(_keyboard, low, high)));
         refreshDisplay();
       });
     }
@@ -547,7 +507,7 @@ public class PatchUsagePanel extends JPanel {
     public void actionPerformed(ActionEvent e) {
       OKCancelDialog.showDialog(new PatchSelectorDialog((JButton) e.getSource(), null), dialog -> {
         final Patch patch = dialog.getSelectedPatch();
-        _patchUsages.add(new SimplePatchUsage(patch, new NoteRange(_keyboard, true),
+        _patchAssignments.add(new SimplePatchUsage(patch, new NoteRange(_keyboard, true),
             patch.defaultVolume, 0, false));
         refreshDisplay();
       });

@@ -140,15 +140,15 @@ public class PreviewMixer extends JPanel {
             "Choose", JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.OK_OPTION) {
           _data.cues.forEach(cue -> {
-            cue.patches.stream()
-                       .filter(pu -> pu.patch == patch && pu.volume == patch.defaultVolume)
-                       .forEach(pu -> pu.volume = selected);
+            cue.getPatchUsages().stream()
+                                .filter(pu -> pu.patch == patch && pu.volume == patch.defaultVolume)
+                                .forEach(pu -> pu.volume = selected);
             _data.cues.notifyChange(cue);
           });
         } else {
           // notify all cues with the given patch so they will update in cue editor
           _data.cues.stream()
-                    .filter(cue -> cue.patches.stream().anyMatch(pu -> pu.patch == patch))
+                    .filter(cue -> cue.getPatchUsages().stream().anyMatch(pu -> pu.patch == patch))
                     .forEach(_data.cues::notifyChange);
         }
       }
