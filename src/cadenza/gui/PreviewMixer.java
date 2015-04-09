@@ -130,7 +130,7 @@ public class PreviewMixer extends JPanel {
     
     final Box subSouth = Box.createVerticalBox();
     subSouth.add(textField);
-    subSouth.add(SwingUtils.button("Reset",  "Reset to the default volume", e -> textField.setInt(patch.defaultVolume)));
+    subSouth.add(SwingUtils.button("Reset", "Reset to the default volume", e -> textField.setInt(patch.defaultVolume)));
     subSouth.add(SwingUtils.button("Set", "Set the selected volume as the default", e -> {
       final int selected = textField.getInt();
       if (patch.defaultVolume != selected) {

@@ -106,7 +106,7 @@ public class SplitPatchMerge extends PatchMerge {
   @Override
   protected void prepare_additional(PerformanceController controller) {
     _currentSplit = _startSplit;
-    final NoteRange l = accessNoteRange();
+    final NoteRange l = getNoteRange();
     _lowerCenter = (l.getLower().getMidiNumber() + _currentSplit) / 2;
     _upperCenter = (_currentSplit + l.getUpper().getMidiNumber()) / 2;
     

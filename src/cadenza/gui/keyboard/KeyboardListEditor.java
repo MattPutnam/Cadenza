@@ -101,11 +101,11 @@ public class KeyboardListEditor extends JPanel implements CustomWizardComponent 
       final Iterator<PatchUsage> puIterator = cue.getPatchUsages().iterator();
       while (puIterator.hasNext()) {
         final PatchUsage patchUsage = puIterator.next();
-        final Keyboard newKeyboard = _remap.get(patchUsage.noteRange.getKeyboard());
+        final Keyboard newKeyboard = _remap.get(patchUsage.getNoteRange().getKeyboard());
         if (newKeyboard != null) {
-          final Optional<NoteRange> opt = patchUsage.noteRange.copyTo(newKeyboard, true);
+          final Optional<NoteRange> opt = patchUsage.getNoteRange().copyTo(newKeyboard, true);
           if (opt.isPresent())
-            patchUsage.noteRange = opt.get();
+            patchUsage.setNoteRange(opt.get());
           else
             puIterator.remove();
           

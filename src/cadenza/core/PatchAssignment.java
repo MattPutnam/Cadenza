@@ -13,7 +13,7 @@ import cadenza.core.patchusage.PatchUsage;
  * 
  * @author Matt Putnam
  */
-public interface PatchAssignment {
+public abstract class PatchAssignment {
   /**
    * Response object for determining which constituent PatchUsage should
    * receive an incoming MIDI message.
@@ -50,16 +50,26 @@ public interface PatchAssignment {
     }
   }
   
+  private NoteRange _noteRange;
+  
+  public PatchAssignment(NoteRange noteRange) {
+    _noteRange = noteRange;
+  }
+  
   /**
    * @return the range of this PatchUsage/PatchMerge
    */
-  public NoteRange getNoteRange();
+  public final NoteRange getNoteRange() {
+    return _noteRange;
+  }
   
   /**
    * Sets the note range
    * @param newNoteRange the new note range
    */
-  public void setNoteRange(NoteRange newNoteRange);
+  public final void setNoteRange(NoteRange newNoteRange) {
+    _noteRange = newNoteRange;
+  }
   
   /**
    * Determines the notes that should be played in response to a note being
@@ -70,7 +80,7 @@ public interface PatchAssignment {
    * @param velocity the input note velocity
    * @return a Response containing the result notes
    */
-  public Response receive(int midiNumber, int velocity);
+  public abstract Response receive(int midiNumber, int velocity);
   
   /**
    * Displays this PatchUsage/PatchMerge
@@ -82,32 +92,32 @@ public interface PatchAssignment {
    *                           HTML spans to highlight it with its selected color
    * @return a display String
    */
-  public String toString(boolean includeRange, boolean includeKeyboardInfo, boolean highlightPatchName);
+  public abstract String toString(boolean includeRange, boolean includeKeyboardInfo, boolean highlightPatchName);
   
-  public boolean contains(Patch patch);
+  public abstract boolean contains(Patch patch);
   
-  public boolean replace(Patch target, Patch replacement);
+  public abstract boolean replace(Patch target, Patch replacement);
   
   /**
    * Called by the PerformanceController when the PatchUsage is loaded.
    * Default implementation does nothing, override to perform any needed setup.
    * @param controller the controller
    */
-  public default void prepare(PerformanceController controller) {}
+  public void prepare(PerformanceController controller) {}
   
   /**
    * Called by the PerformanceController when the PatchUsage is left.
    * Default implementation does nothing, override to perform any needed cleanup.
    * @param controller the controller
    */
-  public default void cleanup(PerformanceController controller) {}
+  public void cleanup(PerformanceController controller) {}
   
   /**
    * Called by the PerformanceController when a note from this PatchUsage
    * is released.  Default implementation does nothing.
    * @param midiNumber the MIDI number of the released note
    */
-  public default void noteReleased(int midiNumber) {}
+  public void noteReleased(int midiNumber) {}
   
   /**
    * Called by the PerformanceController when a control change mapping to this
@@ -119,5 +129,5 @@ public interface PatchAssignment {
    *              performance.
    * @param ccVal the new control value
    */
-  public default void controlChanged(int ccNum, int ccVal) {}
+  public void controlChanged(int ccNum, int ccVal) {}
 }

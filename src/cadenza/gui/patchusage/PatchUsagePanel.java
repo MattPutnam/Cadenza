@@ -307,7 +307,7 @@ public class PatchUsagePanel extends JPanel {
               OKCancelDialog.showDialog(new PatchUsageEditDialog(_frame, pu, _data), dialog -> {
                 final PatchUsage newPU = dialog.getPatchUsage();
                 _patchMerge.accessPatchAssignments().set(fi, newPU);
-                _patchMerge.setNoteRange(newPU.noteRange);
+                _patchMerge.setNoteRange(newPU.getNoteRange());
               });
               refreshDisplay();
             }));

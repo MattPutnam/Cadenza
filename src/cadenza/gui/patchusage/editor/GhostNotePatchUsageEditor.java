@@ -74,7 +74,7 @@ public class GhostNotePatchUsageEditor extends JPanel {
       }
     });
     
-    rebuildSourceRow(initial.noteRange);
+    rebuildSourceRow(initial.getNoteRange());
     
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     add(SwingUtils.buildCenteredRow(new JLabel("When the following note is pressed:")));
@@ -87,7 +87,7 @@ public class GhostNotePatchUsageEditor extends JPanel {
     _map.clear();
     _map.putAll(patchUsage.ghosts);
     
-    rebuildSourceRow(patchUsage.noteRange);
+    rebuildSourceRow(patchUsage.getNoteRange());
     rehighlight();
   }
   

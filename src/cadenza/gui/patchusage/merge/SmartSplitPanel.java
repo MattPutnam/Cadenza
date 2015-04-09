@@ -115,7 +115,7 @@ public class SmartSplitPanel extends MergePanel<SplitPatchMerge> {
     // put this on the end of the event queue so that some other initialization
     // that would blast this happens first
     SwingUtilities.invokeLater(() -> {
-      _union = initial.accessNoteRange();
+      _union = initial.getNoteRange();
       _currentSplit = Note.valueOf(initial.getStartSplit());
       _bufferField.setInt(initial.getBufferSize());
       

@@ -21,14 +21,11 @@ import common.swing.ColorUtils;
  * 
  * @author Matt Putnam
  */
-public abstract class PatchUsage implements PatchAssignment, Serializable {
+public abstract class PatchUsage extends PatchAssignment implements Serializable {
   private static final long serialVersionUID = 2L;
   
   /** The patch to play */
   public Patch patch;
-  
-  /** The note range for the patch */
-  public NoteRange noteRange;
   
   /** The volume to play the patch */
   public int volume;
@@ -54,8 +51,8 @@ public abstract class PatchUsage implements PatchAssignment, Serializable {
             new NoteRange(null, null, null), 100, 0, false);
   
   public PatchUsage(Patch patch, NoteRange noteRange, int volume) {
+    super(noteRange);
     this.patch = patch;
-    this.noteRange = noteRange;
     this.volume = volume;
   }
   
@@ -89,7 +86,7 @@ public abstract class PatchUsage implements PatchAssignment, Serializable {
    * @return whether or not this patch usage plays the note
    */
   public final boolean respondsTo(int midiNumber, int velocity) {
-    if (!noteRange.contains(midiNumber))
+    if (!getNoteRange().contains(midiNumber))
       return false;
     
     return respondsTo_additional(midiNumber, velocity);
@@ -125,7 +122,7 @@ public abstract class PatchUsage implements PatchAssignment, Serializable {
     sb.append(patch.name);
     if (highlightPatchName) sb.append("</span>");
     
-    if (includeNoteRange) sb.append(" ").append(noteRange.toString(includeKeyboardInfo));
+    if (includeNoteRange) sb.append(" ").append(getNoteRange().toString(includeKeyboardInfo));
     if (volume != patch.defaultVolume)
       sb.append(" at " + volume);
     
@@ -137,15 +134,4 @@ public abstract class PatchUsage implements PatchAssignment, Serializable {
    * @return additional info for the toString value
    */
   abstract String toString_additional();
-  
-  // Compliance
-  @Override
-  public NoteRange getNoteRange() {
-    return noteRange;
-  }
-  
-  @Override
-  public void setNoteRange(NoteRange newNoteRange) {
-    noteRange = newNoteRange;
-  }
 }

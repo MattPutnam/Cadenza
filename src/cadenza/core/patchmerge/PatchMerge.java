@@ -18,7 +18,7 @@ import cadenza.core.patchusage.PatchUsage;
  * 
  * @author Matt Putnam
  */
-public abstract class PatchMerge implements PatchAssignment, Serializable {
+public abstract class PatchMerge extends PatchAssignment implements Serializable {
   private static final long serialVersionUID = 2L;
   
   private final List<PatchAssignment> _patchAssignments;
@@ -30,6 +30,8 @@ public abstract class PatchMerge implements PatchAssignment, Serializable {
    * @throws IllegalArgumentException if the list has less than 2 elements
    */
   public PatchMerge(List<PatchAssignment> assignments) {
+    super(assignments.get(0).getNoteRange());
+    
     if (assignments.size() < 2)
       throw new IllegalArgumentException("Can only merge 2 or more patches");
     
@@ -75,13 +77,6 @@ public abstract class PatchMerge implements PatchAssignment, Serializable {
    * @return the primary PatchUsage
    */
   public abstract PatchAssignment accessPrimary();
-  
-  /**
-   * @return the merged NoteRange for this merge
-   */
-  public NoteRange accessNoteRange() {
-    return _patchAssignments.get(0).getNoteRange();
-  }
   
   public void performReplace(PatchAssignment original, PatchAssignment replacement) {
     final int index = _patchAssignments.indexOf(original);
@@ -158,19 +153,8 @@ public abstract class PatchMerge implements PatchAssignment, Serializable {
                             })
                             .collect(Collectors.joining(" / ")) + 
            toString_additional() +
-           (includeNoteRange ? " " + accessNoteRange().toString(includeKeyboardInfo) : "");
+           (includeNoteRange ? " " + getNoteRange().toString(includeKeyboardInfo) : "");
   }
   
   protected abstract String toString_additional();
-  
-  // Compliance
-  @Override
-  public NoteRange getNoteRange() {
-    return accessNoteRange();
-  }
-  
-  @Override
-  public void setNoteRange(NoteRange newNoteRange) {
-    _patchAssignments.forEach(pa -> pa.setNoteRange(newNoteRange));
-  }
 }

@@ -75,7 +75,7 @@ public class SimplePatchUsage extends PatchUsage {
     
     final SimplePatchUsage spu = (SimplePatchUsage) obj;
     return this.patch.equals(spu.patch) &&
-         this.noteRange.equals(spu.noteRange) &&
+         this.getNoteRange().equals(spu.getNoteRange()) &&
          this.volume == spu.volume &&
          this.initialControlSends.equals(spu.initialControlSends) &&
          this.transposition == spu.transposition &&
@@ -85,7 +85,7 @@ public class SimplePatchUsage extends PatchUsage {
   @Override
   public int hashCode() {
     int hashCode = patch.hashCode();
-    hashCode = 31*hashCode + noteRange.hashCode();
+    hashCode = 31*hashCode + getNoteRange().hashCode();
     hashCode = 31*hashCode + volume;
     hashCode = 31*hashCode + initialControlSends.hashCode();
     hashCode = 31*hashCode + transposition;

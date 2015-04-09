@@ -29,12 +29,7 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
   /** The measure number */
   public LocationNumber measureNumber;
   
-//  /** The patches used */
-//  public List<PatchUsage> patches;
-//  
-//  /** The merges used */
-//  public List<PatchMerge> merges;
-  
+  /** The assignments of patches */
   public List<PatchAssignment> patchAssignments;
   
   /** The triggers used */
@@ -63,8 +58,6 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
   public Cue(Song song, LocationNumber measureNumber) {
     this.song = song;
     this.measureNumber = measureNumber;
-//    patches = new ArrayList<>();
-//    merges = new ArrayList<>();
     patchAssignments = new ArrayList<>();
     triggers = new ArrayList<>();
     _controlMapping = new ArrayList<>();
@@ -78,8 +71,6 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
   public void copyFrom(Cue other) {
     this.song = other.song;
     this.measureNumber = other.measureNumber;
-//    this.patches = other.patches;
-//    this.merges = other.merges;
     this.patchAssignments = other.patchAssignments;
     this.triggers = other.triggers;
     this.disableGlobalTriggers = other.disableGlobalTriggers;
