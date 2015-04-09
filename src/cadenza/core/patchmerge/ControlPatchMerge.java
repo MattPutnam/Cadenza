@@ -3,18 +3,18 @@ package cadenza.core.patchmerge;
 import java.util.Arrays;
 
 import cadenza.control.PerformanceController;
-import cadenza.core.patchusage.PatchUsage;
+import cadenza.core.PatchAssignmentEntity;
 
 public class ControlPatchMerge extends PatchMerge {
   private static final long serialVersionUID = 2L;
   
-  private final PatchUsage[] _patchUsages;
+  private final PatchAssignmentEntity[] _patchUsages;
   private final int[] _breakpoints;
   private final int _ccNum;
   
-  private transient PatchUsage _active;
+  private transient PatchAssignmentEntity _active;
   
-  public ControlPatchMerge(PatchUsage[] patchUsages, int[] breakpoints, int ccNum) {
+  public ControlPatchMerge(PatchAssignmentEntity[] patchUsages, int[] breakpoints, int ccNum) {
     super(patchUsages);
     
     if (patchUsages.length != breakpoints.length+1)
@@ -26,11 +26,11 @@ public class ControlPatchMerge extends PatchMerge {
   }
 
   @Override
-  public PatchUsage accessPrimary() {
-    return accessPatchUsages().get(0);
+  public PatchAssignmentEntity accessPrimary() {
+    return accessPatchAssignmentEntities().get(0);
   }
   
-  public PatchUsage[] getPatchUsages() {
+  public PatchAssignmentEntity[] getPatchUsages() {
     return _patchUsages;
   }
   
@@ -59,7 +59,7 @@ public class ControlPatchMerge extends PatchMerge {
 
   @Override
   public Response receive(int midiNumber, int velocity) {
-    return new Response(_active, _active.getNotes(midiNumber, velocity));
+    return _active.receive(midiNumber, velocity);
   }
 
   @Override

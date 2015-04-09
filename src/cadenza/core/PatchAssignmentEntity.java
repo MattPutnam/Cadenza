@@ -1,6 +1,7 @@
 package cadenza.core;
 
 import cadenza.control.PerformanceController;
+import cadenza.core.patchusage.PatchUsage;
 
 /**
  * Joins PatchUsage and PatchMerge for display purposes.
@@ -9,9 +10,62 @@ import cadenza.control.PerformanceController;
  */
 public interface PatchAssignmentEntity {
   /**
+   * Response object for determining which constituent PatchUsage should
+   * receive an incoming MIDI message.
+   * 
+   * @see PatchUsage#getNotes(int, int)
+   * @author Matt Putnam
+   */
+  public static class Response {
+    private final PatchUsage _patchUsage;
+    private final int[][] _notes;
+    
+    /**
+     * Creates a Response with the given PatchUsage and notes
+     * @param patchUsage the PatchUsage that gets played
+     * @param notes an array of [note, velocity] pairs to be played
+     */
+    public Response(PatchUsage patchUsage, int[][] notes) {
+      _patchUsage = patchUsage;
+      _notes = notes;
+    }
+    
+    /**
+     * @return the PatchUsage that gets played
+     */
+    public PatchUsage getPatchUsage() {
+      return _patchUsage;
+    }
+    
+    /**
+     * @return an array of [note, velocity] pairs to be played
+     */
+    public int[][] getNotes() {
+      return _notes;
+    }
+  }
+  
+  /**
    * @return the range of this PatchUsage/PatchMerge
    */
   public NoteRange getNoteRange();
+  
+  /**
+   * Sets the note range
+   * @param newNoteRange the new note range
+   */
+  public void setNoteRange(NoteRange newNoteRange);
+  
+  /**
+   * Determines the notes that should be played in response to a note being
+   * pressed.  This response consists of the (single) PatchUsage that ends
+   * up receiving the event, and the array of [note, velocity] pairs that
+   * the underlying PatchUsage returns.
+   * @param midiNumber the input MIDI note number
+   * @param velocity the input note velocity
+   * @return a Response containing the result notes
+   */
+  public Response receive(int midiNumber, int velocity);
   
   /**
    * Displays this PatchUsage/PatchMerge

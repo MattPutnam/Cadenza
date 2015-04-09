@@ -123,8 +123,17 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
   public List<PatchUsage> getPatchUsages() {
     final List<PatchUsage> result = new ArrayList<>();
     result.addAll(patches);
-    merges.forEach(pm -> result.addAll(pm.accessPatchUsages()));
+    merges.forEach(pm -> recursor(pm, result));
     return result;
+  }
+  
+  private void recursor(PatchMerge merge, List<PatchUsage> result) {
+    merge.accessPatchAssignmentEntities().forEach(pae -> {
+      if (pae instanceof PatchUsage)
+        result.add((PatchUsage) pae);
+      else
+        recursor((PatchMerge) pae, result);
+    });
   }
   
   /**

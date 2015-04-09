@@ -4,9 +4,9 @@ import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
-import cadenza.core.NoteRange;
 import cadenza.core.Note;
 import cadenza.core.Note.PitchClass;
+import cadenza.core.NoteRange;
 import cadenza.core.Patch;
 import cadenza.core.Scale;
 

@@ -59,13 +59,11 @@ public abstract class PatchUsage implements PatchAssignmentEntity, Serializable 
     this.volume = volume;
   }
   
-  /**
-   * Returns an array of [note, velocity] pairs that should be played given an
-   * input note and velocity
-   * @param midiNumber - the note number of the input note
-   * @param velocity - the velocity of the input note, before effects
-   * @return an array of [note, velocity] pairs to be played
-   */
+  @Override
+  public final Response receive(int midiNumber, int velocity) {
+    return new Response(this, getNotes(midiNumber, velocity));
+  }
+  
   public abstract int[][] getNotes(int midiNumber, int velocity);
   
   /**
@@ -129,5 +127,10 @@ public abstract class PatchUsage implements PatchAssignmentEntity, Serializable 
   @Override
   public NoteRange getNoteRange() {
     return noteRange;
+  }
+  
+  @Override
+  public void setNoteRange(NoteRange newNoteRange) {
+    noteRange = newNoteRange;
   }
 }

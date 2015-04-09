@@ -1,6 +1,6 @@
 package cadenza.core.patchmerge;
 
-import cadenza.core.patchusage.PatchUsage;
+import cadenza.core.PatchAssignmentEntity;
 
 /**
  * PatchMerge implementation that splits based on input velocity.  Velocities
@@ -25,7 +25,7 @@ public class VelocityPatchMerge extends PatchMerge {
    * @param threshold the input velocity to split around
    * @param reduction the volume to reduce the upper PatchUsage by
    */
-  public VelocityPatchMerge(PatchUsage main, PatchUsage high, int threshold, int reduction) {
+  public VelocityPatchMerge(PatchAssignmentEntity main, PatchAssignmentEntity high, int threshold, int reduction) {
     super(main, high);
     _threshold = threshold;
     _reduction = reduction;
@@ -35,15 +35,15 @@ public class VelocityPatchMerge extends PatchMerge {
    * @return the primary PatchUsage, below the threshold
    */
   @Override
-  public PatchUsage accessPrimary() {
-    return accessPatchUsages().get(0);
+  public PatchAssignmentEntity accessPrimary() {
+    return accessPatchAssignmentEntities().get(0);
   }
   
   /**
    * @return the upper PatchUsage, above the threshold
    */
-  public PatchUsage accessSecondary() {
-    return accessPatchUsages().get(1);
+  public PatchAssignmentEntity accessSecondary() {
+    return accessPatchAssignmentEntities().get(1);
   }
   
   /**
@@ -63,11 +63,9 @@ public class VelocityPatchMerge extends PatchMerge {
   @Override
   public Response receive(int midiNumber, int velocity) {
     if (velocity < _threshold) {
-      final PatchUsage pu = accessPrimary();
-      return new Response(pu, pu.getNotes(midiNumber, velocity));
+      return accessPrimary().receive(midiNumber, velocity);
     } else {
-      final PatchUsage pu = accessSecondary();
-      return new Response(pu, pu.getNotes(midiNumber, velocity - _reduction));
+      return accessSecondary().receive(midiNumber, velocity);
     }
   }
 

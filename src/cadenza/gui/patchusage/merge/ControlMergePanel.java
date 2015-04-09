@@ -5,17 +5,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Box;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.GroupLayout.Alignment;
 
+import cadenza.core.PatchAssignmentEntity;
 import cadenza.core.patchmerge.ControlPatchMerge;
-import cadenza.core.patchusage.PatchUsage;
 import cadenza.gui.common.ControlCombo;
+
 import common.swing.IntField;
 import common.swing.SimpleGrid;
 import common.swing.SwingUtils;
@@ -24,14 +25,14 @@ import common.swing.VerificationException;
 @SuppressWarnings("serial")
 public class ControlMergePanel extends MergePanel<ControlPatchMerge> {
 
-  private final List<JComboBox<PatchUsage>> _patchCombos;
+  private final List<JComboBox<PatchAssignmentEntity>> _patchCombos;
   private final List<IntField> _splitFields;
   private final ControlCombo _ccNumCombo;
   
   private final JButton _addButton;
   private final JPanel _mainPanel;
   
-  public ControlMergePanel(PatchUsage primary, List<PatchUsage> others) {
+  public ControlMergePanel(PatchAssignmentEntity primary, List<PatchAssignmentEntity> others) {
     super(primary, others);
     
     _patchCombos = new ArrayList<>();
@@ -96,7 +97,7 @@ public class ControlMergePanel extends MergePanel<ControlPatchMerge> {
 
   @Override
   public void initialize(ControlPatchMerge initial) {
-    final PatchUsage[] usages = initial.getPatchUsages();
+    final PatchAssignmentEntity[] usages = initial.getPatchUsages();
     final int[] breakpoints = initial.getBreakpoints();
     
     if (usages[0] != accessPrimary())
@@ -124,14 +125,13 @@ public class ControlMergePanel extends MergePanel<ControlPatchMerge> {
 
   @Override
   public ControlPatchMerge getPatchMerge() {
-    final List<PatchUsage> patchUsages = new ArrayList<>();
-    patchUsages.add(accessPrimary());
-    _patchCombos.forEach(combo -> patchUsages.add((PatchUsage) combo.getSelectedItem()));
-    final PatchUsage[] puArray = patchUsages.toArray(new PatchUsage[patchUsages.size()]);
+    final List<PatchAssignmentEntity> entities = new ArrayList<>();
+    entities.add(accessPrimary());
+    _patchCombos.forEach(combo -> entities.add((PatchAssignmentEntity) combo.getSelectedItem()));
     
-    final int[] breakpoints = _splitFields.stream().mapToInt(IntField::getInt).toArray();
-    
-    return new ControlPatchMerge(puArray, breakpoints, _ccNumCombo.getSelectedIndex());
+    return new ControlPatchMerge(entities.toArray(new PatchAssignmentEntity[entities.size()]),
+                                 _splitFields.stream().mapToInt(IntField::getInt).toArray(),
+                                 _ccNumCombo.getSelectedIndex());
   }
 
 }

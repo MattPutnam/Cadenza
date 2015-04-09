@@ -3,9 +3,9 @@ package cadenza.core.patchmerge;
 import java.util.Arrays;
 
 import cadenza.control.PerformanceController;
-import cadenza.core.NoteRange;
 import cadenza.core.Note;
-import cadenza.core.patchusage.PatchUsage;
+import cadenza.core.NoteRange;
+import cadenza.core.PatchAssignmentEntity;
 
 import common.collection.buffer.FixedSizeIntBuffer;
 
@@ -45,7 +45,7 @@ public class SplitPatchMerge extends PatchMerge {
    *                   clusters more closely; use a larger buffer to make the
    *                   changes happen more gradually.
    */
-  public SplitPatchMerge(PatchUsage lower, PatchUsage upper, int startSplit, int bufferSize) {
+  public SplitPatchMerge(PatchAssignmentEntity lower, PatchAssignmentEntity upper, int startSplit, int bufferSize) {
     super(lower, upper);
     _startSplit = startSplit;
     _bufferSize = bufferSize;
@@ -54,19 +54,19 @@ public class SplitPatchMerge extends PatchMerge {
   /**
    * @return the lower PatchUsage
    */
-  public PatchUsage getLower() {
-    return accessPatchUsages().get(0);
+  public PatchAssignmentEntity getLower() {
+    return accessPatchAssignmentEntities().get(0);
   }
   
   /**
    * @return the upper PatchUsage
    */
-  public PatchUsage getUpper() {
-    return accessPatchUsages().get(1);
+  public PatchAssignmentEntity getUpper() {
+    return accessPatchAssignmentEntities().get(1);
   }
   
   @Override
-  public PatchUsage accessPrimary() {
+  public PatchAssignmentEntity accessPrimary() {
     return getLower();
   }
   
@@ -92,16 +92,14 @@ public class SplitPatchMerge extends PatchMerge {
       _lowerCenter = Arrays.stream(values).sum() / values.length;
       _currentSplit = (_lowerCenter + _upperCenter) / 2;
       
-      final PatchUsage pu = getLower();
-      return new Response(pu, pu.getNotes(midiNumber, velocity));
+      return getLower().receive(midiNumber, velocity);
     } else {
       _upperBuffer.add(midiNumber);
       final int[] values = _upperBuffer.getValues();
       _upperCenter = Arrays.stream(values).sum() /  values.length;
       _currentSplit = (_lowerCenter + _upperCenter) / 2;
       
-      final PatchUsage pu = getUpper();
-      return new Response(pu, pu.getNotes(midiNumber, velocity));
+      return getUpper().receive(midiNumber, velocity);
     }
   }
   
