@@ -306,7 +306,7 @@ public class CueListEditor extends JPanel {
           
           if (list != null && !list.isEmpty()) {
             final String s = list.stream()
-                                 .map(pa -> pa.toString(false, false, true))
+                                 .map(pa -> pa.toString(true, false, true))
                                  .collect(Collectors.joining(", "));
             keyboardStrings.add(s + (multiple ? " on " + keyboard.name : ""));
           }
