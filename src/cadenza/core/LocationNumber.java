@@ -3,11 +3,10 @@ package cadenza.core;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.jgoodies.common.base.Objects;
 
 /**
  * <p>Represents a measure or song number.  LocationNumbers may contain a
