@@ -16,6 +16,7 @@ import javax.swing.table.TableColumnModel;
 
 import cadenza.control.PreviewController;
 import cadenza.core.CadenzaData;
+import cadenza.core.Cue;
 import cadenza.core.Patch;
 import cadenza.gui.common.CadenzaTable;
 import cadenza.gui.common.SinglePatchSelectionDialog;
@@ -168,8 +169,12 @@ public class PatchEditor extends JPanel {
     }
     
     @Override
-    protected String declareAdditionalDeleteWarning(List<Patch> toDelete) {
-      return "Patches will be removed from any cue that uses them.";
+    protected boolean allowDelete(List<Patch> toDelete) {
+      // Disallow deleting if any cue uses one of the selected patches.
+      return !_data.cues.stream()
+                        .flatMap(Cue::streamPatchUsages)
+                        .map(pu -> pu.patch)
+                        .anyMatch(toDelete::contains);
     }
     
     @Override

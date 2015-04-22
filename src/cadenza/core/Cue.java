@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import cadenza.core.effects.Effect;
 import cadenza.core.patchmerge.PatchMerge;
@@ -118,6 +119,15 @@ public class Cue implements Comparable<Cue>, Serializable, ControlMapProvider, H
     final List<PatchUsage> result = new ArrayList<>();
     patchAssignments.forEach(pa -> recursor(pa, result));
     return result;
+  }
+  
+  /**
+   * Convenience method solely for syntax reasons
+   * @return a Stream of the PatchUsages in this cue
+   * @see #getPatchUsages()
+   */
+  public Stream<PatchUsage> streamPatchUsages() {
+    return getPatchUsages().stream();
   }
   
   private void recursor(PatchAssignment assignment, List<PatchUsage> result) {
