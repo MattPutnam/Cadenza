@@ -5,4 +5,9 @@ Cadenza is a live MIDI performance manager, designed specifically to handle the 
 
 To install, copy the relevant .zip file out of the root directory to wherever (likely Program Files on Windows, Applications on Mac OS X, but it doesn't actually matter) and unzip it.  This results in a directory with the runnable .JAR and some other stuff inside.  The .JAR MUST be in the same directory as the "resources" subdirectory in order to work properly.
 
-This project requires my Common library as well (for dev only, the zips are fully self-contained).  If something doesn't compile, just poke me, I probably just forgot to push something to Common.
+Collaborators:
+---
+
+* Importing into an IDE will likely pick up a ton of unnecessary JARs.  The only JARs that should be on the build path for development are in <code>lib/import</code>.  It may also pick up <code>thirdPartySrc</code> as a source folder; take that off too.
+* Copy <code>resources/preferences.default</code> and rename to <code>preferences.txt</code> (in the same directory).  Otherwise preferences will fail to load.
+* Add <code>lib/resources</code> as a source folder to allow log4j logging.
