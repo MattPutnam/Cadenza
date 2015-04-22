@@ -4,18 +4,17 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import cadenza.core.NoteRange;
 import cadenza.core.Note;
+import cadenza.core.NoteRange;
 import cadenza.core.patchusage.GhostNotePatchUsage;
 import cadenza.core.patchusage.PatchUsage;
 import cadenza.gui.keyboard.KeyboardPanel;
@@ -113,13 +112,10 @@ public class GhostNotePatchUsageEditor extends JPanel {
     _sourceRow.revalidate();
     _sourceRow.repaint();
     
-    final List<Integer> keysToRemove = new LinkedList<>();
-    for (final Entry<Integer, List<Integer>> entry : _map.entrySet()) {
-      if (!noteRange.contains(entry.getKey().intValue()))
-        keysToRemove.add(entry.getKey());
-    }
-    for (final Integer key : keysToRemove)
-      _map.remove(key);
+    final List<Integer> keysToRemove = _map.keySet().stream()
+                                                    .filter(key -> !noteRange.contains(key.intValue()))
+                                                    .collect(Collectors.toList());
+    keysToRemove.forEach(_map::remove);
     
     _currentlySelected = null;
     _currentlySelectedNum = Integer.valueOf(-1);
@@ -138,30 +134,24 @@ public class GhostNotePatchUsageEditor extends JPanel {
     _sourcePanel.unhighlightAll();
     _destPanel.unhighlightAll();
     
-    for (final Entry<Integer, List<Integer>> entry : _map.entrySet()) {
-      _sourcePanel.highlightNote(Note.valueOf(entry.getKey().intValue()), KeyboardPanel.LIGHT_HIGHLIGHT_COLOR);
-      for (final Integer i : entry.getValue()) {
-        _destPanel.highlightNote(Note.valueOf(i.intValue()), KeyboardPanel.LIGHT_HIGHLIGHT_COLOR);
-      }
-    }
+    _map.forEach((srcKey, destKeyList) -> {
+      _sourcePanel.highlightNote(Note.valueOf(srcKey.intValue()), KeyboardPanel.LIGHT_HIGHLIGHT_COLOR);
+      destKeyList.forEach(destKey -> _destPanel.highlightNote(Note.valueOf(destKey.intValue()), KeyboardPanel.LIGHT_HIGHLIGHT_COLOR));
+    });
     
     if (_currentlySelected != null) {
       _sourcePanel.highlightNote(_currentlySelected, KeyboardPanel.HIGHLIGHT_COLOR);
       if (_map.containsKey(_currentlySelectedNum)) {
-        for (final Integer i : _map.get(_currentlySelectedNum))
-          _destPanel.highlightNote(Note.valueOf(i.intValue()), KeyboardPanel.HIGHLIGHT_COLOR);
+        _map.get(_currentlySelectedNum).forEach(key -> _destPanel.highlightNote(Note.valueOf(key.intValue()), KeyboardPanel.HIGHLIGHT_COLOR));
       }
     }
   }
   
   private void purgeEmptyEntries() {
-    final List<Integer> keysToRemove = new LinkedList<>();
-    for (final Entry<Integer, List<Integer>> entry : _map.entrySet()) { 
-      if (entry.getValue().isEmpty())
-        keysToRemove.add(entry.getKey());
-    }
-    for (final Integer key : keysToRemove)
-      _map.remove(key);
+    final List<Integer> toRemove = _map.keySet().stream()
+                                                .filter(key -> _map.get(key).isEmpty())
+                                                .collect(Collectors.toList());
+    toRemove.forEach(_map::remove);
   }
 
 }
