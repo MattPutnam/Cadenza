@@ -208,7 +208,7 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
     }
   }
   
-  private static abstract class PatchUsageEditPane<T extends PatchUsage> extends JPanel {
+  private abstract class PatchUsageEditPane<T extends PatchUsage> extends JPanel {
     /**
      * Populate the editor with the values from an existing patch usage
      * @param initialPatchUsage the patch usage to mimic
@@ -231,7 +231,7 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
     public abstract T getPatchUsage(Patch patch, NoteRange noteRange, int volume);
   }
   
-  private static class SimplePatchUsagePane extends PatchUsageEditPane<SimplePatchUsage> {
+  private class SimplePatchUsagePane extends PatchUsageEditPane<SimplePatchUsage> {
     private static final String MONOPHONIC_HELP = "<html>Monophonic patches play only one note at a time.<br>"
         + "When a new note is played, the old note is terminated.</html>";
     
@@ -265,11 +265,11 @@ public class PatchUsageEditDialog extends OKCancelDialog implements AcceptsKeybo
     }
   }
   
-  private static class GhostNotePatchUsagePane extends PatchUsageEditPane<GhostNotePatchUsage> {
+  private class GhostNotePatchUsagePane extends PatchUsageEditPane<GhostNotePatchUsage> {
     private final GhostNotePatchUsageEditor _editor;
     
     public GhostNotePatchUsagePane(PatchUsage startingPatchUsage, NoteRangeEditPanel noteRangeSelector) {
-      _editor = new GhostNotePatchUsageEditor(startingPatchUsage);
+      _editor = new GhostNotePatchUsageEditor(startingPatchUsage, _data);
       
       noteRangeSelector.addNoteRangeListener(_editor::setNoteRange);
       

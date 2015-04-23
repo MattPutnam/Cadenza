@@ -10,9 +10,12 @@ import java.util.stream.Collectors;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import cadenza.core.CadenzaData;
+import cadenza.core.Cue;
 import cadenza.core.Note;
 import cadenza.core.NoteRange;
 import cadenza.core.patchusage.GhostNotePatchUsage;
@@ -25,6 +28,8 @@ import common.swing.SwingUtils;
 public class GhostNotePatchUsageEditor extends JPanel {
   private final Map<Integer, List<Integer>> _map;
   
+  private final List<GhostNotePatchUsage> _othersFound;
+  
   private KeyboardPanel _sourcePanel;
   private KeyboardPanel _destPanel;
   
@@ -33,11 +38,17 @@ public class GhostNotePatchUsageEditor extends JPanel {
   
   private Box _sourceRow;
 
-  public GhostNotePatchUsageEditor(PatchUsage initial) {
+  public GhostNotePatchUsageEditor(PatchUsage initial, CadenzaData data) {
     super();
     _map = new HashMap<>();
     if (initial instanceof GhostNotePatchUsage)
       _map.putAll(((GhostNotePatchUsage) initial).ghosts);
+    
+    _othersFound = data.cues.stream()
+                            .flatMap(Cue::streamPatchUsages)
+                            .filter(pu -> (pu instanceof GhostNotePatchUsage))
+                            .map(pu -> (GhostNotePatchUsage) pu)
+                            .collect(Collectors.toList());
     
     _destPanel = new KeyboardPanel(Note.MIN, Note.MAX);
     _sourceRow = Box.createHorizontalBox();
@@ -76,6 +87,18 @@ public class GhostNotePatchUsageEditor extends JPanel {
     rebuildSourceRow(initial.getNoteRange());
     
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+    
+    if (!_othersFound.isEmpty()) {
+      final JComboBox<GhostNotePatchUsage> combo = new JComboBox<>(_othersFound.toArray(new GhostNotePatchUsage[_othersFound.size()]));
+      combo.addActionListener(e -> {
+        _map.clear();
+        _map.putAll(((GhostNotePatchUsage) combo.getSelectedItem()).ghosts);
+        rehighlight();
+      });
+      
+      add(SwingUtils.buildCenteredRow(new JLabel("Populate from: "), combo));
+    }
+    
     add(SwingUtils.buildCenteredRow(new JLabel("When the following note is pressed:")));
     add(_sourceRow);
     add(SwingUtils.buildCenteredRow(new JLabel("Sound the following notes:")));
