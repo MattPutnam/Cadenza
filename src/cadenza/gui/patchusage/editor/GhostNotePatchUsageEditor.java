@@ -12,6 +12,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 
 import cadenza.core.CadenzaData;
@@ -22,13 +23,13 @@ import cadenza.core.patchusage.GhostNotePatchUsage;
 import cadenza.core.patchusage.PatchUsage;
 import cadenza.gui.keyboard.KeyboardPanel;
 
+import common.swing.SimpleListCellRenderer;
 import common.swing.SwingUtils;
+import common.tuple.Pair;
 
 @SuppressWarnings("serial")
 public class GhostNotePatchUsageEditor extends JPanel {
   private final Map<Integer, List<Integer>> _map;
-  
-  private final List<GhostNotePatchUsage> _othersFound;
   
   private KeyboardPanel _sourcePanel;
   private KeyboardPanel _destPanel;
@@ -44,11 +45,13 @@ public class GhostNotePatchUsageEditor extends JPanel {
     if (initial instanceof GhostNotePatchUsage)
       _map.putAll(((GhostNotePatchUsage) initial).ghosts);
     
-    _othersFound = data.cues.stream()
-                            .flatMap(Cue::streamPatchUsages)
-                            .filter(pu -> (pu instanceof GhostNotePatchUsage))
-                            .map(pu -> (GhostNotePatchUsage) pu)
-                            .collect(Collectors.toList());
+    final List<Pair<Cue, GhostNotePatchUsage>> othersFound = new ArrayList<>();
+    data.cues.forEach(cue -> {
+      cue.streamPatchUsages()
+         .filter(pu -> (pu instanceof GhostNotePatchUsage))
+         .map(pu -> (GhostNotePatchUsage) pu)
+         .forEach(pu -> othersFound.add(Pair.make(cue, pu)));
+    });
     
     _destPanel = new KeyboardPanel(Note.MIN, Note.MAX);
     _sourceRow = Box.createHorizontalBox();
@@ -88,13 +91,17 @@ public class GhostNotePatchUsageEditor extends JPanel {
     
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     
-    if (!_othersFound.isEmpty()) {
-      final JComboBox<GhostNotePatchUsage> combo = new JComboBox<>(_othersFound.toArray(new GhostNotePatchUsage[_othersFound.size()]));
+    if (!othersFound.isEmpty()) {
+      @SuppressWarnings("unchecked")
+      final JComboBox<Pair<Cue, GhostNotePatchUsage>> combo = new JComboBox<>(othersFound.toArray(new Pair[0]));
       combo.addActionListener(e -> {
         _map.clear();
-        _map.putAll(((GhostNotePatchUsage) combo.getSelectedItem()).ghosts);
+        @SuppressWarnings("unchecked")
+        final Pair<Cue, GhostNotePatchUsage> pair = (Pair<Cue, GhostNotePatchUsage>) combo.getSelectedItem();
+        _map.putAll(pair._2().ghosts);
         rehighlight();
       });
+      combo.setRenderer(new ComboRenderer());
       
       add(SwingUtils.buildCenteredRow(new JLabel("Populate from: "), combo));
     }
@@ -175,6 +182,16 @@ public class GhostNotePatchUsageEditor extends JPanel {
                                                 .filter(key -> _map.get(key).isEmpty())
                                                 .collect(Collectors.toList());
     toRemove.forEach(_map::remove);
+  }
+  
+  private static class ComboRenderer extends SimpleListCellRenderer<Pair<Cue, GhostNotePatchUsage>> {
+    @Override
+    protected void processLabel(JLabel label, JList<Pair<Cue, GhostNotePatchUsage>> list,
+        Pair<Cue, GhostNotePatchUsage> value, int index, boolean isSelected, boolean cellHasFocus) {
+      final Cue cue = value._1();
+      final GhostNotePatchUsage gnpu = value._2();
+      label.setText("Entry from cue at " + cue.song + " m. " + cue.measureNumber + " (" + gnpu.patch.name + ")");
+    }
   }
 
 }

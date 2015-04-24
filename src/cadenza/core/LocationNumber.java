@@ -60,7 +60,7 @@ public class LocationNumber implements Comparable<LocationNumber>, Serializable 
   
   @Override
   public int hashCode() {
-    return _numberPart.hashCode() << 16 + _letterPart.hashCode();
+    return Objects.hash(_numberPart, _letterPart);
   }
   
   @Override
