@@ -170,9 +170,9 @@ public class GhostNotePatchUsageEditor extends JPanel {
     });
     
     if (_currentlySelected != null) {
-      _sourcePanel.highlightNote(_currentlySelected, KeyboardPanel.HIGHLIGHT_COLOR);
+      _sourcePanel.highlightNote(_currentlySelected);
       if (_map.containsKey(_currentlySelectedNum)) {
-        _map.get(_currentlySelectedNum).forEach(key -> _destPanel.highlightNote(Note.valueOf(key.intValue()), KeyboardPanel.HIGHLIGHT_COLOR));
+        _map.get(_currentlySelectedNum).forEach(key -> _destPanel.highlightNote(Note.valueOf(key.intValue())));
       }
     }
   }
