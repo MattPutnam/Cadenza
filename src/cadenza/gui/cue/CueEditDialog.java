@@ -14,15 +14,17 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import cadenza.control.midiinput.AcceptsKeyboardInput;
-import cadenza.control.midiinput.NoteRangeEntryTracker;
 import cadenza.control.midiinput.MIDIInputControlCenter;
+import cadenza.control.midiinput.NoteRangeEntryTracker;
 import cadenza.core.CadenzaData;
 import cadenza.core.ControlMapEntry;
 import cadenza.core.ControlMapProvider;
 import cadenza.core.Cue;
 import cadenza.core.Keyboard;
-import cadenza.core.NoteRange;
+import cadenza.core.LocationNumber;
 import cadenza.core.Note;
+import cadenza.core.NoteRange;
+import cadenza.core.Song;
 import cadenza.core.patchusage.PatchUsage;
 import cadenza.gui.CadenzaFrame;
 import cadenza.gui.common.LocationField;
@@ -180,6 +182,13 @@ public class CueEditDialog extends OKCancelDialog implements ControlMapProvider,
   protected void verify() throws VerificationException {
     _songPanel.verify();
     _measureField.verify();
+    
+    final Song selectedSong = _songPanel.getSelectedSong();
+    final LocationNumber selectedMeasure = _measureField.getLocationNumber();
+    for (final Cue cue : _otherCues) {
+      if (cue.song.equals(selectedSong) && cue.measureNumber.equals(selectedMeasure))
+        throw new VerificationException("A cue with this song/measure already exists", _measureField);
+    }
   }
 
   @Override
