@@ -58,8 +58,10 @@ public class PatchEditDialog extends OKCancelDialog {
     _synthesizerCombo = new JComboBox<>(_synthesizers.toArray(new Synthesizer[_synthesizers.size()]));
     
     updateBankCombo();
-    if (_patch != null)
+    if (_patch != null) {
+      _synthesizerCombo.setSelectedItem(_patch.getSynthesizer());
       _bankCombo.setSelectedItem(_patch.bank);
+    }
     _synthesizerCombo.addActionListener(e -> updateBankCombo());
     
     _nameField = new JTextField(16);
