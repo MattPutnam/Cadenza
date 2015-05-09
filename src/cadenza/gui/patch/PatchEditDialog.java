@@ -27,7 +27,7 @@ import common.swing.dialog.OKCancelDialog;
 public class PatchEditDialog extends OKCancelDialog {
   private JComboBox<Synthesizer> _synthesizerCombo;
   private JTextField _nameField;
-  private JComboBox<Bank> _bankField;
+  private JComboBox<Bank> _bankCombo;
   private IntField _numField;
   private VolumeField _volumeField;
   private ColorPreviewPanel _colorChooser;
@@ -54,15 +54,13 @@ public class PatchEditDialog extends OKCancelDialog {
   
   @Override
   protected JComponent buildContent() {
-    _bankField = new JComboBox<>();
-    
+    _bankCombo = new JComboBox<>();
     _synthesizerCombo = new JComboBox<>(_synthesizers.toArray(new Synthesizer[_synthesizers.size()]));
-    if (_patch != null) 
-    _synthesizerCombo.addActionListener(e -> {
-      final Bank[] allBanks = Synthesizers.getAllBanks((Synthesizer) _synthesizerCombo.getSelectedItem()).toArray(Bank[]::new);
-      _bankField.setModel(new DefaultComboBoxModel<>(allBanks));
-    });
-    _synthesizerCombo.actionPerformed(null);
+    
+    updateBankCombo();
+    if (_patch != null)
+      _bankCombo.setSelectedItem(_patch.bank);
+    _synthesizerCombo.addActionListener(e -> updateBankCombo());
     
     _nameField = new JTextField(16);
     
@@ -76,10 +74,16 @@ public class PatchEditDialog extends OKCancelDialog {
     
     final Box vBox = Box.createVerticalBox();
     vBox.add(SwingUtils.buildLeftAlignedRow(new JLabel("Name:"), _nameField));
-    vBox.add(SwingUtils.buildLeftAlignedRow(new JLabel("Synth:"), _synthesizerCombo, new JLabel("Bank:"), _bankField, new JLabel("Num:"), _numField));
+    vBox.add(SwingUtils.buildLeftAlignedRow(new JLabel("Synth:"), _synthesizerCombo, new JLabel("Bank:"), _bankCombo, new JLabel("Num:"), _numField));
     vBox.add(SwingUtils.buildLeftAlignedRow(new JLabel("Default Volume:"), _volumeField, Box.createHorizontalGlue(), new JLabel("Display Color:"), _colorChooser));
     
     return vBox;
+  }
+  
+  private void updateBankCombo() {
+    SwingUtils.throwIfNotEventThread();
+    final Bank[] allBanks = Synthesizers.getAllBanks((Synthesizer) _synthesizerCombo.getSelectedItem()).toArray(Bank[]::new);
+    _bankCombo.setModel(new DefaultComboBoxModel<>(allBanks));
   }
   
   @Override
@@ -88,7 +92,7 @@ public class PatchEditDialog extends OKCancelDialog {
       _synthesizerCombo.setSelectedItem(_patch.getSynthesizer());
       _nameField.setText(_patch.name);
 //      _bankField.setText(_patch.bank);
-      _bankField.setSelectedItem(_patch.bank);
+      _bankCombo.setSelectedItem(_patch.bank);
       _numField.setInt(_patch.number);
     }
     
@@ -121,7 +125,7 @@ public class PatchEditDialog extends OKCancelDialog {
     final Patch result = new Patch((Synthesizer) _synthesizerCombo.getSelectedItem(),
                      _nameField.getText(),
 //                     _bankField.getText(),
-                     (Bank) _bankField.getSelectedItem(),
+                     (Bank) _bankCombo.getSelectedItem(),
                      _numField.getInt(),
                      _volumeField.getVolume());
     result.setDisplayColor(_colorChooser.getSelectedColor());
