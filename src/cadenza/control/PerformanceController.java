@@ -210,7 +210,15 @@ public final class PerformanceController extends CadenzaController {
   }
   
   public synchronized void sendNoteOff(int midiNumber, PatchUsage patch) {
-    sendNoteOff(midiNumber, _currentAssignments.get(patch).intValue());
+    // There is currently a bug where SequencerPatchUsage can get de-synced
+    // and try to send a note off when the cue has been left.  This is due
+    // to the metronome still triggering stuff somehow.  Catch this case and
+    // just turn all notes off as a safety.
+    final Integer channel = _currentAssignments.get(patch);
+    if (channel == null)
+      allNotesOff();
+    else
+      sendNoteOff(midiNumber, channel.intValue());
   }
   
   /**
