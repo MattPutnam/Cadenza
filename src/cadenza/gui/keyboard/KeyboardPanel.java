@@ -118,7 +118,7 @@ public final class KeyboardPanel extends JPanel {
       throw new IllegalArgumentException("'" + lowNote + "' is not a valid note");
     if (_highNote == null)
       throw new IllegalArgumentException("'" + highNote + "' is not a valid note");
-    if (_lowNote.compareTo(_highNote) >= 0)
+    if (_lowNote.compareTo(_highNote) > 0)
       throw new IllegalArgumentException("Range is not valid");
     
     _size = calcSize();
