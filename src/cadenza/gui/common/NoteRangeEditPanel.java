@@ -176,7 +176,7 @@ public class NoteRangeEditPanel extends JPanel {
     range.setBackground(Color.WHITE);
     range.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     
-    final JLabel label = new JLabel(_selectedNoteRange.toString(false), JLabel.CENTER);
+    final JLabel label = new JLabel(_selectedNoteRange.toString(false, true), JLabel.CENTER);
     label.setBounds(0, 0, width, 24);
     range.add(label);
     

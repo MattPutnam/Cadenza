@@ -121,7 +121,7 @@ public abstract class PatchUsage extends PatchAssignment {
     sb.append(patch.name);
     if (highlightPatchName) sb.append("</span>");
     
-    if (includeNoteRange) sb.append(" ").append(getNoteRange().toString(includeKeyboardInfo));
+    if (includeNoteRange) sb.append(" ").append(getNoteRange().toString(includeKeyboardInfo, true));
     if (volume != patch.defaultVolume)
       sb.append(" at " + volume);
     

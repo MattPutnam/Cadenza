@@ -158,7 +158,7 @@ public abstract class PatchMerge extends PatchAssignment {
                             })
                             .collect(Collectors.joining(" / ")) + 
            toString_additional() +
-           (includeNoteRange ? " " + getNoteRange().toString(includeKeyboardInfo) : "");
+           (includeNoteRange ? " " + getNoteRange().toString(includeKeyboardInfo, true) : "");
   }
   
   protected abstract String toString_additional();

@@ -89,13 +89,33 @@ public class NoteRange implements Serializable {
   
   @Override
   public String toString() {
-    return toString(true);
+    return toString(true, false);
   }
   
-  public String toString(boolean includeKeyboardInfo) {
-    final String s = _lower.equals(_upper) ? _lower.toString()
-                                           : _lower.toString() + "-" + _upper.toString();
-    return s + (includeKeyboardInfo ? " on " + _keyboard.name : "");
+  public String toString(boolean includeKeyboardInfo, boolean soundingOnly) {
+    final String rangePart;
+    final boolean l, u;
+    
+    if (soundingOnly) {
+      l = _lower.equals(_keyboard.soundingLow);
+      u = _upper.equals(_keyboard.soundingHigh);
+    } else {
+      l = _lower.equals(_keyboard.low);
+      u = _upper.equals(_keyboard.high);
+    }
+    
+    if (l && u)
+      rangePart = "all keys";
+    else if (l)
+      rangePart = "-" + _upper.toString();
+    else if (u)
+      rangePart = _lower.toString() + "-";
+    else if (_lower.equals(_upper))
+      rangePart = _lower.toString();
+    else
+      rangePart = _lower.toString() + "-" + _upper.toString();
+    
+    return rangePart + (includeKeyboardInfo ? " on " + _keyboard.name : "");
   }
   
   @Override
