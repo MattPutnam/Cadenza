@@ -58,10 +58,6 @@ public class PatchEditDialog extends OKCancelDialog {
     _synthesizerCombo = new JComboBox<>(_synthesizers.toArray(new Synthesizer[_synthesizers.size()]));
     
     updateBankCombo();
-    if (_patch != null) {
-      _synthesizerCombo.setSelectedItem(_patch.getSynthesizer());
-      _bankCombo.setSelectedItem(_patch.bank);
-    }
     _synthesizerCombo.addActionListener(e -> updateBankCombo());
     
     _nameField = new JTextField(16);
@@ -93,7 +89,6 @@ public class PatchEditDialog extends OKCancelDialog {
     if (_patch != null) {
       _synthesizerCombo.setSelectedItem(_patch.getSynthesizer());
       _nameField.setText(_patch.name);
-//      _bankField.setText(_patch.bank);
       _bankCombo.setSelectedItem(_patch.bank);
       _numField.setInt(_patch.number);
     }
@@ -118,15 +113,11 @@ public class PatchEditDialog extends OKCancelDialog {
         throw new VerificationException("Another patch already has this name", _nameField);
       }
     }
-    
-//    if (_bankField.getText().trim().isEmpty())
-//      throw new VerificationException("Please specify a Patch bank", _bankField);
   }
   
   public Patch getPatch() {
     final Patch result = new Patch((Synthesizer) _synthesizerCombo.getSelectedItem(),
                      _nameField.getText(),
-//                     _bankField.getText(),
                      (Bank) _bankCombo.getSelectedItem(),
                      _numField.getInt(),
                      _volumeField.getVolume());

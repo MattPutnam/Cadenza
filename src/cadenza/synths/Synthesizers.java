@@ -31,6 +31,8 @@ public class Synthesizers {
   private static final String _SYNTH_PATH = "resources" + File.separator + "synthconfigs";
   private static final String _EXP_PATH = "resources" + File.separator + "expansionconfigs";
   
+  private static final String CARD = "CARD";
+  
   /** List of all synthesizer names */
   public static List<String> SYNTH_NAMES = new ArrayList<>();
   
@@ -68,9 +70,16 @@ public class Synthesizers {
       final String[] expAssignments = exps.split(",");
       final Map<String, String> map = new TreeMap<>();
       for (final String assignment : expAssignments) {
-        if (assignment.trim().isEmpty()) continue;
-        final String[] data = assignment.trim().split("=");
-        map.put(data[0].trim(), data[1].trim());
+        final String trimmed = assignment.trim();
+        if (trimmed.isEmpty()) continue;
+        
+        final int equalsIndex = trimmed.indexOf('=');
+        if (equalsIndex == -1)
+          map.put(trimmed, CARD);
+        else {
+          map.put(trimmed.substring(0, equalsIndex).trim(),
+                  trimmed.substring(equalsIndex+1).trim());
+        }
       }
       
       _SYNTH_FILES.put(name, Pair.make(file, map));
