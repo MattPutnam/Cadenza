@@ -13,8 +13,8 @@ import cadenza.core.Note;
 import cadenza.core.Synthesizer;
 import cadenza.preferences.PatchSearchOptions.PatchSearchMode;
 import cadenza.synths.Synthesizers;
-
 import common.Utils;
+import common.io.IOUtils;
 import common.io.PropertiesFileReader;
 import common.midi.MidiUtilities;
 import common.swing.SwingUtils;
@@ -28,6 +28,7 @@ public final class PreferencesLoader {
   private PreferencesLoader() {}
   
   private static final File PREFERENCES_FILE = new File("resources/preferences.txt");
+  private static final File DEFAULTS_FILE = new File("resources/preferences.default");
   
   /////////////////////////////////////////////////////////////////////////////
   // Read block
@@ -40,6 +41,12 @@ public final class PreferencesLoader {
    */
   public static Map<String, String> readAllPreferences() throws Exception {
     SwingUtils.throwIfEventThread();
+    
+    // For dev purposes - preferences.txt is ignored, and is copied from .default
+    // for deployment, so do that if a dev hasn't done the copy
+    if (!PREFERENCES_FILE.exists() && DEFAULTS_FILE.exists()) {
+      IOUtils.copyFile(DEFAULTS_FILE, PREFERENCES_FILE);
+    }
     
     return PropertiesFileReader.readAll(PREFERENCES_FILE);
   }
