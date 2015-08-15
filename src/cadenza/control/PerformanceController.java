@@ -129,7 +129,22 @@ public final class PerformanceController extends CadenzaController {
       }
     }
     updatePerformanceLocation();
-    
+  }
+  
+  public synchronized void goTo(int cueIndex) {
+    if (cueIndex != _position) {
+      final int oldIndex = _position;
+      _position = cueIndex;
+      
+      if (receiverReady()) {
+        try {
+          updatePosition(oldIndex, _position);
+        } catch (InvalidMidiDataException e) {
+          LOG.error("Error updating performance position", e);
+        }
+      }
+      updatePerformanceLocation();
+    }
   }
   
   public synchronized void advance() {
