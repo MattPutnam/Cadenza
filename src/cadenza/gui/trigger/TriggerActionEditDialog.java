@@ -14,13 +14,13 @@ import cadenza.core.CadenzaData;
 import cadenza.core.metronome.Metronome.Subdivision;
 import cadenza.core.trigger.actions.CueStepAction;
 import cadenza.core.trigger.actions.GotoAction;
+import cadenza.core.trigger.actions.LocationJumpAction;
 import cadenza.core.trigger.actions.MetronomeAction;
 import cadenza.core.trigger.actions.PanicAction;
 import cadenza.core.trigger.actions.TriggerAction;
 import cadenza.core.trigger.actions.WaitAction;
 import cadenza.gui.common.LocationField;
 import cadenza.gui.song.SongPanel;
-
 import common.swing.IntField;
 import common.swing.RadioButtonPanel;
 import common.swing.SimpleGrid;
@@ -39,6 +39,7 @@ public class TriggerActionEditDialog extends OKCancelDialog {
   private WaitPane _waitPane;
   private PanicPane _panicPane;
   private MetronomePane _metronomePane;
+  private LocationJumpPane _locationJumpPane;
 
   public TriggerActionEditDialog(Component parent, CadenzaData data, TriggerAction initial) {
     super(parent);
@@ -54,12 +55,14 @@ public class TriggerActionEditDialog extends OKCancelDialog {
     _waitPane = new WaitPane();
     _panicPane = new PanicPane();
     _metronomePane = new MetronomePane();
+    _locationJumpPane = new LocationJumpPane();
     
     _tabbedPane.addTab("Step cue", _stepPane);
     _tabbedPane.addTab("Go To", _gotoPane);
     _tabbedPane.addTab("Wait", _waitPane);
     _tabbedPane.addTab("Panic", _panicPane);
     _tabbedPane.addTab("Metronome", _metronomePane);
+    _tabbedPane.addTab("Location Jump", _locationJumpPane);
     
     return _tabbedPane;
   }
@@ -84,6 +87,9 @@ public class TriggerActionEditDialog extends OKCancelDialog {
     } else if (_initial instanceof MetronomeAction) {
       _tabbedPane.setSelectedComponent(_metronomePane);
       _metronomePane.initialize((MetronomeAction) _initial);
+    } else if (_initial instanceof LocationJumpAction) {
+      _tabbedPane.setSelectedComponent(_locationJumpPane);
+      _locationJumpPane.initialize((LocationJumpAction) _initial);
     }
   }
   
@@ -226,6 +232,25 @@ public class TriggerActionEditDialog extends OKCancelDialog {
     @Override
     public PanicAction createAction() {
       return new PanicAction();
+    }
+  }
+  
+  private class LocationJumpPane extends ActionPane<LocationJumpAction> {
+    private RadioButtonPanel<LocationJumpAction.Type> _rbp;
+    
+    public LocationJumpPane() {
+      _rbp = new RadioButtonPanel<>(LocationJumpAction.Type.values(), LocationJumpAction.Type.SAVE, true);
+      add(_rbp);
+    }
+    
+    @Override
+    public LocationJumpAction createAction() {
+      return new LocationJumpAction(_rbp.getSelectedValue());
+    }
+    
+    @Override
+    public void initialize(LocationJumpAction initial) {
+      _rbp.setSelectedValue(initial.getType());
     }
   }
   
