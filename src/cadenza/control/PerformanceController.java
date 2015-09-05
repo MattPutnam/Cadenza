@@ -387,8 +387,12 @@ public final class PerformanceController extends CadenzaController {
       
       if (control == 64) {
         // CC64 (damper) is speshul.  It needs to always be sent to all allocated channels.
-        for (final Integer outChannel : _currentAssignments.values()) {
-          sendCC(64, value, outChannel.intValue());
+        // HOTFIX: send this to ALL channels for now.
+//        for (final Integer outChannel : _currentAssignments.values()) {
+//          sendCC(64, value, outChannel.intValue());
+//        }
+        for (int i = 0; i < 16; ++i) {
+          sendCC(64, value, i);
         }
         break noteorCC;
       }
