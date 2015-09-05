@@ -177,13 +177,13 @@ public class ControlWindow extends JFrame implements MetronomeListener {
                                               .map(pa -> pa.toString(false, false, true))
                                               .collect(Collectors.joining(", ")));
     } else {
-      map.forEach((k, lpa) -> {
-        sb.append(k.name).append(":<br>").append(
-          lpa.stream()
-              .map(pa -> pa.toString(false, false, true))
-              .collect(Collectors.joining(", ")))
-        .append("<br>");
-      });
+      map.entrySet().stream()
+                    .filter(entry -> !entry.getValue().isEmpty())
+                    .forEach(entry ->
+                      sb.append(entry.getValue().stream()
+                                                .map(pa -> pa.toString(false, false, true))
+                                                .collect(Collectors.joining(", ")))
+                        .append("<br>"));
     }
     
     return wrapHTML(sb.toString());
