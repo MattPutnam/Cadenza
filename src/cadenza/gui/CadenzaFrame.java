@@ -178,6 +178,11 @@ public class CadenzaFrame extends JFrame implements Receiver {
     try {
       if (message instanceof ShortMessage) {
         final ShortMessage sm = (ShortMessage) message;
+        
+        // shim for now:
+        if (sm.getChannel() == 8)
+  		  return;
+        
         if (MidiUtilities.isNoteOn(sm))
           VelocityTracker.getInstance().notify(sm.getChannel(), sm.getData2());
         else if (MidiUtilities.isControlChange(sm))

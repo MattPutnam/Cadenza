@@ -56,13 +56,17 @@ public final class KeyboardPanel extends JPanel {
   static {
     ADVANCE.put(PitchClass.C, Integer.valueOf(CUT_HALF));
       ADVANCE.put(PitchClass.Cs, Integer.valueOf(CUT_HALF));
+      ADVANCE.put(PitchClass.Db, Integer.valueOf(CUT_HALF));
     ADVANCE.put(PitchClass.D, Integer.valueOf(WHITE_WIDTH - CUT_NEGHALF));
       ADVANCE.put(PitchClass.Ds, Integer.valueOf(CUT_NEGHALF));
+      ADVANCE.put(PitchClass.Eb, Integer.valueOf(CUT_NEGHALF));
     ADVANCE.put(PitchClass.E, Integer.valueOf(WHITE_WIDTH));
     ADVANCE.put(PitchClass.F, Integer.valueOf(CUT_HALF));
       ADVANCE.put(PitchClass.Fs, Integer.valueOf(CUT_HALF));
+      ADVANCE.put(PitchClass.Gb, Integer.valueOf(CUT_HALF));
     ADVANCE.put(PitchClass.G, Integer.valueOf(WHITE_WIDTH - CUT_MIDHALF));
       ADVANCE.put(PitchClass.Gs, Integer.valueOf(CUT_MIDHALF));
+      ADVANCE.put(PitchClass.Ab, Integer.valueOf(CUT_MIDHALF));
     ADVANCE.put(PitchClass.A, Integer.valueOf(WHITE_WIDTH - CUT_NEGHALF));
       ADVANCE.put(PitchClass.As, Integer.valueOf(CUT_NEGHALF));
       ADVANCE.put(PitchClass.Bb, Integer.valueOf(CUT_NEGHALF));
@@ -73,13 +77,17 @@ public final class KeyboardPanel extends JPanel {
   static {
     WHITE_ORDINAL.put(PitchClass.C, Integer.valueOf(1));
       WHITE_ORDINAL.put(PitchClass.Cs, Integer.valueOf(1));
+      WHITE_ORDINAL.put(PitchClass.Db, Integer.valueOf(1));
     WHITE_ORDINAL.put(PitchClass.D, Integer.valueOf(2));
       WHITE_ORDINAL.put(PitchClass.Ds, Integer.valueOf(2));
+      WHITE_ORDINAL.put(PitchClass.Eb, Integer.valueOf(2));
     WHITE_ORDINAL.put(PitchClass.E, Integer.valueOf(3));
     WHITE_ORDINAL.put(PitchClass.F, Integer.valueOf(4));
       WHITE_ORDINAL.put(PitchClass.Fs, Integer.valueOf(4));
+      WHITE_ORDINAL.put(PitchClass.Gb, Integer.valueOf(4));
     WHITE_ORDINAL.put(PitchClass.G, Integer.valueOf(5));
       WHITE_ORDINAL.put(PitchClass.Gs, Integer.valueOf(5));
+      WHITE_ORDINAL.put(PitchClass.Ab, Integer.valueOf(5));
     WHITE_ORDINAL.put(PitchClass.A, Integer.valueOf(6));
       WHITE_ORDINAL.put(PitchClass.As, Integer.valueOf(6));
       WHITE_ORDINAL.put(PitchClass.Bb, Integer.valueOf(6));
@@ -121,14 +129,14 @@ public final class KeyboardPanel extends JPanel {
     if (_lowNote.compareTo(_highNote) > 0)
       throw new IllegalArgumentException("Range is not valid");
     
-    _size = calcSize();
+    _size = calcSize(lowNote, highNote);
     initMaps();
   }
   
-  private Dimension calcSize() {
-    final int numWhiteKeys = WHITE_ORDINAL.get(_highNote.getPitchClass()).intValue() -
-                 WHITE_ORDINAL.get(_lowNote.getPitchClass()).intValue() +
-                 1 + 7 * (_highNote.getOctave() - _lowNote.getOctave());
+  private static Dimension calcSize(Note lowNote, Note highNote) {
+    final int numWhiteKeys = WHITE_ORDINAL.get(highNote.getPitchClass()).intValue() -
+                 WHITE_ORDINAL.get(lowNote.getPitchClass()).intValue() +
+                 1 + 7 * (highNote.getOctave() - lowNote.getOctave());
     
     return new Dimension(numWhiteKeys * WHITE_WIDTH + 1, WHITE_HEIGHT + 1);
   }

@@ -39,7 +39,6 @@ import cadenza.core.patchusage.PatchUsage;
 import cadenza.gui.common.CadenzaTable;
 import cadenza.gui.cue.CueEditDialog;
 import cadenza.gui.song.SongEditDialog;
-
 import common.Utils;
 import common.collection.ListAdapter;
 import common.collection.ListEvent;

@@ -72,7 +72,7 @@ public class SinglePatchSelectionDialog extends OKCancelDialog {
       });
     });
     
-    final JPanel panel = new JPanel();
+    final JPanel panel = new JPanel(new BorderLayout());
     panel.add(scrollPane, BorderLayout.CENTER);
     panel.add(_pickNewButton, BorderLayout.SOUTH);
     

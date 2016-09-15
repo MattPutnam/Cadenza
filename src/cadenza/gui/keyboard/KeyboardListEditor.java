@@ -90,7 +90,7 @@ public class KeyboardListEditor extends JPanel implements CustomWizardComponent 
   }
   
   public void doRemap() {
-    for (final Cue cue : _data.cues) {
+	for (final Cue cue : _data.cues) {
       boolean modified = false;
       
       /*
@@ -117,9 +117,9 @@ public class KeyboardListEditor extends JPanel implements CustomWizardComponent 
       while (triggerIterator.hasNext()) {
         final Trigger trigger = triggerIterator.next();
         final List<HasNoteRange> hls = trigger.predicates.stream()
-                                                        .filter(p -> p instanceof HasNoteRange)
-                                                        .map(p -> ((HasNoteRange) p))
-                                                        .collect(Collectors.toList());
+                                                         .filter(p -> p instanceof HasNoteRange)
+                                                         .map(p -> ((HasNoteRange) p))
+                                                         .collect(Collectors.toList());
         for (final HasNoteRange hl : hls) {
           final NoteRange curLoc = hl.getNoteRange();
           final Keyboard newKeyboard = _remap.get(curLoc.getKeyboard());

@@ -120,6 +120,8 @@ public final class PerformanceController extends CadenzaController {
   public synchronized void goTo(Cue cue) {
     final int oldIndex = _position;
     _position = getData().cues.indexOf(cue);
+    if (_position == oldIndex)
+      return;
     
     if (receiverReady()) {
       try {
@@ -445,6 +447,8 @@ public final class PerformanceController extends CadenzaController {
           final Response response = assignment.receive(inputMidiNumber, inputVelocity);
           final PatchUsage pu = response.getPatchUsage();
           final Integer outputChannel = _currentAssignments.get(pu);
+          if (outputChannel == null)
+            System.err.println("Output channel not found for patch usage " + pu.toString(false, false, false) + " on cue " + _currentCue.toString());
           
           final List<Effect> effects = new LinkedList<>();
           effects.addAll(pu.effects);

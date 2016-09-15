@@ -66,7 +66,14 @@ public class KeyboardInputViewer extends JPanel {
   public void receive(MidiMessage mm) {
     if (mm instanceof ShortMessage) {
       final ShortMessage sm = (ShortMessage) mm;
-      final int index = _channelToIndex.get(Integer.valueOf(sm.getChannel())).intValue();
+      
+      // fuck Roland
+      final Integer maybeIntIndex = _channelToIndex.get(Integer.valueOf(sm.getChannel()));
+      if (maybeIntIndex == null)
+    	  return;
+      
+      //final int index = _channelToIndex.get(Integer.valueOf(sm.getChannel())).intValue();
+      final int index = maybeIntIndex.intValue();
       final Note note = Note.valueOf(sm.getData1());
       if (MidiUtilities.isNoteOn(sm)) {
         _keyboardPanels.get(index).highlightNote(note);
