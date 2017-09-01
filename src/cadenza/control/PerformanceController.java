@@ -120,17 +120,15 @@ public final class PerformanceController extends CadenzaController {
   public synchronized void goTo(Cue cue) {
     final int oldIndex = _position;
     _position = getData().cues.indexOf(cue);
-    if (_position == oldIndex)
-      return;
     
-    if (receiverReady()) {
+    if (_position != oldIndex && receiverReady()) {
       try {
         updatePosition(oldIndex, _position);
+        updatePerformanceLocation();
       } catch (InvalidMidiDataException e) {
         LOG.error("Error updating performance position", e);
       }
     }
-    updatePerformanceLocation();
   }
   
   public synchronized void goTo(int cueIndex) {
